@@ -15,6 +15,7 @@ Layout/MultilineOperationIndentation:
 Metrics/BlockLength:
   Exclude:
     - tox.gemspec
+    - spec/**/*
 
 Metrics/LineLength:
   Max: 120

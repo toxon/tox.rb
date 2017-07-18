@@ -10,17 +10,29 @@ RSpec.describe Tox::Status do
       expect(subject.inspect).to eq \
         "#<#{described_class} last_refresh: #{subject.last_refresh}, last_scan: #{subject.last_scan}>"
     end
+
+    specify do
+      expect(subject.inspect).to be_frozen
+    end
   end
 
   describe '#last_refresh' do
     specify do
       expect(subject.last_refresh).to be_a Time
     end
+
+    specify do
+      expect(subject.last_refresh).to be_frozen
+    end
   end
 
   describe '#last_scan' do
     specify do
       expect(subject.last_scan).to be_a Time
+    end
+
+    specify do
+      expect(subject.last_scan).to be_frozen
     end
   end
 end
