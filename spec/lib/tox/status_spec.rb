@@ -12,15 +12,15 @@ RSpec.describe Tox::Status do
     end
   end
 
-  describe '#last_scan' do
-    specify do
-      expect(subject.last_scan).to be_a Time
-    end
-  end
-
   describe '#last_refresh' do
     specify do
       expect(subject.last_refresh).to be_a Time
+    end
+  end
+
+  describe '#last_scan' do
+    specify do
+      expect(subject.last_scan).to be_a Time
     end
   end
 end
