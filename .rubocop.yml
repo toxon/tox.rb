@@ -2,6 +2,9 @@ AllCops:
   TargetRubyVersion: 2.3
   DisplayCopNames: true
 
+  Exclude:
+    - vendor/**/*
+
 Layout/AccessModifierIndentation:
   EnforcedStyle: outdent
 
