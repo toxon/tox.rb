@@ -3,8 +3,6 @@
 
 require 'mkmf'
 
-NAME = 'tox'
-
 LIBTOXCORE = 'toxcore'
 
 have_header 'ruby.h' and
@@ -19,4 +17,4 @@ have_library LIBTOXCORE, 'tox_get_savedata_size' and
 have_library LIBTOXCORE, 'tox_get_savedata' and
 have_library LIBTOXCORE, 'tox_self_get_address' and
 
-create_makefile "#{NAME}/#{NAME}" or exit 1
+create_makefile 'tox/tox' or exit 1
