@@ -4,7 +4,7 @@ require 'bundler/gem_tasks'
 
 GEMSPEC = Gem::Specification.load 'lita-tox.gemspec'
 
-task default: %i[spec lint]
+task default: %i[compile spec lint]
 
 task lint: :rubocop
 
