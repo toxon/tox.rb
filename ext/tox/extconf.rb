@@ -7,6 +7,7 @@ NAME = 'tox'
 
 LIBTOXCORE = 'toxcore'
 
+have_header 'ruby.h' and
 have_header 'tox/tox.h' and
 
 have_func 'free' and
