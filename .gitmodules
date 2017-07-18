@@ -1,5 +1,5 @@
-[submodule "vendor/toxcore"]
-	path = vendor/toxcore
+[submodule "vendor/libtoxcore"]
+	path = vendor/libtoxcore
 	url = https://github.com/irungentoo/toxcore.git
 [submodule "vendor/libsodium"]
 	path = vendor/libsodium

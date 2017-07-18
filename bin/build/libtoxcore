@@ -4,7 +4,7 @@ set -euo pipefail
 IFS=$'\n\t'
 set -vx
 
-pushd 'vendor/toxcore'
+pushd 'vendor/libtoxcore'
 autoreconf -i
 ./configure
 make install
