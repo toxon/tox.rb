@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
-##
-# libtoxcore adapter for Ruby.
-#
-class Tox
-end
-
 require 'tox/version'
 require 'tox/tox'
+
+##
+# libtoxcore for Ruby.
+#
+class Tox
+  def initialize(options = Tox::Options.new)
+    initialize_with options
+  end
+end

@@ -5,7 +5,7 @@ VALUE cTox;
 
 static VALUE cTox_alloc(VALUE klass);
 static void  cTox_free(void *ptr);
-static VALUE cTox_initialize(VALUE self, VALUE options);
+static VALUE cTox_initialize_with(VALUE self, VALUE options);
 static VALUE cTox_savedata(VALUE self);
 static VALUE cTox_id(VALUE self);
 static VALUE cTox_kill(VALUE self);
@@ -14,10 +14,10 @@ void Init_tox()
 {
   cTox = rb_define_class("Tox", rb_cObject);
   rb_define_alloc_func(cTox, cTox_alloc);
-  rb_define_method(cTox, "initialize", cTox_initialize, 1);
-  rb_define_method(cTox, "savedata",   cTox_savedata,   0);
-  rb_define_method(cTox, "id",         cTox_id,         0);
-  rb_define_method(cTox, "kill",       cTox_kill,       0);
+  rb_define_method(cTox, "initialize_with", cTox_initialize_with, 1);
+  rb_define_method(cTox, "savedata",        cTox_savedata,        0);
+  rb_define_method(cTox, "id",              cTox_id,              0);
+  rb_define_method(cTox, "kill",            cTox_kill,            0);
 
   cTox_cOptions_INIT();
 }
@@ -36,7 +36,7 @@ void cTox_free(void *const ptr)
   free(ptr);
 }
 
-VALUE cTox_initialize(const VALUE self, const VALUE options)
+VALUE cTox_initialize_with(const VALUE self, const VALUE options)
 {
   cTox_          *tox;
   cTox_cOptions_ *tox_options;
