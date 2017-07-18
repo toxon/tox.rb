@@ -7,6 +7,8 @@ rvm:
 before_install:
   - sudo apt-get update
   - sudo apt-get install -y build-essential libtool autotools-dev automake checkinstall check git yasm
-  - sudo ./bin/setup
-  - bundle install
+  - sudo ./bin/build/libsodium
+  - sudo ./bin/build/toxcore
+
+before_script:
   - rake compile

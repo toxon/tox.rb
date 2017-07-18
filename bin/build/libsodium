@@ -9,9 +9,3 @@ pushd 'vendor/libsodium'
 ./configure
 make install
 popd
-
-pushd 'vendor/toxcore'
-autoreconf -i
-./configure
-make install
-popd
