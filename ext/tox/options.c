@@ -9,7 +9,7 @@ static VALUE cTox_cOptions_initialize(VALUE self);
 static VALUE cTox_cOptions_savedata(VALUE self);
 static VALUE cTox_cOptions_savedata_EQUALS(VALUE self, VALUE savedata);
 
-void Init_tox_options()
+void cTox_cOptions_INIT()
 {
   cTox_cOptions = rb_define_class_under(cTox, "Options", rb_cObject);
   rb_define_alloc_func(cTox_cOptions, cTox_cOptions_alloc);

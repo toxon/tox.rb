@@ -2,7 +2,7 @@
 
 #include <tox/tox.h>
 
-void Init_tox_options();
+void cTox_cOptions_INIT();
 
 typedef struct Tox_Options cTox_cOptions_;
 

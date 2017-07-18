@@ -17,7 +17,7 @@ void Init_tox()
   rb_define_method(cTox, "savedata",   cTox_savedata,   0);
   rb_define_method(cTox, "id",         cTox_id,         0);
 
-  Init_tox_options();
+  cTox_cOptions_INIT();
 }
 
 VALUE cTox_alloc(const VALUE klass)
