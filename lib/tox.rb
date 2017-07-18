@@ -3,6 +3,7 @@
 require 'uri'
 require 'net/http'
 require 'json'
+require 'resolv'
 
 require 'tox/version'
 require 'tox/status'

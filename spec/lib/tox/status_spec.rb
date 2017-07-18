@@ -35,4 +35,16 @@ RSpec.describe Tox::Status do
       expect(subject.last_scan).to be_frozen
     end
   end
+
+  describe '#nodes' do
+    specify do
+      expect(subject.nodes).to be_a Array
+    end
+
+    specify do
+      subject.nodes.each do |node|
+        expect(node).to be_a Tox::Node
+      end
+    end
+  end
 end

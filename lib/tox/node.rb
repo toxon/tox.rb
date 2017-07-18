@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'resolv'
-
 module Tox
   ##
   # Tox node credentials.

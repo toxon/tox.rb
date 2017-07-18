@@ -22,5 +22,15 @@ module Tox
     def last_scan
       @last_scan ||= Time.at(@data['last_scan']).utc.freeze
     end
+
+    def nodes
+      @nodes ||= @data['nodes'].map do |node_data|
+        begin
+          Node.new node_data['public_key'], node_data['port'], node_data['ipv4']
+        rescue
+          nil
+        end
+      end.compact.freeze
+    end
   end
 end
