@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.version  = Tox::VERSION
   spec.license  = 'MIT'
   spec.homepage = 'https://github.com/braiden-vasco/tox.rb'
-  spec.summary  = 'libtoxcore adapter for Ruby'
+  spec.summary  = 'libtoxcore for Ruby'
   spec.platform = Gem::Platform::RUBY
 
   spec.authors = ['Braiden Vasco']
@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '~> 2.3'
 
   spec.description = <<-END.split.join ' '
-  libtoxcore adapter for Ruby.
+  libtoxcore for Ruby.
   END
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
