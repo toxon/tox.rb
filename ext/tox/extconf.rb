@@ -5,6 +5,8 @@ require 'mkmf'
 
 LIBTOXCORE = 'toxcore'
 
+$CFLAGS += ' -std=c99'
+
 have_header 'ruby.h' and
 have_header 'tox/tox.h' and
 

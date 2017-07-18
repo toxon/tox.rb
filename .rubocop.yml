@@ -26,6 +26,10 @@ Style/AndOr:
 Style/DoubleNegation:
   Enabled: false
 
+Style/GlobalVars:
+  Exclude:
+    - ext/**/*
+
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
 
