@@ -20,7 +20,7 @@ static VALUE cTox_cOptions;
 static VALUE cTox_cOptions_alloc(VALUE klass);
 static void  cTox_cOptions_free(void *ptr);
 static VALUE cTox_cOptions_initialize(VALUE self);
-static VALUE cTox_cOptions_data_EQUALS(VALUE self, VALUE data);
+static VALUE cTox_cOptions_savedata_EQUALS(VALUE self, VALUE savedata);
 
 void Init_tox()
 {
@@ -31,8 +31,8 @@ void Init_tox()
 
   cTox_cOptions = rb_define_class_under(cTox, "Options", rb_cObject);
   rb_define_alloc_func(cTox_cOptions, cTox_cOptions_alloc);
-  rb_define_method(cTox_cOptions, "initialize", cTox_cOptions_initialize,  0);
-  rb_define_method(cTox_cOptions, "data=",      cTox_cOptions_data_EQUALS, 1);
+  rb_define_method(cTox_cOptions, "initialize", cTox_cOptions_initialize,      0);
+  rb_define_method(cTox_cOptions, "savedata=",  cTox_cOptions_savedata_EQUALS, 1);
 }
 
 VALUE cTox_alloc(const VALUE klass)
@@ -115,7 +115,7 @@ VALUE cTox_cOptions_initialize(const VALUE self)
   return self;
 }
 
-VALUE cTox_cOptions_data_EQUALS(const VALUE self, const VALUE savedata)
+VALUE cTox_cOptions_savedata_EQUALS(const VALUE self, const VALUE savedata)
 {
   cTox_cOptions_ *tox_options;
 
