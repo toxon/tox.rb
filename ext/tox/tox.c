@@ -8,6 +8,7 @@ static void  cTox_free(void *ptr);
 static VALUE cTox_initialize(VALUE self, VALUE options);
 static VALUE cTox_savedata(VALUE self);
 static VALUE cTox_id(VALUE self);
+static VALUE cTox_kill(VALUE self);
 
 void Init_tox()
 {
@@ -16,6 +17,7 @@ void Init_tox()
   rb_define_method(cTox, "initialize", cTox_initialize, 1);
   rb_define_method(cTox, "savedata",   cTox_savedata,   0);
   rb_define_method(cTox, "id",         cTox_id,         0);
+  rb_define_method(cTox, "kill",       cTox_kill,       0);
 
   cTox_cOptions_INIT();
 }
@@ -91,4 +93,15 @@ VALUE cTox_id(const VALUE self)
   }
 
   return rb_str_new(id, 2 * TOX_ADDRESS_SIZE);
+}
+
+VALUE cTox_kill(const VALUE self)
+{
+  cTox_ *tox;
+
+  Data_Get_Struct(self, cTox_, tox);
+
+  tox_kill(tox->tox);
+
+  return self;
 }
