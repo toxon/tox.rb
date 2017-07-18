@@ -4,8 +4,6 @@ set -euo pipefail
 IFS=$'\n\t'
 set -vx
 
-bundle install
-
 pushd 'vendor/libsodium'
 ./autogen.sh
 ./configure
@@ -17,5 +15,3 @@ autoreconf -i
 ./configure
 make install
 popd
-
-rake compile
