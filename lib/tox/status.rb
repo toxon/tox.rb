@@ -5,10 +5,10 @@ module Tox
   # Tox network status from the official website.
   #
   class Status
-    URL = 'https://nodes.tox.chat/json'
+    OFFICIAL_URL = 'https://nodes.tox.chat/json'
 
-    def initialize
-      @data = JSON.parse Net::HTTP.get URI.parse URL
+    def initialize(url = OFFICIAL_URL)
+      @data = JSON.parse Net::HTTP.get URI.parse url
     end
 
     def last_scan
