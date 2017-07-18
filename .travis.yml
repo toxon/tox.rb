@@ -11,7 +11,7 @@ before_install:
   - sudo ./bin/build/libsodium
   - sudo ./bin/build/toxcore
 
-  - sudo mkdir '/etc/ld.so.conf.d/'
+  - sudo mkdir -p '/etc/ld.so.conf.d/'
   - echo '/usr/local/lib/' | sudo tee -a '/etc/ld.so.conf.d/locallib.conf'
   - sudo ldconfig
 
