@@ -6,6 +6,7 @@ require 'json'
 
 require 'tox/version'
 require 'tox/status'
+require 'tox/node'
 require 'tox/tox'
 require 'tox/client'
 
