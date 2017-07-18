@@ -7,3 +7,4 @@ module Tox
 end
 
 require 'tox/version'
+require 'tox/tox'

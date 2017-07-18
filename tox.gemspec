@@ -12,6 +12,7 @@ Gem::Specification.new do |spec|
   spec.license  = 'MIT'
   spec.homepage = 'https://github.com/braiden-vasco/tox.rb'
   spec.summary  = 'libtoxcore adapter for Ruby'
+  spec.platform = Gem::Platform::RUBY
 
   spec.authors = ['Braiden Vasco']
   spec.email   = %w[braiden-vasco@users.noreply.github.com]
@@ -29,11 +30,14 @@ Gem::Specification.new do |spec|
   spec.bindir      = 'exe'
   spec.executables = spec.files.grep %r{^exe/}, &File.method(:basename)
 
-  spec.add_development_dependency 'bundler',   '~> 1.13'
-  spec.add_development_dependency 'rake',      '~> 10.0'
-  spec.add_development_dependency 'pry',       '~> 0.10'
-  spec.add_development_dependency 'rubocop',   '~> 0.49.1'
-  spec.add_development_dependency 'rspec',     '~> 3.6'
-  spec.add_development_dependency 'simplecov', '~> 0.14'
-  spec.add_development_dependency 'yard',      '~> 0.9'
+  spec.extensions << 'ext/tox/extconf.rb'
+
+  spec.add_development_dependency 'bundler',       '~> 1.13'
+  spec.add_development_dependency 'rake',          '~> 10.0'
+  spec.add_development_dependency 'pry',           '~> 0.10'
+  spec.add_development_dependency 'rubocop',       '~> 0.49.1'
+  spec.add_development_dependency 'rspec',         '~> 3.6'
+  spec.add_development_dependency 'simplecov',     '~> 0.14'
+  spec.add_development_dependency 'yard',          '~> 0.9'
+  spec.add_development_dependency 'rake-compiler', '~> 1.0'
 end
