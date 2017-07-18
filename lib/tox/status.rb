@@ -11,6 +11,10 @@ module Tox
       @data = JSON.parse Net::HTTP.get URI.parse url
     end
 
+    def inspect
+      @inspect ||= "#<#{self.class} last_refresh: #{last_refresh}, last_scan: #{last_scan}>"
+    end
+
     def last_scan
       @last_scan ||= Time.at(@data['last_scan']).utc.freeze
     end
