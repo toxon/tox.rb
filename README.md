@@ -1,5 +1,5 @@
-Tox
-===
+::Tox
+=====
 
 [![Gem Version](https://badge.fury.io/rb/tox.svg)](http://badge.fury.io/rb/tox)
 [![Build Status](https://travis-ci.org/braiden-vasco/tox.rb.svg)](https://travis-ci.org/braiden-vasco/tox.rb)
