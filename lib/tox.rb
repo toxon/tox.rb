@@ -2,12 +2,10 @@
 
 require 'tox/version'
 require 'tox/tox'
+require 'tox/client'
 
 ##
 # libtoxcore for Ruby.
 #
 class Tox
-  def initialize(options = Tox::Options.new)
-    initialize_with options
-  end
 end
