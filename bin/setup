@@ -6,11 +6,16 @@ set -vx
 
 bundle install
 
+pushd 'vendor/libsodium'
+./autogen.sh
+./configure
+make install
+popd
+
 pushd 'vendor/toxcore'
 autoreconf -i
 ./configure
-make
-sudo make install
+make install
 popd
 
 rake compile
