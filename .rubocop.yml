@@ -1,0 +1,21 @@
+AllCops:
+  TargetRubyVersion: 2.3
+  DisplayCopNames: true
+
+Layout/AccessModifierIndentation:
+  EnforcedStyle: outdent
+
+Metrics/LineLength:
+  Max: 120
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/VariableInterpolation:
+  Enabled: false
