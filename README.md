@@ -5,4 +5,4 @@ Tox
 [![Build Status](https://travis-ci.org/braiden-vasco/tox.svg)](https://travis-ci.org/braiden-vasco/tox)
 [![Coverage Status](https://coveralls.io/repos/braiden-vasco/tox/badge.svg)](https://coveralls.io/r/braiden-vasco/tox)
 
-libtoxcore adapter for Ruby.
+[libtoxcore](https://github.com/TokTok/c-toxcore) adapter for Ruby.
