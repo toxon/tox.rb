@@ -10,6 +10,7 @@ have_header 'tox/tox.h' and
 
 have_func 'free' and
 have_func 'memset' and
+have_func 'sprintf' and
 
 have_library LIBTOXCORE, 'tox_version_is_compatible' and
 have_library LIBTOXCORE, 'tox_new' and
