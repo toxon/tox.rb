@@ -1,6 +1,9 @@
 #include "tox.h"
 #include "options.h"
 
+#define TOX_IS_COMPATIBLE TOX_VERSION_IS_API_COMPATIBLE
+TOX_VERSION_REQUIRE(0, 0, 0);
+
 VALUE cTox;
 
 static VALUE cTox_alloc(VALUE klass);
@@ -12,6 +15,10 @@ static VALUE cTox_kill(VALUE self);
 
 void Init_tox()
 {
+  if (!TOX_VERSION_IS_ABI_COMPATIBLE()) {
+    rb_raise(rb_eLoadError, "incompatible Tox ABI version");
+  }
+
   cTox = rb_define_class("Tox", rb_cObject);
   rb_define_alloc_func(cTox, cTox_alloc);
   rb_define_method(cTox, "initialize_with", cTox_initialize_with, 1);
