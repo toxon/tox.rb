@@ -8,8 +8,20 @@ AllCops:
 Layout/AccessModifierIndentation:
   EnforcedStyle: outdent
 
+Layout/MultilineOperationIndentation:
+  Exclude:
+    - ext/**/*
+
+Metrics/BlockLength:
+  Exclude:
+    - tox.gemspec
+
 Metrics/LineLength:
   Max: 120
+
+Style/AndOr:
+  Exclude:
+    - ext/**/*
 
 Style/DoubleNegation:
   Enabled: false

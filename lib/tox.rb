@@ -3,7 +3,7 @@
 ##
 # libtoxcore adapter for Ruby.
 #
-module Tox
+class Tox
 end
 
 require 'tox/version'
