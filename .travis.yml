@@ -9,6 +9,8 @@ before_install:
   - sudo apt-get install -y build-essential libtool autotools-dev automake checkinstall check git yasm
   - sudo ./bin/build/libsodium
   - sudo ./bin/build/toxcore
+  - echo '/usr/local/lib/' | sudo tee -a '/etc/ld.so.conf.d/locallib.conf'
+  - sudo ldconfig
 
 before_script:
   - rake compile
