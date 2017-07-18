@@ -5,7 +5,7 @@
 #define TOX_IS_COMPATIBLE TOX_VERSION_IS_API_COMPATIBLE
 TOX_VERSION_REQUIRE(0, 0, 0);
 
-VALUE cTox;
+VALUE mTox;
 
 void Init_tox()
 {
@@ -13,8 +13,8 @@ void Init_tox()
     rb_raise(rb_eLoadError, "incompatible Tox ABI version");
   }
 
-  cTox = rb_define_class("Tox", rb_cObject);
+  mTox = rb_define_module("Tox");
 
-  cTox_cOptions_INIT();
-  cTox_cClient_INIT();
+  mTox_cOptions_INIT();
+  mTox_cClient_INIT();
 }

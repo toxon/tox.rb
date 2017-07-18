@@ -7,5 +7,5 @@ require 'tox/client'
 ##
 # libtoxcore for Ruby.
 #
-class Tox
+module Tox
 end

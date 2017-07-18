@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Tox
+module Tox
   ##
   # Tox client.
   #

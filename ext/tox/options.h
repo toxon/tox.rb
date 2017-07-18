@@ -2,8 +2,8 @@
 
 #include <tox/tox.h>
 
-void cTox_cOptions_INIT();
+void mTox_cOptions_INIT();
 
-typedef struct Tox_Options cTox_cOptions_;
+typedef struct Tox_Options mTox_cOptions_;
 
-extern VALUE cTox_cOptions;
+extern VALUE mTox_cOptions;

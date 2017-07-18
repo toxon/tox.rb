@@ -2,50 +2,50 @@
 #include "client.h"
 #include "options.h"
 
-VALUE cTox_cClient;
+VALUE mTox_cClient;
 
-static VALUE cTox_cClient_alloc(VALUE klass);
-static void  cTox_cClient_free(void *ptr);
-static VALUE cTox_cClient_initialize_with(VALUE self, VALUE options);
-static VALUE cTox_cClient_savedata(VALUE self);
-static VALUE cTox_cClient_id(VALUE self);
-static VALUE cTox_cClient_kill(VALUE self);
+static VALUE mTox_cClient_alloc(VALUE klass);
+static void  mTox_cClient_free(void *ptr);
+static VALUE mTox_cClient_initialize_with(VALUE self, VALUE options);
+static VALUE mTox_cClient_savedata(VALUE self);
+static VALUE mTox_cClient_id(VALUE self);
+static VALUE mTox_cClient_kill(VALUE self);
 
-void cTox_cClient_INIT()
+void mTox_cClient_INIT()
 {
-  cTox_cClient = rb_define_class_under(cTox, "Client", rb_cObject);
-  rb_define_alloc_func(cTox_cClient, cTox_cClient_alloc);
-  rb_define_method(cTox_cClient, "initialize_with", cTox_cClient_initialize_with, 1);
-  rb_define_method(cTox_cClient, "savedata",        cTox_cClient_savedata,        0);
-  rb_define_method(cTox_cClient, "id",              cTox_cClient_id,              0);
-  rb_define_method(cTox_cClient, "kill",            cTox_cClient_kill,            0);
+  mTox_cClient = rb_define_class_under(mTox, "Client", rb_cObject);
+  rb_define_alloc_func(mTox_cClient, mTox_cClient_alloc);
+  rb_define_method(mTox_cClient, "initialize_with", mTox_cClient_initialize_with, 1);
+  rb_define_method(mTox_cClient, "savedata",        mTox_cClient_savedata,        0);
+  rb_define_method(mTox_cClient, "id",              mTox_cClient_id,              0);
+  rb_define_method(mTox_cClient, "kill",            mTox_cClient_kill,            0);
 }
 
-VALUE cTox_cClient_alloc(const VALUE klass)
+VALUE mTox_cClient_alloc(const VALUE klass)
 {
-  cTox_cClient_ *tox;
+  mTox_cClient_ *tox;
 
-  tox = ALLOC(cTox_cClient_);
+  tox = ALLOC(mTox_cClient_);
 
-  return Data_Wrap_Struct(klass, NULL, cTox_cClient_free, tox);
+  return Data_Wrap_Struct(klass, NULL, mTox_cClient_free, tox);
 }
 
-void cTox_cClient_free(void *const ptr)
+void mTox_cClient_free(void *const ptr)
 {
   free(ptr);
 }
 
-VALUE cTox_cClient_initialize_with(const VALUE self, const VALUE options)
+VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
 {
-  cTox_cClient_  *tox;
-  cTox_cOptions_ *tox_options;
+  mTox_cClient_  *tox;
+  mTox_cOptions_ *tox_options;
 
-  if (Qfalse == rb_funcall(options, rb_intern("is_a?"), 1, cTox_cOptions)) {
+  if (Qfalse == rb_funcall(options, rb_intern("is_a?"), 1, mTox_cOptions)) {
     rb_raise(rb_eTypeError, "expected options to be a Tox::Options");
   }
 
-  Data_Get_Struct(self,    cTox_cClient_,  tox);
-  Data_Get_Struct(options, cTox_cOptions_, tox_options);
+  Data_Get_Struct(self,    mTox_cClient_,  tox);
+  Data_Get_Struct(options, mTox_cOptions_, tox_options);
 
   TOX_ERR_NEW error;
 
@@ -58,14 +58,14 @@ VALUE cTox_cClient_initialize_with(const VALUE self, const VALUE options)
   return self;
 }
 
-VALUE cTox_cClient_savedata(const VALUE self)
+VALUE mTox_cClient_savedata(const VALUE self)
 {
-  cTox_cClient_ *tox;
+  mTox_cClient_ *tox;
 
   size_t data_size;
   char *data;
 
-  Data_Get_Struct(self, cTox_cClient_, tox);
+  Data_Get_Struct(self, mTox_cClient_, tox);
 
   data_size = tox_get_savedata_size(tox->tox);
   data = ALLOC_N(char, data_size);
@@ -75,11 +75,11 @@ VALUE cTox_cClient_savedata(const VALUE self)
   return rb_str_new(data, data_size);
 }
 
-VALUE cTox_cClient_id(const VALUE self)
+VALUE mTox_cClient_id(const VALUE self)
 {
-  cTox_cClient_ *tox;
+  mTox_cClient_ *tox;
 
-  Data_Get_Struct(self, cTox_cClient_, tox);
+  Data_Get_Struct(self, mTox_cClient_, tox);
 
   char address[TOX_ADDRESS_SIZE];
 
@@ -94,11 +94,11 @@ VALUE cTox_cClient_id(const VALUE self)
   return rb_str_new(id, 2 * TOX_ADDRESS_SIZE);
 }
 
-VALUE cTox_cClient_kill(const VALUE self)
+VALUE mTox_cClient_kill(const VALUE self)
 {
-  cTox_cClient_ *tox;
+  mTox_cClient_ *tox;
 
-  Data_Get_Struct(self, cTox_cClient_, tox);
+  Data_Get_Struct(self, mTox_cClient_, tox);
 
   tox_kill(tox->tox);
 

@@ -4,4 +4,4 @@
 
 void Init_tox();
 
-extern VALUE cTox;
+extern VALUE mTox;
