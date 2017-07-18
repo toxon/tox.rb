@@ -6,8 +6,11 @@ set -vx
 
 bundle install
 
-cd 'vendor/toxcore'
+pushd 'vendor/toxcore'
 autoreconf -i
 ./configure
 make
 sudo make install
+popd
+
+rake compile
