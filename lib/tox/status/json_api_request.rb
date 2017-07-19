@@ -10,15 +10,17 @@ module Tox
 
       def initialize(url)
         self.url = url
-        @data = JSON.parse Net::HTTP.get URI.parse self.url
+        data
       end
 
     private
 
-      attr_reader :data
-
       def url=(value)
         @url = value.frozen? ? value : value.dup.freeze
+      end
+
+      def data
+        @data ||= JSON.parse Net::HTTP.get URI.parse url
       end
     end
   end
