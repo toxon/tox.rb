@@ -1,13 +1,21 @@
 #include "tox.h"
 #include "options.h"
 
+// Instance
 VALUE mTox_cOptions;
 
+// Memory management
 static VALUE mTox_cOptions_alloc(VALUE klass);
 static void  mTox_cOptions_free(void *ptr);
+
+// Public methods
 static VALUE mTox_cOptions_initialize(VALUE self);
 static VALUE mTox_cOptions_savedata(VALUE self);
 static VALUE mTox_cOptions_savedata_EQUALS(VALUE self, VALUE savedata);
+
+/*************************************************************
+ * Initialization
+ *************************************************************/
 
 void mTox_cOptions_INIT()
 {
@@ -19,6 +27,10 @@ void mTox_cOptions_INIT()
   rb_define_method(mTox_cOptions, "savedata",   mTox_cOptions_savedata,        0);
   rb_define_method(mTox_cOptions, "savedata=",  mTox_cOptions_savedata_EQUALS, 1);
 }
+
+/*************************************************************
+ * Memory management
+ *************************************************************/
 
 VALUE mTox_cOptions_alloc(const VALUE klass)
 {
@@ -33,6 +45,10 @@ void mTox_cOptions_free(void *const ptr)
 {
   free(ptr);
 }
+
+/*************************************************************
+ * Public methods
+ *************************************************************/
 
 VALUE mTox_cOptions_initialize(const VALUE self)
 {

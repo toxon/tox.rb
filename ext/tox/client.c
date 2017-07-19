@@ -5,11 +5,14 @@
 
 #include <time.h>
 
+// Instance
 VALUE mTox_cClient;
 
+// Memory management
 static VALUE mTox_cClient_alloc(VALUE klass);
 static void  mTox_cClient_free(void *ptr);
 
+// Public methods
 static VALUE mTox_cClient_savedata(VALUE self);
 static VALUE mTox_cClient_id(VALUE self);
 static VALUE mTox_cClient_kill(VALUE self);
@@ -17,8 +20,11 @@ static VALUE mTox_cClient_bootstrap(VALUE self, VALUE node);
 static VALUE mTox_cClient_friend_add_norequest(VALUE self, VALUE public_key);
 static VALUE mTox_cClient_friend_send_message(VALUE self, VALUE friend_number, VALUE text);
 
+// Private methods
 static VALUE mTox_cClient_initialize_with(VALUE self, VALUE options);
 static VALUE mTox_cClient_run_loop(VALUE self);
+
+// Callbacks
 
 static void on_friend_request(
   Tox *tox,
@@ -37,12 +43,18 @@ static void on_friend_message(
   VALUE self
 );
 
+/*************************************************************
+ * Initialization
+ *************************************************************/
+
 void mTox_cClient_INIT()
 {
   mTox_cClient = rb_define_class_under(mTox, "Client", rb_cObject);
 
+  // Memory management
   rb_define_alloc_func(mTox_cClient, mTox_cClient_alloc);
 
+  // Public methods
   rb_define_method(mTox_cClient, "savedata",             mTox_cClient_savedata,             0);
   rb_define_method(mTox_cClient, "id",                   mTox_cClient_id,                   0);
   rb_define_method(mTox_cClient, "kill",                 mTox_cClient_kill,                 0);
@@ -50,9 +62,14 @@ void mTox_cClient_INIT()
   rb_define_method(mTox_cClient, "friend_add_norequest", mTox_cClient_friend_add_norequest, 1);
   rb_define_method(mTox_cClient, "friend_send_message",  mTox_cClient_friend_send_message,  2);
 
+  // Private methods
   rb_define_private_method(mTox_cClient, "initialize_with", mTox_cClient_initialize_with, 1);
   rb_define_private_method(mTox_cClient, "run_loop",        mTox_cClient_run_loop,        0);
 }
+
+/*************************************************************
+ * Memory management
+ *************************************************************/
 
 VALUE mTox_cClient_alloc(const VALUE klass)
 {
@@ -67,6 +84,10 @@ void mTox_cClient_free(void *const ptr)
 {
   free(ptr);
 }
+
+/*************************************************************
+ * Public methods
+ *************************************************************/
 
 VALUE mTox_cClient_savedata(const VALUE self)
 {
@@ -179,6 +200,10 @@ VALUE mTox_cClient_friend_send_message(const VALUE self, const VALUE friend_numb
   ));
 }
 
+/*************************************************************
+ * Private methods
+ *************************************************************/
+
 VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
 {
   mTox_cClient_  *tox;
@@ -224,6 +249,10 @@ VALUE mTox_cClient_run_loop(const VALUE self)
 
   return self;
 }
+
+/*************************************************************
+ * Callbacks
+ *************************************************************/
 
 void on_friend_request(
   Tox *const tox,

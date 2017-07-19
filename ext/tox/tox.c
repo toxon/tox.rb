@@ -6,7 +6,12 @@
 #define TOX_IS_COMPATIBLE TOX_VERSION_IS_API_COMPATIBLE
 TOX_VERSION_REQUIRE(0, 0, 0);
 
+// Instance
 VALUE mTox;
+
+/*************************************************************
+ * Initialization
+ *************************************************************/
 
 void Init_tox()
 {
