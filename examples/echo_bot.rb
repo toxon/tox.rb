@@ -18,10 +18,10 @@ tox_options = Tox::Options.new
 
 if savedata_filename && File.exist?(savedata_filename)
   puts "Loading savedata from #{savedata_filename}"
-  tox_options.savedata = File.read savedata_filename
+  tox_options.savedata = File.binread savedata_filename
 end
 
-tox_client = Tox::Client.new
+tox_client = Tox::Client.new tox_options
 
 puts "ID: #{tox_client.id}"
 
@@ -47,5 +47,5 @@ end
 
 if savedata_filename
   puts "Saving savedata to #{savedata_filename}"
-  File.write savedata_filename, tox_client.savedata
+  File.binwrite savedata_filename, tox_client.savedata
 end
