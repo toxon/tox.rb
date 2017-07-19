@@ -1,6 +1,7 @@
 #include "tox.h"
 #include "client.h"
 #include "options.h"
+#include "node.h"
 
 VALUE mTox_cClient;
 
@@ -10,6 +11,7 @@ static VALUE mTox_cClient_initialize_with(VALUE self, VALUE options);
 static VALUE mTox_cClient_savedata(VALUE self);
 static VALUE mTox_cClient_id(VALUE self);
 static VALUE mTox_cClient_kill(VALUE self);
+static VALUE mTox_cClient_bootstrap(VALUE self, VALUE node);
 
 void mTox_cClient_INIT()
 {
@@ -19,6 +21,7 @@ void mTox_cClient_INIT()
   rb_define_method(mTox_cClient, "savedata",        mTox_cClient_savedata,        0);
   rb_define_method(mTox_cClient, "id",              mTox_cClient_id,              0);
   rb_define_method(mTox_cClient, "kill",            mTox_cClient_kill,            0);
+  rb_define_method(mTox_cClient, "bootstrap",       mTox_cClient_bootstrap,       1);
 }
 
 VALUE mTox_cClient_alloc(const VALUE klass)
@@ -103,4 +106,38 @@ VALUE mTox_cClient_kill(const VALUE self)
   tox_kill(tox->tox);
 
   return self;
+}
+
+VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
+{
+  if (Qtrue != rb_funcall(node, rb_intern("is_a?"), 1, mTox_cNode)) {
+    rb_raise(rb_eTypeError, "expected argument 1 to be a Tox::Node");
+  }
+
+  mTox_cClient_ *tox;
+
+  Data_Get_Struct(self, mTox_cClient_, tox);
+
+  const char *const public_key = RSTRING_PTR(rb_funcall(node, rb_intern("public_key"), 0));
+
+  uint8_t public_key_bin[TOX_PUBLIC_KEY_SIZE];
+
+  for (long i = 0; i < TOX_PUBLIC_KEY_SIZE; ++i) {
+    sscanf(&public_key[i * 2], "%2hhx", &public_key_bin[i]);
+  }
+
+  TOX_ERR_BOOTSTRAP error;
+
+  tox_bootstrap(tox->tox,
+                RSTRING_PTR(rb_funcall(node, rb_intern("ipv4"), 0)),
+                NUM2INT(rb_funcall(node, rb_intern("port"), 0)),
+                public_key_bin,
+                &error);
+
+  if (error == TOX_ERR_BOOTSTRAP_OK) {
+    return Qtrue;
+  }
+  else {
+    return Qfalse;
+  }
 }
