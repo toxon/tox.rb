@@ -5,6 +5,7 @@ module Tox
   # Tox network status from the official website.
   #
   class Status
+    # JSON API endpoint of the official network status server.
     OFFICIAL_URL = 'https://nodes.tox.chat/json'
 
     def initialize(url = OFFICIAL_URL)

@@ -5,6 +5,7 @@ module Tox
   # Tox node credentials.
   #
   class Node
+    # Range of valid port numbers.
     PORT_RANGE = 0..65_535
 
     attr_reader :public_key, :port, :ipv4
