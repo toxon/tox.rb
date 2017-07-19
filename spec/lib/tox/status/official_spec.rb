@@ -5,6 +5,8 @@ require 'tox'
 RSpec.describe Tox::Status::Official do
   subject { described_class.new }
 
+  it { is_expected.not_to respond_to :data }
+
   describe '#url' do
     specify do
       expect(subject.url).to eq described_class::URL
