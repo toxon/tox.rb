@@ -142,7 +142,7 @@ VALUE mTox_cClient_kill(const VALUE self)
 // Tox::Client#bootstrap
 VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
 {
-  if (Qtrue != rb_funcall(node, rb_intern("is_a?"), 1, mTox_cNode)) {
+  if (!rb_funcall(node, rb_intern("is_a?"), 1, mTox_cNode)) {
     rb_raise(rb_eTypeError, "expected argument 1 to be a Tox::Node");
   }
 
@@ -216,7 +216,7 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
   mTox_cClient_  *tox;
   mTox_cOptions_ *tox_options;
 
-  if (Qfalse == rb_funcall(options, rb_intern("is_a?"), 1, mTox_cOptions)) {
+  if (!rb_funcall(options, rb_intern("is_a?"), 1, mTox_cOptions)) {
     rb_raise(rb_eTypeError, "expected options to be a Tox::Options");
   }
 
