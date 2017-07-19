@@ -166,11 +166,11 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
                 public_key_bin,
                 &error);
 
-  if (error == TOX_ERR_BOOTSTRAP_OK) {
-    return Qtrue;
-  }
-  else {
-    return Qfalse;
+  switch (error) {
+    case TOX_ERR_BOOTSTRAP_OK:
+      return Qtrue;
+    default:
+      return Qfalse;
   }
 }
 
