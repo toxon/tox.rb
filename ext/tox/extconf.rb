@@ -14,6 +14,12 @@ have_func 'free' and
 have_func 'memset' and
 have_func 'sprintf' and
 
+have_const 'TOX_SAVEDATA_TYPE_TOX_SAVE', 'tox/tox.h' and
+have_const 'TOX_ERR_NEW_OK',             'tox/tox.h' and
+have_const 'TOX_ADDRESS_SIZE',           'tox/tox.h' and
+have_const 'TOX_PUBLIC_KEY_SIZE',        'tox/tox.h' and
+have_const 'TOX_ERR_BOOTSTRAP_OK',       'tox/tox.h' and
+
 have_library LIBTOXCORE, 'tox_version_is_compatible' and
 have_library LIBTOXCORE, 'tox_new' and
 have_library LIBTOXCORE, 'tox_options_default' and
