@@ -9,14 +9,16 @@ VALUE mTox_cClient;
 
 static VALUE mTox_cClient_alloc(VALUE klass);
 static void  mTox_cClient_free(void *ptr);
-static VALUE mTox_cClient_initialize_with(VALUE self, VALUE options);
+
 static VALUE mTox_cClient_savedata(VALUE self);
 static VALUE mTox_cClient_id(VALUE self);
 static VALUE mTox_cClient_kill(VALUE self);
 static VALUE mTox_cClient_bootstrap(VALUE self, VALUE node);
-static VALUE mTox_cClient_run_loop(VALUE self);
 static VALUE mTox_cClient_friend_add_norequest(VALUE self, VALUE public_key);
 static VALUE mTox_cClient_friend_send_message(VALUE self, VALUE friend_number, VALUE text);
+
+static VALUE mTox_cClient_initialize_with(VALUE self, VALUE options);
+static VALUE mTox_cClient_run_loop(VALUE self);
 
 static void on_friend_request(
   Tox *tox,
@@ -41,14 +43,15 @@ void mTox_cClient_INIT()
 
   rb_define_alloc_func(mTox_cClient, mTox_cClient_alloc);
 
-  rb_define_method(mTox_cClient, "initialize_with",      mTox_cClient_initialize_with,      1);
   rb_define_method(mTox_cClient, "savedata",             mTox_cClient_savedata,             0);
   rb_define_method(mTox_cClient, "id",                   mTox_cClient_id,                   0);
   rb_define_method(mTox_cClient, "kill",                 mTox_cClient_kill,                 0);
   rb_define_method(mTox_cClient, "bootstrap",            mTox_cClient_bootstrap,            1);
-  rb_define_method(mTox_cClient, "run_loop",             mTox_cClient_run_loop,             0);
   rb_define_method(mTox_cClient, "friend_add_norequest", mTox_cClient_friend_add_norequest, 1);
   rb_define_method(mTox_cClient, "friend_send_message",  mTox_cClient_friend_send_message,  2);
+
+  rb_define_private_method(mTox_cClient, "initialize_with", mTox_cClient_initialize_with, 1);
+  rb_define_private_method(mTox_cClient, "run_loop",        mTox_cClient_run_loop,        0);
 }
 
 VALUE mTox_cClient_alloc(const VALUE klass)
@@ -63,32 +66,6 @@ VALUE mTox_cClient_alloc(const VALUE klass)
 void mTox_cClient_free(void *const ptr)
 {
   free(ptr);
-}
-
-VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
-{
-  mTox_cClient_  *tox;
-  mTox_cOptions_ *tox_options;
-
-  if (Qfalse == rb_funcall(options, rb_intern("is_a?"), 1, mTox_cOptions)) {
-    rb_raise(rb_eTypeError, "expected options to be a Tox::Options");
-  }
-
-  Data_Get_Struct(self,    mTox_cClient_,  tox);
-  Data_Get_Struct(options, mTox_cOptions_, tox_options);
-
-  TOX_ERR_NEW error;
-
-  tox->tox = tox_new(tox_options, &error);
-
-  if (error != TOX_ERR_NEW_OK) {
-    rb_raise(rb_eRuntimeError, "tox_new() failed");
-  }
-
-  tox_callback_friend_request(tox->tox, (tox_friend_request_cb*)on_friend_request, (void*)self);
-  tox_callback_friend_message(tox->tox, (tox_friend_message_cb*)on_friend_message, (void*)self);
-
-  return self;
 }
 
 VALUE mTox_cClient_savedata(const VALUE self)
@@ -172,26 +149,6 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
   }
 }
 
-VALUE mTox_cClient_run_loop(const VALUE self)
-{
-  mTox_cClient_ *tox;
-
-  Data_Get_Struct(self, mTox_cClient_, tox);
-
-  struct timespec delay;
-
-  delay.tv_sec = 0;
-
-  while (rb_funcall(self, rb_intern("running?"), 0)) {
-    delay.tv_nsec = tox_iteration_interval(tox->tox) * 1000000;
-    nanosleep(&delay, NULL);
-
-    tox_iterate(tox->tox);
-  }
-
-  return self;
-}
-
 VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key)
 {
   Check_Type(public_key, T_STRING);
@@ -220,6 +177,52 @@ VALUE mTox_cClient_friend_send_message(const VALUE self, const VALUE friend_numb
     RSTRING_LEN(text),
     NULL
   ));
+}
+
+VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
+{
+  mTox_cClient_  *tox;
+  mTox_cOptions_ *tox_options;
+
+  if (Qfalse == rb_funcall(options, rb_intern("is_a?"), 1, mTox_cOptions)) {
+    rb_raise(rb_eTypeError, "expected options to be a Tox::Options");
+  }
+
+  Data_Get_Struct(self,    mTox_cClient_,  tox);
+  Data_Get_Struct(options, mTox_cOptions_, tox_options);
+
+  TOX_ERR_NEW error;
+
+  tox->tox = tox_new(tox_options, &error);
+
+  if (error != TOX_ERR_NEW_OK) {
+    rb_raise(rb_eRuntimeError, "tox_new() failed");
+  }
+
+  tox_callback_friend_request(tox->tox, (tox_friend_request_cb*)on_friend_request, (void*)self);
+  tox_callback_friend_message(tox->tox, (tox_friend_message_cb*)on_friend_message, (void*)self);
+
+  return self;
+}
+
+VALUE mTox_cClient_run_loop(const VALUE self)
+{
+  mTox_cClient_ *tox;
+
+  Data_Get_Struct(self, mTox_cClient_, tox);
+
+  struct timespec delay;
+
+  delay.tv_sec = 0;
+
+  while (rb_funcall(self, rb_intern("running?"), 0)) {
+    delay.tv_nsec = tox_iteration_interval(tox->tox) * 1000000;
+    nanosleep(&delay, NULL);
+
+    tox_iterate(tox->tox);
+  }
+
+  return self;
 }
 
 void on_friend_request(
