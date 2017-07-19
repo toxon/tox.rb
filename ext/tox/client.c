@@ -256,7 +256,7 @@ void on_friend_message(
   const VALUE self
 )
 {
-  const VALUE ivar_on_friend_message = rb_iv_get(self, "@oon_friend_message");
+  const VALUE ivar_on_friend_message = rb_iv_get(self, "@on_friend_message");
 
   if (Qnil == ivar_on_friend_message) {
     return;
