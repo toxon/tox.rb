@@ -13,6 +13,10 @@ module Tox
   # Tox network status from multiple sources.
   #
   module Status
+    def self.request(url)
+      JsonApiRequest.new url
+    end
+
     def self.official
       Official.new
     end
