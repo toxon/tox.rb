@@ -178,8 +178,6 @@ VALUE mTox_cClient_loop(const VALUE self)
 
   Data_Get_Struct(self, mTox_cClient_, tox);
 
-  rb_funcall(self, rb_intern("running="), 1, Qtrue);
-
   struct timespec delay;
 
   delay.tv_sec = 0;

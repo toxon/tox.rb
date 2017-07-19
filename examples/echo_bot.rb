@@ -23,4 +23,4 @@ tox_client.on_friend_message do |friend_number, text|
 end
 
 puts 'Running. Send me friend request, I\'ll accept it immediately. Then send me a message.'
-tox_client.loop
+tox_client.run

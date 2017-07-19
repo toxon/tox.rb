@@ -7,6 +7,7 @@ module Tox
   class Client
     def initialize(options = Tox::Options.new)
       initialize_with options
+      self.running = false
     end
 
     def bootstrap_official
@@ -23,6 +24,13 @@ module Tox
       return false unless running?
       self.running = false
       true
+    end
+
+    def run
+      self.running = true
+      loop
+    ensure
+      self.running = false
     end
 
     def on_friend_request(&block)
