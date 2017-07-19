@@ -32,13 +32,14 @@ have_struct_member 'struct Tox_Options', 'savedata_type',   'tox/tox.h' and
 have_struct_member 'struct Tox_Options', 'savedata_length', 'tox/tox.h' and
 have_struct_member 'struct Tox_Options', 'savedata_data',   'tox/tox.h' and
 
-have_const 'TOX_SAVEDATA_TYPE_NONE',     'tox/tox.h' and
-have_const 'TOX_SAVEDATA_TYPE_TOX_SAVE', 'tox/tox.h' and
-have_const 'TOX_ERR_NEW_OK',             'tox/tox.h' and
-have_const 'TOX_ADDRESS_SIZE',           'tox/tox.h' and
-have_const 'TOX_PUBLIC_KEY_SIZE',        'tox/tox.h' and
-have_const 'TOX_ERR_BOOTSTRAP_OK',       'tox/tox.h' and
-have_const 'TOX_MESSAGE_TYPE_NORMAL',    'tox/tox.h' and
+have_const 'TOX_SAVEDATA_TYPE_NONE',      'tox/tox.h' and
+have_const 'TOX_SAVEDATA_TYPE_TOX_SAVE',  'tox/tox.h' and
+have_const 'TOX_ERR_NEW_OK',              'tox/tox.h' and
+have_const 'TOX_ERR_NEW_LOAD_BAD_FORMAT', 'tox/tox.h' and
+have_const 'TOX_ADDRESS_SIZE',            'tox/tox.h' and
+have_const 'TOX_PUBLIC_KEY_SIZE',         'tox/tox.h' and
+have_const 'TOX_ERR_BOOTSTRAP_OK',        'tox/tox.h' and
+have_const 'TOX_MESSAGE_TYPE_NORMAL',     'tox/tox.h' and
 
 have_func 'tox_version_is_compatible',   'tox/tox.h' and
 have_func 'tox_new',                     'tox/tox.h' and

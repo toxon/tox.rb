@@ -46,5 +46,8 @@ module Tox
     def running=(value)
       @running = !!value
     end
+
+    class Error < RuntimeError; end
+    class BadSavedataError < Error; end
   end
 end

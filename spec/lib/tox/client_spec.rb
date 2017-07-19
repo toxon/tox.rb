@@ -17,6 +17,22 @@ RSpec.describe Tox::Client do
         expect { described_class.new 123 }.to raise_error TypeError, "expected options to be a #{Tox::Options}"
       end
     end
+
+    context 'when savedata format is invalid' do
+      subject { described_class.new tox_options }
+
+      let :tox_options do
+        result = Tox::Options.new
+        result.savedata = savedata
+        result
+      end
+
+      let(:savedata) { 'foobar' }
+
+      specify do
+        expect { subject }.to raise_error described_class::BadSavedataError, 'savedata format is invalid'
+      end
+    end
   end
 
   describe '#savedata' do
