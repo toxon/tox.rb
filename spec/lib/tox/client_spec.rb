@@ -85,5 +85,49 @@ RSpec.describe Tox::Client do
     it 'returns false by default' do
       expect(subject.running?).to eq false
     end
+
+    context 'when client is running' do
+      let :thread do
+        Thread.start do
+          subject.run
+        end
+      end
+
+      before do
+        thread
+        sleep 0.01
+      end
+
+      after do
+        subject.stop
+        thread.join
+      end
+
+      specify do
+        expect(subject.running?).to eq true
+      end
+    end
+
+    context 'when client has been stopped' do
+      let :thread do
+        Thread.start do
+          subject.run
+        end
+      end
+
+      before do
+        thread
+        sleep 0.01
+        subject.stop
+      end
+
+      after do
+        thread.join
+      end
+
+      specify do
+        expect(subject.running?).to eq false
+      end
+    end
   end
 end
