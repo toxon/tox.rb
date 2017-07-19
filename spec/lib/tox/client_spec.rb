@@ -3,7 +3,13 @@
 require 'tox'
 
 RSpec.describe Tox::Client do
+  subject { described_class.new }
+
   describe '#savedata' do
+    it 'returns string by default' do
+      expect(subject.savedata).to be_a String
+    end
+
     context 'when it was set via options' do
       subject { described_class.new tox_options }
 
