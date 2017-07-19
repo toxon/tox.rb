@@ -130,4 +130,32 @@ RSpec.describe Tox::Client do
       end
     end
   end
+
+  describe '#run' do
+    context 'when client is already running' do
+      let :thread do
+        Thread.start do
+          subject.run
+        end
+      end
+
+      before do
+        thread
+        sleep 0.01
+      end
+
+      after do
+        subject.stop
+        thread.join
+      end
+
+      specify do
+        expect do
+          Timeout.timeout 1 do
+            subject.run
+          end
+        end.to raise_error described_class::AlreadyRunningError, "already running in #{thread}"
+      end
+    end
+  end
 end

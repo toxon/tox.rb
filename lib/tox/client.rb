@@ -27,10 +27,18 @@ module Tox
     end
 
     def run
-      self.running = true
-      run_loop
-    ensure
-      self.running = false
+      raise AlreadyRunningError, "already running in #{thread}" unless mutex.try_lock
+
+      begin
+        self.running = true
+        self.thread = Thread.current
+        run_loop
+      ensure
+        self.running = false
+        self.thread = nil
+      end
+
+      mutex.unlock
     end
 
     def on_friend_request(&block)
@@ -43,11 +51,18 @@ module Tox
 
   private
 
+    attr_accessor :thread
+
+    def mutex
+      @mutex ||= Mutex.new
+    end
+
     def running=(value)
       @running = !!value
     end
 
     class Error < RuntimeError; end
     class BadSavedataError < Error; end
+    class AlreadyRunningError < Error; end
   end
 end
