@@ -28,7 +28,7 @@ module Tox
 
     def run
       self.running = true
-      loop
+      run_loop
     ensure
       self.running = false
     end
