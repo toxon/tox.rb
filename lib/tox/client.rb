@@ -5,6 +5,8 @@ module Tox
   # Tox client.
   #
   class Client
+    attr_accessor :running
+
     def initialize(options = Tox::Options.new)
       initialize_with options
     end

@@ -3,6 +3,8 @@
 #include "options.h"
 #include "node.h"
 
+#include <time.h>
+
 VALUE mTox_cClient;
 
 static VALUE mTox_cClient_alloc(VALUE klass);
@@ -12,6 +14,7 @@ static VALUE mTox_cClient_savedata(VALUE self);
 static VALUE mTox_cClient_id(VALUE self);
 static VALUE mTox_cClient_kill(VALUE self);
 static VALUE mTox_cClient_bootstrap(VALUE self, VALUE node);
+static VALUE mTox_cClient_loop(VALUE self);
 
 void mTox_cClient_INIT()
 {
@@ -22,6 +25,7 @@ void mTox_cClient_INIT()
   rb_define_method(mTox_cClient, "id",              mTox_cClient_id,              0);
   rb_define_method(mTox_cClient, "kill",            mTox_cClient_kill,            0);
   rb_define_method(mTox_cClient, "bootstrap",       mTox_cClient_bootstrap,       1);
+  rb_define_method(mTox_cClient, "loop",            mTox_cClient_loop,            0);
 }
 
 VALUE mTox_cClient_alloc(const VALUE klass)
@@ -140,4 +144,26 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
   else {
     return Qfalse;
   }
+}
+
+VALUE mTox_cClient_loop(const VALUE self)
+{
+  mTox_cClient_ *tox;
+
+  Data_Get_Struct(self, mTox_cClient_, tox);
+
+  rb_funcall(self, rb_intern("running="), 1, Qtrue);
+
+  struct timespec delay;
+
+  delay.tv_sec = 0;
+
+  while (rb_funcall(self, rb_intern("running"), 0)) {
+    delay.tv_nsec = tox_iteration_interval(tox->tox) * 1000000;
+    nanosleep(&delay, NULL);
+
+    tox_iterate(tox->tox);
+  }
+
+  return self;
 }
