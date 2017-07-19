@@ -10,12 +10,11 @@ VALUE mTox_cClient;
 
 // Memory management
 static VALUE mTox_cClient_alloc(VALUE klass);
-static void  mTox_cClient_free(void *ptr);
+static void  mTox_cClient_free(mTox_cClient_ *ptr);
 
 // Public methods
 static VALUE mTox_cClient_savedata(VALUE self);
 static VALUE mTox_cClient_id(VALUE self);
-static VALUE mTox_cClient_kill(VALUE self);
 static VALUE mTox_cClient_bootstrap(VALUE self, VALUE node);
 static VALUE mTox_cClient_friend_add_norequest(VALUE self, VALUE public_key);
 static VALUE mTox_cClient_friend_send_message(VALUE self, VALUE friend_number, VALUE text);
@@ -57,7 +56,6 @@ void mTox_cClient_INIT()
   // Public methods
   rb_define_method(mTox_cClient, "savedata",             mTox_cClient_savedata,             0);
   rb_define_method(mTox_cClient, "id",                   mTox_cClient_id,                   0);
-  rb_define_method(mTox_cClient, "kill",                 mTox_cClient_kill,                 0);
   rb_define_method(mTox_cClient, "bootstrap",            mTox_cClient_bootstrap,            1);
   rb_define_method(mTox_cClient, "friend_add_norequest", mTox_cClient_friend_add_norequest, 1);
   rb_define_method(mTox_cClient, "friend_send_message",  mTox_cClient_friend_send_message,  2);
@@ -77,12 +75,18 @@ VALUE mTox_cClient_alloc(const VALUE klass)
 
   tox = ALLOC(mTox_cClient_);
 
+  tox->tox = NULL;
+
   return Data_Wrap_Struct(klass, NULL, mTox_cClient_free, tox);
 }
 
-void mTox_cClient_free(void *const ptr)
+void mTox_cClient_free(mTox_cClient_ *const tox)
 {
-  free(ptr);
+  if (tox->tox) {
+    tox_kill(tox->tox);
+  }
+
+  free(tox);
 }
 
 /*************************************************************
@@ -125,18 +129,6 @@ VALUE mTox_cClient_id(const VALUE self)
   }
 
   return rb_str_new(id, 2 * TOX_ADDRESS_SIZE);
-}
-
-// Tox::Client#kill
-VALUE mTox_cClient_kill(const VALUE self)
-{
-  mTox_cClient_ *tox;
-
-  Data_Get_Struct(self, mTox_cClient_, tox);
-
-  tox_kill(tox->tox);
-
-  return self;
 }
 
 // Tox::Client#bootstrap
