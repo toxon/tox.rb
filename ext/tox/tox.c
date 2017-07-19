@@ -1,5 +1,6 @@
 #include "tox.h"
 #include "options.h"
+#include "node.h"
 #include "client.h"
 
 #define TOX_IS_COMPATIBLE TOX_VERSION_IS_API_COMPATIBLE
@@ -16,5 +17,6 @@ void Init_tox()
   mTox = rb_define_module("Tox");
 
   mTox_cOptions_INIT();
+  mTox_cNode_INIT();
   mTox_cClient_INIT();
 }
