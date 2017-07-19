@@ -3,7 +3,13 @@
 
 require 'mkmf'
 
-$CFLAGS += ' -std=c99 -Wall -Wextra'
+def cflags(s)
+  $CFLAGS += " #{s} "
+end
+
+cflags '-std=c99'
+cflags '-Wall'
+cflags '-Wextra'
 
 have_library 'toxcore' and
 
