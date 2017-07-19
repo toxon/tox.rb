@@ -228,6 +228,8 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
   tox->tox = tox_new(tox_options, &error);
 
   switch (error) {
+    case TOX_ERR_NEW_MALLOC:
+      rb_raise(rb_eNoMemError, "tox_new() returned TOX_ERR_NEW_MALLOC");
     case TOX_ERR_NEW_LOAD_BAD_FORMAT:
       rb_raise(rb_const_get(mTox_cClient, rb_intern("BadSavedataError")), "savedata format is invalid");
   }
