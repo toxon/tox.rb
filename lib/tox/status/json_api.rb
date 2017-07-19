@@ -5,11 +5,7 @@ module Tox
     ##
     # Base class for Tox network status received from https://github.com/Tox/ToxStatus
     #
-    class JsonApi
-      def inspect
-        @inspect ||= "#<#{self.class} last_refresh: #{last_refresh}, last_scan: #{last_scan}>"
-      end
-
+    class JsonApi < Base
       def last_refresh
         @last_refresh ||= Time.at(data['last_refresh']).utc.freeze
       end

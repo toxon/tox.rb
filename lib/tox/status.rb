@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # Abstract status classes.
+require 'tox/status/base'
 require 'tox/status/json_api'
 
 # Status classes for direct usage.
