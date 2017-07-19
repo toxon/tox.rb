@@ -234,10 +234,8 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
       rb_raise(rb_eNoMemError, "tox_new() returned TOX_ERR_NEW_MALLOC");
     case TOX_ERR_NEW_LOAD_BAD_FORMAT:
       rb_raise(rb_const_get(mTox_cClient, rb_intern("BadSavedataError")), "savedata format is invalid");
-  }
-
-  if (error != TOX_ERR_NEW_OK) {
-    rb_raise(rb_eRuntimeError, "tox_new() failed");
+    default:
+      rb_raise(rb_eRuntimeError, "tox_new() failed");
   }
 
   tox_callback_friend_request(tox->tox, (tox_friend_request_cb*)on_friend_request, (void*)self);
