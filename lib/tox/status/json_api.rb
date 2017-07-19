@@ -15,7 +15,7 @@ module Tox
       end
 
       def nodes
-        @nodes ||= data['nodes'].map do |node_data|
+        @nodes ||= data['nodes'].select { |node_data| node_data['status_udp'] }.map do |node_data|
           begin
             Node.new node_data['public_key'], node_data['port'], node_data['ipv4']
           rescue
