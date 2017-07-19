@@ -80,4 +80,10 @@ RSpec.describe Tox::Client do
       end
     end
   end
+
+  describe '#running?' do
+    it 'returns false by default' do
+      expect(subject.running?).to eq false
+    end
+  end
 end
