@@ -16,5 +16,13 @@ module Tox
         bootstrap node
       end
     end
+
+    def on_friend_request(&block)
+      @on_friend_request = block
+    end
+
+    def on_friend_message(&block)
+      @on_friend_message = block
+    end
   end
 end

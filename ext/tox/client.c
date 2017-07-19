@@ -18,6 +18,23 @@ static VALUE mTox_cClient_loop(VALUE self);
 static VALUE mTox_cClient_friend_add_norequest(VALUE self, VALUE public_key);
 static VALUE mTox_cClient_friend_send_message(VALUE self, VALUE friend_number, VALUE text);
 
+static void on_friend_request(
+  Tox *tox,
+  const uint8_t *public_key,
+  const uint8_t *data,
+  size_t length,
+  VALUE self
+);
+
+static void on_friend_message(
+  Tox *tox,
+  uint32_t friend_number,
+  TOX_MESSAGE_TYPE type,
+  const uint8_t *text,
+  size_t length,
+  VALUE self
+);
+
 void mTox_cClient_INIT()
 {
   mTox_cClient = rb_define_class_under(mTox, "Client", rb_cObject);
@@ -67,6 +84,9 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
   if (error != TOX_ERR_NEW_OK) {
     rb_raise(rb_eRuntimeError, "tox_new() failed");
   }
+
+  tox_callback_friend_request(tox->tox, (tox_friend_request_cb*)on_friend_request, (void*)self);
+  tox_callback_friend_message(tox->tox, (tox_friend_message_cb*)on_friend_message, (void*)self);
 
   return self;
 }
@@ -202,4 +222,51 @@ VALUE mTox_cClient_friend_send_message(const VALUE self, const VALUE friend_numb
     RSTRING_LEN(text),
     NULL
   ));
+}
+
+void on_friend_request(
+  Tox *const tox,
+  const uint8_t *const public_key,
+  const uint8_t *const data,
+  const size_t length,
+  const VALUE self
+)
+{
+  const VALUE ivar_on_friend_request = rb_iv_get(self, "@on_friend_request");
+
+  if (Qnil == ivar_on_friend_request) {
+    return;
+  }
+
+  rb_funcall(
+    ivar_on_friend_request,
+    rb_intern("call"),
+    2,
+    rb_str_new((char*)public_key, TOX_PUBLIC_KEY_SIZE),
+    rb_str_new((char*)data, length)
+  );
+}
+
+void on_friend_message(
+  Tox *const tox,
+  const uint32_t friend_number,
+  const TOX_MESSAGE_TYPE type,
+  const uint8_t *const text,
+  const size_t length,
+  const VALUE self
+)
+{
+  const VALUE ivar_on_friend_message = rb_iv_get(self, "@oon_friend_message");
+
+  if (Qnil == ivar_on_friend_message) {
+    return;
+  }
+
+  rb_funcall(
+    ivar_on_friend_message,
+    rb_intern("call"),
+    2,
+    LONG2FIX(friend_number),
+    rb_str_new((char*)text, length)
+  );
 }
