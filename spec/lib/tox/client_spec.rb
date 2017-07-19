@@ -158,4 +158,44 @@ RSpec.describe Tox::Client do
       end
     end
   end
+
+  describe '#stop' do
+    context 'when client is not running' do
+      specify do
+        expect(subject.stop).to eq false
+      end
+    end
+
+    context 'when client is running' do
+      let :thread do
+        Thread.start do
+          subject.run
+        end
+      end
+
+      before do
+        thread
+        sleep 0.01
+      end
+
+      after do
+        subject.stop
+        thread.join
+      end
+
+      specify do
+        expect(subject.stop).to eq true
+      end
+
+      it 'stops client' do
+        subject.stop
+
+        expect do
+          Timeout.timeout 1 do
+            thread.join
+          end
+        end.not_to raise_error
+      end
+    end
+  end
 end
