@@ -17,6 +17,10 @@ have_func 'sprintf' and
 have_macro 'TOX_VERSION_IS_API_COMPATIBLE', 'tox/tox.h' and
 have_macro 'TOX_VERSION_IS_ABI_COMPATIBLE', 'tox/tox.h' and
 
+have_struct_member 'struct Tox_Options', 'savedata_type',   'tox/tox.h' and
+have_struct_member 'struct Tox_Options', 'savedata_length', 'tox/tox.h' and
+have_struct_member 'struct Tox_Options', 'savedata_data',   'tox/tox.h' and
+
 have_const 'TOX_SAVEDATA_TYPE_TOX_SAVE', 'tox/tox.h' and
 have_const 'TOX_ERR_NEW_OK',             'tox/tox.h' and
 have_const 'TOX_ADDRESS_SIZE',           'tox/tox.h' and
