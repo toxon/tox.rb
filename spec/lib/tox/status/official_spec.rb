@@ -2,7 +2,7 @@
 
 require 'tox'
 
-RSpec.describe Tox::Status do
+RSpec.describe Tox::Status::Official do
   subject { described_class.new }
 
   describe '#inspect' do
