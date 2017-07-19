@@ -89,6 +89,7 @@ void mTox_cClient_free(void *const ptr)
  * Public methods
  *************************************************************/
 
+// Tox::Client#savedata
 VALUE mTox_cClient_savedata(const VALUE self)
 {
   mTox_cClient_ *tox;
@@ -106,6 +107,7 @@ VALUE mTox_cClient_savedata(const VALUE self)
   return rb_str_new(data, data_size);
 }
 
+// Tox::Client#id
 VALUE mTox_cClient_id(const VALUE self)
 {
   mTox_cClient_ *tox;
@@ -125,6 +127,7 @@ VALUE mTox_cClient_id(const VALUE self)
   return rb_str_new(id, 2 * TOX_ADDRESS_SIZE);
 }
 
+// Tox::Client#kill
 VALUE mTox_cClient_kill(const VALUE self)
 {
   mTox_cClient_ *tox;
@@ -136,6 +139,7 @@ VALUE mTox_cClient_kill(const VALUE self)
   return self;
 }
 
+// Tox::Client#bootstrap
 VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
 {
   if (Qtrue != rb_funcall(node, rb_intern("is_a?"), 1, mTox_cNode)) {
@@ -170,6 +174,7 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
   }
 }
 
+// Tox::Client#friend_add_norequest
 VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key)
 {
   Check_Type(public_key, T_STRING);
@@ -181,6 +186,7 @@ VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key
   return LONG2FIX(tox_friend_add_norequest(tox->tox, (uint8_t*)RSTRING_PTR(public_key), NULL));
 }
 
+// Tox::Client#friend_send_message
 VALUE mTox_cClient_friend_send_message(const VALUE self, const VALUE friend_number, const VALUE text)
 {
   Check_Type(friend_number, T_FIXNUM);
@@ -204,6 +210,7 @@ VALUE mTox_cClient_friend_send_message(const VALUE self, const VALUE friend_numb
  * Private methods
  *************************************************************/
 
+// Tox::Client#initialize_with
 VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
 {
   mTox_cClient_  *tox;
@@ -230,6 +237,7 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
   return self;
 }
 
+// Tox::Client#run_loop
 VALUE mTox_cClient_run_loop(const VALUE self)
 {
   mTox_cClient_ *tox;

@@ -50,6 +50,7 @@ void mTox_cOptions_free(void *const ptr)
  * Public methods
  *************************************************************/
 
+// Tox::Options#initialize
 VALUE mTox_cOptions_initialize(const VALUE self)
 {
   mTox_cOptions_ *tox_options;
@@ -61,6 +62,7 @@ VALUE mTox_cOptions_initialize(const VALUE self)
   return self;
 }
 
+// Tox::Options#savedata
 VALUE mTox_cOptions_savedata(const VALUE self)
 {
   mTox_cOptions_ *tox_options;
@@ -70,6 +72,7 @@ VALUE mTox_cOptions_savedata(const VALUE self)
   return rb_str_new(tox_options->savedata_data, tox_options->savedata_length);
 }
 
+// Tox::Options#savedata=
 VALUE mTox_cOptions_savedata_EQUALS(const VALUE self, const VALUE savedata)
 {
   mTox_cOptions_ *tox_options;
