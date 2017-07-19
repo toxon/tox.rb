@@ -184,7 +184,7 @@ VALUE mTox_cClient_loop(const VALUE self)
 
   delay.tv_sec = 0;
 
-  while (rb_funcall(self, rb_intern("running"), 0)) {
+  while (rb_funcall(self, rb_intern("running?"), 0)) {
     delay.tv_nsec = tox_iteration_interval(tox->tox) * 1000000;
     nanosleep(&delay, NULL);
 
