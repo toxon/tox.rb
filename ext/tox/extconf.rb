@@ -3,7 +3,7 @@
 
 require 'mkmf'
 
-$CFLAGS += ' -std=c99'
+$CFLAGS += ' -std=c99 -Wall -Wextra'
 
 have_library 'toxcore' and
 
