@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+# Abstract status classes.
+require 'tox/status/json_api'
+
+# Status classes for direct usage.
+require 'tox/status/official'
+
 module Tox
   ##
   # Tox network status from multiple sources.

@@ -5,7 +5,7 @@ module Tox
     ##
     # Tox network status from the official website.
     #
-    class Official
+    class Official < JsonApi
       # JSON API endpoint of the official network status server.
       URL = 'https://nodes.tox.chat/json'
 
@@ -13,27 +13,9 @@ module Tox
         @data = JSON.parse Net::HTTP.get URI.parse URL
       end
 
-      def inspect
-        @inspect ||= "#<#{self.class} last_refresh: #{last_refresh}, last_scan: #{last_scan}>"
-      end
+    private
 
-      def last_refresh
-        @last_refresh ||= Time.at(@data['last_refresh']).utc.freeze
-      end
-
-      def last_scan
-        @last_scan ||= Time.at(@data['last_scan']).utc.freeze
-      end
-
-      def nodes
-        @nodes ||= @data['nodes'].map do |node_data|
-          begin
-            Node.new node_data['public_key'], node_data['port'], node_data['ipv4']
-          rescue
-            nil
-          end
-        end.compact.freeze
-      end
+      attr_reader :data
     end
   end
 end
