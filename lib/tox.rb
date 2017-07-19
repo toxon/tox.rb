@@ -11,6 +11,7 @@ require 'tox/node'
 require 'tox/tox'
 require 'tox/client'
 
+require 'tox/status'
 require 'tox/status/official'
 
 ##
