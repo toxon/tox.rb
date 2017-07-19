@@ -5,6 +5,8 @@ require 'mkmf'
 
 $CFLAGS += ' -std=c99'
 
+have_library 'toxcore' and
+
 have_header 'ruby.h' and
 have_header 'tox/tox.h' and
 
@@ -21,13 +23,13 @@ have_const 'TOX_ADDRESS_SIZE',           'tox/tox.h' and
 have_const 'TOX_PUBLIC_KEY_SIZE',        'tox/tox.h' and
 have_const 'TOX_ERR_BOOTSTRAP_OK',       'tox/tox.h' and
 
-have_library 'toxcore', 'tox_version_is_compatible' and
-have_library 'toxcore', 'tox_new' and
-have_library 'toxcore', 'tox_options_default' and
-have_library 'toxcore', 'tox_get_savedata_size' and
-have_library 'toxcore', 'tox_get_savedata' and
-have_library 'toxcore', 'tox_self_get_address' and
-have_library 'toxcore', 'tox_kill' and
-have_library 'toxcore', 'tox_bootstrap' and
+have_func 'tox_version_is_compatible', 'tox/tox.h' and
+have_func 'tox_new',                   'tox/tox.h' and
+have_func 'tox_options_default',       'tox/tox.h' and
+have_func 'tox_get_savedata_size',     'tox/tox.h' and
+have_func 'tox_get_savedata',          'tox/tox.h' and
+have_func 'tox_self_get_address',      'tox/tox.h' and
+have_func 'tox_kill',                  'tox/tox.h' and
+have_func 'tox_bootstrap',             'tox/tox.h' and
 
 create_makefile 'tox/tox' or exit 1
