@@ -2,13 +2,24 @@
 # frozen_string_literal: true
 
 # Simpliest program using toxcore. It connects to Tox, accepts any friendship
-# request and returns received messages to user.
+# request and returns received messages to user. Also if you provide savedata
+# filename as the script argument it can restore private key from this file so
+# it's ID will not change between restarts.
 #
-# Equivalent implementation in C: https://github.com/braiden-vasco/ToxEcho
+# Based on implementation in C: https://github.com/braiden-vasco/ToxEcho
 
 require 'bundler/setup'
 
 require 'tox'
+
+savedata_filename = File.expand_path ARGV[0] if ARGV[0]
+
+tox_options = Tox::Options.new
+
+if savedata_filename && File.exist?(savedata_filename)
+  puts "Loading savedata from #{savedata_filename}"
+  tox_options.savedata = File.read savedata_filename
+end
 
 tox_client = Tox::Client.new
 
@@ -28,4 +39,13 @@ tox_client.on_friend_message do |friend_number, text|
 end
 
 puts 'Running. Send me friend request, I\'ll accept it immediately. Then send me a message.'
-tox_client.run
+begin
+  tox_client.run
+rescue SignalException
+  nil
+end
+
+if savedata_filename
+  puts "Saving savedata to #{savedata_filename}"
+  File.write savedata_filename, tox_client.savedata
+end
