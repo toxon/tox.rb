@@ -10,7 +10,6 @@ module Tox
 
       def initialize(url)
         self.url = url
-        data
       end
 
     private
