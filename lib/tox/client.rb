@@ -11,7 +11,7 @@ module Tox
     end
 
     def bootstrap_official
-      Status.official.nodes.each do |node|
+      Status.new.nodes.each do |node|
         bootstrap node
       end
     end

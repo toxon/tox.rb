@@ -3,23 +3,56 @@
 require 'tox'
 
 RSpec.describe Tox::Status do
-  describe '.request' do
-    specify do
-      expect(described_class.request(described_class::Official::URL)).to be_a described_class::JsonApiRequest
-    end
+  subject { described_class.new }
 
+  it { is_expected.not_to respond_to :data }
+
+  describe '#url' do
     specify do
-      expect(described_class.request(described_class::Official::URL).url).to eq described_class::Official::URL
+      expect(subject.url).to eq described_class::OFFICIAL_URL
     end
   end
 
-  describe '.official' do
+  describe '#inspect' do
     specify do
-      expect(described_class.official).to be_a described_class::Official
+      expect(subject.inspect).to eq \
+        "#<#{described_class} last_refresh: #{subject.last_refresh}, last_scan: #{subject.last_scan}>"
     end
 
     specify do
-      expect(described_class.official.url).to eq described_class::Official::URL
+      expect(subject.inspect).to be_frozen
+    end
+  end
+
+  describe '#last_refresh' do
+    specify do
+      expect(subject.last_refresh).to be_a Time
+    end
+
+    specify do
+      expect(subject.last_refresh).to be_frozen
+    end
+  end
+
+  describe '#last_scan' do
+    specify do
+      expect(subject.last_scan).to be_a Time
+    end
+
+    specify do
+      expect(subject.last_scan).to be_frozen
+    end
+  end
+
+  describe '#nodes' do
+    specify do
+      expect(subject.nodes).to be_a Array
+    end
+
+    specify do
+      subject.nodes.each do |node|
+        expect(node).to be_a Tox::Node
+      end
     end
   end
 end
