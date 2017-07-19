@@ -56,4 +56,28 @@ RSpec.describe Tox::Client do
       end
     end
   end
+
+  describe '#id' do
+    it 'returns string by default' do
+      expect(subject.id).to be_a String
+    end
+
+    context 'when savedata was set' do
+      subject { described_class.new tox_options }
+
+      let :tox_options do
+        result = Tox::Options.new
+        result.savedata = savedata
+        result
+      end
+
+      let(:savedata) { old_tox.savedata }
+
+      let(:old_tox) { Tox::Client.new }
+
+      it 'can be set via options' do
+        expect(subject.id).to eq old_tox.id
+      end
+    end
+  end
 end
