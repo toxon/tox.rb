@@ -1,6 +1,11 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# Simpliest program using toxcore. It connects to Tox, accepts any friendship
+# request and returns received messages to user.
+#
+# Equivalent implementation in C: https://github.com/braiden-vasco/ToxEcho
+
 require 'bundler/setup'
 
 require 'tox'
