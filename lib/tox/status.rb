@@ -5,6 +5,7 @@ require 'tox/status/base'
 require 'tox/status/json_api'
 
 # Status classes for direct usage.
+require 'tox/status/json_api_request'
 require 'tox/status/official'
 
 module Tox
