@@ -12,7 +12,9 @@ static VALUE mTox_cOptions_savedata_EQUALS(VALUE self, VALUE savedata);
 void mTox_cOptions_INIT()
 {
   mTox_cOptions = rb_define_class_under(mTox, "Options", rb_cObject);
+
   rb_define_alloc_func(mTox_cOptions, mTox_cOptions_alloc);
+
   rb_define_method(mTox_cOptions, "initialize", mTox_cOptions_initialize,      0);
   rb_define_method(mTox_cOptions, "savedata",   mTox_cOptions_savedata,        0);
   rb_define_method(mTox_cOptions, "savedata=",  mTox_cOptions_savedata_EQUALS, 1);

@@ -19,7 +19,9 @@ static VALUE mTox_cClient_loop(VALUE self);
 void mTox_cClient_INIT()
 {
   mTox_cClient = rb_define_class_under(mTox, "Client", rb_cObject);
+
   rb_define_alloc_func(mTox_cClient, mTox_cClient_alloc);
+
   rb_define_method(mTox_cClient, "initialize_with", mTox_cClient_initialize_with, 1);
   rb_define_method(mTox_cClient, "savedata",        mTox_cClient_savedata,        0);
   rb_define_method(mTox_cClient, "id",              mTox_cClient_id,              0);
