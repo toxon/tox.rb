@@ -45,5 +45,6 @@ have_func 'tox_kill',                  'tox/tox.h' and
 have_func 'tox_bootstrap',             'tox/tox.h' and
 have_func 'tox_iteration_interval',    'tox/tox.h' and
 have_func 'tox_iterate',               'tox/tox.h' and
+have_func 'tox_friend_add_norequest',  'tox/tox.h' and
 
 create_makefile 'tox/tox' or exit 1

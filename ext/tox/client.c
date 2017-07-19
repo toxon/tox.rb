@@ -15,6 +15,7 @@ static VALUE mTox_cClient_id(VALUE self);
 static VALUE mTox_cClient_kill(VALUE self);
 static VALUE mTox_cClient_bootstrap(VALUE self, VALUE node);
 static VALUE mTox_cClient_loop(VALUE self);
+static VALUE mTox_cClient_friend_add_norequest(VALUE self, VALUE public_key);
 
 void mTox_cClient_INIT()
 {
@@ -22,12 +23,13 @@ void mTox_cClient_INIT()
 
   rb_define_alloc_func(mTox_cClient, mTox_cClient_alloc);
 
-  rb_define_method(mTox_cClient, "initialize_with", mTox_cClient_initialize_with, 1);
-  rb_define_method(mTox_cClient, "savedata",        mTox_cClient_savedata,        0);
-  rb_define_method(mTox_cClient, "id",              mTox_cClient_id,              0);
-  rb_define_method(mTox_cClient, "kill",            mTox_cClient_kill,            0);
-  rb_define_method(mTox_cClient, "bootstrap",       mTox_cClient_bootstrap,       1);
-  rb_define_method(mTox_cClient, "loop",            mTox_cClient_loop,            0);
+  rb_define_method(mTox_cClient, "initialize_with",      mTox_cClient_initialize_with,      1);
+  rb_define_method(mTox_cClient, "savedata",             mTox_cClient_savedata,             0);
+  rb_define_method(mTox_cClient, "id",                   mTox_cClient_id,                   0);
+  rb_define_method(mTox_cClient, "kill",                 mTox_cClient_kill,                 0);
+  rb_define_method(mTox_cClient, "bootstrap",            mTox_cClient_bootstrap,            1);
+  rb_define_method(mTox_cClient, "loop",                 mTox_cClient_loop,                 0);
+  rb_define_method(mTox_cClient, "friend_add_norequest", mTox_cClient_friend_add_norequest, 1);
 }
 
 VALUE mTox_cClient_alloc(const VALUE klass)
@@ -168,4 +170,15 @@ VALUE mTox_cClient_loop(const VALUE self)
   }
 
   return self;
+}
+
+VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key)
+{
+  Check_Type(public_key, T_STRING);
+
+  mTox_cClient_ *tox;
+
+  Data_Get_Struct(self, mTox_cClient_, tox);
+
+  return LONG2FIX(tox_friend_add_norequest(tox->tox, (uint8_t*)RSTRING_PTR(public_key), NULL));
 }
