@@ -4,17 +4,20 @@ require 'tox'
 
 RSpec.describe Tox::Client do
   describe '#savedata' do
-    it 'can be set via options' do
-      tox1_options = Tox::Options.new
-      tox1_client = Tox::Client.new tox1_options
+    context 'when it was set via options' do
+      subject { described_class.new tox_options }
 
-      savedata = tox1_client.savedata
+      let :tox_options do
+        result = Tox::Options.new
+        result.savedata = savedata
+        result
+      end
 
-      tox2_options = Tox::Options.new
-      tox2_options.savedata = savedata
-      tox2_client = Tox::Client.new tox2_options
+      let(:savedata) { Tox::Client.new.savedata }
 
-      expect(tox2_client.savedata).to eq savedata
+      it 'can be set via options' do
+        expect(subject.savedata).to eq savedata
+      end
     end
   end
 end
