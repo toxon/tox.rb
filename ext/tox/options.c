@@ -34,9 +34,9 @@ void mTox_cOptions_INIT()
 
 VALUE mTox_cOptions_alloc(const VALUE klass)
 {
-  mTox_cOptions_ *tox_options;
+  mTox_cOptions_DATA *tox_options;
 
-  tox_options = ALLOC(mTox_cOptions_);
+  tox_options = ALLOC(mTox_cOptions_DATA);
 
   return Data_Wrap_Struct(klass, NULL, mTox_cOptions_free, tox_options);
 }
@@ -53,9 +53,9 @@ void mTox_cOptions_free(void *const ptr)
 // Tox::Options#initialize
 VALUE mTox_cOptions_initialize(const VALUE self)
 {
-  mTox_cOptions_ *tox_options;
+  mTox_cOptions_DATA *tox_options;
 
-  Data_Get_Struct(self, mTox_cOptions_, tox_options);
+  Data_Get_Struct(self, mTox_cOptions_DATA, tox_options);
 
   tox_options_default(tox_options);
 
@@ -65,9 +65,9 @@ VALUE mTox_cOptions_initialize(const VALUE self)
 // Tox::Options#savedata
 VALUE mTox_cOptions_savedata(const VALUE self)
 {
-  mTox_cOptions_ *tox_options;
+  mTox_cOptions_DATA *tox_options;
 
-  Data_Get_Struct(self, mTox_cOptions_, tox_options);
+  Data_Get_Struct(self, mTox_cOptions_DATA, tox_options);
 
   switch (tox_options->savedata_type) {
     case TOX_SAVEDATA_TYPE_NONE:
@@ -82,9 +82,9 @@ VALUE mTox_cOptions_savedata(const VALUE self)
 // Tox::Options#savedata=
 VALUE mTox_cOptions_savedata_EQUALS(const VALUE self, const VALUE savedata)
 {
-  mTox_cOptions_ *tox_options;
+  mTox_cOptions_DATA *tox_options;
 
-  Data_Get_Struct(self, mTox_cOptions_, tox_options);
+  Data_Get_Struct(self, mTox_cOptions_DATA, tox_options);
 
   if (Qnil == savedata) {
     tox_options->savedata_type = TOX_SAVEDATA_TYPE_NONE;

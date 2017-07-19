@@ -205,15 +205,15 @@ VALUE mTox_cClient_friend_send_message(const VALUE self, const VALUE friend_numb
 // Tox::Client#initialize_with
 VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
 {
-  mTox_cClient_  *tox;
-  mTox_cOptions_ *tox_options;
+  mTox_cClient_      *tox;
+  mTox_cOptions_DATA *tox_options;
 
   if (!rb_funcall(options, rb_intern("is_a?"), 1, mTox_cOptions)) {
     rb_raise(rb_eTypeError, "expected options to be a Tox::Options");
   }
 
-  Data_Get_Struct(self,    mTox_cClient_,  tox);
-  Data_Get_Struct(options, mTox_cOptions_, tox_options);
+  Data_Get_Struct(self,    mTox_cClient_,      tox);
+  Data_Get_Struct(options, mTox_cOptions_DATA, tox_options);
 
   TOX_ERR_NEW error;
 
