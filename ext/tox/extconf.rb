@@ -3,8 +3,6 @@
 
 require 'mkmf'
 
-LIBTOXCORE = 'toxcore'
-
 $CFLAGS += ' -std=c99'
 
 have_header 'ruby.h' and
@@ -20,13 +18,13 @@ have_const 'TOX_ADDRESS_SIZE',           'tox/tox.h' and
 have_const 'TOX_PUBLIC_KEY_SIZE',        'tox/tox.h' and
 have_const 'TOX_ERR_BOOTSTRAP_OK',       'tox/tox.h' and
 
-have_library LIBTOXCORE, 'tox_version_is_compatible' and
-have_library LIBTOXCORE, 'tox_new' and
-have_library LIBTOXCORE, 'tox_options_default' and
-have_library LIBTOXCORE, 'tox_get_savedata_size' and
-have_library LIBTOXCORE, 'tox_get_savedata' and
-have_library LIBTOXCORE, 'tox_self_get_address' and
-have_library LIBTOXCORE, 'tox_kill' and
-have_library LIBTOXCORE, 'tox_bootstrap' and
+have_library 'toxcore', 'tox_version_is_compatible' and
+have_library 'toxcore', 'tox_new' and
+have_library 'toxcore', 'tox_options_default' and
+have_library 'toxcore', 'tox_get_savedata_size' and
+have_library 'toxcore', 'tox_get_savedata' and
+have_library 'toxcore', 'tox_self_get_address' and
+have_library 'toxcore', 'tox_kill' and
+have_library 'toxcore', 'tox_bootstrap' and
 
 create_makefile 'tox/tox' or exit 1
