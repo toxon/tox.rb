@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '~> 2.3'
 
   spec.description = <<-END.split.join ' '
-  libtoxcore for Ruby.
+  libtoxcore for Ruby. It can be used to create Tox chat client or bot.
   END
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
