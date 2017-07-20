@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'tox'
-
 RSpec.describe Tox::Address do
   subject { described_class.new hex }
 
