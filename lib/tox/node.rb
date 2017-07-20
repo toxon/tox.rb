@@ -24,29 +24,43 @@ module Tox
     # Range of valid port numbers.
     PORT_RANGE = 0..65_535
 
-    attr_reader :public_key, :port, :ipv4
-
-    def initialize(public_key, port, ipv4_host)
-      self.public_key = public_key
-      self.port       = port
-      self.ipv4       = Resolv.getaddress ipv4_host
+    def initialize(data)
+      @data = data.map { |k, v| [k.to_sym, v] }.to_h.freeze
     end
 
-  private
-
-    def public_key=(value)
-      @public_key = PublicKey.new value
+    def ipv4
+      @ipv4 ||=
+        begin
+          value = @data[:ipv4]
+          raise TypeError, "expected value to be a #{String}" unless value.is_a? String
+          value.frozen? ? value : value.dup.freeze
+        end
     end
 
-    def port=(value)
-      raise TypeError,     "expected value to be an #{Integer}"       unless value.is_a? Integer
-      raise ArgumentError, 'expected value to be between 0 and 65535' unless PORT_RANGE.cover? value
-      @port = value
+    def port
+      @port ||=
+        begin
+          value = @data[:port]
+          raise TypeError,     "expected value to be an #{Integer}"       unless value.is_a? Integer
+          raise ArgumentError, 'expected value to be between 0 and 65535' unless PORT_RANGE.cover? value
+          value
+        end
     end
 
-    def ipv4=(value)
-      raise TypeError, "expected value to be a #{String}" unless value.is_a? String
-      @ipv4 = value.frozen? ? value : value.dup.freeze
+    def public_key
+      @public_key ||=
+        begin
+          value = @data[:public_key]
+          PublicKey.new value
+        end
+    end
+
+    def status_udp
+      @status_udp ||= !!@data[:status_udp]
+    end
+
+    def resolv_ipv4
+      @resolv_ipv4 ||= Resolv.getaddress ipv4
     end
   end
 end
