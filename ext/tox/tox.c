@@ -3,8 +3,9 @@
 #include "node.h"
 #include "client.h"
 
-#define TOX_IS_COMPATIBLE TOX_VERSION_IS_API_COMPATIBLE
-TOX_VERSION_REQUIRE(0, 1, 9);
+#if !(TOX_VERSION_IS_API_COMPATIBLE(0, 1, 9))
+  #error "Tox API version is not compatible"
+#endif
 
 // Instance
 VALUE mTox;
