@@ -22,8 +22,8 @@ void mTox_cOptions_INIT()
 
   rb_define_alloc_func(mTox_cOptions, mTox_cOptions_alloc);
 
-  rb_define_method(mTox_cOptions, "savedata",   mTox_cOptions_savedata,        0);
-  rb_define_method(mTox_cOptions, "savedata=",  mTox_cOptions_savedata_EQUALS, 1);
+  rb_define_method(mTox_cOptions, "savedata",  mTox_cOptions_savedata,        0);
+  rb_define_method(mTox_cOptions, "savedata=", mTox_cOptions_savedata_EQUALS, 1);
 }
 
 /*************************************************************
