@@ -6,6 +6,6 @@ void mTox_cClient_INIT();
 
 extern VALUE mTox_cClient;
 
-typedef struct mTox_cClient_ {
+typedef struct {
   Tox *tox;
-} mTox_cClient_;
+} mTox_cClient_DATA;
