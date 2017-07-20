@@ -33,9 +33,9 @@ tox_client.on_friend_request do |public_key|
   tox_client.friend_add_norequest public_key
 end
 
-tox_client.on_friend_message do |friend_number, text|
-  puts "Got message from friend number #{friend_number} with text #{text.inspect}. Sending it back..."
-  tox_client.friend_send_message friend_number, text
+tox_client.on_friend_message do |friend, text|
+  puts "Got message from friend number #{friend.number} with text #{text.inspect}. Sending it back..."
+  friend.send_message text
 end
 
 puts 'Running. Send me friend request, I\'ll accept it immediately. Then send me a message.'

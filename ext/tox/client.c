@@ -2,6 +2,7 @@
 #include "client.h"
 #include "options.h"
 #include "node.h"
+#include "friend.h"
 
 #include <time.h>
 
@@ -301,7 +302,13 @@ void on_friend_message(
     ivar_on_friend_message,
     rb_intern("call"),
     2,
-    LONG2FIX(friend_number),
+    rb_funcall(
+      mTox_cFriend,
+      rb_intern("new"),
+      2,
+      self,
+      LONG2FIX(friend_number)
+    ),
     rb_str_new((char*)text, length)
   );
 }
