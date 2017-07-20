@@ -12,6 +12,9 @@ require 'tox/node'
 require 'tox/tox'
 require 'tox/client'
 require 'tox/friend'
+
+# Primitives
+require 'tox/binary'
 require 'tox/public_key'
 
 ##
