@@ -12,6 +12,7 @@ require 'tox/node'
 require 'tox/tox'
 require 'tox/client'
 require 'tox/friend'
+require 'tox/public_key'
 
 ##
 # Ruby interface for libtoxcore. It can be used to create Tox chat client or bot.
