@@ -2,6 +2,7 @@
 #include "options.h"
 #include "node.h"
 #include "client.h"
+#include "friend.h"
 
 #if !(TOX_VERSION_IS_API_COMPATIBLE(0, 1, 9))
   #error "Tox API version is not compatible"
@@ -25,4 +26,5 @@ void Init_tox()
   mTox_cOptions_INIT();
   mTox_cNode_INIT();
   mTox_cClient_INIT();
+  mTox_cFriend_INIT();
 }
