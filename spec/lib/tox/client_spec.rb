@@ -75,7 +75,7 @@ RSpec.describe Tox::Client do
 
   describe '#address' do
     it 'returns string by default' do
-      expect(subject.address).to be_a String
+      expect(subject.address).to be_a Tox::Address
     end
 
     context 'when savedata was set' do
