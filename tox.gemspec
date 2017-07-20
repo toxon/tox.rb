@@ -1,6 +1,22 @@
 # coding: utf-8
 # frozen_string_literal: true
 
+# tox.rb - Ruby interface for libtoxcore
+# Copyright (C) 2015-2017  Braiden Vasco
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 lib = File.expand_path('lib', __dir__).freeze
 $LOAD_PATH.unshift lib unless $LOAD_PATH.include? lib
 
@@ -9,7 +25,7 @@ require 'tox/version'
 Gem::Specification.new do |spec|
   spec.name     = 'tox'
   spec.version  = Tox::VERSION
-  spec.license  = 'MIT'
+  spec.license  = 'GPL-3.0'
   spec.homepage = 'https://github.com/braiden-vasco/tox.rb'
   spec.summary  = 'Ruby interface for libtoxcore'
   spec.platform = Gem::Platform::RUBY
