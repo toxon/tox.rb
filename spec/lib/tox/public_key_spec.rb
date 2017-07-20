@@ -5,7 +5,7 @@ require 'tox'
 RSpec.describe Tox::PublicKey do
   subject { described_class.new hex }
 
-  let(:hex) { ('0123456789ABCDEF' * 4).freeze }
+  let(:hex) { SecureRandom.hex(32).upcase.freeze }
 
   let(:bin) { [hex].pack('H*').freeze }
 
