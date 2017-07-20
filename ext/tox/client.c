@@ -228,8 +228,8 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
       rb_raise(rb_eRuntimeError, "tox_new() failed");
   }
 
-  tox_callback_friend_request(self_cdata->tox, (tox_friend_request_cb*)on_friend_request, (void*)self);
-  tox_callback_friend_message(self_cdata->tox, (tox_friend_message_cb*)on_friend_message, (void*)self);
+  tox_callback_friend_request(self_cdata->tox, on_friend_request);
+  tox_callback_friend_message(self_cdata->tox, on_friend_message);
 
   return self;
 }
@@ -249,7 +249,7 @@ VALUE mTox_cClient_run_loop(const VALUE self)
     delay.tv_nsec = tox_iteration_interval(self_cdata->tox) * 1000000;
     nanosleep(&delay, NULL);
 
-    tox_iterate(self_cdata->tox);
+    tox_iterate(self_cdata->tox, self);
   }
 
   return self;
