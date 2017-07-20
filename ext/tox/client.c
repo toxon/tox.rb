@@ -206,18 +206,18 @@ VALUE mTox_cClient_friend_send_message(const VALUE self, const VALUE friend_numb
 VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
 {
   mTox_cClient_CDATA  *tox_client_cdata;
-  mTox_cOptions_CDATA *tox_options;
+  mTox_cOptions_CDATA *tox_options_cdata;
 
   if (!rb_funcall(options, rb_intern("is_a?"), 1, mTox_cOptions)) {
     rb_raise(rb_eTypeError, "expected options to be a Tox::Options");
   }
 
   Data_Get_Struct(self,    mTox_cClient_CDATA,  tox_client_cdata);
-  Data_Get_Struct(options, mTox_cOptions_CDATA, tox_options);
+  Data_Get_Struct(options, mTox_cOptions_CDATA, tox_options_cdata);
 
   TOX_ERR_NEW error;
 
-  tox_client_cdata->tox = tox_new(tox_options, &error);
+  tox_client_cdata->tox = tox_new(tox_options_cdata, &error);
 
   switch (error) {
     case TOX_ERR_NEW_OK:
