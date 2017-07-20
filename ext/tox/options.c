@@ -36,6 +36,8 @@ VALUE mTox_cOptions_alloc(const VALUE klass)
 {
   mTox_cOptions_CDATA *alloc_cdata = ALLOC(mTox_cOptions_CDATA);
 
+  tox_options_default(alloc_cdata);
+
   return Data_Wrap_Struct(klass, NULL, mTox_cOptions_free, alloc_cdata);
 }
 
@@ -54,8 +56,6 @@ VALUE mTox_cOptions_initialize(const VALUE self)
   mTox_cOptions_CDATA *self_cdata;
 
   Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
-
-  tox_options_default(self_cdata);
 
   return self;
 }
