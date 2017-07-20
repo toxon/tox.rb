@@ -4,8 +4,8 @@
 
 void mTox_cClient_INIT();
 
+extern VALUE mTox_cClient;
+
 typedef struct mTox_cClient_ {
   Tox *tox;
 } mTox_cClient_;
-
-extern VALUE mTox_cClient;
