@@ -71,9 +71,7 @@ void mTox_cClient_INIT()
 
 VALUE mTox_cClient_alloc(const VALUE klass)
 {
-  mTox_cClient_CDATA *alloc_cdata;
-
-  alloc_cdata = ALLOC(mTox_cClient_CDATA);
+  mTox_cClient_CDATA *alloc_cdata = ALLOC(mTox_cClient_CDATA);
 
   alloc_cdata->tox = NULL;
 
