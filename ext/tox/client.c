@@ -10,7 +10,7 @@ VALUE mTox_cClient;
 
 // Memory management
 static VALUE mTox_cClient_alloc(VALUE klass);
-static void  mTox_cClient_free(mTox_cClient_CDATA *ptr);
+static void  mTox_cClient_free(mTox_cClient_CDATA *tox_cdata);
 
 // Public methods
 static VALUE mTox_cClient_savedata(VALUE self);
@@ -71,22 +71,22 @@ void mTox_cClient_INIT()
 
 VALUE mTox_cClient_alloc(const VALUE klass)
 {
-  mTox_cClient_CDATA *tox;
+  mTox_cClient_CDATA *tox_cdata;
 
-  tox = ALLOC(mTox_cClient_CDATA);
+  tox_cdata = ALLOC(mTox_cClient_CDATA);
 
-  tox->tox = NULL;
+  tox_cdata->tox = NULL;
 
-  return Data_Wrap_Struct(klass, NULL, mTox_cClient_free, tox);
+  return Data_Wrap_Struct(klass, NULL, mTox_cClient_free, tox_cdata);
 }
 
-void mTox_cClient_free(mTox_cClient_CDATA *const tox)
+void mTox_cClient_free(mTox_cClient_CDATA *const tox_cdata)
 {
-  if (tox->tox) {
-    tox_kill(tox->tox);
+  if (tox_cdata->tox) {
+    tox_kill(tox_cdata->tox);
   }
 
-  free(tox);
+  free(tox_cdata);
 }
 
 /*************************************************************
@@ -96,17 +96,17 @@ void mTox_cClient_free(mTox_cClient_CDATA *const tox)
 // Tox::Client#savedata
 VALUE mTox_cClient_savedata(const VALUE self)
 {
-  mTox_cClient_CDATA *tox;
+  mTox_cClient_CDATA *tox_cdata;
 
   size_t data_size;
   char *data;
 
-  Data_Get_Struct(self, mTox_cClient_CDATA, tox);
+  Data_Get_Struct(self, mTox_cClient_CDATA, tox_cdata);
 
-  data_size = tox_get_savedata_size(tox->tox);
+  data_size = tox_get_savedata_size(tox_cdata->tox);
   data = ALLOC_N(char, data_size);
 
-  tox_get_savedata(tox->tox, (uint8_t*)data);
+  tox_get_savedata(tox_cdata->tox, (uint8_t*)data);
 
   return rb_str_new(data, data_size);
 }
@@ -114,13 +114,13 @@ VALUE mTox_cClient_savedata(const VALUE self)
 // Tox::Client#id
 VALUE mTox_cClient_id(const VALUE self)
 {
-  mTox_cClient_CDATA *tox;
+  mTox_cClient_CDATA *tox_cdata;
 
-  Data_Get_Struct(self, mTox_cClient_CDATA, tox);
+  Data_Get_Struct(self, mTox_cClient_CDATA, tox_cdata);
 
   char address[TOX_ADDRESS_SIZE];
 
-  tox_self_get_address(tox->tox, (uint8_t*)address);
+  tox_self_get_address(tox_cdata->tox, (uint8_t*)address);
 
   char id[2 * TOX_ADDRESS_SIZE];
 
@@ -138,9 +138,9 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
     rb_raise(rb_eTypeError, "expected argument 1 to be a Tox::Node");
   }
 
-  mTox_cClient_CDATA *tox;
+  mTox_cClient_CDATA *tox_cdata;
 
-  Data_Get_Struct(self, mTox_cClient_CDATA, tox);
+  Data_Get_Struct(self, mTox_cClient_CDATA, tox_cdata);
 
   const char *const public_key = RSTRING_PTR(rb_funcall(node, rb_intern("public_key"), 0));
 
@@ -152,7 +152,7 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
 
   TOX_ERR_BOOTSTRAP error;
 
-  tox_bootstrap(tox->tox,
+  tox_bootstrap(tox_cdata->tox,
                 RSTRING_PTR(rb_funcall(node, rb_intern("ipv4"), 0)),
                 NUM2INT(rb_funcall(node, rb_intern("port"), 0)),
                 public_key_bin,
@@ -171,11 +171,11 @@ VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key
 {
   Check_Type(public_key, T_STRING);
 
-  mTox_cClient_CDATA *tox;
+  mTox_cClient_CDATA *tox_cdata;
 
-  Data_Get_Struct(self, mTox_cClient_CDATA, tox);
+  Data_Get_Struct(self, mTox_cClient_CDATA, tox_cdata);
 
-  return LONG2FIX(tox_friend_add_norequest(tox->tox, (uint8_t*)RSTRING_PTR(public_key), NULL));
+  return LONG2FIX(tox_friend_add_norequest(tox_cdata->tox, (uint8_t*)RSTRING_PTR(public_key), NULL));
 }
 
 // Tox::Client#friend_send_message
@@ -184,12 +184,12 @@ VALUE mTox_cClient_friend_send_message(const VALUE self, const VALUE friend_numb
   Check_Type(friend_number, T_FIXNUM);
   Check_Type(text, T_STRING);
 
-  mTox_cClient_CDATA *tox;
+  mTox_cClient_CDATA *tox_cdata;
 
-  Data_Get_Struct(self, mTox_cClient_CDATA, tox);
+  Data_Get_Struct(self, mTox_cClient_CDATA, tox_cdata);
 
   return LONG2FIX(tox_friend_send_message(
-    tox->tox,
+    tox_cdata->tox,
     NUM2LONG(friend_number),
     TOX_MESSAGE_TYPE_NORMAL,
     (uint8_t*)RSTRING_PTR(text),
@@ -205,19 +205,19 @@ VALUE mTox_cClient_friend_send_message(const VALUE self, const VALUE friend_numb
 // Tox::Client#initialize_with
 VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
 {
-  mTox_cClient_CDATA  *tox;
+  mTox_cClient_CDATA  *tox_cdata;
   mTox_cOptions_CDATA *tox_options;
 
   if (!rb_funcall(options, rb_intern("is_a?"), 1, mTox_cOptions)) {
     rb_raise(rb_eTypeError, "expected options to be a Tox::Options");
   }
 
-  Data_Get_Struct(self,    mTox_cClient_CDATA,  tox);
+  Data_Get_Struct(self,    mTox_cClient_CDATA,  tox_cdata);
   Data_Get_Struct(options, mTox_cOptions_CDATA, tox_options);
 
   TOX_ERR_NEW error;
 
-  tox->tox = tox_new(tox_options, &error);
+  tox_cdata->tox = tox_new(tox_options, &error);
 
   switch (error) {
     case TOX_ERR_NEW_OK:
@@ -230,8 +230,8 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
       rb_raise(rb_eRuntimeError, "tox_new() failed");
   }
 
-  tox_callback_friend_request(tox->tox, (tox_friend_request_cb*)on_friend_request, (void*)self);
-  tox_callback_friend_message(tox->tox, (tox_friend_message_cb*)on_friend_message, (void*)self);
+  tox_callback_friend_request(tox_cdata->tox, (tox_friend_request_cb*)on_friend_request, (void*)self);
+  tox_callback_friend_message(tox_cdata->tox, (tox_friend_message_cb*)on_friend_message, (void*)self);
 
   return self;
 }
@@ -239,19 +239,19 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
 // Tox::Client#run_loop
 VALUE mTox_cClient_run_loop(const VALUE self)
 {
-  mTox_cClient_CDATA *tox;
+  mTox_cClient_CDATA *tox_cdata;
 
-  Data_Get_Struct(self, mTox_cClient_CDATA, tox);
+  Data_Get_Struct(self, mTox_cClient_CDATA, tox_cdata);
 
   struct timespec delay;
 
   delay.tv_sec = 0;
 
   while (rb_funcall(self, rb_intern("running?"), 0)) {
-    delay.tv_nsec = tox_iteration_interval(tox->tox) * 1000000;
+    delay.tv_nsec = tox_iteration_interval(tox_cdata->tox) * 1000000;
     nanosleep(&delay, NULL);
 
-    tox_iterate(tox->tox);
+    tox_iterate(tox_cdata->tox);
   }
 
   return self;

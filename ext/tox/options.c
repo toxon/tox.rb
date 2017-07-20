@@ -34,11 +34,11 @@ void mTox_cOptions_INIT()
 
 VALUE mTox_cOptions_alloc(const VALUE klass)
 {
-  mTox_cOptions_CDATA *tox_options;
+  mTox_cOptions_CDATA *tox_options_cdata;
 
-  tox_options = ALLOC(mTox_cOptions_CDATA);
+  tox_options_cdata = ALLOC(mTox_cOptions_CDATA);
 
-  return Data_Wrap_Struct(klass, NULL, mTox_cOptions_free, tox_options);
+  return Data_Wrap_Struct(klass, NULL, mTox_cOptions_free, tox_options_cdata);
 }
 
 void mTox_cOptions_free(void *const ptr)
@@ -53,11 +53,11 @@ void mTox_cOptions_free(void *const ptr)
 // Tox::Options#initialize
 VALUE mTox_cOptions_initialize(const VALUE self)
 {
-  mTox_cOptions_CDATA *tox_options;
+  mTox_cOptions_CDATA *tox_options_cdata;
 
-  Data_Get_Struct(self, mTox_cOptions_CDATA, tox_options);
+  Data_Get_Struct(self, mTox_cOptions_CDATA, tox_options_cdata);
 
-  tox_options_default(tox_options);
+  tox_options_default(tox_options_cdata);
 
   return self;
 }
@@ -65,15 +65,15 @@ VALUE mTox_cOptions_initialize(const VALUE self)
 // Tox::Options#savedata
 VALUE mTox_cOptions_savedata(const VALUE self)
 {
-  mTox_cOptions_CDATA *tox_options;
+  mTox_cOptions_CDATA *tox_options_cdata;
 
-  Data_Get_Struct(self, mTox_cOptions_CDATA, tox_options);
+  Data_Get_Struct(self, mTox_cOptions_CDATA, tox_options_cdata);
 
-  switch (tox_options->savedata_type) {
+  switch (tox_options_cdata->savedata_type) {
     case TOX_SAVEDATA_TYPE_NONE:
       return Qnil;
     case TOX_SAVEDATA_TYPE_TOX_SAVE:
-      return rb_str_new(tox_options->savedata_data, tox_options->savedata_length);
+      return rb_str_new(tox_options_cdata->savedata_data, tox_options_cdata->savedata_length);
     default:
       rb_raise(rb_eNotImpError, "Tox::Options#savedata has unknown type");
   }
@@ -82,23 +82,23 @@ VALUE mTox_cOptions_savedata(const VALUE self)
 // Tox::Options#savedata=
 VALUE mTox_cOptions_savedata_EQUALS(const VALUE self, const VALUE savedata)
 {
-  mTox_cOptions_CDATA *tox_options;
+  mTox_cOptions_CDATA *tox_options_cdata;
 
-  Data_Get_Struct(self, mTox_cOptions_CDATA, tox_options);
+  Data_Get_Struct(self, mTox_cOptions_CDATA, tox_options_cdata);
 
   if (Qnil == savedata) {
-    tox_options->savedata_type = TOX_SAVEDATA_TYPE_NONE;
-    tox_options->savedata_data = NULL;
-    tox_options->savedata_length = 0;
+    tox_options_cdata->savedata_type = TOX_SAVEDATA_TYPE_NONE;
+    tox_options_cdata->savedata_data = NULL;
+    tox_options_cdata->savedata_length = 0;
 
     return Qnil;
   }
 
   Check_Type(savedata, T_STRING);
 
-  tox_options->savedata_type = TOX_SAVEDATA_TYPE_TOX_SAVE;
-  tox_options->savedata_data = (uint8_t*)RSTRING_PTR(savedata);
-  tox_options->savedata_length = RSTRING_LEN(savedata);
+  tox_options_cdata->savedata_type = TOX_SAVEDATA_TYPE_TOX_SAVE;
+  tox_options_cdata->savedata_data = (uint8_t*)RSTRING_PTR(savedata);
+  tox_options_cdata->savedata_length = RSTRING_LEN(savedata);
 
   return savedata;
 }
