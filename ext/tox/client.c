@@ -140,13 +140,7 @@ VALUE mTox_cClient_address(const VALUE self)
 
   tox_self_get_address(self_cdata->tox, (uint8_t*)address);
 
-  char address_hex[2 * TOX_ADDRESS_SIZE];
-
-  for (unsigned long i = 0; i < TOX_ADDRESS_SIZE; ++i) {
-    sprintf(&address_hex[2 * i], "%02X", address[i] & 0xFF);
-  }
-
-  return rb_str_new(address_hex, 2 * TOX_ADDRESS_SIZE);
+  return rb_str_new(address, TOX_ADDRESS_SIZE);
 }
 
 // Tox::Client#savedata

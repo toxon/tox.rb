@@ -30,7 +30,7 @@ tox_client.name = NAME
 tox_client.status_message = STATUS_MESSAGE
 
 puts
-puts "Address:        #{tox_client.address}"
+puts "Address:        #{tox_client.address.unpack('H*').first.upcase}"
 puts "Name:           #{tox_client.name}"
 puts "Status message: #{tox_client.status_message}"
 puts
