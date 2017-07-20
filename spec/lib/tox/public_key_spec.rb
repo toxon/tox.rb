@@ -11,15 +11,9 @@ RSpec.describe Tox::PublicKey do
 
   it { is_expected.to be_frozen }
 
-  describe '.from_binary' do
-    it 'creates from binary value' do
-      expect(described_class.from_binary(bin)).to eq described_class.new bin, binary: true
-    end
-  end
-
   describe '#initialize' do
     context 'when binary value provided' do
-      subject { described_class.new bin, binary: true }
+      subject { described_class.new bin }
 
       it { is_expected.to be_frozen }
 

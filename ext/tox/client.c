@@ -363,7 +363,7 @@ void on_friend_request(
     2,
     rb_funcall(
       rb_const_get(mTox, rb_intern("PublicKey")),
-      rb_intern("from_binary"),
+      rb_intern("new"),
       1,
       rb_str_new(public_key, TOX_PUBLIC_KEY_SIZE)
     ),

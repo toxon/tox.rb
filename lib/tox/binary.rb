@@ -5,20 +5,21 @@ module Tox
   # Binary primitive representation.
   #
   class Binary < String
-    HEX_RE = /\A[\da-fA-F]{64}\z/
-
-    def self.from_binary(value)
-      new value, binary: true
+    def self.bytesize
+      raise NotImplementedError, "#{self}.bytesize"
     end
 
-    def initialize(value, binary: false)
+    def self.hex_re
+      /\A[\da-fA-F]{#{2 * bytesize}}\z/
+    end
+
+    def initialize(value)
       raise TypeError, "expected value to be a #{String}" unless value.is_a? String
 
-      if binary
-        raise ArgumentError, "expected #{self.class.bytesize} bytes" unless value.bytesize == self.class.bytesize
+      if value.bytesize == self.class.bytesize
         super value
       else
-        raise ArgumentError, 'expected value to be a hex string' unless value =~ HEX_RE
+        raise ArgumentError, 'expected value to be a hex string' unless value =~ self.class.hex_re
         super [value].pack('H*')
       end
 
