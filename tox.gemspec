@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.version  = Tox::VERSION
   spec.license  = 'MIT'
   spec.homepage = 'https://github.com/braiden-vasco/tox.rb'
-  spec.summary  = 'libtoxcore for Ruby'
+  spec.summary  = 'Ruby interface for libtoxcore'
   spec.platform = Gem::Platform::RUBY
 
   spec.authors = ['Braiden Vasco']
@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
 
   spec.description = <<-END.split.join ' '
   Ruby interface for libtoxcore. It can be used to create Tox chat client or bot.
-  It provides object-oriented interface instead of C-style (raises exceptions
+  The interface is object-oriented instead of C-style (raises exceptions
   instead of returning error codes, uses classes to represent primitives, etc.)
   END
 

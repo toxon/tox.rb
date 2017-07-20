@@ -7,5 +7,5 @@
 
 Ruby interface for [libtoxcore](https://github.com/TokTok/c-toxcore).
 It can be used to create [Tox chat](https://tox.chat) client or bot.
-It provides object-oriented interface instead of C-style (raises exceptions
+The interface is object-oriented instead of C-style (raises exceptions
 instead of returning error codes, uses classes to represent primitives, etc.)
