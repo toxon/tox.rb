@@ -8,4 +8,4 @@ extern VALUE mTox_cClient;
 
 typedef struct {
   Tox *tox;
-} mTox_cClient_DATA;
+} mTox_cClient_CDATA;
