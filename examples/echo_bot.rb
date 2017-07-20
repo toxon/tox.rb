@@ -50,9 +50,11 @@ end
 
 puts 'Running. Send me friend request, I\'ll accept it immediately. Then send me a message.'
 begin
+  puts
   tox_client.run
+  puts
 rescue SignalException
-  nil
+  puts
 end
 
 if savedata_filename
