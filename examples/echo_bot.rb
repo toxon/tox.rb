@@ -39,7 +39,7 @@ puts 'Connecting to the nodes from official list...'
 tox_client.bootstrap_official
 
 tox_client.on_friend_request do |public_key|
-  puts "Got friend request wuth public key #{public_key}. Adding to contacts..."
+  puts "Got friend request with public key #{public_key.to_hex}. Adding to contacts..."
   tox_client.friend_add_norequest public_key
 end
 

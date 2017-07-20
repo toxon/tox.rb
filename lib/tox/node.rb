@@ -19,8 +19,7 @@ module Tox
   private
 
     def public_key=(value)
-      raise TypeError, "expected value to be a #{String}" unless value.is_a? String
-      @public_key = value.frozen? ? value : value.dup.freeze
+      @public_key = PublicKey.new value
     end
 
     def port=(value)

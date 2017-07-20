@@ -11,7 +11,7 @@ RSpec.describe Tox::Node do
 
   describe '#public_key' do
     it 'returns given value' do
-      expect(subject.public_key).to eq public_key
+      expect(subject.public_key).to eq Tox::PublicKey.new public_key
     end
   end
 

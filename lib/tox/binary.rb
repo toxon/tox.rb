@@ -7,6 +7,10 @@ module Tox
   class Binary < String
     HEX_RE = /\A[\da-fA-F]{64}\z/
 
+    def self.from_binary(value)
+      new value, binary: true
+    end
+
     def initialize(value, binary: false)
       raise TypeError, "expected value to be a #{String}" unless value.is_a? String
 

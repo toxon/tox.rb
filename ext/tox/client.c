@@ -160,20 +160,12 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
 
   Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
-  const char *const public_key = RSTRING_PTR(rb_funcall(node, rb_intern("public_key"), 0));
-
-  uint8_t public_key_bin[TOX_PUBLIC_KEY_SIZE];
-
-  for (long i = 0; i < TOX_PUBLIC_KEY_SIZE; ++i) {
-    sscanf(&public_key[i * 2], "%2hhx", &public_key_bin[i]);
-  }
-
   TOX_ERR_BOOTSTRAP error;
 
   tox_bootstrap(self_cdata->tox,
                 RSTRING_PTR(rb_funcall(node, rb_intern("ipv4"), 0)),
                 NUM2INT(rb_funcall(node, rb_intern("port"), 0)),
-                public_key_bin,
+                RSTRING_PTR(rb_funcall(node, rb_intern("public_key"), 0)),
                 &error);
 
   switch (error) {
@@ -369,7 +361,12 @@ void on_friend_request(
     ivar_on_friend_request,
     rb_intern("call"),
     2,
-    rb_str_new((char*)public_key, TOX_PUBLIC_KEY_SIZE),
+    rb_funcall(
+      rb_const_get(mTox, rb_intern("PublicKey")),
+      rb_intern("from_binary"),
+      1,
+      rb_str_new(public_key, TOX_PUBLIC_KEY_SIZE)
+    ),
     rb_str_new((char*)data, length)
   );
 }
