@@ -14,7 +14,7 @@ Layout/MultilineOperationIndentation:
 
 Metrics/BlockLength:
   Exclude:
-    - tox.gemspec
+    - '**/*.gemspec'
     - spec/**/*
 
 Metrics/LineLength:
