@@ -4,7 +4,7 @@
 # Simpliest program using toxcore. It connects to Tox, accepts any friendship
 # request and returns received messages to user. Also if you provide savedata
 # filename as the script argument it can restore private key from this file so
-# it's ID will not change between restarts.
+# it's address will not change between restarts.
 #
 # Based on implementation in C: https://github.com/braiden-vasco/ToxEcho
 
@@ -30,7 +30,7 @@ tox_client.name = NAME
 tox_client.status_message = STATUS_MESSAGE
 
 puts
-puts "ID:             #{tox_client.id}"
+puts "Address:        #{tox_client.address}"
 puts "Name:           #{tox_client.name}"
 puts "Status message: #{tox_client.status_message}"
 puts

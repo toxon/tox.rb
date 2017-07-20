@@ -33,7 +33,7 @@ static void  mTox_cClient_free(mTox_cClient_CDATA *free_cdata);
 
 // Public methods
 
-static VALUE mTox_cClient_id(VALUE self);
+static VALUE mTox_cClient_address(VALUE self);
 static VALUE mTox_cClient_savedata(VALUE self);
 
 static VALUE mTox_cClient_bootstrap(VALUE self, VALUE node);
@@ -84,7 +84,7 @@ void mTox_cClient_INIT()
 
   // Public methods
 
-  rb_define_method(mTox_cClient, "id",       mTox_cClient_id,       0);
+  rb_define_method(mTox_cClient, "address",  mTox_cClient_address,  0);
   rb_define_method(mTox_cClient, "savedata", mTox_cClient_savedata, 0);
 
   rb_define_method(mTox_cClient, "bootstrap", mTox_cClient_bootstrap, 1);
@@ -129,8 +129,8 @@ void mTox_cClient_free(mTox_cClient_CDATA *const free_cdata)
  * Public methods
  *************************************************************/
 
-// Tox::Client#id
-VALUE mTox_cClient_id(const VALUE self)
+// Tox::Client#address
+VALUE mTox_cClient_address(const VALUE self)
 {
   mTox_cClient_CDATA *self_cdata;
 
@@ -140,13 +140,13 @@ VALUE mTox_cClient_id(const VALUE self)
 
   tox_self_get_address(self_cdata->tox, (uint8_t*)address);
 
-  char id[2 * TOX_ADDRESS_SIZE];
+  char address_hex[2 * TOX_ADDRESS_SIZE];
 
   for (unsigned long i = 0; i < TOX_ADDRESS_SIZE; ++i) {
-    sprintf(&id[2 * i], "%02X", address[i] & 0xFF);
+    sprintf(&address_hex[2 * i], "%02X", address[i] & 0xFF);
   }
 
-  return rb_str_new(id, 2 * TOX_ADDRESS_SIZE);
+  return rb_str_new(address_hex, 2 * TOX_ADDRESS_SIZE);
 }
 
 // Tox::Client#savedata

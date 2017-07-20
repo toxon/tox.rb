@@ -73,9 +73,9 @@ RSpec.describe Tox::Client do
     end
   end
 
-  describe '#id' do
+  describe '#address' do
     it 'returns string by default' do
-      expect(subject.id).to be_a String
+      expect(subject.address).to be_a String
     end
 
     context 'when savedata was set' do
@@ -92,7 +92,7 @@ RSpec.describe Tox::Client do
       let(:old_tox) { Tox::Client.new }
 
       it 'can be set via options' do
-        expect(subject.id).to eq old_tox.id
+        expect(subject.address).to eq old_tox.address
       end
     end
   end
