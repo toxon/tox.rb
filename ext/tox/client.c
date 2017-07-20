@@ -18,7 +18,6 @@ static VALUE mTox_cClient_savedata(VALUE self);
 static VALUE mTox_cClient_id(VALUE self);
 static VALUE mTox_cClient_bootstrap(VALUE self, VALUE node);
 static VALUE mTox_cClient_friend_add_norequest(VALUE self, VALUE public_key);
-static VALUE mTox_cClient_friend_send_message(VALUE self, VALUE friend_number, VALUE text);
 
 // Private methods
 static VALUE mTox_cClient_initialize_with(VALUE self, VALUE options);
@@ -59,7 +58,6 @@ void mTox_cClient_INIT()
   rb_define_method(mTox_cClient, "id",                   mTox_cClient_id,                   0);
   rb_define_method(mTox_cClient, "bootstrap",            mTox_cClient_bootstrap,            1);
   rb_define_method(mTox_cClient, "friend_add_norequest", mTox_cClient_friend_add_norequest, 1);
-  rb_define_method(mTox_cClient, "friend_send_message",  mTox_cClient_friend_send_message,  2);
 
   // Private methods
   rb_define_private_method(mTox_cClient, "initialize_with", mTox_cClient_initialize_with, 1);
@@ -175,26 +173,6 @@ VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key
   Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
   return LONG2FIX(tox_friend_add_norequest(self_cdata->tox, (uint8_t*)RSTRING_PTR(public_key), NULL));
-}
-
-// Tox::Client#friend_send_message
-VALUE mTox_cClient_friend_send_message(const VALUE self, const VALUE friend_number, const VALUE text)
-{
-  Check_Type(friend_number, T_FIXNUM);
-  Check_Type(text, T_STRING);
-
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
-
-  return LONG2FIX(tox_friend_send_message(
-    self_cdata->tox,
-    NUM2LONG(friend_number),
-    TOX_MESSAGE_TYPE_NORMAL,
-    (uint8_t*)RSTRING_PTR(text),
-    RSTRING_LEN(text),
-    NULL
-  ));
 }
 
 /*************************************************************
