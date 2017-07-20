@@ -13,6 +13,7 @@ require 'bundler/setup'
 require 'tox'
 
 NAME = 'EchoBot'
+STATUS_MESSAGE = 'Send me a message'
 
 savedata_filename = File.expand_path ARGV[0] if ARGV[0]
 
@@ -26,9 +27,13 @@ end
 tox_client = Tox::Client.new tox_options
 
 tox_client.name = NAME
+tox_client.status_message = STATUS_MESSAGE
 
-puts "ID:   #{tox_client.id}"
-puts "Name: #{tox_client.name}"
+puts
+puts "ID:             #{tox_client.id}"
+puts "Name:           #{tox_client.name}"
+puts "Status message: #{tox_client.status_message}"
+puts
 
 puts 'Connecting to the nodes from official list...'
 tox_client.bootstrap_official

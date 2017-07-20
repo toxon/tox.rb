@@ -19,6 +19,8 @@ static VALUE mTox_cClient_id(VALUE self);
 static VALUE mTox_cClient_bootstrap(VALUE self, VALUE node);
 static VALUE mTox_cClient_name(VALUE self);
 static VALUE mTox_cClient_name_EQUALS(VALUE self, VALUE name);
+static VALUE mTox_cClient_status_message(VALUE self);
+static VALUE mTox_cClient_status_message_EQUALS(VALUE self, VALUE status_message);
 static VALUE mTox_cClient_friend_add_norequest(VALUE self, VALUE public_key);
 
 // Private methods
@@ -56,12 +58,14 @@ void mTox_cClient_INIT()
   rb_define_alloc_func(mTox_cClient, mTox_cClient_alloc);
 
   // Public methods
-  rb_define_method(mTox_cClient, "savedata",             mTox_cClient_savedata,             0);
-  rb_define_method(mTox_cClient, "id",                   mTox_cClient_id,                   0);
-  rb_define_method(mTox_cClient, "bootstrap",            mTox_cClient_bootstrap,            1);
-  rb_define_method(mTox_cClient, "name",                 mTox_cClient_name,                 0);
-  rb_define_method(mTox_cClient, "name=",                mTox_cClient_name_EQUALS,          1);
-  rb_define_method(mTox_cClient, "friend_add_norequest", mTox_cClient_friend_add_norequest, 1);
+  rb_define_method(mTox_cClient, "savedata",             mTox_cClient_savedata,              0);
+  rb_define_method(mTox_cClient, "id",                   mTox_cClient_id,                    0);
+  rb_define_method(mTox_cClient, "bootstrap",            mTox_cClient_bootstrap,             1);
+  rb_define_method(mTox_cClient, "name",                 mTox_cClient_name,                  0);
+  rb_define_method(mTox_cClient, "name=",                mTox_cClient_name_EQUALS,           1);
+  rb_define_method(mTox_cClient, "status_message",       mTox_cClient_status_message,        0);
+  rb_define_method(mTox_cClient, "status_message=",      mTox_cClient_status_message_EQUALS, 1);
+  rb_define_method(mTox_cClient, "friend_add_norequest", mTox_cClient_friend_add_norequest,  1);
 
   // Private methods
   rb_define_private_method(mTox_cClient, "initialize_with", mTox_cClient_initialize_with, 1);
@@ -211,6 +215,52 @@ VALUE mTox_cClient_name_EQUALS(const VALUE self, const VALUE name)
   }
 
   return name;
+}
+
+// Tox::Client#status_message
+VALUE mTox_cClient_status_message(const VALUE self)
+{
+  mTox_cClient_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+
+  const size_t status_message_size = tox_self_get_status_message_size(self_cdata->tox);
+
+  char status_message[status_message_size];
+
+  if (status_message_size > 0) {
+    tox_self_get_status_message(self_cdata->tox, (uint8_t*)status_message);
+  }
+
+  return rb_str_new(status_message, status_message_size);
+}
+
+// Tox::Client#status_message=
+VALUE mTox_cClient_status_message_EQUALS(const VALUE self, const VALUE status_message)
+{
+  Check_Type(status_message, T_STRING);
+
+  mTox_cClient_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+
+  TOX_ERR_SET_INFO error;
+
+  const bool result = tox_self_set_status_message(
+    self_cdata->tox,
+    (uint8_t**)RSTRING_PTR(status_message),
+    RSTRING_LEN(status_message),
+    &error
+  );
+
+  switch (error) {
+    case TOX_ERR_SET_INFO_OK:
+      break;
+    default:
+      rb_raise(rb_eRuntimeError, "tox_self_set_status_message() failed");
+  }
+
+  return status_message;
 }
 
 // Tox::Client#friend_add_norequest
