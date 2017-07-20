@@ -36,12 +36,25 @@ VALUE mTox_cFriend_send_message(const VALUE self, const VALUE text)
 
   Data_Get_Struct(client, mTox_cClient_CDATA, client_cdata);
 
-  return LONG2FIX(tox_friend_send_message(
+  TOX_ERR_FRIEND_ADD error;
+
+  const result = tox_friend_send_message(
     client_cdata->tox,
     NUM2LONG(number),
     TOX_MESSAGE_TYPE_NORMAL,
     (uint8_t*)RSTRING_PTR(text),
     RSTRING_LEN(text),
-    NULL
-  ));
+    &error
+  );
+
+  switch (error) {
+    case TOX_ERR_FRIEND_SEND_MESSAGE_OK:
+      break;
+    case TOX_ERR_FRIEND_SEND_MESSAGE_SENDQ:
+      rb_raise(rb_eNoMemError, "tox_friend_send_message() returned TOX_ERR_FRIEND_SEND_MESSAGE_SENDQ");
+    default:
+      rb_raise(rb_eRuntimeError, "tox_friend_send_message() failed");
+  }
+
+  return LONG2FIX(result);
 }
