@@ -30,6 +30,7 @@ have_macro 'TOX_VERSION_IS_ABI_COMPATIBLE', 'tox/tox.h' and
 
 have_type 'TOX_ERR_NEW',           'tox/tox.h' and
 have_type 'TOX_ERR_BOOTSTRAP',     'tox/tox.h' and
+have_type 'TOX_ERR_SET_INFO',      'tox/tox.h' and
 have_type 'TOX_MESSAGE_TYPE',      'tox/tox.h' and
 have_type 'tox_friend_request_cb', 'tox/tox.h' and
 have_type 'tox_friend_message_cb', 'tox/tox.h' and
@@ -46,6 +47,7 @@ have_const 'TOX_ERR_NEW_LOAD_BAD_FORMAT', 'tox/tox.h' and
 have_const 'TOX_ADDRESS_SIZE',            'tox/tox.h' and
 have_const 'TOX_PUBLIC_KEY_SIZE',         'tox/tox.h' and
 have_const 'TOX_ERR_BOOTSTRAP_OK',        'tox/tox.h' and
+have_const 'TOX_ERR_SET_INFO_OK',         'tox/tox.h' and
 have_const 'TOX_MESSAGE_TYPE_NORMAL',     'tox/tox.h' and
 
 have_func 'tox_version_is_compatible',   'tox/tox.h' and
@@ -62,5 +64,8 @@ have_func 'tox_friend_add_norequest',    'tox/tox.h' and
 have_func 'tox_friend_send_message',     'tox/tox.h' and
 have_func 'tox_callback_friend_request', 'tox/tox.h' and
 have_func 'tox_callback_friend_message', 'tox/tox.h' and
+have_func 'tox_self_get_name_size',      'tox/tox.h' and
+have_func 'tox_self_get_name',           'tox/tox.h' and
+have_func 'tox_self_set_name',           'tox/tox.h' and
 
 create_makefile 'tox/tox' or exit 1

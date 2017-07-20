@@ -17,6 +17,8 @@ static void  mTox_cClient_free(mTox_cClient_CDATA *free_cdata);
 static VALUE mTox_cClient_savedata(VALUE self);
 static VALUE mTox_cClient_id(VALUE self);
 static VALUE mTox_cClient_bootstrap(VALUE self, VALUE node);
+static VALUE mTox_cClient_name(VALUE self);
+static VALUE mTox_cClient_name_EQUALS(VALUE self, VALUE name);
 static VALUE mTox_cClient_friend_add_norequest(VALUE self, VALUE public_key);
 
 // Private methods
@@ -57,6 +59,8 @@ void mTox_cClient_INIT()
   rb_define_method(mTox_cClient, "savedata",             mTox_cClient_savedata,             0);
   rb_define_method(mTox_cClient, "id",                   mTox_cClient_id,                   0);
   rb_define_method(mTox_cClient, "bootstrap",            mTox_cClient_bootstrap,            1);
+  rb_define_method(mTox_cClient, "name",                 mTox_cClient_name,                 0);
+  rb_define_method(mTox_cClient, "name=",                mTox_cClient_name_EQUALS,          1);
   rb_define_method(mTox_cClient, "friend_add_norequest", mTox_cClient_friend_add_norequest, 1);
 
   // Private methods
@@ -161,6 +165,52 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
     default:
       return Qfalse;
   }
+}
+
+// Tox::Client#name
+VALUE mTox_cClient_name(const VALUE self)
+{
+  mTox_cClient_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+
+  const size_t name_size = tox_self_get_name_size(self_cdata->tox);
+
+  char name[name_size];
+
+  if (name_size > 0) {
+    tox_self_get_name(self_cdata->tox, (uint8_t*)name);
+  }
+
+  return rb_str_new(name, name_size);
+}
+
+// Tox::Client#name=
+VALUE mTox_cClient_name_EQUALS(const VALUE self, const VALUE name)
+{
+  Check_Type(name, T_STRING);
+
+  mTox_cClient_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+
+  TOX_ERR_SET_INFO error;
+
+  const bool result = tox_self_set_name(
+    self_cdata->tox,
+    (uint8_t**)RSTRING_PTR(name),
+    RSTRING_LEN(name),
+    &error
+  );
+
+  switch (error) {
+    case TOX_ERR_SET_INFO_OK:
+      break;
+    default:
+      rb_raise(rb_eRuntimeError, "tox_self_set_name() failed");
+  }
+
+  return name;
 }
 
 // Tox::Client#friend_add_norequest

@@ -12,6 +12,8 @@ require 'bundler/setup'
 
 require 'tox'
 
+NAME = 'EchoBot'
+
 savedata_filename = File.expand_path ARGV[0] if ARGV[0]
 
 tox_options = Tox::Options.new
@@ -23,7 +25,10 @@ end
 
 tox_client = Tox::Client.new tox_options
 
-puts "ID: #{tox_client.id}"
+tox_client.name = NAME
+
+puts "ID:   #{tox_client.id}"
+puts "Name: #{tox_client.name}"
 
 puts 'Connecting to the nodes from official list...'
 tox_client.bootstrap_official
