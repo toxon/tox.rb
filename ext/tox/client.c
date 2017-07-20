@@ -10,7 +10,7 @@ VALUE mTox_cClient;
 
 // Memory management
 static VALUE mTox_cClient_alloc(VALUE klass);
-static void  mTox_cClient_free(mTox_cClient_CDATA *tox_client_cdata);
+static void  mTox_cClient_free(mTox_cClient_CDATA *free_cdata);
 
 // Public methods
 static VALUE mTox_cClient_savedata(VALUE self);
@@ -71,22 +71,22 @@ void mTox_cClient_INIT()
 
 VALUE mTox_cClient_alloc(const VALUE klass)
 {
-  mTox_cClient_CDATA *tox_client_cdata;
+  mTox_cClient_CDATA *alloc_cdata;
 
-  tox_client_cdata = ALLOC(mTox_cClient_CDATA);
+  alloc_cdata = ALLOC(mTox_cClient_CDATA);
 
-  tox_client_cdata->tox = NULL;
+  alloc_cdata->tox = NULL;
 
-  return Data_Wrap_Struct(klass, NULL, mTox_cClient_free, tox_client_cdata);
+  return Data_Wrap_Struct(klass, NULL, mTox_cClient_free, alloc_cdata);
 }
 
-void mTox_cClient_free(mTox_cClient_CDATA *const tox_client_cdata)
+void mTox_cClient_free(mTox_cClient_CDATA *const free_cdata)
 {
-  if (tox_client_cdata->tox) {
-    tox_kill(tox_client_cdata->tox);
+  if (free_cdata->tox) {
+    tox_kill(free_cdata->tox);
   }
 
-  free(tox_client_cdata);
+  free(free_cdata);
 }
 
 /*************************************************************
@@ -96,17 +96,17 @@ void mTox_cClient_free(mTox_cClient_CDATA *const tox_client_cdata)
 // Tox::Client#savedata
 VALUE mTox_cClient_savedata(const VALUE self)
 {
-  mTox_cClient_CDATA *tox_client_cdata;
+  mTox_cClient_CDATA *self_cdata;
 
   size_t data_size;
   char *data;
 
-  Data_Get_Struct(self, mTox_cClient_CDATA, tox_client_cdata);
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
-  data_size = tox_get_savedata_size(tox_client_cdata->tox);
+  data_size = tox_get_savedata_size(self_cdata->tox);
   data = ALLOC_N(char, data_size);
 
-  tox_get_savedata(tox_client_cdata->tox, (uint8_t*)data);
+  tox_get_savedata(self_cdata->tox, (uint8_t*)data);
 
   return rb_str_new(data, data_size);
 }
@@ -114,13 +114,13 @@ VALUE mTox_cClient_savedata(const VALUE self)
 // Tox::Client#id
 VALUE mTox_cClient_id(const VALUE self)
 {
-  mTox_cClient_CDATA *tox_client_cdata;
+  mTox_cClient_CDATA *self_cdata;
 
-  Data_Get_Struct(self, mTox_cClient_CDATA, tox_client_cdata);
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
   char address[TOX_ADDRESS_SIZE];
 
-  tox_self_get_address(tox_client_cdata->tox, (uint8_t*)address);
+  tox_self_get_address(self_cdata->tox, (uint8_t*)address);
 
   char id[2 * TOX_ADDRESS_SIZE];
 
@@ -138,9 +138,9 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
     rb_raise(rb_eTypeError, "expected argument 1 to be a Tox::Node");
   }
 
-  mTox_cClient_CDATA *tox_client_cdata;
+  mTox_cClient_CDATA *self_cdata;
 
-  Data_Get_Struct(self, mTox_cClient_CDATA, tox_client_cdata);
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
   const char *const public_key = RSTRING_PTR(rb_funcall(node, rb_intern("public_key"), 0));
 
@@ -152,7 +152,7 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
 
   TOX_ERR_BOOTSTRAP error;
 
-  tox_bootstrap(tox_client_cdata->tox,
+  tox_bootstrap(self_cdata->tox,
                 RSTRING_PTR(rb_funcall(node, rb_intern("ipv4"), 0)),
                 NUM2INT(rb_funcall(node, rb_intern("port"), 0)),
                 public_key_bin,
@@ -171,11 +171,11 @@ VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key
 {
   Check_Type(public_key, T_STRING);
 
-  mTox_cClient_CDATA *tox_client_cdata;
+  mTox_cClient_CDATA *self_cdata;
 
-  Data_Get_Struct(self, mTox_cClient_CDATA, tox_client_cdata);
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
-  return LONG2FIX(tox_friend_add_norequest(tox_client_cdata->tox, (uint8_t*)RSTRING_PTR(public_key), NULL));
+  return LONG2FIX(tox_friend_add_norequest(self_cdata->tox, (uint8_t*)RSTRING_PTR(public_key), NULL));
 }
 
 // Tox::Client#friend_send_message
@@ -184,12 +184,12 @@ VALUE mTox_cClient_friend_send_message(const VALUE self, const VALUE friend_numb
   Check_Type(friend_number, T_FIXNUM);
   Check_Type(text, T_STRING);
 
-  mTox_cClient_CDATA *tox_client_cdata;
+  mTox_cClient_CDATA *self_cdata;
 
-  Data_Get_Struct(self, mTox_cClient_CDATA, tox_client_cdata);
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
   return LONG2FIX(tox_friend_send_message(
-    tox_client_cdata->tox,
+    self_cdata->tox,
     NUM2LONG(friend_number),
     TOX_MESSAGE_TYPE_NORMAL,
     (uint8_t*)RSTRING_PTR(text),
@@ -205,19 +205,19 @@ VALUE mTox_cClient_friend_send_message(const VALUE self, const VALUE friend_numb
 // Tox::Client#initialize_with
 VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
 {
-  mTox_cClient_CDATA  *tox_client_cdata;
-  mTox_cOptions_CDATA *tox_options_cdata;
+  mTox_cClient_CDATA  *self_cdata;
+  mTox_cOptions_CDATA *options_cdata;
 
   if (!rb_funcall(options, rb_intern("is_a?"), 1, mTox_cOptions)) {
     rb_raise(rb_eTypeError, "expected options to be a Tox::Options");
   }
 
-  Data_Get_Struct(self,    mTox_cClient_CDATA,  tox_client_cdata);
-  Data_Get_Struct(options, mTox_cOptions_CDATA, tox_options_cdata);
+  Data_Get_Struct(self,    mTox_cClient_CDATA,  self_cdata);
+  Data_Get_Struct(options, mTox_cOptions_CDATA, options_cdata);
 
   TOX_ERR_NEW error;
 
-  tox_client_cdata->tox = tox_new(tox_options_cdata, &error);
+  self_cdata->tox = tox_new(options_cdata, &error);
 
   switch (error) {
     case TOX_ERR_NEW_OK:
@@ -230,8 +230,8 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
       rb_raise(rb_eRuntimeError, "tox_new() failed");
   }
 
-  tox_callback_friend_request(tox_client_cdata->tox, (tox_friend_request_cb*)on_friend_request, (void*)self);
-  tox_callback_friend_message(tox_client_cdata->tox, (tox_friend_message_cb*)on_friend_message, (void*)self);
+  tox_callback_friend_request(self_cdata->tox, (tox_friend_request_cb*)on_friend_request, (void*)self);
+  tox_callback_friend_message(self_cdata->tox, (tox_friend_message_cb*)on_friend_message, (void*)self);
 
   return self;
 }
@@ -239,19 +239,19 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
 // Tox::Client#run_loop
 VALUE mTox_cClient_run_loop(const VALUE self)
 {
-  mTox_cClient_CDATA *tox_client_cdata;
+  mTox_cClient_CDATA *self_cdata;
 
-  Data_Get_Struct(self, mTox_cClient_CDATA, tox_client_cdata);
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
   struct timespec delay;
 
   delay.tv_sec = 0;
 
   while (rb_funcall(self, rb_intern("running?"), 0)) {
-    delay.tv_nsec = tox_iteration_interval(tox_client_cdata->tox) * 1000000;
+    delay.tv_nsec = tox_iteration_interval(self_cdata->tox) * 1000000;
     nanosleep(&delay, NULL);
 
-    tox_iterate(tox_client_cdata->tox);
+    tox_iterate(self_cdata->tox);
   }
 
   return self;
