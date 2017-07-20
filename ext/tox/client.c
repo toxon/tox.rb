@@ -14,16 +14,22 @@ static VALUE mTox_cClient_alloc(VALUE klass);
 static void  mTox_cClient_free(mTox_cClient_CDATA *free_cdata);
 
 // Public methods
-static VALUE mTox_cClient_savedata(VALUE self);
+
 static VALUE mTox_cClient_id(VALUE self);
+static VALUE mTox_cClient_savedata(VALUE self);
+
 static VALUE mTox_cClient_bootstrap(VALUE self, VALUE node);
+
 static VALUE mTox_cClient_name(VALUE self);
 static VALUE mTox_cClient_name_EQUALS(VALUE self, VALUE name);
+
 static VALUE mTox_cClient_status_message(VALUE self);
 static VALUE mTox_cClient_status_message_EQUALS(VALUE self, VALUE status_message);
+
 static VALUE mTox_cClient_friend_add_norequest(VALUE self, VALUE public_key);
 
 // Private methods
+
 static VALUE mTox_cClient_initialize_with(VALUE self, VALUE options);
 static VALUE mTox_cClient_run_loop(VALUE self);
 
@@ -52,22 +58,29 @@ static void on_friend_message(
 
 void mTox_cClient_INIT()
 {
+  // Instance
   mTox_cClient = rb_define_class_under(mTox, "Client", rb_cObject);
 
   // Memory management
   rb_define_alloc_func(mTox_cClient, mTox_cClient_alloc);
 
   // Public methods
-  rb_define_method(mTox_cClient, "savedata",             mTox_cClient_savedata,              0);
-  rb_define_method(mTox_cClient, "id",                   mTox_cClient_id,                    0);
-  rb_define_method(mTox_cClient, "bootstrap",            mTox_cClient_bootstrap,             1);
-  rb_define_method(mTox_cClient, "name",                 mTox_cClient_name,                  0);
-  rb_define_method(mTox_cClient, "name=",                mTox_cClient_name_EQUALS,           1);
-  rb_define_method(mTox_cClient, "status_message",       mTox_cClient_status_message,        0);
-  rb_define_method(mTox_cClient, "status_message=",      mTox_cClient_status_message_EQUALS, 1);
-  rb_define_method(mTox_cClient, "friend_add_norequest", mTox_cClient_friend_add_norequest,  1);
+
+  rb_define_method(mTox_cClient, "id",       mTox_cClient_id,       0);
+  rb_define_method(mTox_cClient, "savedata", mTox_cClient_savedata, 0);
+
+  rb_define_method(mTox_cClient, "bootstrap", mTox_cClient_bootstrap, 1);
+
+  rb_define_method(mTox_cClient, "name",  mTox_cClient_name,        0);
+  rb_define_method(mTox_cClient, "name=", mTox_cClient_name_EQUALS, 1);
+
+  rb_define_method(mTox_cClient, "status_message",  mTox_cClient_status_message,        0);
+  rb_define_method(mTox_cClient, "status_message=", mTox_cClient_status_message_EQUALS, 1);
+
+  rb_define_method(mTox_cClient, "friend_add_norequest", mTox_cClient_friend_add_norequest, 1);
 
   // Private methods
+
   rb_define_private_method(mTox_cClient, "initialize_with", mTox_cClient_initialize_with, 1);
   rb_define_private_method(mTox_cClient, "run_loop",        mTox_cClient_run_loop,        0);
 }
@@ -98,24 +111,6 @@ void mTox_cClient_free(mTox_cClient_CDATA *const free_cdata)
  * Public methods
  *************************************************************/
 
-// Tox::Client#savedata
-VALUE mTox_cClient_savedata(const VALUE self)
-{
-  mTox_cClient_CDATA *self_cdata;
-
-  size_t data_size;
-  char *data;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
-
-  data_size = tox_get_savedata_size(self_cdata->tox);
-  data = ALLOC_N(char, data_size);
-
-  tox_get_savedata(self_cdata->tox, (uint8_t*)data);
-
-  return rb_str_new(data, data_size);
-}
-
 // Tox::Client#id
 VALUE mTox_cClient_id(const VALUE self)
 {
@@ -134,6 +129,24 @@ VALUE mTox_cClient_id(const VALUE self)
   }
 
   return rb_str_new(id, 2 * TOX_ADDRESS_SIZE);
+}
+
+// Tox::Client#savedata
+VALUE mTox_cClient_savedata(const VALUE self)
+{
+  mTox_cClient_CDATA *self_cdata;
+
+  size_t data_size;
+  char *data;
+
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+
+  data_size = tox_get_savedata_size(self_cdata->tox);
+  data = ALLOC_N(char, data_size);
+
+  tox_get_savedata(self_cdata->tox, (uint8_t*)data);
+
+  return rb_str_new(data, data_size);
 }
 
 // Tox::Client#bootstrap

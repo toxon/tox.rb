@@ -9,6 +9,7 @@ static VALUE mTox_cOptions_alloc(VALUE klass);
 static void  mTox_cOptions_free(void *free_cdata);
 
 // Public methods
+
 static VALUE mTox_cOptions_savedata(VALUE self);
 static VALUE mTox_cOptions_savedata_EQUALS(VALUE self, VALUE savedata);
 
@@ -18,10 +19,13 @@ static VALUE mTox_cOptions_savedata_EQUALS(VALUE self, VALUE savedata);
 
 void mTox_cOptions_INIT()
 {
+  // Instance
   mTox_cOptions = rb_define_class_under(mTox, "Options", rb_cObject);
 
+  // Memory management
   rb_define_alloc_func(mTox_cOptions, mTox_cOptions_alloc);
 
+  // Public methods
   rb_define_method(mTox_cOptions, "savedata",  mTox_cOptions_savedata,        0);
   rb_define_method(mTox_cOptions, "savedata=", mTox_cOptions_savedata_EQUALS, 1);
 }

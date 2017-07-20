@@ -10,5 +10,6 @@ VALUE mTox_cNode;
 
 void mTox_cNode_INIT()
 {
+  // Instance
   mTox_cNode = rb_define_class_under(mTox, "Node", rb_cObject);
 }

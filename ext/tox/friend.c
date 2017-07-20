@@ -6,6 +6,7 @@
 VALUE mTox_cFriend;
 
 // Public methods
+
 static VALUE mTox_cFriend_send_message(VALUE self, VALUE text);
 
 /*************************************************************
@@ -14,9 +15,11 @@ static VALUE mTox_cFriend_send_message(VALUE self, VALUE text);
 
 void mTox_cFriend_INIT()
 {
+  // Instance
   mTox_cFriend = rb_define_class_under(mTox, "Friend", rb_cObject);
 
   // Public methods
+
   rb_define_method(mTox_cFriend, "send_message", mTox_cFriend_send_message, 1);
 }
 
