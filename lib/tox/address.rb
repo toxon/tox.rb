@@ -16,28 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'thread'
-require 'uri'
-require 'net/http'
-require 'json'
-require 'resolv'
-
-require 'tox/version'
-require 'tox/status'
-require 'tox/node'
-require 'tox/tox'
-require 'tox/client'
-require 'tox/friend'
-
-# Primitives
-require 'tox/binary'
-require 'tox/public_key'
-require 'tox/address'
-
-##
-# Ruby interface for libtoxcore. It can be used to create Tox chat client or bot.
-# The interface is object-oriented instead of C-style (raises exceptions
-# instead of returning error codes, uses classes to represent primitives, etc.)
-#
 module Tox
+  ##
+  # Address primitive.
+  #
+  class Address < Binary
+    def self.bytesize
+      38
+    end
+  end
 end
