@@ -6,7 +6,7 @@ rvm:
 
 before_install:
   - sudo apt-get update
-  - sudo apt-get install -y libopus0 libvpx1 libvpx4
+  - sudo apt-get install -y libopus0 libvpx1
 
   - wget 'https://github.com/toxon/debian/raw/master/pool/main/libsodium13_1.0.0-1_amd64.deb'
   - wget 'https://github.com/toxon/debian/raw/master/pool/main/libsodium-dev_1.0.0-1_amd64.deb'
