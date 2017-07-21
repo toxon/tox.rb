@@ -134,7 +134,7 @@ VALUE mTox_cClient_address(const VALUE self)
   tox_self_get_address(self_cdata->tox, (uint8_t*)address);
 
   return rb_funcall(
-    rb_const_get(mTox, rb_intern("Address")),
+    mTox_cAddress,
     rb_intern("new"),
     1,
     rb_str_new(address, TOX_ADDRESS_SIZE)
