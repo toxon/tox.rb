@@ -372,7 +372,7 @@ void on_friend_request(
     rb_intern("call"),
     2,
     rb_funcall(
-      rb_const_get(mTox, rb_intern("PublicKey")),
+      mTox_cPublicKey,
       rb_intern("new"),
       1,
       rb_str_new(public_key, TOX_PUBLIC_KEY_SIZE)
