@@ -1,3 +1,0 @@
-[submodule "vendor/libtoxcore"]
-	path = vendor/libtoxcore
-	url = https://github.com/TokTok/c-toxcore.git
