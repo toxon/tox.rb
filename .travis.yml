@@ -6,15 +6,15 @@ rvm:
 
 before_install:
   - sudo apt-get update
-  - sudo apt-get install -y libopus0 libvpx1
+  - sudo apt-get install -y build-essential libtool autotools-dev automake checkinstall check git yasm
 
   - wget 'https://github.com/toxon/debian/raw/master/pool/main/libsodium13_1.0.0-1_amd64.deb'
   - wget 'https://github.com/toxon/debian/raw/master/pool/main/libsodium-dev_1.0.0-1_amd64.deb'
-  - wget 'https://github.com/toxon/debian/raw/master/pool/main/libtoxcore_0.1.9-1_amd64.deb'
 
   - sudo dpkg --install 'libsodium13_1.0.0-1_amd64.deb'
   - sudo dpkg --install 'libsodium-dev_1.0.0-1_amd64.deb'
-  - sudo dpkg --install 'libtoxcore_0.1.9-1_amd64.deb'
+
+  - sudo ./bin/build/libtoxcore
 
   - sudo mkdir -p '/etc/ld.so.conf.d/'
   - echo '/usr/local/lib/' | sudo tee -a '/etc/ld.so.conf.d/locallib.conf'
