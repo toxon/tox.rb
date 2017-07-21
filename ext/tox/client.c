@@ -317,7 +317,7 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
     case TOX_ERR_NEW_MALLOC:
       rb_raise(rb_eNoMemError, "tox_new() returned TOX_ERR_NEW_MALLOC");
     case TOX_ERR_NEW_LOAD_BAD_FORMAT:
-      rb_raise(rb_const_get(mTox_cClient, rb_intern("BadSavedataError")), "savedata format is invalid");
+      rb_raise(mTox_cClient_eBadSavedataError, "savedata format is invalid");
     default:
       rb_raise(rb_eRuntimeError, "tox_new() failed");
   }

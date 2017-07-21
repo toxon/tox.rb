@@ -23,9 +23,12 @@
 void Init_tox();
 
 // Instances
+
 extern VALUE mTox;
 extern VALUE mTox_cOptions;
 extern VALUE mTox_cClient;
 extern VALUE mTox_cNode;
 extern VALUE mTox_cFriend;
 extern VALUE mTox_cAddress;
+
+extern VALUE mTox_cClient_eBadSavedataError;
