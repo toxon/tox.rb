@@ -58,13 +58,13 @@ RSpec.describe Tox::Status do
     end
   end
 
-  describe '#nodes' do
+  describe '#udp_nodes' do
     specify do
-      expect(subject.nodes).to be_a Array
+      expect(subject.udp_nodes).to be_a Array
     end
 
     specify do
-      subject.nodes.each do |node|
+      subject.udp_nodes.each do |node|
         expect(node).to be_a Tox::Node
       end
     end
