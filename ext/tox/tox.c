@@ -25,6 +25,12 @@
   #error "Tox API version is not compatible"
 #endif
 
+// Instances
+VALUE mTox;
+VALUE mTox_cOptions;
+VALUE mTox_cClient;
+VALUE mTox_cFriend;
+
 /*************************************************************
  * Initialization
  *************************************************************/
@@ -34,6 +40,12 @@ void Init_tox()
   if (!TOX_VERSION_IS_ABI_COMPATIBLE()) {
     rb_raise(rb_eLoadError, "incompatible Tox ABI version");
   }
+
+  // Instances
+  mTox          = rb_const_get(rb_cObject, rb_intern("Tox"));
+  mTox_cOptions = rb_const_get(mTox,       rb_intern("Options"));
+  mTox_cClient  = rb_const_get(mTox,       rb_intern("Client"));
+  mTox_cFriend  = rb_const_get(mTox,       rb_intern("Friend"));
 
   mTox_cOptions_INIT();
   mTox_cClient_INIT();

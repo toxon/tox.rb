@@ -20,10 +20,6 @@
 #include "tox.h"
 #include "client.h"
 
-// Instances
-static VALUE mTox;
-static VALUE mTox_cFriend;
-
 // Public methods
 
 static VALUE mTox_cFriend_send_message(VALUE self, VALUE text);
@@ -34,10 +30,6 @@ static VALUE mTox_cFriend_send_message(VALUE self, VALUE text);
 
 void mTox_cFriend_INIT()
 {
-  // Instances
-  mTox         = rb_const_get(rb_cObject, rb_intern("Tox"));
-  mTox_cFriend = rb_const_get(mTox,       rb_intern("Friend"));
-
   // Public methods
 
   rb_define_method(mTox_cFriend, "send_message", mTox_cFriend_send_message, 1);

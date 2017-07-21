@@ -19,10 +19,6 @@
 #include "tox.h"
 #include "options.h"
 
-// Instances
-static VALUE mTox;
-static VALUE mTox_cOptions;
-
 // Memory management
 static VALUE mTox_cOptions_alloc(VALUE klass);
 static void  mTox_cOptions_free(void *free_cdata);
@@ -38,10 +34,6 @@ static VALUE mTox_cOptions_savedata_EQUALS(VALUE self, VALUE savedata);
 
 void mTox_cOptions_INIT()
 {
-  // Instances
-  mTox          = rb_const_get(rb_cObject, rb_intern("Tox"));
-  mTox_cOptions = rb_const_get(mTox,       rb_intern("Options"));
-
   // Memory management
   rb_define_alloc_func(mTox_cOptions, mTox_cOptions_alloc);
 
