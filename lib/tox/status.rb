@@ -50,6 +50,10 @@ module Tox
       @udp_nodes ||= all_nodes.select(&:status_udp).freeze
     end
 
+    def tcp_nodes
+      @tcp_nodes ||= all_nodes.select(&:status_tcp).freeze
+    end
+
   private
 
     def url=(value)

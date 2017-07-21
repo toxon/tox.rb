@@ -59,6 +59,10 @@ module Tox
       @status_udp ||= !!@data[:status_udp]
     end
 
+    def status_tcp
+      @status_tcp ||= !!@data[:status_tcp]
+    end
+
     def resolv_ipv4
       @resolv_ipv4 ||= Resolv.getaddress ipv4
     end
