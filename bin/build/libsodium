@@ -4,8 +4,14 @@ set -euo pipefail
 IFS=$'\n\t'
 set -vx
 
-pushd 'vendor/libsodium'
-./autogen.sh
-./configure
-make install
+mkdir -p 'tmp/deb'
+
+pushd 'tmp/deb'
+
+wget 'https://github.com/toxon/debian/raw/master/pool/main/libsodium13_1.0.0-1_amd64.deb'
+wget 'https://github.com/toxon/debian/raw/master/pool/main/libsodium-dev_1.0.0-1_amd64.deb'
+
+dpkg --install 'libsodium13_1.0.0-1_amd64.deb'
+dpkg --install 'libsodium-dev_1.0.0-1_amd64.deb'
+
 popd
