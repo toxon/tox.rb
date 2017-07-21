@@ -17,7 +17,6 @@
  */
 
 #include "tox.h"
-#include "options.h"
 
 // Memory management
 static VALUE mTox_cOptions_alloc(VALUE klass);

@@ -16,10 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <ruby.h>
-
-#include <tox/tox.h>
-
 void mTox_cClient_INIT();
 
 typedef struct {

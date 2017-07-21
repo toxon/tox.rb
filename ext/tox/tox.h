@@ -20,6 +20,10 @@
 
 #include <tox/tox.h>
 
+#include "options.h"
+#include "client.h"
+#include "friend.h"
+
 void Init_tox();
 
 // Instances

@@ -17,9 +17,6 @@
  */
 
 #include "tox.h"
-#include "options.h"
-#include "client.h"
-#include "friend.h"
 
 #if !(TOX_VERSION_IS_API_COMPATIBLE(0, 1, 9))
   #error "Tox API version is not compatible"

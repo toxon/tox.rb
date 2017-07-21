@@ -16,9 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "friend.h"
 #include "tox.h"
-#include "client.h"
 
 // Public methods
 

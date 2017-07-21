@@ -17,9 +17,6 @@
  */
 
 #include "tox.h"
-#include "client.h"
-#include "options.h"
-#include "friend.h"
 
 #include <time.h>
 
