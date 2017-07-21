@@ -5,8 +5,10 @@ rvm:
   - 2.4
 
 before_install:
+  - echo "deb https://pkg.tox.chat/debian stable $(lsb_release -cs)" | sudo tee /etc/apt/sources.list.d/tox.list
+  - wget -qO - https://pkg.tox.chat/debian/pkg.gpg.key | sudo apt-key add -
+  - sudo apt-get install -y apt-transport-https
   - sudo apt-get update
-  - sudo apt-get install -y build-essential libtool autotools-dev automake checkinstall check git yasm
 
   - wget 'https://github.com/toxon/debian/raw/master/pool/main/libsodium13_1.0.0-1_amd64.deb'
   - wget 'https://github.com/toxon/debian/raw/master/pool/main/libsodium-dev_1.0.0-1_amd64.deb'
@@ -14,7 +16,7 @@ before_install:
   - sudo dpkg --install 'libsodium13_1.0.0-1_amd64.deb'
   - sudo dpkg --install 'libsodium-dev_1.0.0-1_amd64.deb'
 
-  - sudo ./bin/build/libtoxcore
+  - sudo apt-get install -y libtoxcore-toktok libtoxcore-toktok-dev
 
   - sudo mkdir -p '/etc/ld.so.conf.d/'
   - echo '/usr/local/lib/' | sudo tee -a '/etc/ld.so.conf.d/locallib.conf'
