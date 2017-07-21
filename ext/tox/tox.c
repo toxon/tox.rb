@@ -18,7 +18,6 @@
 
 #include "tox.h"
 #include "options.h"
-#include "node.h"
 #include "client.h"
 #include "friend.h"
 
@@ -43,7 +42,6 @@ void Init_tox()
   mTox = rb_define_module("Tox");
 
   mTox_cOptions_INIT();
-  mTox_cNode_INIT();
   mTox_cClient_INIT();
   mTox_cFriend_INIT();
 }
