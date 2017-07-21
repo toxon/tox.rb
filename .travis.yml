@@ -8,7 +8,12 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install -y build-essential libtool autotools-dev automake checkinstall check git yasm
 
-  - sudo ./bin/build/libsodium
+  - wget 'https://github.com/toxon/debian/raw/master/pool/main/libsodium13_1.0.0-1_amd64.deb'
+  - wget 'https://github.com/toxon/debian/raw/master/pool/main/libsodium-dev_1.0.0-1_amd64.deb'
+
+  - sudo dpkg --install 'libsodium13_1.0.0-1_amd64.deb'
+  - sudo dpkg --install 'libsodium-dev_1.0.0-1_amd64.deb'
+
   - sudo ./bin/build/libtoxcore
 
   - sudo mkdir -p '/etc/ld.so.conf.d/'
