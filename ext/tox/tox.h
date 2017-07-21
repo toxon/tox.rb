@@ -25,6 +25,7 @@ void Init_tox();
 // Instances
 
 extern VALUE mTox;
+
 extern VALUE mTox_cOptions;
 extern VALUE mTox_cClient;
 extern VALUE mTox_cNode;
