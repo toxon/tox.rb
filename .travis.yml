@@ -5,7 +5,7 @@ rvm:
   - 2.4
 
 before_install:
-  - echo "deb https://pkg.tox.chat/debian stable $(lsb_release -cs)" | sudo tee /etc/apt/sources.list.d/tox.list
+  - echo "deb https://pkg.tox.chat/debian stable jessie" | sudo tee /etc/apt/sources.list.d/tox.list
   - wget -qO - https://pkg.tox.chat/debian/pkg.gpg.key | sudo apt-key add -
   - sudo apt-get install -y apt-transport-https
   - sudo apt-get update
