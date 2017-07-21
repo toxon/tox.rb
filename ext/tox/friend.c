@@ -22,7 +22,7 @@
 
 // Instances
 static VALUE mTox;
-VALUE mTox_cFriend;
+static VALUE mTox_cFriend;
 
 // Public methods
 
@@ -36,7 +36,7 @@ void mTox_cFriend_INIT()
 {
   // Instances
   mTox         = rb_const_get(rb_cObject, rb_intern("Tox"));
-  mTox_cFriend = rb_define_class_under(mTox, "Friend", rb_cObject);
+  mTox_cFriend = rb_const_get(mTox,       rb_intern("Friend"));
 
   // Public methods
 

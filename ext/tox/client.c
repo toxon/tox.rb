@@ -25,7 +25,9 @@
 
 // Instances
 static VALUE mTox;
-VALUE mTox_cClient;
+static VALUE mTox_cOptions;
+static VALUE mTox_cClient;
+static VALUE mTox_cFriend;
 
 // Memory management
 static VALUE mTox_cClient_alloc(VALUE klass);
@@ -77,8 +79,10 @@ static void on_friend_message(
 void mTox_cClient_INIT()
 {
   // Instances
-  mTox         = rb_const_get(rb_cObject, rb_intern("Tox"));
-  mTox_cClient = rb_define_class_under(mTox, "Client", rb_cObject);
+  mTox          = rb_const_get(rb_cObject, rb_intern("Tox"));
+  mTox_cOptions = rb_const_get(mTox,       rb_intern("Options"));
+  mTox_cClient  = rb_const_get(mTox,       rb_intern("Client"));
+  mTox_cFriend  = rb_const_get(mTox,       rb_intern("Friend"));
 
   // Memory management
   rb_define_alloc_func(mTox_cClient, mTox_cClient_alloc);

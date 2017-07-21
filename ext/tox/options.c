@@ -21,7 +21,7 @@
 
 // Instances
 static VALUE mTox;
-VALUE mTox_cOptions;
+static VALUE mTox_cOptions;
 
 // Memory management
 static VALUE mTox_cOptions_alloc(VALUE klass);
@@ -40,7 +40,7 @@ void mTox_cOptions_INIT()
 {
   // Instances
   mTox          = rb_const_get(rb_cObject, rb_intern("Tox"));
-  mTox_cOptions = rb_define_class_under(mTox, "Options", rb_cObject);
+  mTox_cOptions = rb_const_get(mTox,       rb_intern("Options"));
 
   // Memory management
   rb_define_alloc_func(mTox_cOptions, mTox_cOptions_alloc);
