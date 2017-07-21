@@ -35,7 +35,10 @@ require 'simplecov'
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
+require 'securerandom'
 require 'timeout'
+require 'openssl'
+
 require 'faker'
 
 require 'tox'

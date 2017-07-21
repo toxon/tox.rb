@@ -22,4 +22,39 @@ RSpec.describe Tox do
       expect(described_class::VERSION).to match(/\A(\d+)\.(\d+)\.(\d+)\z/)
     end
   end
+
+  describe '.hash' do
+    it 'returns proper hash for empty string' do
+      expect(described_class.hash('')).to eq OpenSSL::Digest::SHA256.digest ''
+    end
+
+    specify do
+      expect(described_class.hash('abc')).to eq OpenSSL::Digest::SHA256.digest 'abc'
+    end
+
+    specify do
+      expect(described_class.hash('abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq')).to \
+        eq OpenSSL::Digest::SHA256.digest 'abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq'
+    end
+
+    specify do
+      expect(described_class.hash('aaaaaaaaaa')).to eq OpenSSL::Digest::SHA256.digest 'aaaaaaaaaa'
+    end
+
+    context 'for random small data' do
+      let(:data) { SecureRandom.random_bytes rand 10...100 }
+
+      specify do
+        expect(described_class.hash(data)).to eq OpenSSL::Digest::SHA256.digest data
+      end
+    end
+
+    context 'for random large data' do
+      let(:data) { SecureRandom.random_bytes rand 100_000...1_000_000 }
+
+      specify do
+        expect(described_class.hash(data)).to eq OpenSSL::Digest::SHA256.digest data
+      end
+    end
+  end
 end

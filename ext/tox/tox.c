@@ -35,6 +35,10 @@ VALUE mTox_cPublicKey;
 
 VALUE mTox_cClient_eBadSavedataError;
 
+// Singleton methods
+
+static VALUE mTox_hash(VALUE self, VALUE data);
+
 /*************************************************************
  * Initialization
  *************************************************************/
@@ -58,7 +62,29 @@ void Init_tox()
 
   mTox_cClient_eBadSavedataError = rb_const_get(mTox_cClient, rb_intern("BadSavedataError"));
 
+  // Singleton methods
+
+  rb_define_singleton_method(mTox, "hash", mTox_hash, 1);
+
   mTox_cOptions_INIT();
   mTox_cClient_INIT();
   mTox_cFriend_INIT();
+}
+
+/*************************************************************
+ * Singleton methods
+ *************************************************************/
+
+// Tox.hash
+VALUE mTox_hash(const VALUE self, const VALUE data)
+{
+  Check_Type(data, T_STRING);
+
+  const uint8_t result[TOX_HASH_LENGTH];
+
+  if (true != tox_hash(result, (const uint8_t*)RSTRING_PTR(data), RSTRING_LEN(data))) {
+    rb_raise(rb_eSecurityError, "tox_hash() failed");
+  }
+
+  return rb_str_new(result, TOX_HASH_LENGTH);
 }
