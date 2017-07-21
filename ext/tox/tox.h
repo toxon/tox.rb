@@ -20,11 +20,20 @@
 
 #include <tox/tox.h>
 
-#include "options.h"
-#include "client.h"
-#include "friend.h"
+// C extension initialization
 
 void Init_tox();
+void mTox_cOptions_INIT();
+void mTox_cClient_INIT();
+void mTox_cFriend_INIT();
+
+// C data
+
+typedef struct Tox_Options mTox_cOptions_CDATA;
+
+typedef struct {
+  Tox *tox;
+} mTox_cClient_CDATA;
 
 // Instances
 
