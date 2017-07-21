@@ -29,6 +29,7 @@
 VALUE mTox;
 VALUE mTox_cOptions;
 VALUE mTox_cClient;
+VALUE mTox_cNode;
 VALUE mTox_cFriend;
 VALUE mTox_cAddress;
 
@@ -46,6 +47,7 @@ void Init_tox()
   mTox          = rb_const_get(rb_cObject, rb_intern("Tox"));
   mTox_cOptions = rb_const_get(mTox,       rb_intern("Options"));
   mTox_cClient  = rb_const_get(mTox,       rb_intern("Client"));
+  mTox_cNode    = rb_const_get(mTox,       rb_intern("Node"));
   mTox_cFriend  = rb_const_get(mTox,       rb_intern("Friend"));
   mTox_cAddress = rb_const_get(mTox,       rb_intern("Address"));
 

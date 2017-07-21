@@ -162,7 +162,7 @@ VALUE mTox_cClient_savedata(const VALUE self)
 // Tox::Client#bootstrap
 VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
 {
-  if (!rb_funcall(node, rb_intern("is_a?"), 1, rb_const_get(mTox, rb_intern("Node")))) {
+  if (!rb_funcall(node, rb_intern("is_a?"), 1, mTox_cNode)) {
     rb_raise(rb_eTypeError, "expected argument 1 to be a Tox::Node");
   }
 
