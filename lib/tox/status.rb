@@ -42,8 +42,12 @@ module Tox
       @last_scan ||= Time.at(data['last_scan']).utc.freeze
     end
 
+    def all_nodes
+      @all_nodes ||= data['nodes'].map { |node_data| Node.new node_data }.freeze
+    end
+
     def udp_nodes
-      @udp_nodes ||= data['nodes'].map { |node_data| Node.new node_data }.select(&:status_udp).compact.freeze
+      @udp_nodes ||= all_nodes.select(&:status_udp).freeze
     end
 
   private
