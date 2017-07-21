@@ -10,11 +10,11 @@ before_install:
 
   - wget 'https://github.com/toxon/debian/raw/master/pool/main/libsodium13_1.0.0-1_amd64.deb'
   - wget 'https://github.com/toxon/debian/raw/master/pool/main/libsodium-dev_1.0.0-1_amd64.deb'
+  - wget 'https://github.com/toxon/debian/raw/master/pool/main/libtoxcore_0.1.9-1_amd64.deb'
 
   - sudo dpkg --install 'libsodium13_1.0.0-1_amd64.deb'
   - sudo dpkg --install 'libsodium-dev_1.0.0-1_amd64.deb'
-
-  - sudo ./bin/build/libtoxcore
+  - sudo dpkg --install 'libtoxcore_0.1.9-1_amd64.deb'
 
   - sudo mkdir -p '/etc/ld.so.conf.d/'
   - echo '/usr/local/lib/' | sudo tee -a '/etc/ld.so.conf.d/locallib.conf'
