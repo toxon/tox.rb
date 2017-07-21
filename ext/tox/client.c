@@ -23,7 +23,8 @@
 
 #include <time.h>
 
-// Instance
+// Instances
+static VALUE mTox;
 VALUE mTox_cClient;
 
 // Memory management
@@ -75,7 +76,8 @@ static void on_friend_message(
 
 void mTox_cClient_INIT()
 {
-  // Instance
+  // Instances
+  mTox         = rb_const_get(rb_cObject, rb_intern("Tox"));
   mTox_cClient = rb_define_class_under(mTox, "Client", rb_cObject);
 
   // Memory management

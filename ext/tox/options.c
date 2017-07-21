@@ -19,7 +19,8 @@
 #include "tox.h"
 #include "options.h"
 
-// Instance
+// Instances
+static VALUE mTox;
 VALUE mTox_cOptions;
 
 // Memory management
@@ -37,7 +38,8 @@ static VALUE mTox_cOptions_savedata_EQUALS(VALUE self, VALUE savedata);
 
 void mTox_cOptions_INIT()
 {
-  // Instance
+  // Instances
+  mTox          = rb_const_get(rb_cObject, rb_intern("Tox"));
   mTox_cOptions = rb_define_class_under(mTox, "Options", rb_cObject);
 
   // Memory management

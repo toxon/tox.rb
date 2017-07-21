@@ -25,9 +25,6 @@
   #error "Tox API version is not compatible"
 #endif
 
-// Instance
-VALUE mTox;
-
 /*************************************************************
  * Initialization
  *************************************************************/
@@ -37,9 +34,6 @@ void Init_tox()
   if (!TOX_VERSION_IS_ABI_COMPATIBLE()) {
     rb_raise(rb_eLoadError, "incompatible Tox ABI version");
   }
-
-  // Instance
-  mTox = rb_define_module("Tox");
 
   mTox_cOptions_INIT();
   mTox_cClient_INIT();
