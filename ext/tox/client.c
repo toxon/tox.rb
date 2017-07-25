@@ -416,11 +416,17 @@ VALUE mTox_cClient_run_loop(const VALUE self)
 
   delay.tv_sec = 0;
 
+  const VALUE ivar_on_iteration = rb_iv_get(self, "@on_iteration");
+
   while (rb_funcall(self, rb_intern("running?"), 0)) {
     delay.tv_nsec = tox_iteration_interval(self_cdata->tox) * 1000000;
     nanosleep(&delay, NULL);
 
     tox_iterate(self_cdata->tox, self);
+
+    if (Qnil != ivar_on_iteration) {
+      rb_funcall(ivar_on_iteration, rb_intern("call"), 0);
+    }
   }
 
   return self;

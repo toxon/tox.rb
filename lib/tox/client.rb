@@ -71,6 +71,10 @@ module Tox
       Friend.new(self, number).exist!
     end
 
+    def on_iteration(&block)
+      @on_iteration = block
+    end
+
     def on_friend_request(&block)
       @on_friend_request = block
     end
