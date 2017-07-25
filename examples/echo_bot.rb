@@ -49,10 +49,10 @@ end
 
 tox_client.on_friend_message do |friend, text|
   puts 'Message from friend'
-  puts "Number: #{friend.number}"
-  puts "Name: #{friend.name}"
-  puts "Public key: #{friend.public_key.to_hex}"
-  puts "Status: #{friend.status}"
+  puts "Number:         #{friend.number}"
+  puts "Name:           #{friend.name}"
+  puts "Public key:     #{friend.public_key.to_hex}"
+  puts "Status:         #{friend.status}"
   puts "Status message: #{friend.status_message}"
   puts text.inspect
   puts
