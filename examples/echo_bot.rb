@@ -6,7 +6,7 @@
 # filename as the script argument it can restore private key from this file so
 # it's address will not change between restarts.
 #
-# Based on implementation in C: https://github.com/braiden-vasco/ToxEcho
+# Based on implementation in C: https://github.com/toxon/ToxEcho
 
 require 'bundler/setup'
 
