@@ -28,6 +28,13 @@ module Tox
       self.number = number
     end
 
+    def exist!
+      raise NotFoundError, "friend #{number} not found" unless exist?
+      self
+    end
+
+    alias exists! exist!
+
   private
 
     def client=(value)
@@ -40,5 +47,7 @@ module Tox
       raise ArgumentError, 'expected number to be greater than or equal to zero' unless value >= 0
       @number = value
     end
+
+    class NotFoundError < RuntimeError; end
   end
 end

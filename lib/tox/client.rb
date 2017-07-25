@@ -57,6 +57,14 @@ module Tox
       mutex.unlock
     end
 
+    def friend(number)
+      Friend.new self, number
+    end
+
+    def friend!(number)
+      Friend.new(self, number).exist!
+    end
+
     def on_friend_request(&block)
       @on_friend_request = block
     end
