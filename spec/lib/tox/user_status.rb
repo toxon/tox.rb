@@ -16,33 +16,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'thread'
-require 'uri'
-require 'net/http'
-require 'json'
-require 'resolv'
+RSpec.describe Tox::UserStatus do
+  describe '::NONE' do
+    specify do
+      expect(described_class::NONE).to eq :none
+    end
+  end
 
-require 'tox/version'
-require 'tox/user_status'
-require 'tox/options'
-require 'tox/client'
-require 'tox/status'
-require 'tox/node'
-require 'tox/friend'
+  describe '::AWAY' do
+    specify do
+      expect(described_class::AWAY).to eq :away
+    end
+  end
 
-# Primitives
-require 'tox/binary'
-require 'tox/public_key'
-require 'tox/nospam'
-require 'tox/address'
-
-# C extension
-require 'tox/tox'
-
-##
-# Ruby interface for libtoxcore. It can be used to create Tox chat client or bot.
-# The interface is object-oriented instead of C-style (raises exceptions
-# instead of returning error codes, uses classes to represent primitives, etc.)
-#
-module Tox
+  describe '::BUSY' do
+    specify do
+      expect(described_class::BUSY).to eq :busy
+    end
+  end
 end

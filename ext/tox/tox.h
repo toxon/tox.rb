@@ -39,11 +39,16 @@ typedef struct {
 
 extern VALUE mTox;
 
+extern VALUE mTox_mUserStatus;
 extern VALUE mTox_cOptions;
 extern VALUE mTox_cClient;
 extern VALUE mTox_cNode;
 extern VALUE mTox_cFriend;
 extern VALUE mTox_cAddress;
 extern VALUE mTox_cPublicKey;
+
+extern VALUE mTox_mUserStatus_NONE;
+extern VALUE mTox_mUserStatus_AWAY;
+extern VALUE mTox_mUserStatus_BUSY;
 
 extern VALUE mTox_cClient_eBadSavedataError;
