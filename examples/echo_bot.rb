@@ -40,12 +40,17 @@ tox_client.bootstrap_official
 
 tox_client.on_friend_request do |public_key|
   puts "Got friend request with public key #{public_key.to_hex}. Adding to contacts..."
+  puts
+
   tox_client.friend_add_norequest public_key
 end
 
 tox_client.on_friend_message do |friend, text|
-  puts "Got message from friend #{friend.number}: #{friend.name} (#{friend.public_key.to_hex}) " \
-       "with text #{text.inspect}. Sending it back..."
+  puts "Message from friend #{friend.number}: #{friend.name}"
+  puts "Public key: #{friend.public_key.to_hex}"
+  puts text.inspect
+  puts
+
   friend.send_message text
 end
 
