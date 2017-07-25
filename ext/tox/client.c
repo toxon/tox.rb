@@ -364,7 +364,18 @@ VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key
 
   Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
-  return LONG2FIX(tox_friend_add_norequest(self_cdata->tox, (uint8_t*)RSTRING_PTR(public_key), NULL));
+  const VALUE friend_number = LONG2FIX(tox_friend_add_norequest(
+    self_cdata->tox,
+    (uint8_t*)RSTRING_PTR(public_key),
+    NULL
+  ));
+
+  return rb_funcall(
+    self,
+    rb_intern("friend"),
+    1,
+    friend_number
+  );
 }
 
 /*************************************************************
