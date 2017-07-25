@@ -44,28 +44,31 @@ have_func 'nanosleep' and
 have_macro 'TOX_VERSION_IS_API_COMPATIBLE', 'tox/tox.h' and
 have_macro 'TOX_VERSION_IS_ABI_COMPATIBLE', 'tox/tox.h' and
 
-have_type 'TOX_ERR_NEW',           'tox/tox.h' and
-have_type 'TOX_ERR_BOOTSTRAP',     'tox/tox.h' and
-have_type 'TOX_ERR_SET_INFO',      'tox/tox.h' and
-have_type 'TOX_MESSAGE_TYPE',      'tox/tox.h' and
-have_type 'tox_friend_request_cb', 'tox/tox.h' and
-have_type 'tox_friend_message_cb', 'tox/tox.h' and
+have_type 'TOX_ERR_NEW',                   'tox/tox.h' and
+have_type 'TOX_ERR_BOOTSTRAP',             'tox/tox.h' and
+have_type 'TOX_ERR_SET_INFO',              'tox/tox.h' and
+have_type 'TOX_ERR_FRIEND_GET_PUBLIC_KEY', 'tox/tox.h' and
+have_type 'TOX_MESSAGE_TYPE',              'tox/tox.h' and
+have_type 'tox_friend_request_cb',         'tox/tox.h' and
+have_type 'tox_friend_message_cb',         'tox/tox.h' and
 
 have_struct_member 'struct Tox_Options', 'savedata_type',   'tox/tox.h' and
 have_struct_member 'struct Tox_Options', 'savedata_length', 'tox/tox.h' and
 have_struct_member 'struct Tox_Options', 'savedata_data',   'tox/tox.h' and
 
-have_const 'TOX_HASH_LENGTH',             'tox/tox.h' and
-have_const 'TOX_SAVEDATA_TYPE_NONE',      'tox/tox.h' and
-have_const 'TOX_SAVEDATA_TYPE_TOX_SAVE',  'tox/tox.h' and
-have_const 'TOX_ERR_NEW_OK',              'tox/tox.h' and
-have_const 'TOX_ERR_NEW_MALLOC',          'tox/tox.h' and
-have_const 'TOX_ERR_NEW_LOAD_BAD_FORMAT', 'tox/tox.h' and
-have_const 'TOX_ADDRESS_SIZE',            'tox/tox.h' and
-have_const 'TOX_PUBLIC_KEY_SIZE',         'tox/tox.h' and
-have_const 'TOX_ERR_BOOTSTRAP_OK',        'tox/tox.h' and
-have_const 'TOX_ERR_SET_INFO_OK',         'tox/tox.h' and
-have_const 'TOX_MESSAGE_TYPE_NORMAL',     'tox/tox.h' and
+have_const 'TOX_HASH_LENGTH',                                'tox/tox.h' and
+have_const 'TOX_SAVEDATA_TYPE_NONE',                         'tox/tox.h' and
+have_const 'TOX_SAVEDATA_TYPE_TOX_SAVE',                     'tox/tox.h' and
+have_const 'TOX_ERR_NEW_OK',                                 'tox/tox.h' and
+have_const 'TOX_ERR_NEW_MALLOC',                             'tox/tox.h' and
+have_const 'TOX_ERR_NEW_LOAD_BAD_FORMAT',                    'tox/tox.h' and
+have_const 'TOX_ADDRESS_SIZE',                               'tox/tox.h' and
+have_const 'TOX_PUBLIC_KEY_SIZE',                            'tox/tox.h' and
+have_const 'TOX_ERR_BOOTSTRAP_OK',                           'tox/tox.h' and
+have_const 'TOX_ERR_SET_INFO_OK',                            'tox/tox.h' and
+have_const 'TOX_MESSAGE_TYPE_NORMAL',                        'tox/tox.h' and
+have_const 'TOX_ERR_FRIEND_GET_PUBLIC_KEY_OK',               'tox/tox.h' and
+have_const 'TOX_ERR_FRIEND_GET_PUBLIC_KEY_FRIEND_NOT_FOUND', 'tox/tox.h' and
 
 have_func 'tox_version_is_compatible',        'tox/tox.h' and
 have_func 'tox_hash',                         'tox/tox.h' and
@@ -88,5 +91,6 @@ have_func 'tox_self_set_name',                'tox/tox.h' and
 have_func 'tox_self_get_status_message_size', 'tox/tox.h' and
 have_func 'tox_self_get_status_message',      'tox/tox.h' and
 have_func 'tox_self_set_status_message',      'tox/tox.h' and
+have_func 'tox_friend_get_public_key',        'tox/tox.h' and
 
 create_makefile 'tox/tox' or exit 1

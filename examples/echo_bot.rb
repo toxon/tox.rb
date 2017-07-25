@@ -44,7 +44,8 @@ tox_client.on_friend_request do |public_key|
 end
 
 tox_client.on_friend_message do |friend, text|
-  puts "Got message from friend number #{friend.number} with text #{text.inspect}. Sending it back..."
+  puts "Got message from friend #{friend.number} (#{friend.public_key.to_hex}) " \
+       "with text #{text.inspect}. Sending it back..."
   friend.send_message text
 end
 
