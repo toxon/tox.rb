@@ -27,11 +27,13 @@ end
 tox_client = Tox::Client.new tox_options
 
 tox_client.name = NAME
+tox_client.status = Tox::UserStatus::NONE
 tox_client.status_message = STATUS_MESSAGE
 
 puts
 puts "Address:        #{tox_client.address.to_hex}"
 puts "Name:           #{tox_client.name}"
+puts "Status:         #{tox_client.status}"
 puts "Status message: #{tox_client.status_message}"
 puts
 
@@ -48,6 +50,7 @@ end
 tox_client.on_friend_message do |friend, text|
   puts "Message from friend #{friend.number}: #{friend.name}"
   puts "Public key: #{friend.public_key.to_hex}"
+  puts "Status: #{friend.status}"
   puts "Status message: #{friend.status_message}"
   puts text.inspect
   puts

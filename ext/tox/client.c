@@ -34,6 +34,9 @@ static VALUE mTox_cClient_bootstrap(VALUE self, VALUE node);
 static VALUE mTox_cClient_name(VALUE self);
 static VALUE mTox_cClient_name_EQUALS(VALUE self, VALUE name);
 
+static VALUE mTox_cClient_status(VALUE self);
+static VALUE mTox_cClient_status_EQUALS(VALUE self, VALUE status);
+
 static VALUE mTox_cClient_status_message(VALUE self);
 static VALUE mTox_cClient_status_message_EQUALS(VALUE self, VALUE status_message);
 
@@ -81,6 +84,9 @@ void mTox_cClient_INIT()
 
   rb_define_method(mTox_cClient, "name",  mTox_cClient_name,        0);
   rb_define_method(mTox_cClient, "name=", mTox_cClient_name_EQUALS, 1);
+
+  rb_define_method(mTox_cClient, "status",  mTox_cClient_status,        0);
+  rb_define_method(mTox_cClient, "status=", mTox_cClient_status_EQUALS, 1);
 
   rb_define_method(mTox_cClient, "status_message",  mTox_cClient_status_message,        0);
   rb_define_method(mTox_cClient, "status_message=", mTox_cClient_status_message_EQUALS, 1);
@@ -227,6 +233,50 @@ VALUE mTox_cClient_name_EQUALS(const VALUE self, const VALUE name)
   }
 
   return name;
+}
+
+// Tox::Client#status
+VALUE mTox_cClient_status(const VALUE self)
+{
+  mTox_cClient_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+
+  const TOX_USER_STATUS result = tox_self_get_status(self_cdata->tox);
+
+  switch (result) {
+    case TOX_USER_STATUS_NONE:
+      return mTox_mUserStatus_NONE;
+    case TOX_USER_STATUS_AWAY:
+      return mTox_mUserStatus_AWAY;
+    case TOX_USER_STATUS_BUSY:
+      return mTox_mUserStatus_BUSY;
+    default:
+      rb_raise(rb_eNotImpError, "Tox::Client#status has unknown value");
+  }
+}
+
+// Tox::Client#status=
+VALUE mTox_cClient_status_EQUALS(const VALUE self, const VALUE status)
+{
+  mTox_cClient_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+
+  if (rb_funcall(mTox_mUserStatus_NONE, rb_intern("=="), 1, status)) {
+    tox_self_set_status(self_cdata->tox, TOX_USER_STATUS_NONE);
+  }
+  else if (rb_funcall(mTox_mUserStatus_AWAY, rb_intern("=="), 1, status)) {
+    tox_self_set_status(self_cdata->tox, TOX_USER_STATUS_AWAY);
+  }
+  else if (rb_funcall(mTox_mUserStatus_BUSY, rb_intern("=="), 1, status)) {
+    tox_self_set_status(self_cdata->tox, TOX_USER_STATUS_BUSY);
+  }
+  else {
+    rb_raise(rb_eArgError, "invalid value for Tox::Client#status=");
+  }
+
+  return status;
 }
 
 // Tox::Client#status_message

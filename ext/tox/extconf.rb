@@ -50,6 +50,7 @@ have_type 'TOX_ERR_SET_INFO',              'tox/tox.h' and
 have_type 'TOX_ERR_FRIEND_GET_PUBLIC_KEY', 'tox/tox.h' and
 have_type 'TOX_ERR_FRIEND_QUERY',          'tox/tox.h' and
 have_type 'TOX_MESSAGE_TYPE',              'tox/tox.h' and
+have_type 'TOX_USER_STATUS',               'tox/tox.h' and
 have_type 'tox_friend_request_cb',         'tox/tox.h' and
 have_type 'tox_friend_message_cb',         'tox/tox.h' and
 
@@ -73,6 +74,9 @@ have_const 'TOX_ERR_FRIEND_GET_PUBLIC_KEY_FRIEND_NOT_FOUND', 'tox/tox.h' and
 have_const 'TOX_ERR_FRIEND_QUERY_OK',                        'tox/tox.h' and
 have_const 'TOX_ERR_FRIEND_QUERY_NULL',                      'tox/tox.h' and
 have_const 'TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND',          'tox/tox.h' and
+have_const 'TOX_USER_STATUS_NONE',                           'tox/tox.h' and
+have_const 'TOX_USER_STATUS_AWAY',                           'tox/tox.h' and
+have_const 'TOX_USER_STATUS_BUSY',                           'tox/tox.h' and
 
 have_func 'tox_version_is_compatible',        'tox/tox.h' and
 have_func 'tox_hash',                         'tox/tox.h' and
@@ -95,9 +99,12 @@ have_func 'tox_self_set_name',                'tox/tox.h' and
 have_func 'tox_self_get_status_message_size', 'tox/tox.h' and
 have_func 'tox_self_get_status_message',      'tox/tox.h' and
 have_func 'tox_self_set_status_message',      'tox/tox.h' and
+have_func 'tox_self_get_status',              'tox/tox.h' and
+have_func 'tox_self_set_status',              'tox/tox.h' and
 have_func 'tox_friend_get_public_key',        'tox/tox.h' and
 have_func 'tox_friend_get_name_size',         'tox/tox.h' and
 have_func 'tox_friend_get_name',              'tox/tox.h' and
 have_func 'tox_friend_get_status_message',    'tox/tox.h' and
+have_func 'tox_friend_get_status',            'tox/tox.h' and
 
 create_makefile 'tox/tox' or exit 1
