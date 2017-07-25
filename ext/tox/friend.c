@@ -20,6 +20,7 @@
 
 // Public methods
 
+static VALUE mTox_cFriend_exist_QUESTION(VALUE self);
 static VALUE mTox_cFriend_public_key(VALUE self);
 static VALUE mTox_cFriend_send_message(VALUE self, VALUE text);
 static VALUE mTox_cFriend_name(VALUE self);
@@ -34,6 +35,8 @@ void mTox_cFriend_INIT()
 {
   // Public methods
 
+  rb_define_method(mTox_cFriend, "exist?",         mTox_cFriend_exist_QUESTION, 0);
+  rb_define_method(mTox_cFriend, "exists?",        mTox_cFriend_exist_QUESTION, 0);
   rb_define_method(mTox_cFriend, "public_key",     mTox_cFriend_public_key,     0);
   rb_define_method(mTox_cFriend, "send_message",   mTox_cFriend_send_message,   1);
   rb_define_method(mTox_cFriend, "name",           mTox_cFriend_name,           0);
@@ -44,6 +47,27 @@ void mTox_cFriend_INIT()
 /*************************************************************
  * Public methods
  *************************************************************/
+
+// Tox::Friend#exist?
+// Tox::Friend#exists?
+VALUE mTox_cFriend_exist_QUESTION(const VALUE self)
+{
+  const VALUE client = rb_iv_get(self, "@client");
+  const VALUE number = rb_iv_get(self, "@number");
+
+  mTox_cClient_CDATA *client_cdata;
+
+  Data_Get_Struct(client, mTox_cClient_CDATA, client_cdata);
+
+  const bool result = tox_friend_exists(client_cdata->tox, NUM2LONG(number));
+
+  if (result) {
+    return Qtrue;
+  }
+  else {
+    return Qfalse;
+  }
+}
 
 // Tox::Friend#public_key
 VALUE mTox_cFriend_public_key(const VALUE self)
