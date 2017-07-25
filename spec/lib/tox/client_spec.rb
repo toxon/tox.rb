@@ -212,4 +212,38 @@ RSpec.describe Tox::Client do
       end
     end
   end
+
+  describe '#status' do
+    it 'returns NONE by default' do
+      expect(subject.status).to eq Tox::UserStatus::NONE
+    end
+
+    context 'when it was set to AWAY' do
+      before do
+        subject.status = Tox::UserStatus::AWAY
+      end
+
+      it 'returns given value' do
+        expect(subject.status).to eq Tox::UserStatus::AWAY
+      end
+    end
+
+    context 'when it was set to BUSY' do
+      before do
+        subject.status = Tox::UserStatus::BUSY
+      end
+
+      it 'returns given value' do
+        expect(subject.status).to eq Tox::UserStatus::BUSY
+      end
+    end
+  end
+
+  describe '#status=' do
+    context 'when invalid value given' do
+      specify do
+        expect { subject.status = :foobar }.to raise_error ArgumentError
+      end
+    end
+  end
 end
