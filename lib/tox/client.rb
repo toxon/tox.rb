@@ -57,6 +57,12 @@ module Tox
       mutex.unlock
     end
 
+    def friends
+      friend_numbers.map do |friend_number|
+        friend friend_number
+      end
+    end
+
     def friend(number)
       Friend.new self, number
     end
