@@ -49,18 +49,16 @@ VALUE mTox_cFriend_public_key(const VALUE self)
 
   Data_Get_Struct(client, mTox_cClient_CDATA, client_cdata);
 
-  uint8_t result[TOX_PUBLIC_KEY_SIZE];
+  uint8_t public_key[TOX_PUBLIC_KEY_SIZE];
 
   TOX_ERR_FRIEND_GET_PUBLIC_KEY error;
 
-  if (true != tox_friend_get_public_key(
+  const bool result = tox_friend_get_public_key(
     client_cdata->tox,
     NUM2LONG(number),
-    result,
+    public_key,
     &error
-  )) {
-    rb_raise(rb_eSecurityError, "tox_friend_get_public_key() failed");
-  }
+  );
 
   switch (error) {
     case TOX_ERR_FRIEND_GET_PUBLIC_KEY_OK:
@@ -69,11 +67,15 @@ VALUE mTox_cFriend_public_key(const VALUE self)
       rb_raise(rb_eRuntimeError, "friend not found");
   }
 
+  if (result != true) {
+    rb_raise(rb_eSecurityError, "tox_friend_get_public_key() failed");
+  }
+
   return rb_funcall(
     mTox_cPublicKey,
     rb_intern("new"),
     1,
-    rb_str_new(result, TOX_PUBLIC_KEY_SIZE)
+    rb_str_new(public_key, TOX_PUBLIC_KEY_SIZE)
   );
 }
 
