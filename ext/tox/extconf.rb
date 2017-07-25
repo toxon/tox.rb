@@ -48,6 +48,7 @@ have_type 'TOX_ERR_NEW',                   'tox/tox.h' and
 have_type 'TOX_ERR_BOOTSTRAP',             'tox/tox.h' and
 have_type 'TOX_ERR_SET_INFO',              'tox/tox.h' and
 have_type 'TOX_ERR_FRIEND_GET_PUBLIC_KEY', 'tox/tox.h' and
+have_type 'TOX_ERR_FRIEND_QUERY',          'tox/tox.h' and
 have_type 'TOX_MESSAGE_TYPE',              'tox/tox.h' and
 have_type 'tox_friend_request_cb',         'tox/tox.h' and
 have_type 'tox_friend_message_cb',         'tox/tox.h' and
@@ -69,6 +70,9 @@ have_const 'TOX_ERR_SET_INFO_OK',                            'tox/tox.h' and
 have_const 'TOX_MESSAGE_TYPE_NORMAL',                        'tox/tox.h' and
 have_const 'TOX_ERR_FRIEND_GET_PUBLIC_KEY_OK',               'tox/tox.h' and
 have_const 'TOX_ERR_FRIEND_GET_PUBLIC_KEY_FRIEND_NOT_FOUND', 'tox/tox.h' and
+have_const 'TOX_ERR_FRIEND_QUERY_OK',                        'tox/tox.h' and
+have_const 'TOX_ERR_FRIEND_QUERY_NULL',                      'tox/tox.h' and
+have_const 'TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND',          'tox/tox.h' and
 
 have_func 'tox_version_is_compatible',        'tox/tox.h' and
 have_func 'tox_hash',                         'tox/tox.h' and
