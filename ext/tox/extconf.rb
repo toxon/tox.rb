@@ -101,6 +101,8 @@ have_func 'tox_self_get_status_message',      'tox/tox.h' and
 have_func 'tox_self_set_status_message',      'tox/tox.h' and
 have_func 'tox_self_get_status',              'tox/tox.h' and
 have_func 'tox_self_set_status',              'tox/tox.h' and
+have_func 'tox_self_get_friend_list_size',    'tox/tox.h' and
+have_func 'tox_self_get_friend_list',         'tox/tox.h' and
 have_func 'tox_friend_exists',                'tox/tox.h' and
 have_func 'tox_friend_get_public_key',        'tox/tox.h' and
 have_func 'tox_friend_get_name_size',         'tox/tox.h' and

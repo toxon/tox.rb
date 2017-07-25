@@ -40,6 +40,8 @@ static VALUE mTox_cClient_status_EQUALS(VALUE self, VALUE status);
 static VALUE mTox_cClient_status_message(VALUE self);
 static VALUE mTox_cClient_status_message_EQUALS(VALUE self, VALUE status_message);
 
+static VALUE mTox_cClient_friend_numbers(VALUE self);
+
 static VALUE mTox_cClient_friend_add_norequest(VALUE self, VALUE public_key);
 
 // Private methods
@@ -90,6 +92,8 @@ void mTox_cClient_INIT()
 
   rb_define_method(mTox_cClient, "status_message",  mTox_cClient_status_message,        0);
   rb_define_method(mTox_cClient, "status_message=", mTox_cClient_status_message_EQUALS, 1);
+
+  rb_define_method(mTox_cClient, "friend_numbers", mTox_cClient_friend_numbers, 0);
 
   rb_define_method(mTox_cClient, "friend_add_norequest", mTox_cClient_friend_add_norequest, 1);
 
@@ -323,6 +327,32 @@ VALUE mTox_cClient_status_message_EQUALS(const VALUE self, const VALUE status_me
   }
 
   return status_message;
+}
+
+// Tox::Client#friend_numbers
+VALUE mTox_cClient_friend_numbers(const VALUE self)
+{
+  mTox_cClient_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+
+  const size_t friend_numbers_size = tox_self_get_friend_list_size(self_cdata->tox);
+
+  if (friend_numbers_size == 0) {
+    return rb_ary_new();
+  }
+
+  uint32_t friend_numbers[friend_numbers_size];
+
+  tox_self_get_friend_list(self_cdata->tox, friend_numbers);
+
+  VALUE friend_number_values[friend_numbers_size];
+
+  for (unsigned long i = 0; i < friend_numbers_size; ++i) {
+    friend_number_values[i] = LONG2NUM(friend_numbers[i]);
+  }
+
+  return rb_ary_new4(friend_numbers_size, friend_number_values);
 }
 
 // Tox::Client#friend_add_norequest
