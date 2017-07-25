@@ -22,7 +22,8 @@
 
 static VALUE mTox_cFriend_public_key(VALUE self);
 static VALUE mTox_cFriend_send_message(VALUE self, VALUE text);
-static VALUE mTox_cFriend_name(VALUE sself);
+static VALUE mTox_cFriend_name(VALUE self);
+static VALUE mTox_cFriend_status_message(VALUE self);
 
 /*************************************************************
  * Initialization
@@ -32,9 +33,10 @@ void mTox_cFriend_INIT()
 {
   // Public methods
 
-  rb_define_method(mTox_cFriend, "public_key",   mTox_cFriend_public_key,   0);
-  rb_define_method(mTox_cFriend, "send_message", mTox_cFriend_send_message, 1);
-  rb_define_method(mTox_cFriend, "name",         mTox_cFriend_name,         0);
+  rb_define_method(mTox_cFriend, "public_key",     mTox_cFriend_public_key,     0);
+  rb_define_method(mTox_cFriend, "send_message",   mTox_cFriend_send_message,   1);
+  rb_define_method(mTox_cFriend, "name",           mTox_cFriend_name,           0);
+  rb_define_method(mTox_cFriend, "status_message", mTox_cFriend_status_message, 0);
 }
 
 /*************************************************************
@@ -166,4 +168,56 @@ VALUE mTox_cFriend_name(const VALUE self)
   }
 
   return rb_str_new(name, name_size);
+}
+
+// Tox::Friend#status_message
+VALUE mTox_cFriend_status_message(const VALUE self)
+{
+  const VALUE client = rb_iv_get(self, "@client");
+  const VALUE number = rb_iv_get(self, "@number");
+
+  mTox_cClient_CDATA *client_cdata;
+
+  Data_Get_Struct(client, mTox_cClient_CDATA, client_cdata);
+
+  TOX_ERR_FRIEND_QUERY error;
+
+  const size_t status_message_size = tox_friend_get_status_message_size(
+    client_cdata->tox,
+    NUM2LONG(number),
+    &error
+  );
+
+  switch (error) {
+    case TOX_ERR_FRIEND_QUERY_OK:
+      break;
+    case TOX_ERR_FRIEND_QUERY_NULL:
+      rb_raise(rb_eRuntimeError, "tox_friend_get_status_message_size() failed");
+    case TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND:
+      rb_raise(rb_eRuntimeError, "friend not found");
+  }
+
+  char status_message[status_message_size];
+
+  const bool result = tox_friend_get_status_message(
+    client_cdata->tox,
+    NUM2LONG(number),
+    status_message,
+    &error
+  );
+
+  switch (error) {
+    case TOX_ERR_FRIEND_QUERY_OK:
+      break;
+    case TOX_ERR_FRIEND_QUERY_NULL:
+      rb_raise(rb_eRuntimeError, "tox_friend_get_status_message_size() failed");
+    case TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND:
+      rb_raise(rb_eRuntimeError, "friend not found");
+  }
+
+  if (result != true) {
+    rb_raise(rb_eRuntimeError, "tox_friend_get_status_message_size() failed");
+  }
+
+  return rb_str_new(status_message, status_message_size);
 }
