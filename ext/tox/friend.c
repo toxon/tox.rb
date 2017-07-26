@@ -94,7 +94,12 @@ VALUE mTox_cFriend_public_key(const VALUE self)
     case TOX_ERR_FRIEND_GET_PUBLIC_KEY_OK:
       break;
     case TOX_ERR_FRIEND_GET_PUBLIC_KEY_FRIEND_NOT_FOUND:
-      rb_raise(rb_eRuntimeError, "friend not found");
+      rb_raise(
+        mTox_cFriend_eNotFoundError,
+        "tox_friend_get_public_key() failed with TOX_ERR_FRIEND_GET_PUBLIC_KEY_FRIEND_NOT_FOUND"
+      );
+    default:
+      rb_raise(rb_eSecurityError, "tox_friend_get_public_key() failed");
   }
 
   if (result != true) {
