@@ -232,6 +232,12 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
   switch (error) {
     case TOX_ERR_BOOTSTRAP_OK:
       return Qtrue;
+    case TOX_ERR_BOOTSTRAP_NULL:
+      return Qfalse;
+    case TOX_ERR_BOOTSTRAP_BAD_HOST:
+      return Qfalse;
+    case TOX_ERR_BOOTSTRAP_BAD_PORT:
+      return Qfalse;
     default:
       return Qfalse;
   }
