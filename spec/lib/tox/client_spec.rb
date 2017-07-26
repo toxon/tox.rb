@@ -44,7 +44,7 @@ RSpec.describe Tox::Client do
       let(:savedata) { 'foobar' }
 
       specify do
-        expect { subject }.to raise_error described_class::BadSavedataError, 'savedata format is invalid'
+        expect { subject }.to raise_error described_class::BadSavedataError
       end
     end
   end
