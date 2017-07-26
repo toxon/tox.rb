@@ -40,6 +40,9 @@ VALUE mTox_mUserStatus_BUSY;
 
 VALUE mTox_cClient_eBadSavedataError;
 
+VALUE mTox_cFriend_eNotFoundError;
+VALUE mTox_cFriend_eNotConnectedError;
+
 // Singleton methods
 
 static VALUE mTox_hash(VALUE self, VALUE data);
@@ -71,6 +74,9 @@ void Init_tox()
   mTox_mUserStatus_BUSY = rb_const_get(mTox_mUserStatus, rb_intern("BUSY"));
 
   mTox_cClient_eBadSavedataError = rb_const_get(mTox_cClient, rb_intern("BadSavedataError"));
+
+  mTox_cFriend_eNotFoundError     = rb_const_get(mTox_cFriend, rb_intern("NotFoundError"));
+  mTox_cFriend_eNotConnectedError = rb_const_get(mTox_cFriend, rb_intern("NotConnectedError"));
 
   // Singleton methods
 

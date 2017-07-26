@@ -52,3 +52,6 @@ extern VALUE mTox_mUserStatus_AWAY;
 extern VALUE mTox_mUserStatus_BUSY;
 
 extern VALUE mTox_cClient_eBadSavedataError;
+
+extern VALUE mTox_cFriend_eNotFoundError;
+extern VALUE mTox_cFriend_eNotConnectedError;

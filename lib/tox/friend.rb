@@ -48,6 +48,7 @@ module Tox
       @number = value
     end
 
-    class NotFoundError < RuntimeError; end
+    class NotFoundError     < RuntimeError; end
+    class NotConnectedError < RuntimeError; end
   end
 end

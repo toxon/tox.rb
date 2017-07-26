@@ -123,25 +123,47 @@ VALUE mTox_cFriend_send_message(const VALUE self, const VALUE text)
 
   TOX_ERR_FRIEND_ADD error;
 
-  const result = tox_friend_send_message(
+  const VALUE result = LONG2FIX(tox_friend_send_message(
     client_cdata->tox,
     NUM2LONG(number),
     TOX_MESSAGE_TYPE_NORMAL,
     (uint8_t*)RSTRING_PTR(text),
     RSTRING_LEN(text),
     &error
-  );
+  ));
 
   switch (error) {
     case TOX_ERR_FRIEND_SEND_MESSAGE_OK:
       break;
+    case TOX_ERR_FRIEND_SEND_MESSAGE_NULL:
+      rb_raise(
+        rb_eRuntimeError,
+        "tox_friend_send_message() failed with TOX_ERR_FRIEND_SEND_MESSAGE_NULL"
+      );
+    case TOX_ERR_FRIEND_SEND_MESSAGE_FRIEND_NOT_FOUND:
+      rb_raise(
+        mTox_cFriend_eNotFoundError,
+        "tox_friend_send_message() failed with TOX_ERR_FRIEND_SEND_MESSAGE_FRIEND_NOT_FOUND"
+      );
+    case TOX_ERR_FRIEND_SEND_MESSAGE_FRIEND_NOT_CONNECTED:
+      rb_raise(
+        mTox_cFriend_eNotConnectedError,
+        "tox_friend_send_message() failed with TOX_ERR_FRIEND_SEND_MESSAGE_FRIEND_NOT_CONNECTED"
+      );
     case TOX_ERR_FRIEND_SEND_MESSAGE_SENDQ:
-      rb_raise(rb_eNoMemError, "tox_friend_send_message() returned TOX_ERR_FRIEND_SEND_MESSAGE_SENDQ");
+      rb_raise(
+        rb_eNoMemError,
+        "tox_friend_send_message() failed with TOX_ERR_FRIEND_SEND_MESSAGE_SENDQ"
+      );
+    case TOX_ERR_FRIEND_SEND_MESSAGE_TOO_LONG:
+      rb_raise(rb_eRuntimeError, "message too long");
+    case TOX_ERR_FRIEND_SEND_MESSAGE_EMPTY:
+      rb_raise(rb_eRuntimeError, "message empty");
     default:
       rb_raise(rb_eRuntimeError, "tox_friend_send_message() failed");
   }
 
-  return LONG2FIX(result);
+  return result;
 }
 
 // Tox::Friend#name
