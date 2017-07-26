@@ -66,7 +66,14 @@ have_const 'TOX_HASH_LENGTH',                                'tox/tox.h' and
 have_const 'TOX_SAVEDATA_TYPE_NONE',                         'tox/tox.h' and
 have_const 'TOX_SAVEDATA_TYPE_TOX_SAVE',                     'tox/tox.h' and
 have_const 'TOX_ERR_NEW_OK',                                 'tox/tox.h' and
+have_const 'TOX_ERR_NEW_NULL',                               'tox/tox.h' and
 have_const 'TOX_ERR_NEW_MALLOC',                             'tox/tox.h' and
+have_const 'TOX_ERR_NEW_PORT_ALLOC',                         'tox/tox.h' and
+have_const 'TOX_ERR_NEW_PROXY_BAD_TYPE',                     'tox/tox.h' and
+have_const 'TOX_ERR_NEW_PROXY_BAD_HOST',                     'tox/tox.h' and
+have_const 'TOX_ERR_NEW_PROXY_BAD_PORT',                     'tox/tox.h' and
+have_const 'TOX_ERR_NEW_PROXY_NOT_FOUND',                    'tox/tox.h' and
+have_const 'TOX_ERR_NEW_LOAD_ENCRYPTED',                     'tox/tox.h' and
 have_const 'TOX_ERR_NEW_LOAD_BAD_FORMAT',                    'tox/tox.h' and
 have_const 'TOX_ADDRESS_SIZE',                               'tox/tox.h' and
 have_const 'TOX_PUBLIC_KEY_SIZE',                            'tox/tox.h' and

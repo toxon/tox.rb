@@ -452,10 +452,24 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
   switch (error) {
     case TOX_ERR_NEW_OK:
       break;
+    case TOX_ERR_NEW_NULL:
+      rb_raise(rb_eRuntimeError, "tox_new() failed with TOX_ERR_NEW_NULL");
     case TOX_ERR_NEW_MALLOC:
-      rb_raise(rb_eNoMemError, "tox_new() returned TOX_ERR_NEW_MALLOC");
+      rb_raise(rb_eNoMemError, "tox_new() failed with TOX_ERR_NEW_MALLOC");
+    case TOX_ERR_NEW_PORT_ALLOC:
+      rb_raise(rb_eRuntimeError, "tox_new() failed with TOX_ERR_NEW_PORT_ALLOC");
+    case TOX_ERR_NEW_PROXY_BAD_TYPE:
+      rb_raise(rb_eRuntimeError, "tox_new() failed with TOX_ERR_NEW_PROXY_BAD_TYPE");
+    case TOX_ERR_NEW_PROXY_BAD_HOST:
+      rb_raise(rb_eRuntimeError, "tox_new() failed with TOX_ERR_NEW_PROXY_BAD_HOST");
+    case TOX_ERR_NEW_PROXY_BAD_PORT:
+      rb_raise(rb_eRuntimeError, "tox_new() failed with TOX_ERR_NEW_PROXY_BAD_PORT");
+    case TOX_ERR_NEW_PROXY_NOT_FOUND:
+      rb_raise(rb_eRuntimeError, "tox_new() failed with TOX_ERR_NEW_PROXY_NOT_FOUND");
+    case TOX_ERR_NEW_LOAD_ENCRYPTED:
+      rb_raise(rb_eRuntimeError, "tox_new() failed with TOX_ERR_NEW_LOAD_ENCRYPTED");
     case TOX_ERR_NEW_LOAD_BAD_FORMAT:
-      rb_raise(mTox_cClient_eBadSavedataError, "savedata format is invalid");
+      rb_raise(mTox_cClient_eBadSavedataError, "tox_new() failed with TOX_ERR_NEW_LOAD_BAD_FORMAT");
     default:
       rb_raise(rb_eRuntimeError, "tox_new() failed");
   }
