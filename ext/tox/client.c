@@ -84,6 +84,13 @@ static void on_friend_status_message_change(
   VALUE self
 );
 
+static void on_friend_status_change(
+  Tox *tox,
+  uint32_t friend_number,
+  TOX_USER_STATUS status,
+  VALUE self
+);
+
 /*************************************************************
  * Initialization
  *************************************************************/
@@ -430,6 +437,7 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
   tox_callback_friend_message       (self_cdata->tox, on_friend_message);
   tox_callback_friend_name          (self_cdata->tox, on_friend_name_change);
   tox_callback_friend_status_message(self_cdata->tox, on_friend_status_message_change);
+  tox_callback_friend_status        (self_cdata->tox, on_friend_status_change);
 
   return self;
 }
@@ -578,5 +586,49 @@ void on_friend_status_message_change(
       LONG2FIX(friend_number)
     ),
     rb_str_new(status_message, length)
+  );
+}
+
+void on_friend_status_change(
+  Tox *const tox,
+  const uint32_t friend_number,
+  const TOX_USER_STATUS status,
+  const VALUE self
+)
+{
+  const VALUE ivar_on_friend_status_change = rb_iv_get(self, "@on_friend_status_change");
+
+  if (Qnil == ivar_on_friend_status_change) {
+    return;
+  }
+
+  VALUE status_value;
+
+  switch (status) {
+    case TOX_USER_STATUS_NONE:
+      status_value = mTox_mUserStatus_NONE;
+      break;
+    case TOX_USER_STATUS_AWAY:
+      status_value = mTox_mUserStatus_AWAY;
+      break;
+    case TOX_USER_STATUS_BUSY:
+      status_value = mTox_mUserStatus_BUSY;
+      break;
+    default:
+      return;
+  }
+
+  rb_funcall(
+    ivar_on_friend_status_change,
+    rb_intern("call"),
+    2,
+    rb_funcall(
+      mTox_cFriend,
+      rb_intern("new"),
+      2,
+      self,
+      LONG2FIX(friend_number)
+    ),
+    status_value
   );
 }

@@ -91,6 +91,10 @@ module Tox
       @on_friend_status_message_change = block
     end
 
+    def on_friend_status_change(&block)
+      @on_friend_status_change = block
+    end
+
   private
 
     attr_accessor :thread
