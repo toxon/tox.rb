@@ -261,9 +261,17 @@ VALUE mTox_cFriend_status(const VALUE self)
     case TOX_ERR_FRIEND_QUERY_OK:
       break;
     case TOX_ERR_FRIEND_QUERY_NULL:
-      rb_raise(rb_eRuntimeError, "tox_friend_get_status() failed");
+      rb_raise(
+        rb_eRuntimeError,
+        "tox_friend_get_status() failed with TOX_ERR_FRIEND_QUERY_NULL"
+      );
     case TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND:
-      rb_raise(rb_eRuntimeError, "friend not found");
+      rb_raise(
+        mTox_cFriend_eNotFoundError,
+        "tox_friend_get_status() failed with TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND"
+      );
+    default:
+      rb_raise(rb_eRuntimeError, "tox_friend_get_name() failed");
   }
 
   switch (result) {
