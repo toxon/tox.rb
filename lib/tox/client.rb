@@ -83,6 +83,10 @@ module Tox
       @on_friend_message = block
     end
 
+    def on_friend_name_change(&block)
+      @on_friend_name_change = block
+    end
+
   private
 
     attr_accessor :thread

@@ -68,6 +68,14 @@ static void on_friend_message(
   VALUE self
 );
 
+static void on_friend_name_change(
+  Tox *tox,
+  uint32_t friend_number,
+  const uint8_t *name,
+  size_t length,
+  VALUE self
+);
+
 /*************************************************************
  * Initialization
  *************************************************************/
@@ -412,6 +420,7 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
 
   tox_callback_friend_request(self_cdata->tox, on_friend_request);
   tox_callback_friend_message(self_cdata->tox, on_friend_message);
+  tox_callback_friend_name   (self_cdata->tox, on_friend_name_change);
 
   return self;
 }
@@ -502,5 +511,34 @@ void on_friend_message(
       LONG2FIX(friend_number)
     ),
     rb_str_new((char*)text, length)
+  );
+}
+
+void on_friend_name_change(
+  Tox *const tox,
+  const uint32_t friend_number,
+  const uint8_t *const name,
+  const size_t length,
+  const VALUE self
+)
+{
+  const VALUE ivar_on_friend_name_change = rb_iv_get(self, "@on_friend_name_change");
+
+  if (Qnil == ivar_on_friend_name_change) {
+    return;
+  }
+
+  rb_funcall(
+    ivar_on_friend_name_change,
+    rb_intern("call"),
+    2,
+    rb_funcall(
+      mTox_cFriend,
+      rb_intern("new"),
+      2,
+      self,
+      LONG2FIX(friend_number)
+    ),
+    rb_str_new(name, length)
   );
 }
