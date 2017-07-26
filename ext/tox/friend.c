@@ -308,9 +308,17 @@ VALUE mTox_cFriend_status_message(const VALUE self)
     case TOX_ERR_FRIEND_QUERY_OK:
       break;
     case TOX_ERR_FRIEND_QUERY_NULL:
-      rb_raise(rb_eRuntimeError, "tox_friend_get_status_message_size() failed");
+      rb_raise(
+        rb_eRuntimeError,
+        "tox_friend_get_status_message_size() failed with TOX_ERR_FRIEND_QUERY_NULL"
+      );
     case TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND:
-      rb_raise(rb_eRuntimeError, "friend not found");
+      rb_raise(
+        mTox_cFriend_eNotFoundError,
+        "tox_friend_get_status_message_size() failed with TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND"
+      );
+    default:
+      rb_raise(rb_eRuntimeError, "tox_friend_get_status_message_size() failed");
   }
 
   char status_message[status_message_size];
@@ -326,13 +334,21 @@ VALUE mTox_cFriend_status_message(const VALUE self)
     case TOX_ERR_FRIEND_QUERY_OK:
       break;
     case TOX_ERR_FRIEND_QUERY_NULL:
-      rb_raise(rb_eRuntimeError, "tox_friend_get_status_message_size() failed");
+      rb_raise(
+        rb_eRuntimeError,
+        "tox_friend_get_status_message() failed with TOX_ERR_FRIEND_QUERY_NULL"
+      );
     case TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND:
-      rb_raise(rb_eRuntimeError, "friend not found");
+      rb_raise(
+        mTox_cFriend_eNotFoundError,
+        "tox_friend_get_status_message() failed with TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND"
+      );
+    default:
+      rb_raise(rb_eRuntimeError, "tox_friend_get_status_message() failed");
   }
 
   if (result != true) {
-    rb_raise(rb_eRuntimeError, "tox_friend_get_status_message_size() failed");
+    rb_raise(rb_eRuntimeError, "tox_friend_get_status_message() failed");
   }
 
   return rb_str_new(status_message, status_message_size);
