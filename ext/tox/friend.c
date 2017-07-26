@@ -193,9 +193,17 @@ VALUE mTox_cFriend_name(const VALUE self)
     case TOX_ERR_FRIEND_QUERY_OK:
       break;
     case TOX_ERR_FRIEND_QUERY_NULL:
-      rb_raise(rb_eRuntimeError, "tox_friend_get_name_size() failed");
+      rb_raise(
+        rb_eRuntimeError,
+        "tox_friend_get_name_size() failed with TOX_ERR_FRIEND_QUERY_NULL"
+      );
     case TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND:
-      rb_raise(rb_eRuntimeError, "friend not found");
+      rb_raise(
+        mTox_cFriend_eNotFoundError,
+        "tox_friend_get_name_size() failed with TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND"
+      );
+    default:
+      rb_raise(rb_eRuntimeError, "tox_friend_get_name_size() failed");
   }
 
   char name[name_size];
@@ -211,13 +219,21 @@ VALUE mTox_cFriend_name(const VALUE self)
     case TOX_ERR_FRIEND_QUERY_OK:
       break;
     case TOX_ERR_FRIEND_QUERY_NULL:
-      rb_raise(rb_eRuntimeError, "tox_friend_get_name_size() failed");
+      rb_raise(
+        rb_eRuntimeError,
+        "tox_friend_get_name() failed with TOX_ERR_FRIEND_QUERY_NULL"
+      );
     case TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND:
-      rb_raise(rb_eRuntimeError, "friend not found");
+      rb_raise(
+        mTox_cFriend_eNotFoundError,
+        "tox_friend_get_name() failed with TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND"
+      );
+    default:
+      rb_raise(rb_eRuntimeError, "tox_friend_get_name() failed");
   }
 
   if (result != true) {
-    rb_raise(rb_eRuntimeError, "tox_friend_get_name_size() failed");
+    rb_raise(rb_eRuntimeError, "tox_friend_get_name() failed");
   }
 
   return rb_str_new(name, name_size);
