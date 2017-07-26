@@ -54,6 +54,7 @@ have_type 'TOX_USER_STATUS',               'tox/tox.h' and
 have_type 'tox_friend_request_cb',         'tox/tox.h' and
 have_type 'tox_friend_message_cb',         'tox/tox.h' and
 have_type 'tox_friend_name_cb',            'tox/tox.h' and
+have_type 'tox_friend_status_message_cb',  'tox/tox.h' and
 
 have_struct_member 'struct Tox_Options', 'savedata_type',   'tox/tox.h' and
 have_struct_member 'struct Tox_Options', 'savedata_length', 'tox/tox.h' and
@@ -111,5 +112,6 @@ have_func 'tox_friend_get_name',              'tox/tox.h' and
 have_func 'tox_friend_get_status_message',    'tox/tox.h' and
 have_func 'tox_friend_get_status',            'tox/tox.h' and
 have_func 'tox_callback_friend_name',         'tox/tox.h' and
+have_func 'tox_callback_friend_status_message', 'tox/tox.h' and
 
 create_makefile 'tox/tox' or exit 1
