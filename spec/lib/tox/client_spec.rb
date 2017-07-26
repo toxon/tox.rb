@@ -71,6 +71,30 @@ RSpec.describe Tox::Client do
     end
   end
 
+  describe '#public_key' do
+    it 'returns public key by default' do
+      expect(subject.public_key).to be_a Tox::PublicKey
+    end
+
+    context 'when savedata was set' do
+      subject { described_class.new tox_options }
+
+      let :tox_options do
+        result = Tox::Options.new
+        result.savedata = savedata
+        result
+      end
+
+      let(:savedata) { old_tox.savedata }
+
+      let(:old_tox) { Tox::Client.new }
+
+      it 'can be set via options' do
+        expect(subject.public_key).to eq old_tox.public_key
+      end
+    end
+  end
+
   describe '#address' do
     it 'returns string by default' do
       expect(subject.address).to be_a Tox::Address

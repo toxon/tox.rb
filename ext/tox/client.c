@@ -26,6 +26,7 @@ static void  mTox_cClient_free(mTox_cClient_CDATA *free_cdata);
 
 // Public methods
 
+static VALUE mTox_cClient_public_key(VALUE self);
 static VALUE mTox_cClient_address(VALUE self);
 static VALUE mTox_cClient_savedata(VALUE self);
 
@@ -102,8 +103,9 @@ void mTox_cClient_INIT()
 
   // Public methods
 
-  rb_define_method(mTox_cClient, "address",  mTox_cClient_address,  0);
-  rb_define_method(mTox_cClient, "savedata", mTox_cClient_savedata, 0);
+  rb_define_method(mTox_cClient, "public_key", mTox_cClient_public_key, 0);
+  rb_define_method(mTox_cClient, "address",    mTox_cClient_address,    0);
+  rb_define_method(mTox_cClient, "savedata",   mTox_cClient_savedata,   0);
 
   rb_define_method(mTox_cClient, "bootstrap", mTox_cClient_bootstrap, 1);
 
@@ -151,6 +153,25 @@ void mTox_cClient_free(mTox_cClient_CDATA *const free_cdata)
 /*************************************************************
  * Public methods
  *************************************************************/
+
+// Tox::Client#public_key
+VALUE mTox_cClient_public_key(const VALUE self)
+{
+  mTox_cClient_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+
+  char public_key[TOX_PUBLIC_KEY_SIZE];
+
+  tox_self_get_public_key(self_cdata->tox, (uint8_t*)public_key);
+
+  return rb_funcall(
+    mTox_cPublicKey,
+    rb_intern("new"),
+    1,
+    rb_str_new(public_key, TOX_PUBLIC_KEY_SIZE)
+  );
+}
 
 // Tox::Client#address
 VALUE mTox_cClient_address(const VALUE self)
