@@ -82,6 +82,8 @@ have_const 'TOX_ERR_BOOTSTRAP_NULL',                         'tox/tox.h' and
 have_const 'TOX_ERR_BOOTSTRAP_BAD_HOST',                     'tox/tox.h' and
 have_const 'TOX_ERR_BOOTSTRAP_BAD_PORT',                     'tox/tox.h' and
 have_const 'TOX_ERR_SET_INFO_OK',                            'tox/tox.h' and
+have_const 'TOX_ERR_SET_INFO_NULL',                          'tox/tox.h' and
+have_const 'TOX_ERR_SET_INFO_TOO_LONG',                      'tox/tox.h' and
 have_const 'TOX_MESSAGE_TYPE_NORMAL',                        'tox/tox.h' and
 have_const 'TOX_MESSAGE_TYPE_ACTION',                        'tox/tox.h' and
 have_const 'TOX_ERR_FRIEND_GET_PUBLIC_KEY_OK',               'tox/tox.h' and

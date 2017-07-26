@@ -282,8 +282,16 @@ VALUE mTox_cClient_name_EQUALS(const VALUE self, const VALUE name)
   switch (error) {
     case TOX_ERR_SET_INFO_OK:
       break;
+    case TOX_ERR_SET_INFO_NULL:
+      rb_raise(rb_eRuntimeError, "tox_self_set_name() failed with TOX_ERR_SET_INFO_NULL");
+    case TOX_ERR_SET_INFO_TOO_LONG:
+      rb_raise(rb_eRuntimeError, "tox_self_set_name() failed with TOX_ERR_SET_INFO_TOO_LONG");
     default:
       rb_raise(rb_eRuntimeError, "tox_self_set_name() failed");
+  }
+
+  if (!result) {
+    rb_raise(rb_eRuntimeError, "tox_self_set_name() failed");
   }
 
   return name;
@@ -372,8 +380,16 @@ VALUE mTox_cClient_status_message_EQUALS(const VALUE self, const VALUE status_me
   switch (error) {
     case TOX_ERR_SET_INFO_OK:
       break;
+    case TOX_ERR_SET_INFO_NULL:
+      rb_raise(rb_eRuntimeError, "tox_self_set_status_message() failed with TOX_ERR_SET_INFO_NULL");
+    case TOX_ERR_SET_INFO_TOO_LONG:
+      rb_raise(rb_eRuntimeError, "tox_self_set_status_message() failed with TOX_ERR_SET_INFO_TOO_LONG");
     default:
       rb_raise(rb_eRuntimeError, "tox_self_set_status_message() failed");
+  }
+
+  if (!result) {
+    rb_raise(rb_eRuntimeError, "tox_self_set_status_message() failed");
   }
 
   return status_message;
