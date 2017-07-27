@@ -33,6 +33,7 @@ VALUE mTox_cNode;
 VALUE mTox_cFriend;
 VALUE mTox_cAddress;
 VALUE mTox_cPublicKey;
+VALUE mTox_cOutFriendMessage;
 
 VALUE mTox_mUserStatus_NONE;
 VALUE mTox_mUserStatus_AWAY;
@@ -61,13 +62,14 @@ void Init_tox()
 
   mTox = rb_const_get(rb_cObject, rb_intern("Tox"));
 
-  mTox_mUserStatus = rb_const_get(mTox, rb_intern("UserStatus"));
-  mTox_cOptions    = rb_const_get(mTox, rb_intern("Options"));
-  mTox_cClient     = rb_const_get(mTox, rb_intern("Client"));
-  mTox_cNode       = rb_const_get(mTox, rb_intern("Node"));
-  mTox_cFriend     = rb_const_get(mTox, rb_intern("Friend"));
-  mTox_cAddress    = rb_const_get(mTox, rb_intern("Address"));
-  mTox_cPublicKey  = rb_const_get(mTox, rb_intern("PublicKey"));
+  mTox_mUserStatus       = rb_const_get(mTox, rb_intern("UserStatus"));
+  mTox_cOptions          = rb_const_get(mTox, rb_intern("Options"));
+  mTox_cClient           = rb_const_get(mTox, rb_intern("Client"));
+  mTox_cNode             = rb_const_get(mTox, rb_intern("Node"));
+  mTox_cFriend           = rb_const_get(mTox, rb_intern("Friend"));
+  mTox_cAddress          = rb_const_get(mTox, rb_intern("Address"));
+  mTox_cPublicKey        = rb_const_get(mTox, rb_intern("PublicKey"));
+  mTox_cOutFriendMessage = rb_const_get(mTox, rb_intern("OutFriendMessage"));
 
   mTox_mUserStatus_NONE = rb_const_get(mTox_mUserStatus, rb_intern("NONE"));
   mTox_mUserStatus_AWAY = rb_const_get(mTox_mUserStatus, rb_intern("AWAY"));

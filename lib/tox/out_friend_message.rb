@@ -16,34 +16,33 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'thread'
-require 'uri'
-require 'net/http'
-require 'json'
-require 'resolv'
-
-require 'tox/version'
-require 'tox/user_status'
-require 'tox/options'
-require 'tox/client'
-require 'tox/status'
-require 'tox/node'
-require 'tox/friend'
-require 'tox/out_friend_message'
-
-# Primitives
-require 'tox/binary'
-require 'tox/public_key'
-require 'tox/nospam'
-require 'tox/address'
-
-# C extension
-require 'tox/tox'
-
-##
-# Ruby interface for libtoxcore. It can be used to create Tox chat client or bot.
-# The interface is object-oriented instead of C-style (raises exceptions
-# instead of returning error codes, uses classes to represent primitives, etc.)
-#
 module Tox
+  ##
+  # Outgoing friend message representation in Tox client.
+  #
+  class OutFriendMessage
+    attr_reader :friend, :id
+
+    def initialize(friend, id)
+      self.friend = friend
+      self.id = id
+    end
+
+    def client
+      friend.client
+    end
+
+  private
+
+    def friend=(value)
+      raise TypeError, "expected friend to be a #{Friend}" unless value.is_a? Friend
+      @friend = value
+    end
+
+    def id=(value)
+      raise TypeError, "expected id to be an #{Integer}"                     unless value.is_a? Integer
+      raise ArgumentError, 'expected id to be greater than or equal to zero' unless value >= 0
+      @id = value
+    end
+  end
 end

@@ -168,7 +168,13 @@ VALUE mTox_cFriend_send_message(const VALUE self, const VALUE text)
       rb_raise(rb_eRuntimeError, "tox_friend_send_message() failed");
   }
 
-  return result;
+  return rb_funcall(
+    mTox_cOutFriendMessage,
+    rb_intern("new"),
+    2,
+    self,
+    result
+  );
 }
 
 // Tox::Friend#name
