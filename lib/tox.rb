@@ -38,13 +38,39 @@ require 'tox/public_key'
 require 'tox/nospam'
 require 'tox/address'
 
-# C extension
-require 'tox/tox'
-
 ##
 # Ruby interface for libtoxcore. It can be used to create Tox chat client or bot.
 # The interface is object-oriented instead of C-style (raises exceptions
 # instead of returning error codes, uses classes to represent primitives, etc.)
 #
 module Tox
+  ##
+  # Exception of this type is raised when Tox function failed with error code
+  # represented in Tox headers with a constant which name ends with "_NULL".
+  # This happens when one of the arguments to the function was NULL when it was
+  # not expected. It can indicate that usage of the Tox function is invalid,
+  # so if you got exception of this type please create an issue:
+  # https://github.com/toxon/tox.rb/issues
+  # Please describe the situation, version of libtoxcore, version of the gem.
+  #
+  class NullError < RuntimeError; end
+
+  ##
+  # Exception of this type is raised when Tox function failed with unknown
+  # error code or returned false success status. It can indicate minor version
+  # upgrade of libtoxcore. Specific handling is not needed for the time beeing.
+  #
+  class UnknownError < RuntimeError; end
+
+  ##
+  # Exception of this type is raised in similar cases to {Tox::UnknownError}
+  # when it can have security implications. This should happen rarely after
+  # the gem release. However, for now it can be raised when key-related
+  # functions fail because of unknown reason for better feedback
+  # during development.
+  #
+  class UnknownSecurityError < SecurityError; end
 end
+
+# C extension
+require 'tox/tox'

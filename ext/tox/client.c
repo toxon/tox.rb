@@ -283,15 +283,15 @@ VALUE mTox_cClient_name_EQUALS(const VALUE self, const VALUE name)
     case TOX_ERR_SET_INFO_OK:
       break;
     case TOX_ERR_SET_INFO_NULL:
-      rb_raise(rb_eRuntimeError, "tox_self_set_name() failed with TOX_ERR_SET_INFO_NULL");
+      rb_raise(mTox_eNullError, "tox_self_set_name() failed with TOX_ERR_SET_INFO_NULL");
     case TOX_ERR_SET_INFO_TOO_LONG:
       rb_raise(rb_eRuntimeError, "tox_self_set_name() failed with TOX_ERR_SET_INFO_TOO_LONG");
     default:
-      rb_raise(rb_eRuntimeError, "tox_self_set_name() failed");
+      rb_raise(mTox_eUnknownError, "tox_self_set_name() failed");
   }
 
   if (!result) {
-    rb_raise(rb_eRuntimeError, "tox_self_set_name() failed");
+    rb_raise(mTox_eUnknownError, "tox_self_set_name() failed");
   }
 
   return name;
@@ -381,15 +381,15 @@ VALUE mTox_cClient_status_message_EQUALS(const VALUE self, const VALUE status_me
     case TOX_ERR_SET_INFO_OK:
       break;
     case TOX_ERR_SET_INFO_NULL:
-      rb_raise(rb_eRuntimeError, "tox_self_set_status_message() failed with TOX_ERR_SET_INFO_NULL");
+      rb_raise(mTox_eNullError, "tox_self_set_status_message() failed with TOX_ERR_SET_INFO_NULL");
     case TOX_ERR_SET_INFO_TOO_LONG:
       rb_raise(rb_eRuntimeError, "tox_self_set_status_message() failed with TOX_ERR_SET_INFO_TOO_LONG");
     default:
-      rb_raise(rb_eRuntimeError, "tox_self_set_status_message() failed");
+      rb_raise(mTox_eUnknownError, "tox_self_set_status_message() failed");
   }
 
   if (!result) {
-    rb_raise(rb_eRuntimeError, "tox_self_set_status_message() failed");
+    rb_raise(mTox_eUnknownError, "tox_self_set_status_message() failed");
   }
 
   return status_message;
@@ -469,7 +469,7 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
     case TOX_ERR_NEW_OK:
       break;
     case TOX_ERR_NEW_NULL:
-      rb_raise(rb_eRuntimeError, "tox_new() failed with TOX_ERR_NEW_NULL");
+      rb_raise(mTox_eNullError, "tox_new() failed with TOX_ERR_NEW_NULL");
     case TOX_ERR_NEW_MALLOC:
       rb_raise(rb_eNoMemError, "tox_new() failed with TOX_ERR_NEW_MALLOC");
     case TOX_ERR_NEW_PORT_ALLOC:
@@ -487,7 +487,7 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
     case TOX_ERR_NEW_LOAD_BAD_FORMAT:
       rb_raise(mTox_cClient_eBadSavedataError, "tox_new() failed with TOX_ERR_NEW_LOAD_BAD_FORMAT");
     default:
-      rb_raise(rb_eRuntimeError, "tox_new() failed");
+      rb_raise(mTox_eUnknownError, "tox_new() failed");
   }
 
   tox_callback_friend_request       (self_cdata->tox, on_friend_request);

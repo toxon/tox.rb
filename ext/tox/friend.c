@@ -99,11 +99,11 @@ VALUE mTox_cFriend_public_key(const VALUE self)
         "tox_friend_get_public_key() failed with TOX_ERR_FRIEND_GET_PUBLIC_KEY_FRIEND_NOT_FOUND"
       );
     default:
-      rb_raise(rb_eSecurityError, "tox_friend_get_public_key() failed");
+      rb_raise(mTox_eUnknownSecurityError, "tox_friend_get_public_key() failed");
   }
 
   if (result != true) {
-    rb_raise(rb_eSecurityError, "tox_friend_get_public_key() failed");
+    rb_raise(mTox_eUnknownSecurityError, "tox_friend_get_public_key() failed");
   }
 
   return rb_funcall(
@@ -142,7 +142,7 @@ VALUE mTox_cFriend_send_message(const VALUE self, const VALUE text)
       break;
     case TOX_ERR_FRIEND_SEND_MESSAGE_NULL:
       rb_raise(
-        rb_eRuntimeError,
+        mTox_eNullError,
         "tox_friend_send_message() failed with TOX_ERR_FRIEND_SEND_MESSAGE_NULL"
       );
     case TOX_ERR_FRIEND_SEND_MESSAGE_FRIEND_NOT_FOUND:
@@ -171,7 +171,7 @@ VALUE mTox_cFriend_send_message(const VALUE self, const VALUE text)
         "tox_friend_send_message() failed with TOX_ERR_FRIEND_SEND_MESSAGE_EMPTY"
       );
     default:
-      rb_raise(rb_eRuntimeError, "tox_friend_send_message() failed");
+      rb_raise(mTox_eUnknownError, "tox_friend_send_message() failed");
   }
 
   return rb_funcall(
@@ -206,7 +206,7 @@ VALUE mTox_cFriend_name(const VALUE self)
       break;
     case TOX_ERR_FRIEND_QUERY_NULL:
       rb_raise(
-        rb_eRuntimeError,
+        mTox_eNullError,
         "tox_friend_get_name_size() failed with TOX_ERR_FRIEND_QUERY_NULL"
       );
     case TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND:
@@ -215,7 +215,7 @@ VALUE mTox_cFriend_name(const VALUE self)
         "tox_friend_get_name_size() failed with TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND"
       );
     default:
-      rb_raise(rb_eRuntimeError, "tox_friend_get_name_size() failed");
+      rb_raise(mTox_eUnknownError, "tox_friend_get_name_size() failed");
   }
 
   char name[name_size];
@@ -232,7 +232,7 @@ VALUE mTox_cFriend_name(const VALUE self)
       break;
     case TOX_ERR_FRIEND_QUERY_NULL:
       rb_raise(
-        rb_eRuntimeError,
+        mTox_eNullError,
         "tox_friend_get_name() failed with TOX_ERR_FRIEND_QUERY_NULL"
       );
     case TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND:
@@ -241,11 +241,11 @@ VALUE mTox_cFriend_name(const VALUE self)
         "tox_friend_get_name() failed with TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND"
       );
     default:
-      rb_raise(rb_eRuntimeError, "tox_friend_get_name() failed");
+      rb_raise(mTox_eUnknownError, "tox_friend_get_name() failed");
   }
 
   if (result != true) {
-    rb_raise(rb_eRuntimeError, "tox_friend_get_name() failed");
+    rb_raise(mTox_eUnknownError, "tox_friend_get_name() failed");
   }
 
   return rb_str_new(name, name_size);
@@ -274,7 +274,7 @@ VALUE mTox_cFriend_status(const VALUE self)
       break;
     case TOX_ERR_FRIEND_QUERY_NULL:
       rb_raise(
-        rb_eRuntimeError,
+        mTox_eNullError,
         "tox_friend_get_status() failed with TOX_ERR_FRIEND_QUERY_NULL"
       );
     case TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND:
@@ -283,7 +283,7 @@ VALUE mTox_cFriend_status(const VALUE self)
         "tox_friend_get_status() failed with TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND"
       );
     default:
-      rb_raise(rb_eRuntimeError, "tox_friend_get_name() failed");
+      rb_raise(mTox_eUnknownError, "tox_friend_get_name() failed");
   }
 
   switch (result) {
@@ -321,7 +321,7 @@ VALUE mTox_cFriend_status_message(const VALUE self)
       break;
     case TOX_ERR_FRIEND_QUERY_NULL:
       rb_raise(
-        rb_eRuntimeError,
+        mTox_eNullError,
         "tox_friend_get_status_message_size() failed with TOX_ERR_FRIEND_QUERY_NULL"
       );
     case TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND:
@@ -330,7 +330,7 @@ VALUE mTox_cFriend_status_message(const VALUE self)
         "tox_friend_get_status_message_size() failed with TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND"
       );
     default:
-      rb_raise(rb_eRuntimeError, "tox_friend_get_status_message_size() failed");
+      rb_raise(mTox_eUnknownError, "tox_friend_get_status_message_size() failed");
   }
 
   char status_message[status_message_size];
@@ -347,7 +347,7 @@ VALUE mTox_cFriend_status_message(const VALUE self)
       break;
     case TOX_ERR_FRIEND_QUERY_NULL:
       rb_raise(
-        rb_eRuntimeError,
+        mTox_eNullError,
         "tox_friend_get_status_message() failed with TOX_ERR_FRIEND_QUERY_NULL"
       );
     case TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND:
@@ -356,11 +356,11 @@ VALUE mTox_cFriend_status_message(const VALUE self)
         "tox_friend_get_status_message() failed with TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND"
       );
     default:
-      rb_raise(rb_eRuntimeError, "tox_friend_get_status_message() failed");
+      rb_raise(mTox_eUnknownError, "tox_friend_get_status_message() failed");
   }
 
   if (result != true) {
-    rb_raise(rb_eRuntimeError, "tox_friend_get_status_message() failed");
+    rb_raise(mTox_eUnknownError, "tox_friend_get_status_message() failed");
   }
 
   return rb_str_new(status_message, status_message_size);
