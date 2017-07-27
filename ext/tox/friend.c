@@ -169,7 +169,7 @@ VALUE mTox_cFriend_send_message(const VALUE self, const VALUE text)
   }
 
   return rb_funcall(
-    mTox_cOutFriendMessage,
+    mTox_cFriend_cOutMessage,
     rb_intern("new"),
     2,
     self,

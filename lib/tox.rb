@@ -29,7 +29,7 @@ require 'tox/client'
 require 'tox/status'
 require 'tox/node'
 require 'tox/friend'
-require 'tox/out_friend_message'
+require 'tox/friend/out_message'
 
 # Primitives
 require 'tox/binary'
