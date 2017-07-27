@@ -157,13 +157,19 @@ VALUE mTox_cFriend_send_message(const VALUE self, const VALUE text)
       );
     case TOX_ERR_FRIEND_SEND_MESSAGE_SENDQ:
       rb_raise(
-        rb_eNoMemError,
+        mTox_mOutMessage_eSendQueueAllocError,
         "tox_friend_send_message() failed with TOX_ERR_FRIEND_SEND_MESSAGE_SENDQ"
       );
     case TOX_ERR_FRIEND_SEND_MESSAGE_TOO_LONG:
-      rb_raise(rb_eRuntimeError, "message too long");
+      rb_raise(
+        mTox_mOutMessage_eTooLongError,
+        "tox_friend_send_message() failed with TOX_ERR_FRIEND_SEND_MESSAGE_TOO_LONG"
+      );
     case TOX_ERR_FRIEND_SEND_MESSAGE_EMPTY:
-      rb_raise(rb_eRuntimeError, "message empty");
+      rb_raise(
+        mTox_mOutMessage_eEmptyError,
+        "tox_friend_send_message() failed with TOX_ERR_FRIEND_SEND_MESSAGE_EMPTY"
+      );
     default:
       rb_raise(rb_eRuntimeError, "tox_friend_send_message() failed");
   }

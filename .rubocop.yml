@@ -12,6 +12,9 @@ Layout/MultilineOperationIndentation:
   Exclude:
     - ext/**/*
 
+Lint/InheritException:
+  Enabled: false
+
 Metrics/BlockLength:
   Exclude:
     - '**/*.gemspec'

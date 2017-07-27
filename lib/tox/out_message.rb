@@ -17,36 +17,20 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module Tox
-  class Friend
-    ##
-    # Outgoing friend message representation in Tox client.
-    #
-    class OutMessage
-      include Tox::OutMessage
-
-      attr_reader :friend, :id
-
-      def initialize(friend, id)
-        self.friend = friend
-        self.id = id
-      end
-
-      def client
-        friend.client
-      end
-
-    private
-
-      def friend=(value)
-        raise TypeError, "expected friend to be a #{Friend}" unless value.is_a? Friend
-        @friend = value
-      end
-
-      def id=(value)
-        raise TypeError, "expected id to be an #{Integer}"                     unless value.is_a? Integer
-        raise ArgumentError, 'expected id to be greater than or equal to zero' unless value >= 0
-        @id = value
-      end
+  ##
+  # Abstract module for outgoing message representation in Tox client.
+  #
+  module OutMessage
+    def initialize(*)
+      raise NotImplementedError, "#{self.class}#initialize"
     end
+
+    def client
+      raise NotImplementedError, "#{self.class}#client"
+    end
+
+    class SendQueueAllocError < NoMemoryError; end
+    class TooLongError        < RuntimeError;  end
+    class EmptyError          < RuntimeError;  end
   end
 end

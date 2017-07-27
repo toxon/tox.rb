@@ -33,6 +33,7 @@ VALUE mTox_cNode;
 VALUE mTox_cFriend;
 VALUE mTox_cAddress;
 VALUE mTox_cPublicKey;
+VALUE mTox_mOutMessage;
 
 VALUE mTox_mUserStatus_NONE;
 VALUE mTox_mUserStatus_AWAY;
@@ -43,6 +44,10 @@ VALUE mTox_cClient_eBadSavedataError;
 VALUE mTox_cFriend_eNotFoundError;
 VALUE mTox_cFriend_eNotConnectedError;
 VALUE mTox_cFriend_cOutMessage;
+
+VALUE mTox_mOutMessage_eSendQueueAllocError;
+VALUE mTox_mOutMessage_eTooLongError;
+VALUE mTox_mOutMessage_eEmptyError;
 
 // Singleton methods
 
@@ -69,6 +74,7 @@ void Init_tox()
   mTox_cFriend     = rb_const_get(mTox, rb_intern("Friend"));
   mTox_cAddress    = rb_const_get(mTox, rb_intern("Address"));
   mTox_cPublicKey  = rb_const_get(mTox, rb_intern("PublicKey"));
+  mTox_mOutMessage = rb_const_get(mTox, rb_intern("OutMessage"));
 
   mTox_mUserStatus_NONE = rb_const_get(mTox_mUserStatus, rb_intern("NONE"));
   mTox_mUserStatus_AWAY = rb_const_get(mTox_mUserStatus, rb_intern("AWAY"));
@@ -79,6 +85,10 @@ void Init_tox()
   mTox_cFriend_eNotFoundError     = rb_const_get(mTox_cFriend, rb_intern("NotFoundError"));
   mTox_cFriend_eNotConnectedError = rb_const_get(mTox_cFriend, rb_intern("NotConnectedError"));
   mTox_cFriend_cOutMessage        = rb_const_get(mTox_cFriend, rb_intern("OutMessage"));
+
+  mTox_mOutMessage_eSendQueueAllocError = rb_const_get(mTox_mOutMessage, rb_intern("SendQueueAllocError"));
+  mTox_mOutMessage_eTooLongError        = rb_const_get(mTox_mOutMessage, rb_intern("TooLongError"));
+  mTox_mOutMessage_eEmptyError          = rb_const_get(mTox_mOutMessage, rb_intern("EmptyError"));
 
   // Singleton methods
 

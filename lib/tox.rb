@@ -28,6 +28,7 @@ require 'tox/options'
 require 'tox/client'
 require 'tox/status'
 require 'tox/node'
+require 'tox/out_message'
 require 'tox/friend'
 require 'tox/friend/out_message'
 
