@@ -17,8 +17,20 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module Tox
+  ##
+  # Gem, library API and ABI version strings and component numbers.
+  #
   module Version
     # Gem version.
     GEM_VERSION = '0.0.1'
+
+    def self.const_missing(name)
+      return "#{MAJOR}.#{MINOR}.#{PATCH}" if name == :TOX_VERSION
+      super
+    end
+
+    def self.tox_version
+      "#{major}.#{minor}.#{patch}"
+    end
   end
 end

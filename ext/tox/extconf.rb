@@ -62,6 +62,9 @@ have_struct_member 'struct Tox_Options', 'savedata_type',   'tox/tox.h' and
 have_struct_member 'struct Tox_Options', 'savedata_length', 'tox/tox.h' and
 have_struct_member 'struct Tox_Options', 'savedata_data',   'tox/tox.h' and
 
+have_const 'TOX_VERSION_MAJOR',                              'tox/tox.h' and
+have_const 'TOX_VERSION_MINOR',                              'tox/tox.h' and
+have_const 'TOX_VERSION_PATCH',                              'tox/tox.h' and
 have_const 'TOX_HASH_LENGTH',                                'tox/tox.h' and
 have_const 'TOX_SAVEDATA_TYPE_NONE',                         'tox/tox.h' and
 have_const 'TOX_SAVEDATA_TYPE_TOX_SAVE',                     'tox/tox.h' and
@@ -102,6 +105,9 @@ have_const 'TOX_ERR_FRIEND_SEND_MESSAGE_SENDQ',                'tox/tox.h' and
 have_const 'TOX_ERR_FRIEND_SEND_MESSAGE_TOO_LONG',             'tox/tox.h' and
 have_const 'TOX_ERR_FRIEND_SEND_MESSAGE_EMPTY',                'tox/tox.h' and
 
+have_func 'tox_version_major',                'tox/tox.h' and
+have_func 'tox_version_minor',                'tox/tox.h' and
+have_func 'tox_version_patch',                'tox/tox.h' and
 have_func 'tox_version_is_compatible',        'tox/tox.h' and
 have_func 'tox_hash',                         'tox/tox.h' and
 have_func 'tox_new',                          'tox/tox.h' and

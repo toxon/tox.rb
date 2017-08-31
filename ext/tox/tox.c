@@ -30,6 +30,7 @@ VALUE mTox_eNullError;
 VALUE mTox_eUnknownError;
 VALUE mTox_eUnknownSecurityError;
 
+VALUE mTox_mVersion;
 VALUE mTox_mUserStatus;
 VALUE mTox_cOptions;
 VALUE mTox_cClient;
@@ -75,6 +76,7 @@ void Init_tox()
   mTox_eUnknownError         = rb_const_get(mTox, rb_intern("UnknownError"));
   mTox_eUnknownSecurityError = rb_const_get(mTox, rb_intern("UnknownSecurityError"));
 
+  mTox_mVersion    = rb_const_get(mTox, rb_intern("Version"));
   mTox_mUserStatus = rb_const_get(mTox, rb_intern("UserStatus"));
   mTox_cOptions    = rb_const_get(mTox, rb_intern("Options"));
   mTox_cClient     = rb_const_get(mTox, rb_intern("Client"));
@@ -102,6 +104,7 @@ void Init_tox()
 
   rb_define_singleton_method(mTox, "hash", mTox_hash, 1);
 
+  mTox_mVersion_INIT();
   mTox_cOptions_INIT();
   mTox_cClient_INIT();
   mTox_cFriend_INIT();

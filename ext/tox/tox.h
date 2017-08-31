@@ -23,6 +23,7 @@
 // C extension initialization
 
 void Init_tox();
+void mTox_mVersion_INIT();
 void mTox_cOptions_INIT();
 void mTox_cClient_INIT();
 void mTox_cFriend_INIT();
@@ -43,6 +44,7 @@ extern VALUE mTox_eNullError;
 extern VALUE mTox_eUnknownError;
 extern VALUE mTox_eUnknownSecurityError;
 
+extern VALUE mTox_mVersion;
 extern VALUE mTox_mUserStatus;
 extern VALUE mTox_cOptions;
 extern VALUE mTox_cClient;
