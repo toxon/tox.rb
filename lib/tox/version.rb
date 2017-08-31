@@ -25,12 +25,12 @@ module Tox
     GEM_VERSION = '0.0.1'
 
     def self.const_missing(name)
-      return "#{MAJOR}.#{MINOR}.#{PATCH}" if name == :TOX_VERSION
+      return "#{API_MAJOR}.#{API_MINOR}.#{API_PATCH}" if name == :API_VERSION
       super
     end
 
-    def self.tox_version
-      "#{major}.#{minor}.#{patch}"
+    def self.abi_version
+      "#{abi_major}.#{abi_minor}.#{abi_patch}"
     end
   end
 end

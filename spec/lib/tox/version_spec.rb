@@ -23,59 +23,59 @@ RSpec.describe Tox::Version do
     end
   end
 
-  describe '::TOX_VERSION' do
+  describe '::API_VERSION' do
     specify do
-      expect(described_class::TOX_VERSION).to eq [
-        described_class::MAJOR,
-        described_class::MINOR,
-        described_class::PATCH,
+      expect(described_class::API_VERSION).to eq [
+        described_class::API_MAJOR,
+        described_class::API_MINOR,
+        described_class::API_PATCH,
       ].join '.'
     end
   end
 
-  describe '::MAJOR' do
+  describe '::API_MAJOR' do
     specify do
-      expect(described_class::MAJOR).to be_kind_of Integer
+      expect(described_class::API_MAJOR).to be_kind_of Integer
     end
   end
 
-  describe '::MINOR' do
+  describe '::API_MINOR' do
     specify do
-      expect(described_class::MINOR).to be_kind_of Integer
+      expect(described_class::API_MINOR).to be_kind_of Integer
     end
   end
 
-  describe '::PATCH' do
+  describe '::API_PATCH' do
     specify do
-      expect(described_class::PATCH).to be_kind_of Integer
+      expect(described_class::API_PATCH).to be_kind_of Integer
     end
   end
 
-  describe '.tox_version' do
+  describe '.abi_version' do
     specify do
-      expect(described_class.tox_version).to eq [
-        described_class.major,
-        described_class.minor,
-        described_class.patch,
+      expect(described_class.abi_version).to eq [
+        described_class.abi_major,
+        described_class.abi_minor,
+        described_class.abi_patch,
       ].join '.'
     end
   end
 
-  describe '.major' do
+  describe '.abi_major' do
     specify do
-      expect(described_class.major).to be_kind_of Integer
+      expect(described_class.abi_major).to be_kind_of Integer
     end
   end
 
-  describe '.minor' do
+  describe '.abi_minor' do
     specify do
-      expect(described_class.minor).to be_kind_of Integer
+      expect(described_class.abi_minor).to be_kind_of Integer
     end
   end
 
-  describe '.patch' do
+  describe '.abi_patch' do
     specify do
-      expect(described_class.patch).to be_kind_of Integer
+      expect(described_class.abi_patch).to be_kind_of Integer
     end
   end
 end
