@@ -17,12 +17,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 RSpec.describe Tox do
-  describe '::VERSION' do
-    specify do
-      expect(described_class::VERSION).to match(/\A(\d+)\.(\d+)\.(\d+)\z/)
-    end
-  end
-
   describe '.hash' do
     it 'returns proper hash for empty string' do
       expect(described_class.hash('')).to eq OpenSSL::Digest::SHA256.digest ''

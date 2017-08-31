@@ -8,7 +8,7 @@ require 'tox/version'
 
 Gem::Specification.new do |spec|
   spec.name     = 'tox'
-  spec.version  = Tox::VERSION
+  spec.version  = Tox::Version::GEM_VERSION
   spec.license  = 'GPL-3.0'
   spec.homepage = 'https://github.com/toxon/tox.rb'
   spec.summary  = 'Ruby interface for libtoxcore'

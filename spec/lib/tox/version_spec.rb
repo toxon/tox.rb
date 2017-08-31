@@ -16,9 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-module Tox
-  module Version
-    # Gem version.
-    GEM_VERSION = '0.0.1'
+RSpec.describe Tox::Version do
+  describe '::GEM_VERSION' do
+    specify do
+      expect(described_class::GEM_VERSION).to match(/\A(\d+)\.(\d+)\.(\d+)\z/)
+    end
   end
 end
