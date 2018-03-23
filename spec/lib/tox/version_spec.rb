@@ -31,6 +31,10 @@ RSpec.describe Tox::Version do
         described_class::API_PATCH,
       ].join '.'
     end
+
+    specify do
+      expect(described_class::API_VERSION).to be_frozen
+    end
   end
 
   describe '::API_MAJOR' do
@@ -58,6 +62,10 @@ RSpec.describe Tox::Version do
         described_class.abi_minor,
         described_class.abi_patch,
       ].join '.'
+    end
+
+    specify do
+      expect(described_class.abi_version).to be_frozen
     end
   end
 
