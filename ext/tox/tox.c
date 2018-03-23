@@ -18,7 +18,7 @@
 
 #include "tox.h"
 
-#if !(TOX_VERSION_IS_API_COMPATIBLE(0, 1, 9))
+#if !(TOX_VERSION_IS_API_COMPATIBLE(0, 2, 1))
   #error "Tox API version is not compatible"
 #endif
 
