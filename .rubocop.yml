@@ -3,14 +3,14 @@ AllCops:
   DisplayCopNames: true
 
   Exclude:
-    - vendor/**/*
+    - 'vendor/**/*'
 
 Layout/AccessModifierIndentation:
   EnforcedStyle: outdent
 
 Layout/MultilineOperationIndentation:
   Exclude:
-    - ext/**/*
+    - 'ext/**/*'
 
 Lint/InheritException:
   Enabled: false
@@ -18,18 +18,18 @@ Lint/InheritException:
 Metrics/BlockLength:
   Exclude:
     - '**/*.gemspec'
-    - spec/**/*
+    - 'spec/**/*'
 
 Style/AndOr:
   Exclude:
-    - ext/**/*
+    - 'ext/**/*'
 
 Style/DoubleNegation:
   Enabled: false
 
 Style/GlobalVars:
   Exclude:
-    - ext/**/*
+    - 'ext/**/*'
 
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
