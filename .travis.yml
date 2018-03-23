@@ -6,13 +6,13 @@ rvm:
 
 before_install:
   - sudo apt-get update
-  - sudo apt-get install -y libsodium13 libsodium-dev
-  - sudo git clone https://github.com/TokTok/c-toxcore.git /usr/local/src/c-toxcore/
-  - cd /usr/local/src/c-toxcore/
-  - sudo autoreconf -i
-  - sudo ./configure
-  - sudo make
-  - sudo make install
+  - sudo apt-get install -y build-essential libtool autotools-dev automake checkinstall check git yasm
+
+  - sudo ./bin/build/libsodium
+  - sudo ./bin/build/libtoxcore
+
+  - sudo mkdir -p '/etc/ld.so.conf.d/'
+  - echo '/usr/local/lib/' | sudo tee -a '/etc/ld.so.conf.d/locallib.conf'
   - sudo ldconfig
 
 before_script:
