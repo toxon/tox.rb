@@ -6,7 +6,7 @@ rvm:
 
 before_install:
   - sudo apt-get update
-  - sudo apt-get install -y libsodium18 libsodium-dev
+  - sudo apt-get install -y libsodium13 libsodium-dev
   - sudo git clone https://github.com/TokTok/c-toxcore.git /usr/local/src/c-toxcore/
   - cd /usr/local/src/c-toxcore/
   - sudo autoreconf -i
