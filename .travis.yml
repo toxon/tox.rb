@@ -5,14 +5,14 @@ rvm:
   - 2.4
 
 before_install:
-  - echo "deb https://pkg.tox.chat/debian stable jessie" | sudo tee /etc/apt/sources.list.d/tox.list
-  - wget -qO - https://pkg.tox.chat/debian/pkg.gpg.key | sudo apt-key add -
-  - sudo apt-get install -y apt-transport-https
   - sudo apt-get update
-
   - sudo apt-get install -y libsodium18 libsodium-dev
-  - sudo apt-get install -y libtoxcore-toktok libtoxcore-toktok-dev
-
+  - sudo git clone https://github.com/TokTok/c-toxcore.git /usr/local/src/c-toxcore/
+  - cd /usr/local/src/c-toxcore/
+  - sudo autoreconf -i
+  - sudo ./configure
+  - sudo make
+  - sudo make install
   - sudo ldconfig
 
 before_script:
