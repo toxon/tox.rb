@@ -21,8 +21,7 @@ Metrics/BlockLength:
     - 'spec/**/*'
 
 Style/AndOr:
-  Exclude:
-    - 'ext/**/*'
+  EnforcedStyle: conditionals
 
 Style/DoubleNegation:
   Enabled: false
