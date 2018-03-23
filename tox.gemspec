@@ -25,6 +25,12 @@ Gem::Specification.new do |spec|
   instead of returning error codes, uses classes to represent primitives, etc.)
   END
 
+  spec.metadata = {
+    'homepage_uri'    => 'https://github.com/toxon/tox.rb',
+    'source_code_uri' => 'https://github.com/toxon/tox.rb',
+    'bug_tracker_uri' => 'https://github.com/toxon/tox.rb/issues',
+  }.freeze
+
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match %r{^(test|spec|features)/}
   end
