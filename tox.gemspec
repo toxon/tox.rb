@@ -14,10 +14,10 @@ Gem::Specification.new do |spec|
   spec.summary  = 'Ruby interface for libtoxcore'
   spec.platform = Gem::Platform::RUBY
 
+  spec.required_ruby_version = '~> 2.3'
+
   spec.authors = ['Braiden Vasco']
   spec.email   = %w[braiden-vasco@users.noreply.github.com]
-
-  spec.required_ruby_version = '~> 2.3'
 
   spec.description = <<-END.split.join ' '
   Ruby interface for libtoxcore. It can be used to create Tox chat client or bot.
