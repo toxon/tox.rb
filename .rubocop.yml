@@ -20,9 +20,6 @@ Metrics/BlockLength:
     - '**/*.gemspec'
     - spec/**/*
 
-Metrics/LineLength:
-  Max: 120
-
 Style/AndOr:
   Exclude:
     - ext/**/*

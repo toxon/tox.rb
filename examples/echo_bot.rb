@@ -41,7 +41,8 @@ puts 'Connecting to the nodes from official list...'
 tox_client.bootstrap_official
 
 tox_client.on_friend_request do |public_key|
-  puts "Got friend request with public key #{public_key.to_hex}. Adding to contacts..."
+  puts "Got friend request with public key #{public_key.to_hex}. " \
+       'Adding to contacts...'
   puts
 
   tox_client.friend_add_norequest public_key
@@ -60,7 +61,9 @@ tox_client.on_friend_message do |friend, text|
   friend.send_message text
 end
 
-puts 'Running. Send me friend request, I\'ll accept it immediately. Then send me a message.'
+puts 'Running. Send me friend request, I\'ll accept it immediately. ' \
+     'Then send me a message.'
+
 begin
   puts
   tox_client.run

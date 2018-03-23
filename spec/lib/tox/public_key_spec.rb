@@ -49,7 +49,8 @@ RSpec.describe Tox::PublicKey do
 
   describe '#inspect' do
     it 'returns inspected value' do
-      expect(subject.inspect).to eq "#<#{described_class}: \"#{subject.to_hex}\">"
+      expect(subject.inspect).to \
+        eq "#<#{described_class}: \"#{subject.to_hex}\">"
     end
   end
 end

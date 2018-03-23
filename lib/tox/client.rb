@@ -43,16 +43,11 @@ module Tox
     end
 
     def run
-      raise AlreadyRunningError, "already running in #{thread}" unless mutex.try_lock
-
-      begin
-        self.running = true
-        self.thread = Thread.current
-        run_loop
-      ensure
-        self.running = false
-        self.thread = nil
+      unless mutex.try_lock
+        raise AlreadyRunningError, "already running in #{thread}"
       end
+
+      run_internal
 
       mutex.unlock
     end
@@ -105,6 +100,15 @@ module Tox
 
     def running=(value)
       @running = !!value
+    end
+
+    def run_internal
+      self.running = true
+      self.thread = Thread.current
+      run_loop
+    ensure
+      self.running = false
+      self.thread = nil
     end
 
     class Error < RuntimeError; end

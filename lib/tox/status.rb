@@ -31,7 +31,9 @@ module Tox
     end
 
     def inspect
-      @inspect ||= "#<#{self.class} last_refresh: #{last_refresh}, last_scan: #{last_scan}>"
+      @inspect ||= "#<#{self.class} "                \
+                   "last_refresh: #{last_refresh}, " \
+                   "last_scan: #{last_scan}>"
     end
 
     def last_refresh

@@ -29,8 +29,9 @@ RSpec.describe Tox::Status do
 
   describe '#inspect' do
     specify do
-      expect(subject.inspect).to eq \
-        "#<#{described_class} last_refresh: #{subject.last_refresh}, last_scan: #{subject.last_scan}>"
+      expect(subject.inspect).to eq "#<#{described_class} "                   \
+                                    "last_refresh: #{subject.last_refresh}, " \
+                                    "last_scan: #{subject.last_scan}>"
     end
 
     specify do

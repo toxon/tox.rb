@@ -29,13 +29,17 @@ module Tox
       /\A[\da-fA-F]{#{2 * bytesize}}\z/
     end
 
-    def initialize(value)
-      raise TypeError, "expected value to be a #{String}" unless value.is_a? String
+    def initialize(value) # rubocop:disable Metrics/MethodLength
+      unless value.is_a? String
+        raise TypeError, "expected value to be a #{String}"
+      end
 
       if value.bytesize == self.class.bytesize
         super value
       else
-        raise ArgumentError, 'expected value to be a hex string' unless value =~ self.class.hex_re
+        unless value =~ self.class.hex_re
+          raise ArgumentError, 'expected value to be a hex string'
+        end
         super [value].pack('H*')
       end
 

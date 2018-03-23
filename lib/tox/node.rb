@@ -32,19 +32,24 @@ module Tox
       @ipv4 ||=
         begin
           value = @data[:ipv4]
-          raise TypeError, "expected value to be a #{String}" unless value.is_a? String
+          unless value.is_a? String
+            raise TypeError, "expected value to be a #{String}"
+          end
           value.frozen? ? value : value.dup.freeze
         end
     end
 
     def port
-      @port ||=
-        begin
-          value = @data[:port]
-          raise TypeError,     "expected value to be an #{Integer}"       unless value.is_a? Integer
-          raise ArgumentError, 'expected value to be between 0 and 65535' unless PORT_RANGE.cover? value
-          value
+      @port ||= begin
+        value = @data[:port]
+        unless value.is_a? Integer
+          raise TypeError, "expected value to be an #{Integer}"
         end
+        unless PORT_RANGE.cover? value
+          raise ArgumentError, 'expected value to be between 0 and 65535'
+        end
+        value
+      end
     end
 
     def public_key

@@ -38,13 +38,20 @@ module Tox
   private
 
     def client=(value)
-      raise TypeError, "expected client to be a #{Client}" unless value.is_a? Client
+      unless value.is_a? Client
+        raise TypeError, "expected client to be a #{Client}"
+      end
       @client = value
     end
 
     def number=(value)
-      raise TypeError,     "expected number to be a #{Integer}"                  unless value.is_a? Integer
-      raise ArgumentError, 'expected number to be greater than or equal to zero' unless value >= 0
+      unless value.is_a? Integer
+        raise TypeError, "expected number to be a #{Integer}"
+      end
+      unless value >= 0
+        raise ArgumentError,
+              'expected number to be greater than or equal to zero'
+      end
       @number = value
     end
 

@@ -40,7 +40,6 @@ RSpec.describe Tox::Node do
   let(:ipv6)       { '-' }
   let(:port)       { 33_445 }
   let(:tcp_ports)  { [33_445, 3_389] }
-  let(:public_key) { Tox::PublicKey.new 'F404ABAA1C99A9D37D61AB54898F56793E1DEF8BD46B1038B9D822E8460FAB67' }
   let(:maintainer) { 'nurupo' }
   let(:location)   { 'US' }
   let(:status_udp) { true }
@@ -48,6 +47,12 @@ RSpec.describe Tox::Node do
   let(:version)    { '2016010100' }
   let(:motd)       { Faker::Lorem.sentences.join ' ' }
   let(:last_ping)  { Time.at 1_500_570_970 }
+
+  let :public_key do
+    Tox::PublicKey.new(
+      'F404ABAA1C99A9D37D61AB54898F56793E1DEF8BD46B1038B9D822E8460FAB67',
+    )
+  end
 
   describe '#ipv4' do
     it 'returns given value' do

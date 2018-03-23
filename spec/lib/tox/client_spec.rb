@@ -22,13 +22,15 @@ RSpec.describe Tox::Client do
   describe '#initialize' do
     context 'when options is nil' do
       specify do
-        expect { described_class.new nil }.to raise_error TypeError, "expected options to be a #{Tox::Options}"
+        expect { described_class.new nil }.to \
+          raise_error TypeError, "expected options to be a #{Tox::Options}"
       end
     end
 
     context 'when options have invalid type' do
       specify do
-        expect { described_class.new 123 }.to raise_error TypeError, "expected options to be a #{Tox::Options}"
+        expect { described_class.new 123 }.to \
+          raise_error TypeError, "expected options to be a #{Tox::Options}"
       end
     end
 
@@ -192,7 +194,10 @@ RSpec.describe Tox::Client do
           Timeout.timeout 1 do
             subject.run
           end
-        end.to raise_error described_class::AlreadyRunningError, "already running in #{thread}"
+        end.to raise_error(
+          described_class::AlreadyRunningError,
+          "already running in #{thread}",
+        )
       end
     end
   end
