@@ -23,22 +23,14 @@ RSpec.describe Tox::Address do
 
   let(:bin) { [hex].pack('H*').freeze }
 
-  it { is_expected.to be_frozen }
-
   describe '#initialize' do
     context 'when binary value provided' do
       subject { described_class.new bin }
 
-      it { is_expected.to be_frozen }
-
       it 'represents it as is' do
-        expect(subject).to eq bin
+        expect(subject.value).to eq bin
       end
     end
-  end
-
-  it 'equals binary value' do
-    expect(subject).to eq bin
   end
 
   describe '#to_s' do
@@ -51,6 +43,20 @@ RSpec.describe Tox::Address do
     it 'returns inspected value' do
       expect(subject.inspect).to \
         eq "#<#{described_class}: \"#{subject}\">"
+    end
+  end
+
+  describe '#value' do
+    specify do
+      expect(subject.value).to be_instance_of String
+    end
+
+    specify do
+      expect(subject.value).to be_frozen
+    end
+
+    it 'equals binary value' do
+      expect(subject.value).to eq bin
     end
   end
 end

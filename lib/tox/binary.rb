@@ -29,6 +29,8 @@ module Tox
       /\A[\da-fA-F]{#{2 * bytesize}}\z/
     end
 
+    attr_reader :value
+
     def initialize(value) # rubocop:disable Metrics/MethodLength
       unless value.is_a? String
         raise TypeError, "expected value to be a #{String}"
@@ -45,7 +47,7 @@ module Tox
     end
 
     def to_s
-      @to_s ||= @value.unpack('H*').first.upcase.freeze
+      @to_s ||= value.unpack('H*').first.upcase.freeze
     end
 
     def inspect
