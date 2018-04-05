@@ -1,0 +1,11 @@
+#!/bin/sh
+
+DAEMON='vendor/libtoxcore/tox-bootstrapd'
+CONFIG='config/node.conf'
+
+if [ ! -x "$DAEMON" ]; then
+  # For my development environment
+  DAEMON='/usr/local/src/c-toxcore/_build/tox-bootstrapd'
+fi
+
+$DAEMON --foreground --log-backend stdout --config "$CONFIG"
