@@ -46,15 +46,6 @@ module Tox
   # upgrade of libtoxcore. Specific handling is not needed for the time beeing.
   #
   class UnknownError < RuntimeError; end
-
-  ##
-  # Exception of this type is raised in similar cases to {Tox::UnknownError}
-  # when it can have security implications. This should happen rarely after
-  # the gem release. However, for now it can be raised when key-related
-  # functions fail because of unknown reason for better feedback
-  # during development.
-  #
-  class UnknownSecurityError < SecurityError; end
 end
 
 # C extension

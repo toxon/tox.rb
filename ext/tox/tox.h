@@ -24,7 +24,6 @@ extern VALUE mTox;
 
 extern VALUE mTox_eNullError;
 extern VALUE mTox_eUnknownError;
-extern VALUE mTox_eUnknownSecurityError;
 
 extern VALUE mTox_mVersion;
 extern VALUE mTox_mUserStatus;

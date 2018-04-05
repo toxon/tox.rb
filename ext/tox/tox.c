@@ -10,7 +10,6 @@ VALUE mTox;
 
 VALUE mTox_eNullError;
 VALUE mTox_eUnknownError;
-VALUE mTox_eUnknownSecurityError;
 
 VALUE mTox_mVersion;
 VALUE mTox_mUserStatus;
@@ -55,9 +54,8 @@ void Init_tox()
 
   mTox = rb_const_get(rb_cObject, rb_intern("Tox"));
 
-  mTox_eNullError            = rb_const_get(mTox, rb_intern("NullError"));
-  mTox_eUnknownError         = rb_const_get(mTox, rb_intern("UnknownError"));
-  mTox_eUnknownSecurityError = rb_const_get(mTox, rb_intern("UnknownSecurityError"));
+  mTox_eNullError    = rb_const_get(mTox, rb_intern("NullError"));
+  mTox_eUnknownError = rb_const_get(mTox, rb_intern("UnknownError"));
 
   mTox_mVersion    = rb_const_get(mTox, rb_intern("Version"));
   mTox_mUserStatus = rb_const_get(mTox, rb_intern("UserStatus"));
@@ -106,7 +104,7 @@ VALUE mTox_hash(const VALUE self, const VALUE data)
   const uint8_t result[TOX_HASH_LENGTH];
 
   if (true != tox_hash(result, (const uint8_t*)RSTRING_PTR(data), RSTRING_LEN(data))) {
-    rb_raise(mTox_eUnknownSecurityError, "tox_hash() failed");
+    rb_raise(mTox_eUnknownError, "tox_hash() failed");
   }
 
   return rb_str_new(result, TOX_HASH_LENGTH);

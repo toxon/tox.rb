@@ -81,11 +81,11 @@ VALUE mTox_cFriend_public_key(const VALUE self)
         "tox_friend_get_public_key() failed with TOX_ERR_FRIEND_GET_PUBLIC_KEY_FRIEND_NOT_FOUND"
       );
     default:
-      rb_raise(mTox_eUnknownSecurityError, "tox_friend_get_public_key() failed");
+      rb_raise(mTox_eUnknownError, "tox_friend_get_public_key() failed");
   }
 
   if (result != true) {
-    rb_raise(mTox_eUnknownSecurityError, "tox_friend_get_public_key() failed");
+    rb_raise(mTox_eUnknownError, "tox_friend_get_public_key() failed");
   }
 
   return rb_funcall(
