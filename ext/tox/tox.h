@@ -52,4 +52,5 @@ extern VALUE mTox_mOutMessage_eEmptyError;
 
 // Macros
 
-#define RAISE_UNKNOWN(name) rb_raise(mTox_eUnknownError, name"() failed")
+#define RAISE_FUNC_RESULT(name)        rb_raise(mTox_eUnknownError, name"() failed")
+#define RAISE_FUNC_ERROR_DEFAULT(name) rb_raise(mTox_eUnknownError, name"() failed")

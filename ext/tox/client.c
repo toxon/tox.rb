@@ -313,11 +313,11 @@ VALUE mTox_cClient_name_ASSIGN(const VALUE self, const VALUE name)
     case TOX_ERR_SET_INFO_TOO_LONG:
       rb_raise(rb_eRuntimeError, "tox_self_set_name() failed with TOX_ERR_SET_INFO_TOO_LONG");
     default:
-      RAISE_UNKNOWN("tox_self_set_name");
+      RAISE_FUNC_ERROR_DEFAULT("tox_self_set_name");
   }
 
   if (!result) {
-    RAISE_UNKNOWN("tox_self_set_name");
+    RAISE_FUNC_RESULT("tox_self_set_name");
   }
 
   return name;
@@ -411,11 +411,11 @@ VALUE mTox_cClient_status_message_ASSIGN(const VALUE self, const VALUE status_me
     case TOX_ERR_SET_INFO_TOO_LONG:
       rb_raise(rb_eRuntimeError, "tox_self_set_status_message() failed with TOX_ERR_SET_INFO_TOO_LONG");
     default:
-      RAISE_UNKNOWN("tox_self_set_status_message");
+      RAISE_FUNC_ERROR_DEFAULT("tox_self_set_status_message");
   }
 
   if (!result) {
-    RAISE_UNKNOWN("tox_self_set_status_message");
+    RAISE_FUNC_RESULT("tox_self_set_status_message");
   }
 
   return status_message;
@@ -482,7 +482,7 @@ VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key
     case TOX_ERR_FRIEND_ADD_MALLOC:
       rb_raise(rb_eNoMemError, "tox_friend_add_norequest() failed with TOX_ERR_FRIEND_ADD_MALLOC");
     default:
-      RAISE_UNKNOWN("tox_friend_add_norequest");
+      RAISE_FUNC_ERROR_DEFAULT("tox_friend_add_norequest");
   }
 
   return rb_funcall(
@@ -588,7 +588,7 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
     case TOX_ERR_NEW_LOAD_BAD_FORMAT:
       rb_raise(mTox_cClient_eBadSavedataError, "tox_new() failed with TOX_ERR_NEW_LOAD_BAD_FORMAT");
     default:
-      RAISE_UNKNOWN("tox_new");
+      RAISE_FUNC_ERROR_DEFAULT("tox_new");
   }
 
   tox_callback_friend_request       (self_cdata->tox, on_friend_request);
