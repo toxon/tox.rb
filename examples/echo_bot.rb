@@ -40,9 +40,10 @@ puts
 puts 'Connecting to the nodes from official list...'
 tox_client.bootstrap_official
 
-tox_client.on_friend_request do |public_key|
-  puts "Got friend request with public key #{public_key}. " \
-       'Adding to contacts...'
+tox_client.on_friend_request do |public_key, text|
+  puts 'Friend request. Adding to contacts...'
+  puts "Public key: #{public_key}"
+  puts "Text:       #{text.inspect}"
   puts
 
   tox_client.friend_add_norequest public_key
@@ -55,7 +56,7 @@ tox_client.on_friend_message do |friend, text|
   puts "Public key:     #{friend.public_key}"
   puts "Status:         #{friend.status}"
   puts "Status message: #{friend.status_message}"
-  puts text.inspect
+  puts "Text:           #{text.inspect}"
   puts
 
   friend.send_message text
