@@ -39,11 +39,15 @@ RSpec.describe 'Two clients' do
       public_key: node_public_key,
     )
 
+    options = Tox::Options.new
+    # FIXME: use bootstrap node instead of local discovery
+    options.local_discovery_enabled = true
+
     send_queue = Queue.new
     recv_queue = Queue.new
 
-    send_client = Tox::Client.new
-    recv_client = Tox::Client.new
+    send_client = Tox::Client.new options
+    recv_client = Tox::Client.new options
 
     send_client.friend_add_norequest recv_client.public_key
     recv_client.friend_add_norequest send_client.public_key
@@ -51,8 +55,8 @@ RSpec.describe 'Two clients' do
     sleep 0.1 until send_client.friends.last.exist?
     sleep 0.1 until recv_client.friends.last.exist?
 
-    send_client.bootstrap node
-    recv_client.bootstrap node
+    expect(send_client.bootstrap(node)).to eq true
+    expect(recv_client.bootstrap(node)).to eq true
 
     send_client.on_iteration do
       send_queue.size.times do
