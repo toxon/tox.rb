@@ -44,7 +44,7 @@ RSpec.describe Tox::Nospam do
       end
 
       it 'converts it' do
-        expect(subject.value).to eq ("\x00" * 4).force_encoding('BINARY')
+        expect(subject.value).to eq(("\x00" * 4).force_encoding('BINARY'))
       end
     end
 
@@ -60,7 +60,7 @@ RSpec.describe Tox::Nospam do
       end
 
       it 'converts it' do
-        expect(subject.value).to eq ("\xFF" * 4).force_encoding('BINARY')
+        expect(subject.value).to eq(("\xFF" * 4).force_encoding('BINARY'))
       end
     end
 
@@ -77,7 +77,7 @@ RSpec.describe Tox::Nospam do
 
       it 'converts it' do
         expect(subject.value).to \
-          eq (+"\x12\x34\x56\x78").force_encoding('BINARY')
+          eq((+"\x12\x34\x56\x78").force_encoding('BINARY'))
       end
     end
 
