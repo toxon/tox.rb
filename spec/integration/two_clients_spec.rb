@@ -21,13 +21,14 @@ RSpec.describe 'Two clients' do
   end
 
   let :node_executable do
-    if File.executable? node_vendored
-      node_vendored
-    elsif File.executable? node_local
-      node_local
-    else
-      raise "Executable not found at #{node_vendored} and #{node_local}"
-    end
+    node_vendored
+    # if File.executable? node_vendored
+    #   node_vendored
+    # elsif File.executable? node_local
+    #   node_local
+    # else
+    #   raise "Executable not found at #{node_vendored} and #{node_local}"
+    # end
   end
 
   let(:node_vendored) { File.expand_path 'vendor/libtoxcore/build/tox-bootstrapd' }
