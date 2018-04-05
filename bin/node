@@ -8,4 +8,4 @@ if [ ! -x "$DAEMON" ]; then
   DAEMON='/usr/local/src/c-toxcore/_build/tox-bootstrapd'
 fi
 
-$DAEMON --foreground --log-backend stdout --config "$CONFIG"
+exec $DAEMON --foreground --log-backend stdout --config "$CONFIG"

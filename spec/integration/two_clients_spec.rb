@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Two clients' do
+  let! :node_pid do
+    Process.spawn 'bin/node'
+  end
+
+  after do
+    Process.kill :SIGINT, node_pid
+  end
+
   specify do
     node_public_key =
       'A8020928C0B6AE8665A532C1084D1344CCC96724670122A1CB879E36F85A7D60'
