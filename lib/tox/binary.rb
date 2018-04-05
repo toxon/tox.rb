@@ -21,9 +21,9 @@ module Tox
       end
 
       if value.bytesize == self.class.bytesize
-        @value = value.frozen? ? value : value.dup.freeze
+        self.value = value
       elsif value =~ self.class.hex_re
-        @value = [value].pack('H*').freeze
+        self.hex_value = value
       else
         raise ArgumentError, 'expected value to be a hex or binary string'
       end
@@ -40,6 +40,16 @@ module Tox
     def ==(other)
       return false unless self.class == other.class
       value == other.value
+    end
+
+  private
+
+    def value=(value)
+      @value = value.frozen? ? value : value.dup.freeze
+    end
+
+    def hex_value=(value)
+      @value = [value].pack('H*').freeze
     end
   end
 end
