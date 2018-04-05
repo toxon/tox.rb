@@ -67,5 +67,19 @@ RSpec.describe Tox::Address do
     it 'returns false when compared with own binary value' do
       expect(subject).not_to eq bin
     end
+
+    it 'returns false when compared with different kind of binary' do
+      bytesize = described_class.bytesize
+
+      expect(subject).not_to eq(
+        Class.new(Tox::Binary) do
+          BYTESIZE = bytesize
+
+          def self.bytesize
+            BYTESIZE
+          end
+        end.new(hex),
+      )
+    end
   end
 end
