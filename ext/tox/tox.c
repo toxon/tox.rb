@@ -19,6 +19,7 @@ VALUE mTox_cClient;
 VALUE mTox_cNode;
 VALUE mTox_cFriend;
 VALUE mTox_cAddress;
+VALUE mTox_cNospam;
 VALUE mTox_cPublicKey;
 VALUE mTox_mOutMessage;
 
@@ -65,6 +66,7 @@ void Init_tox()
   mTox_cNode       = rb_const_get(mTox, rb_intern("Node"));
   mTox_cFriend     = rb_const_get(mTox, rb_intern("Friend"));
   mTox_cAddress    = rb_const_get(mTox, rb_intern("Address"));
+  mTox_cNospam     = rb_const_get(mTox, rb_intern("Nospam"));
   mTox_cPublicKey  = rb_const_get(mTox, rb_intern("PublicKey"));
   mTox_mOutMessage = rb_const_get(mTox, rb_intern("OutMessage"));
 

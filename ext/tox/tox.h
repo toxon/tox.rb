@@ -34,6 +34,7 @@ extern VALUE mTox_cNode;
 extern VALUE mTox_cFriend;
 extern VALUE mTox_cAddress;
 extern VALUE mTox_cPublicKey;
+extern VALUE mTox_cNospam;
 extern VALUE mTox_mOutMessage;
 
 extern VALUE mTox_mUserStatus_NONE;

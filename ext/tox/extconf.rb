@@ -99,6 +99,7 @@ have_func 'tox_options_default',              'tox/tox.h' and
 have_func 'tox_get_savedata_size',            'tox/tox.h' and
 have_func 'tox_get_savedata',                 'tox/tox.h' and
 have_func 'tox_self_get_address',             'tox/tox.h' and
+have_func 'tox_self_get_nospam',              'tox/tox.h' and
 have_func 'tox_self_get_public_key',          'tox/tox.h' and
 have_func 'tox_kill',                         'tox/tox.h' and
 have_func 'tox_bootstrap',                    'tox/tox.h' and

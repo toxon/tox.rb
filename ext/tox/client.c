@@ -10,6 +10,7 @@ static void  mTox_cClient_free(mTox_cClient_CDATA *free_cdata);
 
 static VALUE mTox_cClient_public_key(VALUE self);
 static VALUE mTox_cClient_address(VALUE self);
+static VALUE mTox_cClient_nospam(VALUE self);
 static VALUE mTox_cClient_savedata(VALUE self);
 
 static VALUE mTox_cClient_bootstrap(VALUE self, VALUE node);
@@ -87,6 +88,7 @@ void mTox_cClient_INIT()
 
   rb_define_method(mTox_cClient, "public_key", mTox_cClient_public_key, 0);
   rb_define_method(mTox_cClient, "address",    mTox_cClient_address,    0);
+  rb_define_method(mTox_cClient, "nospam",     mTox_cClient_nospam,     0);
   rb_define_method(mTox_cClient, "savedata",   mTox_cClient_savedata,   0);
 
   rb_define_method(mTox_cClient, "bootstrap", mTox_cClient_bootstrap, 1);
@@ -171,6 +173,23 @@ VALUE mTox_cClient_address(const VALUE self)
     rb_intern("new"),
     1,
     rb_str_new(address, TOX_ADDRESS_SIZE)
+  );
+}
+
+// Tox::Client#nospam
+VALUE mTox_cClient_nospam(const VALUE self)
+{
+  mTox_cClient_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+
+  uint32_t nospam = tox_self_get_nospam(self_cdata->tox);
+
+  return rb_funcall(
+    mTox_cNospam,
+    rb_intern("new"),
+    1,
+    LONG2FIX(nospam)
   );
 }
 

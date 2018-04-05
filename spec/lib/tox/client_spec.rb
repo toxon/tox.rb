@@ -105,6 +105,38 @@ RSpec.describe Tox::Client do
     end
   end
 
+  describe '#nospam' do
+    specify do
+      expect(subject.nospam).to be_instance_of Tox::Nospam
+    end
+
+    it 'equals nospam extracted from address' do
+      expect(subject.nospam).to eq subject.address.nospam
+    end
+
+    context 'when savedata was set' do
+      subject { described_class.new tox_options }
+
+      let :tox_options do
+        result = Tox::Options.new
+        result.savedata = savedata
+        result
+      end
+
+      let(:savedata) { old_tox.savedata }
+
+      let(:old_tox) { Tox::Client.new }
+
+      it 'can be set via options' do
+        expect(subject.nospam).to eq old_tox.nospam
+      end
+
+      it 'equals nospam extracted from old address' do
+        expect(subject.nospam).to eq old_tox.address.nospam
+      end
+    end
+  end
+
   describe '#running?' do
     it 'returns false by default' do
       expect(subject.running?).to eq false
