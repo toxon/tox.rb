@@ -2,12 +2,32 @@
 
 RSpec.describe 'Two clients' do
   let! :node_pid do
-    Process.spawn 'bin/node'
+    Process.spawn(
+      node_executable,
+      '--foreground',
+      '--log-backend', 'stdout',
+      '--config', node_config,
+    )
   end
 
   after do
     Process.kill :SIGINT, node_pid
   end
+
+  let(:node_config) { File.expand_path 'config/node.conf' }
+
+  let :node_executable do
+    if File.executable? node_vendored
+      node_vendored
+    elsif File.executable? node_local
+      node_local
+    else
+      raise "Executable not found at #{node_vendored} and #{node_local}"
+    end
+  end
+
+  let(:node_vendored) { File.expand_path 'vendor/libtoxcore/tox-bootstrapd' }
+  let(:node_local) { '/usr/local/src/c-toxcore/_build/tox-bootstrapd' }
 
   specify do
     node_public_key =
