@@ -358,6 +358,17 @@ RSpec.describe Tox::Client do
       expect(subject.status).to eq Tox::UserStatus::NONE
     end
 
+    context 'when it was set to NONE' do
+      before do
+        subject.status = Tox::UserStatus::AWAY
+        subject.status = Tox::UserStatus::NONE
+      end
+
+      it 'returns given value' do
+        expect(subject.status).to eq Tox::UserStatus::NONE
+      end
+    end
+
     context 'when it was set to AWAY' do
       before do
         subject.status = Tox::UserStatus::AWAY
