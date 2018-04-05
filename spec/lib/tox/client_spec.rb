@@ -7,14 +7,24 @@ RSpec.describe Tox::Client do
     context 'when options is nil' do
       specify do
         expect { described_class.new nil }.to \
-          raise_error TypeError, "expected options to be a #{Tox::Options}"
+          raise_error(
+            TypeError,
+            'Expected method Tox::Client#initialize_with ' \
+              'argument "options" '                        \
+              "to be a #{Tox::Options}",
+          )
       end
     end
 
     context 'when options have invalid type' do
       specify do
         expect { described_class.new 123 }.to \
-          raise_error TypeError, "expected options to be a #{Tox::Options}"
+          raise_error(
+            TypeError,
+            'Expected method Tox::Client#initialize_with ' \
+              'argument "options" '                        \
+              "to be a #{Tox::Options}",
+          )
       end
     end
 
@@ -174,7 +184,9 @@ RSpec.describe Tox::Client do
       specify do
         expect { subject.nospam = :foobar }.to raise_error(
           TypeError,
-          "expected nospam to be a #{Tox::Nospam}",
+          'Expected method Tox::Client#nospam= ' \
+            'argument "nospam" '                 \
+            "to be a #{Tox::Nospam}",
         )
       end
     end
@@ -392,7 +404,9 @@ RSpec.describe Tox::Client do
         expect { subject.friend_add_norequest new_friend_public_key }.to \
           raise_error(
             TypeError,
-            "expected public key to be a #{Tox::PublicKey}",
+            'Expected method Tox::Client#friend_add_norequest ' \
+              'argument "public_key" '                          \
+              "to be a #{Tox::PublicKey}",
           )
       end
     end
@@ -496,7 +510,9 @@ RSpec.describe Tox::Client do
         expect { subject.friend_add new_friend_address, message }.to \
           raise_error(
             TypeError,
-            "expected address to be a #{Tox::Address}",
+            'Expected method Tox::Client#friend_add ' \
+              'argument "address" '                   \
+              "to be a #{Tox::Address}",
           )
       end
     end
