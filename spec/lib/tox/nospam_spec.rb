@@ -174,10 +174,10 @@ RSpec.describe Tox::Nospam do
 
       expect(subject).not_to eq(
         Class.new(Tox::Binary) do
-          BYTESIZE = bytesize
+          @bytesize = bytesize
 
-          def self.bytesize
-            BYTESIZE
+          class << self
+            attr_reader :bytesize
           end
         end.new(hex),
       )
