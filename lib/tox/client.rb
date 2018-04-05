@@ -6,6 +6,13 @@ module Tox
   #
   class Client
     def initialize(options = Tox::Options.new)
+      @on_iteration = nil
+      @on_friend_request = nil
+      @on_friend_message = nil
+      @on_friend_name_change = nil
+      @on_friend_status_message_change = nil
+      @on_friend_status_change = nil
+
       initialize_with options
       self.running = false
     end
