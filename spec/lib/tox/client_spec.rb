@@ -524,7 +524,7 @@ RSpec.describe Tox::Client do
         expect { subject.friend_add new_friend_address, message }.to \
           raise_error(
             TypeError,
-            "wrong argument type #{Integer} (expected #{String})",
+            "wrong argument type #{message.class} (expected #{String})",
           )
       end
     end
