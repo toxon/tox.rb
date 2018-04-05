@@ -53,5 +53,9 @@ module Tox
     def inspect
       "#<#{self.class}: \"#{self}\">"
     end
+
+    def ==(other)
+      value == other.value
+    end
   end
 end

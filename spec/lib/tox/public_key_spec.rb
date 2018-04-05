@@ -59,4 +59,14 @@ RSpec.describe Tox::PublicKey do
       expect(subject.value).to eq bin
     end
   end
+
+  describe '#==' do
+    it 'returns true when values are equal' do
+      expect(subject).to eq described_class.new hex
+    end
+
+    it 'returns false when values are different' do
+      expect(subject).not_to eq described_class.new SecureRandom.hex 32
+    end
+  end
 end
