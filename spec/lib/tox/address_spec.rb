@@ -19,9 +19,15 @@
 RSpec.describe Tox::Address do
   subject { described_class.new hex }
 
-  let(:hex) { SecureRandom.hex(38).upcase.freeze }
+  let(:hex) { SecureRandom.hex(described_class.bytesize).upcase.freeze }
 
   let(:bin) { [hex].pack('H*').freeze }
+
+  describe '.bytesize' do
+    specify do
+      expect(described_class.bytesize).to eq 38
+    end
+  end
 
   describe '#initialize' do
     context 'when binary value provided' do
@@ -66,7 +72,8 @@ RSpec.describe Tox::Address do
     end
 
     it 'returns false when values are different' do
-      expect(subject).not_to eq described_class.new SecureRandom.hex 38
+      expect(subject).not_to \
+        eq described_class.new SecureRandom.hex described_class.bytesize
     end
   end
 end
