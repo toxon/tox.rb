@@ -350,4 +350,96 @@ RSpec.describe Tox::Client do
       end
     end
   end
+
+  describe '#friend_add' do
+    let(:new_friend_client) { Tox::Client.new }
+
+    let(:new_friend_address) { new_friend_client.address }
+
+    let(:message) { SecureRandom.hex }
+
+    specify do
+      expect(subject.friend_add(new_friend_address, message)).to \
+        be_instance_of Tox::Friend
+    end
+
+    context 'with own address' do
+      specify do
+        expect { subject.friend_add subject.address, message }.to \
+          raise_error(
+            RuntimeError,
+            'tox_friend_add() failed with TOX_ERR_FRIEND_ADD_OWN_KEY',
+          )
+      end
+    end
+
+    context 'when already added' do
+      before do
+        subject.friend_add new_friend_address, message
+      end
+
+      specify do
+        expect { subject.friend_add new_friend_address, message }.to \
+          raise_error(
+            RuntimeError,
+            'tox_friend_add() failed with TOX_ERR_FRIEND_ADD_ALREADY_SENT',
+          )
+      end
+    end
+
+    context 'when address is invalid' do
+      let :new_friend_address do
+        Tox::Address.new 'AA' * Tox::Address.bytesize
+      end
+
+      specify do
+        expect { subject.friend_add new_friend_address, message }.to \
+          raise_error(
+            RuntimeError,
+            'tox_friend_add() failed with TOX_ERR_FRIEND_ADD_BAD_CHECKSUM',
+          )
+      end
+    end
+
+    context 'when message is empty' do
+      let(:message) { '' }
+
+      specify do
+        expect { subject.friend_add new_friend_address, message }.to \
+          raise_error(
+            RuntimeError,
+            'tox_friend_add() failed with TOX_ERR_FRIEND_ADD_NO_MESSAGE',
+          )
+      end
+    end
+
+    context 'when message is too long' do
+      let(:message) { 'A' * 2**14 }
+
+      specify do
+        expect { subject.friend_add new_friend_address, message }.to \
+          raise_error(
+            RuntimeError,
+            'tox_friend_add() failed with TOX_ERR_FRIEND_ADD_TOO_LONG',
+          )
+      end
+    end
+
+    xcontext 'when already added with different nospam value' do
+      before do
+        subject.friend_add new_friend_address, message
+
+        new_friend_client.nospam =
+          Tox::Nospam.new SecureRandom.hex Tox::Nospam.bytesize
+      end
+
+      specify do
+        expect { subject.friend_add new_friend_client.address, message }.to \
+          raise_error(
+            RuntimeError,
+            'tox_friend_add() failed with TOX_ERR_FRIEND_ADD_ALREADY_SENT',
+          )
+      end
+    end
+  end
 end

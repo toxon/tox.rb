@@ -27,6 +27,7 @@ static VALUE mTox_cClient_status_message_EQUALS(VALUE self, VALUE status_message
 static VALUE mTox_cClient_friend_numbers(VALUE self);
 
 static VALUE mTox_cClient_friend_add_norequest(VALUE self, VALUE public_key);
+static VALUE mTox_cClient_friend_add(VALUE self, VALUE address, VALUE text);
 
 // Private methods
 
@@ -105,6 +106,7 @@ void mTox_cClient_INIT()
   rb_define_method(mTox_cClient, "friend_numbers", mTox_cClient_friend_numbers, 0);
 
   rb_define_method(mTox_cClient, "friend_add_norequest", mTox_cClient_friend_add_norequest, 1);
+  rb_define_method(mTox_cClient, "friend_add",           mTox_cClient_friend_add,           2);
 
   // Private methods
 
@@ -460,6 +462,58 @@ VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key
       rb_raise(rb_eNoMemError, "tox_friend_add_norequest() failed with TOX_ERR_FRIEND_ADD_MALLOC");
     default:
       rb_raise(mTox_eUnknownError, "tox_friend_add_norequest() failed");
+  }
+
+  return rb_funcall(
+    self,
+    rb_intern("friend"),
+    1,
+    friend_number
+  );
+}
+
+// Tox::Client#friend_add
+VALUE mTox_cClient_friend_add(const VALUE self, const VALUE address, const VALUE text)
+{
+  if (!rb_funcall(address, rb_intern("is_a?"), 1, mTox_cAddress)) {
+    rb_raise(rb_eTypeError, "expected address to be a Tox::Address");
+  }
+
+  Check_Type(text, T_STRING);
+
+  mTox_cClient_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+
+  TOX_ERR_FRIEND_ADD error;
+
+  const VALUE friend_number = LONG2FIX(tox_friend_add(
+    self_cdata->tox,
+    (uint8_t*)RSTRING_PTR(rb_funcall(address, rb_intern("value"), 0)),
+    (uint8_t*)RSTRING_PTR(text),
+    RSTRING_LEN(text),
+    &error
+  ));
+
+  switch (error) {
+    case TOX_ERR_FRIEND_ADD_OK:
+      break;
+    case TOX_ERR_FRIEND_ADD_NULL:
+      rb_raise(mTox_eNullError, "tox_friend_add() failed with TOX_ERR_FRIEND_ADD_NULL");
+    case TOX_ERR_FRIEND_ADD_NO_MESSAGE:
+      rb_raise(mTox_eNullError, "tox_friend_add() failed with TOX_ERR_FRIEND_ADD_NO_MESSAGE");
+    case TOX_ERR_FRIEND_ADD_TOO_LONG:
+      rb_raise(mTox_eNullError, "tox_friend_add() failed with TOX_ERR_FRIEND_ADD_TOO_LONG");
+    case TOX_ERR_FRIEND_ADD_OWN_KEY:
+      rb_raise(rb_eRuntimeError, "tox_friend_add() failed with TOX_ERR_FRIEND_ADD_OWN_KEY");
+    case TOX_ERR_FRIEND_ADD_ALREADY_SENT:
+      rb_raise(rb_eRuntimeError, "tox_friend_add() failed with TOX_ERR_FRIEND_ADD_ALREADY_SENT");
+    case TOX_ERR_FRIEND_ADD_BAD_CHECKSUM:
+      rb_raise(rb_eRuntimeError, "tox_friend_add() failed with TOX_ERR_FRIEND_ADD_BAD_CHECKSUM");
+    case TOX_ERR_FRIEND_ADD_SET_NEW_NOSPAM:
+      rb_raise(rb_eRuntimeError, "tox_friend_add() failed with TOX_ERR_FRIEND_ADD_SET_NEW_NOSPAM");
+    case TOX_ERR_FRIEND_ADD_MALLOC:
+      rb_raise(rb_eNoMemError, "tox_friend_add() failed with TOX_ERR_FRIEND_ADD_MALLOC");
   }
 
   return rb_funcall(
