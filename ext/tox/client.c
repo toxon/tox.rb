@@ -408,15 +408,17 @@ VALUE mTox_cClient_friend_numbers(const VALUE self)
 // Tox::Client#friend_add_norequest
 VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key)
 {
-  Check_Type(public_key, T_STRING);
-
   mTox_cClient_CDATA *self_cdata;
+
+  if (!rb_funcall(public_key, rb_intern("is_a?"), 1, mTox_cPublicKey)) {
+    rb_raise(rb_eTypeError, "expected public key to be a Tox::PublicKey");
+  }
 
   Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
   const VALUE friend_number = LONG2FIX(tox_friend_add_norequest(
     self_cdata->tox,
-    (uint8_t*)RSTRING_PTR(public_key),
+    (uint8_t*)RSTRING_PTR(rb_funcall(public_key, rb_intern("value"), 0)),
     NULL
   ));
 
