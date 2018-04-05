@@ -20,6 +20,7 @@ require 'tox/friend/out_message'
 require 'tox/binary'
 require 'tox/public_key'
 require 'tox/nospam'
+require 'tox/address_checksum'
 require 'tox/address'
 
 ##
