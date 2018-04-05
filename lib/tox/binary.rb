@@ -31,18 +31,17 @@ module Tox
 
     attr_reader :value
 
-    def initialize(value) # rubocop:disable Metrics/MethodLength
+    def initialize(value)
       unless value.is_a? String
         raise TypeError, "expected value to be a #{String}"
       end
 
       if value.bytesize == self.class.bytesize
         @value = value.frozen? ? value : value.dup.freeze
-      else
-        unless value =~ self.class.hex_re
-          raise ArgumentError, 'expected value to be a hex string'
-        end
+      elsif value =~ self.class.hex_re
         @value = [value].pack('H*').freeze
+      else
+        raise ArgumentError, 'expected value to be a hex or binary string'
       end
     end
 
