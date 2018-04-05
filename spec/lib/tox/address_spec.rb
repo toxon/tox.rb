@@ -56,6 +56,12 @@ RSpec.describe Tox::Address do
     end
   end
 
+  describe '#nospam' do
+    specify do
+      expect(subject.nospam).to eq Tox::Nospam.new bin[32...36]
+    end
+  end
+
   describe '#==' do
     it 'returns true when values are equal' do
       expect(subject).to eq described_class.new hex

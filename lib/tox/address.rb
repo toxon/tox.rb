@@ -12,5 +12,9 @@ module Tox
     def public_key
       @public_key ||= PublicKey.new value[0...32]
     end
+
+    def nospam
+      @nospam ||= Nospam.new value[32...36]
+    end
   end
 end
