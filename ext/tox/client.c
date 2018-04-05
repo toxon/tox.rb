@@ -149,16 +149,17 @@ VALUE mTox_cClient_public_key(const VALUE self)
 
   Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
-  char public_key[TOX_PUBLIC_KEY_SIZE];
+  char public_key_data[TOX_PUBLIC_KEY_SIZE];
 
-  tox_self_get_public_key(self_cdata->tox, (uint8_t*)public_key);
+  tox_self_get_public_key(self_cdata->tox, public_key_data);
 
-  return rb_funcall(
-    mTox_cPublicKey,
-    rb_intern("new"),
-    1,
-    rb_str_new(public_key, TOX_PUBLIC_KEY_SIZE)
-  );
+  const VALUE public_key_value =
+    rb_str_new(public_key_data, TOX_PUBLIC_KEY_SIZE);
+
+  const VALUE public_key = rb_funcall(mTox_cPublicKey, rb_intern("new"), 1,
+                                      public_key_value);
+
+  return public_key;
 }
 
 // Tox::Client#address
@@ -168,16 +169,16 @@ VALUE mTox_cClient_address(const VALUE self)
 
   Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
-  char address[TOX_ADDRESS_SIZE];
+  char address_data[TOX_ADDRESS_SIZE];
 
-  tox_self_get_address(self_cdata->tox, (uint8_t*)address);
+  tox_self_get_address(self_cdata->tox, address_data);
 
-  return rb_funcall(
-    mTox_cAddress,
-    rb_intern("new"),
-    1,
-    rb_str_new(address, TOX_ADDRESS_SIZE)
-  );
+  const VALUE address_value = rb_str_new(address_data, TOX_ADDRESS_SIZE);
+
+  const VALUE address = rb_funcall(mTox_cAddress, rb_intern("new"), 1,
+                                   address_value);
+
+  return address;
 }
 
 // Tox::Client#nospam
@@ -187,14 +188,14 @@ VALUE mTox_cClient_nospam(const VALUE self)
 
   Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
-  uint32_t nospam = tox_self_get_nospam(self_cdata->tox);
+  uint32_t nospam_data = tox_self_get_nospam(self_cdata->tox);
 
-  return rb_funcall(
-    mTox_cNospam,
-    rb_intern("new"),
-    1,
-    LONG2FIX(nospam)
-  );
+  const VALUE nospam_as_integer = LONG2FIX(nospam_data);
+
+  const VALUE nospam = rb_funcall(mTox_cNospam, rb_intern("new"), 1,
+                                  nospam_as_integer);
+
+  return nospam;
 }
 
 // Tox::Client#nospam
@@ -208,9 +209,11 @@ VALUE mTox_cClient_nospam_ASSIGN(const VALUE self, const VALUE nospam)
 
   Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
+  const VALUE nospam_as_integer = rb_funcall(nospam, rb_intern("to_i"), 0);
+
   tox_self_set_nospam(
     self_cdata->tox,
-    FIX2LONG(rb_funcall(nospam, rb_intern("to_i"), 0))
+    FIX2LONG(nospam_as_integer)
   );
 
   return Qnil;
@@ -229,9 +232,11 @@ VALUE mTox_cClient_savedata(const VALUE self)
   data_size = tox_get_savedata_size(self_cdata->tox);
   data = ALLOC_N(char, data_size);
 
-  tox_get_savedata(self_cdata->tox, (uint8_t*)data);
+  tox_get_savedata(self_cdata->tox, data);
 
-  return rb_str_new(data, data_size);
+  const VALUE savedata = rb_str_new(data, data_size);
+
+  return savedata;
 }
 
 // Tox::Client#bootstrap
@@ -245,19 +250,24 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
 
   Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
+  const VALUE node_resolv_ipv4      = rb_funcall(node,            rb_intern("resolv_ipv4"), 0);
+  const VALUE node_port             = rb_funcall(node,            rb_intern("port"),        0);
+  const VALUE node_public_key       = rb_funcall(node,            rb_intern("public_key"),  0);
+  const VALUE node_public_key_value = rb_funcall(node_public_key, rb_intern("value"),       0);
+
   TOX_ERR_BOOTSTRAP error;
 
-  tox_bootstrap(
+  const result = tox_bootstrap(
     self_cdata->tox,
-    RSTRING_PTR(rb_funcall(node, rb_intern("resolv_ipv4"), 0)),
-    NUM2INT(rb_funcall(node, rb_intern("port"), 0)),
-    RSTRING_PTR(rb_funcall(rb_funcall(node, rb_intern("public_key"), 0), rb_intern("value"), 0)),
+    RSTRING_PTR(node_resolv_ipv4),
+    NUM2INT(node_port),
+    RSTRING_PTR(node_public_key_value),
     &error
   );
 
   switch (error) {
     case TOX_ERR_BOOTSTRAP_OK:
-      return Qtrue;
+      break;
     case TOX_ERR_BOOTSTRAP_NULL:
       return Qfalse;
     case TOX_ERR_BOOTSTRAP_BAD_HOST:
@@ -267,6 +277,12 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
     default:
       return Qfalse;
   }
+
+  if (!result) {
+    return Qfalse;
+  }
+
+  return Qtrue;
 }
 
 // Tox::Client#name
@@ -276,15 +292,17 @@ VALUE mTox_cClient_name(const VALUE self)
 
   Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
-  const size_t name_size = tox_self_get_name_size(self_cdata->tox);
+  const size_t name_size_data = tox_self_get_name_size(self_cdata->tox);
 
-  char name[name_size];
+  char name_data[name_size_data];
 
-  if (name_size > 0) {
-    tox_self_get_name(self_cdata->tox, (uint8_t*)name);
+  if (name_size_data > 0) {
+    tox_self_get_name(self_cdata->tox, name_data);
   }
 
-  return rb_str_new(name, name_size);
+  const VALUE name = rb_str_new(name, name_size_data);
+
+  return name;
 }
 
 // Tox::Client#name=
@@ -300,7 +318,7 @@ VALUE mTox_cClient_name_ASSIGN(const VALUE self, const VALUE name)
 
   const bool result = tox_self_set_name(
     self_cdata->tox,
-    (uint8_t**)RSTRING_PTR(name),
+    RSTRING_PTR(name),
     RSTRING_LEN(name),
     &error
   );
@@ -384,13 +402,15 @@ VALUE mTox_cClient_status_message(const VALUE self)
 
   const size_t status_message_size = tox_self_get_status_message_size(self_cdata->tox);
 
-  char status_message[status_message_size];
+  char status_message_data[status_message_size];
 
   if (status_message_size > 0) {
-    tox_self_get_status_message(self_cdata->tox, (uint8_t*)status_message);
+    tox_self_get_status_message(self_cdata->tox, status_message_data);
   }
 
-  return rb_str_new(status_message, status_message_size);
+  const VALUE status_message = rb_str_new(status_message, status_message_size);
+
+  return status_message;
 }
 
 // Tox::Client#status_message=
@@ -406,7 +426,7 @@ VALUE mTox_cClient_status_message_ASSIGN(const VALUE self, const VALUE status_me
 
   const bool result = tox_self_set_status_message(
     self_cdata->tox,
-    (uint8_t**)RSTRING_PTR(status_message),
+    RSTRING_PTR(status_message),
     RSTRING_LEN(status_message),
     &error
   );
@@ -447,7 +467,8 @@ VALUE mTox_cClient_friend_numbers(const VALUE self)
   const size_t friend_numbers_size = tox_self_get_friend_list_size(self_cdata->tox);
 
   if (friend_numbers_size == 0) {
-    return rb_ary_new();
+    const VALUE friends = rb_ary_new();
+    return friends;
   }
 
   uint32_t friend_numbers[friend_numbers_size];
@@ -460,7 +481,9 @@ VALUE mTox_cClient_friend_numbers(const VALUE self)
     friend_number_values[i] = LONG2NUM(friend_numbers[i]);
   }
 
-  return rb_ary_new4(friend_numbers_size, friend_number_values);
+  const VALUE friends = rb_ary_new4(friend_numbers_size, friend_number_values);
+
+  return friends;
 }
 
 // Tox::Client#friend_add_norequest
@@ -474,11 +497,13 @@ VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key
 
   Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
+  const VALUE public_key_value = rb_funcall(public_key, rb_intern("value"), 0);
+
   TOX_ERR_FRIEND_ADD error;
 
   const VALUE friend_number = LONG2FIX(tox_friend_add_norequest(
     self_cdata->tox,
-    (uint8_t*)RSTRING_PTR(rb_funcall(public_key, rb_intern("value"), 0)),
+    RSTRING_PTR(public_key_value),
     &error
   ));
 
@@ -525,12 +550,10 @@ VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key
       RAISE_FUNC_ERROR_DEFAULT("tox_friend_add_norequest");
   }
 
-  return rb_funcall(
-    self,
-    rb_intern("friend"),
-    1,
-    friend_number
-  );
+  const VALUE friend = rb_funcall(self, rb_intern("friend"), 1,
+                                  friend_number);
+
+  return friend;
 }
 
 // Tox::Client#friend_add
@@ -548,10 +571,12 @@ VALUE mTox_cClient_friend_add(const VALUE self, const VALUE address, const VALUE
 
   TOX_ERR_FRIEND_ADD error;
 
+  const VALUE address_value = rb_funcall(address, rb_intern("value"), 0);
+
   const VALUE friend_number = LONG2FIX(tox_friend_add(
     self_cdata->tox,
-    (uint8_t*)RSTRING_PTR(rb_funcall(address, rb_intern("value"), 0)),
-    (uint8_t*)RSTRING_PTR(text),
+    RSTRING_PTR(address_value),
+    RSTRING_PTR(text),
     RSTRING_LEN(text),
     &error
   ));
@@ -609,12 +634,10 @@ VALUE mTox_cClient_friend_add(const VALUE self, const VALUE address, const VALUE
       );
   }
 
-  return rb_funcall(
-    self,
-    rb_intern("friend"),
-    1,
-    friend_number
-  );
+  const VALUE friend = rb_funcall(self, rb_intern("friend"), 1,
+                                  friend_number);
+
+  return friend;
 }
 
 /*************************************************************
@@ -741,9 +764,9 @@ VALUE mTox_cClient_run_loop(const VALUE self)
 
 void on_friend_request(
   Tox *const tox,
-  const uint8_t *const public_key,
-  const uint8_t *const data,
-  const size_t length,
+  const uint8_t *const public_key_data,
+  const uint8_t *const text_data,
+  const size_t text_length_data,
   const VALUE self
 )
 {
@@ -753,26 +776,25 @@ void on_friend_request(
     return;
   }
 
-  rb_funcall(
-    ivar_on_friend_request,
-    rb_intern("call"),
-    2,
-    rb_funcall(
-      mTox_cPublicKey,
-      rb_intern("new"),
-      1,
-      rb_str_new(public_key, TOX_PUBLIC_KEY_SIZE)
-    ),
-    rb_str_new((char*)data, length)
-  );
+  const VALUE public_key_value =
+    rb_str_new(public_key_data, TOX_PUBLIC_KEY_SIZE);
+
+  const VALUE public_key = rb_funcall(mTox_cPublicKey, rb_intern("new"), 1,
+                                      public_key_value);
+
+  const VALUE text = rb_str_new(text_data, text_length_data);
+
+  rb_funcall(ivar_on_friend_request, rb_intern("call"), 2,
+             public_key,
+             text);
 }
 
 void on_friend_message(
   Tox *const tox,
-  const uint32_t friend_number,
+  const uint32_t friend_number_data,
   const TOX_MESSAGE_TYPE type,
-  const uint8_t *const text,
-  const size_t length,
+  const uint8_t *const text_data,
+  const size_t text_length_data,
   const VALUE self
 )
 {
@@ -782,119 +804,113 @@ void on_friend_message(
     return;
   }
 
-  rb_funcall(
-    ivar_on_friend_message,
-    rb_intern("call"),
-    2,
-    rb_funcall(
-      mTox_cFriend,
-      rb_intern("new"),
-      2,
-      self,
-      LONG2FIX(friend_number)
-    ),
-    rb_str_new((char*)text, length)
-  );
+  const VALUE friend_number = LONG2FIX(friend_number_data);
+
+  const VALUE friend = rb_funcall(mTox_cFriend, rb_intern("new"), 2,
+                                  self,
+                                  friend_number);
+
+  const VALUE text = rb_str_new(text_data, text_length_data);
+
+  rb_funcall(ivar_on_friend_message, rb_intern("call"), 2,
+             friend,
+             text);
 }
 
 void on_friend_name_change(
   Tox *const tox,
-  const uint32_t friend_number,
-  const uint8_t *const name,
-  const size_t length,
+  const uint32_t friend_number_data,
+  const uint8_t *const name_data,
+  const size_t name_length_data,
   const VALUE self
 )
 {
-  const VALUE ivar_on_friend_name_change = rb_iv_get(self, "@on_friend_name_change");
+  const VALUE ivar_on_friend_name_change =
+    rb_iv_get(self, "@on_friend_name_change");
 
   if (Qnil == ivar_on_friend_name_change) {
     return;
   }
 
-  rb_funcall(
-    ivar_on_friend_name_change,
-    rb_intern("call"),
-    2,
-    rb_funcall(
-      mTox_cFriend,
-      rb_intern("new"),
-      2,
-      self,
-      LONG2FIX(friend_number)
-    ),
-    rb_str_new(name, length)
-  );
+  const VALUE friend_number = LONG2FIX(friend_number_data);
+
+  const VALUE friend = rb_funcall(mTox_cFriend, rb_intern("new"), 2,
+                                  self,
+                                  friend_number);
+
+  const VALUE name = rb_str_new(name_data, name_length_data);
+
+  rb_funcall(ivar_on_friend_name_change, rb_intern("call"), 2,
+             friend,
+             name);
 }
 
 void on_friend_status_message_change(
   Tox *const tox,
-  const uint32_t friend_number,
-  const uint8_t *const status_message,
-  size_t length,
+  const uint32_t friend_number_data,
+  const uint8_t *const status_message_data,
+  size_t status_message_length_data,
   const VALUE self
 )
 {
-  const VALUE ivar_on_friend_status_message_change = rb_iv_get(self, "@on_friend_status_message_change");
+  const VALUE ivar_on_friend_status_message_change =
+    rb_iv_get(self, "@on_friend_status_message_change");
 
   if (Qnil == ivar_on_friend_status_message_change) {
     return;
   }
 
-  rb_funcall(
-    ivar_on_friend_status_message_change,
-    rb_intern("call"),
-    2,
-    rb_funcall(
-      mTox_cFriend,
-      rb_intern("new"),
-      2,
-      self,
-      LONG2FIX(friend_number)
-    ),
-    rb_str_new(status_message, length)
-  );
+  const VALUE friend_number = LONG2FIX(friend_number_data);
+
+  const VALUE friend = rb_funcall(mTox_cFriend, rb_intern("new"), 2,
+                                  self,
+                                  friend_number);
+
+  const VALUE status_message =
+    rb_str_new(status_message_data, status_message_length_data);
+
+  rb_funcall(ivar_on_friend_status_message_change, rb_intern("call"), 2,
+             friend,
+             status_message);
 }
 
 void on_friend_status_change(
   Tox *const tox,
-  const uint32_t friend_number,
-  const TOX_USER_STATUS status,
+  const uint32_t friend_number_data,
+  const TOX_USER_STATUS status_data,
   const VALUE self
 )
 {
-  const VALUE ivar_on_friend_status_change = rb_iv_get(self, "@on_friend_status_change");
+  const VALUE ivar_on_friend_status_change =
+    rb_iv_get(self, "@on_friend_status_change");
 
   if (Qnil == ivar_on_friend_status_change) {
     return;
   }
 
-  VALUE status_value;
+  VALUE status;
 
-  switch (status) {
+  switch (status_data) {
     case TOX_USER_STATUS_NONE:
-      status_value = mTox_mUserStatus_NONE;
+      status = mTox_mUserStatus_NONE;
       break;
     case TOX_USER_STATUS_AWAY:
-      status_value = mTox_mUserStatus_AWAY;
+      status = mTox_mUserStatus_AWAY;
       break;
     case TOX_USER_STATUS_BUSY:
-      status_value = mTox_mUserStatus_BUSY;
+      status = mTox_mUserStatus_BUSY;
       break;
     default:
       return;
   }
 
-  rb_funcall(
-    ivar_on_friend_status_change,
-    rb_intern("call"),
-    2,
-    rb_funcall(
-      mTox_cFriend,
-      rb_intern("new"),
-      2,
-      self,
-      LONG2FIX(friend_number)
-    ),
-    status_value
-  );
+  const VALUE friend_number = LONG2FIX(friend_number_data);
+
+  const VALUE friend = rb_funcall(mTox_cFriend, rb_intern("new"), 2,
+                                  self,
+                                  friend_number);
+
+  rb_funcall(ivar_on_friend_status_change, rb_intern("call"), 2,
+             friend,
+             status);
 }

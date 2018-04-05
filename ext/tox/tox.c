@@ -103,9 +103,11 @@ VALUE mTox_hash(const VALUE self, const VALUE data)
 
   const uint8_t result[TOX_HASH_LENGTH];
 
-  if (true != tox_hash(result, (const uint8_t*)RSTRING_PTR(data), RSTRING_LEN(data))) {
+  if (true != tox_hash(result, RSTRING_PTR(data), RSTRING_LEN(data))) {
     RAISE_FUNC_RESULT("tox_hash");
   }
 
-  return rb_str_new(result, TOX_HASH_LENGTH);
+  const VALUE hash = rb_str_new(result, TOX_HASH_LENGTH);
+
+  return hash;
 }

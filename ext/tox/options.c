@@ -56,7 +56,11 @@ VALUE mTox_cOptions_savedata(const VALUE self)
     case TOX_SAVEDATA_TYPE_NONE:
       return Qnil;
     case TOX_SAVEDATA_TYPE_TOX_SAVE:
-      return rb_str_new(self_cdata->savedata_data, self_cdata->savedata_length);
+    {
+      const VALUE savedata =
+        rb_str_new(self_cdata->savedata_data, self_cdata->savedata_length);
+      return savedata;
+    }
     default:
       RAISE_ENUM("TOX_SAVEDATA_TYPE");
   }
@@ -80,7 +84,7 @@ VALUE mTox_cOptions_savedata_ASSIGN(const VALUE self, const VALUE savedata)
   Check_Type(savedata, T_STRING);
 
   self_cdata->savedata_type = TOX_SAVEDATA_TYPE_TOX_SAVE;
-  self_cdata->savedata_data = (uint8_t*)RSTRING_PTR(savedata);
+  self_cdata->savedata_data = RSTRING_PTR(savedata);
   self_cdata->savedata_length = RSTRING_LEN(savedata);
 
   return savedata;

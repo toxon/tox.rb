@@ -61,14 +61,14 @@ VALUE mTox_cFriend_public_key(const VALUE self)
 
   Data_Get_Struct(client, mTox_cClient_CDATA, client_cdata);
 
-  uint8_t public_key[TOX_PUBLIC_KEY_SIZE];
+  uint8_t public_key_data[TOX_PUBLIC_KEY_SIZE];
 
   TOX_ERR_FRIEND_GET_PUBLIC_KEY error;
 
   const bool result = tox_friend_get_public_key(
     client_cdata->tox,
     NUM2LONG(number),
-    public_key,
+    public_key_data,
     &error
   );
 
@@ -89,12 +89,13 @@ VALUE mTox_cFriend_public_key(const VALUE self)
     RAISE_FUNC_RESULT("tox_friend_get_public_key");
   }
 
-  return rb_funcall(
-    mTox_cPublicKey,
-    rb_intern("new"),
-    1,
-    rb_str_new(public_key, TOX_PUBLIC_KEY_SIZE)
-  );
+  const VALUE public_key_value =
+    rb_str_new(public_key_data, TOX_PUBLIC_KEY_SIZE);
+
+  const VALUE public_key = rb_funcall(mTox_cPublicKey, rb_intern("new"), 1,
+                                      public_key_value);
+
+  return public_key;
 }
 
 // Tox::Friend#send_message
@@ -115,7 +116,7 @@ VALUE mTox_cFriend_send_message(const VALUE self, const VALUE text)
     client_cdata->tox,
     NUM2LONG(number),
     TOX_MESSAGE_TYPE_NORMAL,
-    (uint8_t*)RSTRING_PTR(text),
+    RSTRING_PTR(text),
     RSTRING_LEN(text),
     &error
   ));
@@ -163,13 +164,10 @@ VALUE mTox_cFriend_send_message(const VALUE self, const VALUE text)
       RAISE_FUNC_ERROR_DEFAULT("tox_friend_send_message");
   }
 
-  return rb_funcall(
-    mTox_cFriend_cOutMessage,
-    rb_intern("new"),
-    2,
-    self,
-    result
-  );
+  const VALUE friend_out_message =
+    rb_funcall(mTox_cFriend_cOutMessage, rb_intern("new"), 2,
+               self,
+               result);
 }
 
 // Tox::Friend#name
@@ -184,7 +182,7 @@ VALUE mTox_cFriend_name(const VALUE self)
 
   TOX_ERR_FRIEND_QUERY error;
 
-  const size_t name_size = tox_friend_get_name_size(
+  const size_t name_size_data = tox_friend_get_name_size(
     client_cdata->tox,
     NUM2LONG(number),
     &error
@@ -209,12 +207,12 @@ VALUE mTox_cFriend_name(const VALUE self)
       RAISE_FUNC_ERROR_DEFAULT("tox_friend_get_name_size");
   }
 
-  char name[name_size];
+  char name_data[name_size_data];
 
   const bool result = tox_friend_get_name(
     client_cdata->tox,
     NUM2LONG(number),
-    name,
+    name_data,
     &error
   );
 
@@ -241,7 +239,9 @@ VALUE mTox_cFriend_name(const VALUE self)
     RAISE_FUNC_RESULT("tox_friend_get_name");
   }
 
-  return rb_str_new(name, name_size);
+  const VALUE name = rb_str_new(name_data, name_size_data);
+
+  return name;
 }
 
 // Tox::Friend#status
@@ -305,7 +305,7 @@ VALUE mTox_cFriend_status_message(const VALUE self)
 
   TOX_ERR_FRIEND_QUERY error;
 
-  const size_t status_message_size = tox_friend_get_status_message_size(
+  const size_t status_message_size_data = tox_friend_get_status_message_size(
     client_cdata->tox,
     NUM2LONG(number),
     &error
@@ -330,12 +330,12 @@ VALUE mTox_cFriend_status_message(const VALUE self)
       RAISE_FUNC_ERROR_DEFAULT("tox_friend_get_status_message_size");
   }
 
-  char status_message[status_message_size];
+  char status_message_data[status_message_size_data];
 
   const bool result = tox_friend_get_status_message(
     client_cdata->tox,
     NUM2LONG(number),
-    status_message,
+    status_message_data,
     &error
   );
 
@@ -362,5 +362,8 @@ VALUE mTox_cFriend_status_message(const VALUE self)
     RAISE_FUNC_RESULT("tox_friend_get_status_message");
   }
 
-  return rb_str_new(status_message, status_message_size);
+  const VALUE status_message =
+    rb_str_new(status_message_data, status_message_size_data);
+
+  return status_message;
 }
