@@ -400,15 +400,17 @@ VALUE mTox_cClient_status_message(const VALUE self)
 
   Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
-  const size_t status_message_size = tox_self_get_status_message_size(self_cdata->tox);
+  const size_t status_message_size_data =
+    tox_self_get_status_message_size(self_cdata->tox);
 
-  char status_message_data[status_message_size];
+  char status_message_data[status_message_size_data];
 
-  if (status_message_size > 0) {
+  if (status_message_size_data > 0) {
     tox_self_get_status_message(self_cdata->tox, status_message_data);
   }
 
-  const VALUE status_message = rb_str_new(status_message, status_message_size);
+  const VALUE status_message =
+    rb_str_new(status_message_data, status_message_size_data);
 
   return status_message;
 }

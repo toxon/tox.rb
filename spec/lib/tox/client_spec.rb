@@ -390,6 +390,46 @@ RSpec.describe Tox::Client do
     end
   end
 
+  describe '#status_message' do
+    it 'returns empty string by default' do
+      expect(subject.status_message).to eq ''
+    end
+
+    context 'when it was set' do
+      before do
+        subject.status_message = status_message
+      end
+
+      let(:status_message) { SecureRandom.hex }
+
+      it 'returns given value' do
+        expect(subject.status_message).to eq status_message
+      end
+    end
+
+    context 'when it was set to empty string' do
+      before do
+        subject.status_message = ''
+      end
+
+      it 'returns empty string' do
+        expect(subject.status_message).to eq ''
+      end
+    end
+  end
+
+  describe '#status_message=' do
+    context 'when invalid value given' do
+      specify do
+        expect { subject.status_message = :foobar }.to \
+          raise_error(
+            TypeError,
+            "wrong argument type #{Symbol} (expected #{String})",
+          )
+      end
+    end
+  end
+
   describe '#status=' do
     context 'when invalid value given' do
       specify do
