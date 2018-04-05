@@ -11,19 +11,19 @@ static void  mTox_cClient_free(mTox_cClient_CDATA *free_cdata);
 static VALUE mTox_cClient_public_key(VALUE self);
 static VALUE mTox_cClient_address(VALUE self);
 static VALUE mTox_cClient_nospam(VALUE self);
-static VALUE mTox_cClient_nospam_EQUALS(VALUE self, VALUE nospam);
+static VALUE mTox_cClient_nospam_ASSIGN(VALUE self, VALUE nospam);
 static VALUE mTox_cClient_savedata(VALUE self);
 
 static VALUE mTox_cClient_bootstrap(VALUE self, VALUE node);
 
 static VALUE mTox_cClient_name(VALUE self);
-static VALUE mTox_cClient_name_EQUALS(VALUE self, VALUE name);
+static VALUE mTox_cClient_name_ASSIGN(VALUE self, VALUE name);
 
 static VALUE mTox_cClient_status(VALUE self);
-static VALUE mTox_cClient_status_EQUALS(VALUE self, VALUE status);
+static VALUE mTox_cClient_status_ASSIGN(VALUE self, VALUE status);
 
 static VALUE mTox_cClient_status_message(VALUE self);
-static VALUE mTox_cClient_status_message_EQUALS(VALUE self, VALUE status_message);
+static VALUE mTox_cClient_status_message_ASSIGN(VALUE self, VALUE status_message);
 
 static VALUE mTox_cClient_friend_numbers(VALUE self);
 
@@ -91,19 +91,19 @@ void mTox_cClient_INIT()
   rb_define_method(mTox_cClient, "public_key", mTox_cClient_public_key,    0);
   rb_define_method(mTox_cClient, "address",    mTox_cClient_address,       0);
   rb_define_method(mTox_cClient, "nospam",     mTox_cClient_nospam,        0);
-  rb_define_method(mTox_cClient, "nospam=",    mTox_cClient_nospam_EQUALS, 1);
+  rb_define_method(mTox_cClient, "nospam=",    mTox_cClient_nospam_ASSIGN, 1);
   rb_define_method(mTox_cClient, "savedata",   mTox_cClient_savedata,      0);
 
   rb_define_method(mTox_cClient, "bootstrap", mTox_cClient_bootstrap, 1);
 
   rb_define_method(mTox_cClient, "name",  mTox_cClient_name,        0);
-  rb_define_method(mTox_cClient, "name=", mTox_cClient_name_EQUALS, 1);
+  rb_define_method(mTox_cClient, "name=", mTox_cClient_name_ASSIGN, 1);
 
   rb_define_method(mTox_cClient, "status",  mTox_cClient_status,        0);
-  rb_define_method(mTox_cClient, "status=", mTox_cClient_status_EQUALS, 1);
+  rb_define_method(mTox_cClient, "status=", mTox_cClient_status_ASSIGN, 1);
 
   rb_define_method(mTox_cClient, "status_message",  mTox_cClient_status_message,        0);
-  rb_define_method(mTox_cClient, "status_message=", mTox_cClient_status_message_EQUALS, 1);
+  rb_define_method(mTox_cClient, "status_message=", mTox_cClient_status_message_ASSIGN, 1);
 
   rb_define_method(mTox_cClient, "friend_numbers", mTox_cClient_friend_numbers, 0);
 
@@ -198,7 +198,7 @@ VALUE mTox_cClient_nospam(const VALUE self)
 }
 
 // Tox::Client#nospam
-VALUE mTox_cClient_nospam_EQUALS(const VALUE self, const VALUE nospam)
+VALUE mTox_cClient_nospam_ASSIGN(const VALUE self, const VALUE nospam)
 {
   if (!rb_funcall(nospam, rb_intern("is_a?"), 1, mTox_cNospam)) {
     rb_raise(rb_eTypeError, "expected nospam to be a Tox::Nospam");
@@ -288,7 +288,7 @@ VALUE mTox_cClient_name(const VALUE self)
 }
 
 // Tox::Client#name=
-VALUE mTox_cClient_name_EQUALS(const VALUE self, const VALUE name)
+VALUE mTox_cClient_name_ASSIGN(const VALUE self, const VALUE name)
 {
   Check_Type(name, T_STRING);
 
@@ -345,7 +345,7 @@ VALUE mTox_cClient_status(const VALUE self)
 }
 
 // Tox::Client#status=
-VALUE mTox_cClient_status_EQUALS(const VALUE self, const VALUE status)
+VALUE mTox_cClient_status_ASSIGN(const VALUE self, const VALUE status)
 {
   mTox_cClient_CDATA *self_cdata;
 
@@ -386,7 +386,7 @@ VALUE mTox_cClient_status_message(const VALUE self)
 }
 
 // Tox::Client#status_message=
-VALUE mTox_cClient_status_message_EQUALS(const VALUE self, const VALUE status_message)
+VALUE mTox_cClient_status_message_ASSIGN(const VALUE self, const VALUE status_message)
 {
   Check_Type(status_message, T_STRING);
 

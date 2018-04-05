@@ -7,7 +7,7 @@ static void  mTox_cOptions_free(void *free_cdata);
 // Public methods
 
 static VALUE mTox_cOptions_savedata(VALUE self);
-static VALUE mTox_cOptions_savedata_EQUALS(VALUE self, VALUE savedata);
+static VALUE mTox_cOptions_savedata_ASSIGN(VALUE self, VALUE savedata);
 
 /*************************************************************
  * Initialization
@@ -20,7 +20,7 @@ void mTox_cOptions_INIT()
 
   // Public methods
   rb_define_method(mTox_cOptions, "savedata",  mTox_cOptions_savedata,        0);
-  rb_define_method(mTox_cOptions, "savedata=", mTox_cOptions_savedata_EQUALS, 1);
+  rb_define_method(mTox_cOptions, "savedata=", mTox_cOptions_savedata_ASSIGN, 1);
 }
 
 /*************************************************************
@@ -63,7 +63,7 @@ VALUE mTox_cOptions_savedata(const VALUE self)
 }
 
 // Tox::Options#savedata=
-VALUE mTox_cOptions_savedata_EQUALS(const VALUE self, const VALUE savedata)
+VALUE mTox_cOptions_savedata_ASSIGN(const VALUE self, const VALUE savedata)
 {
   mTox_cOptions_CDATA *self_cdata;
 
