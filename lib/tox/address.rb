@@ -8,5 +8,9 @@ module Tox
     def self.bytesize
       38
     end
+
+    def public_key
+      @public_key ||= PublicKey.new value[0...32]
+    end
   end
 end

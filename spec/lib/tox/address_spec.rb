@@ -50,6 +50,12 @@ RSpec.describe Tox::Address do
     end
   end
 
+  describe '#public_key' do
+    specify do
+      expect(subject.public_key).to eq Tox::PublicKey.new bin[0...32]
+    end
+  end
+
   describe '#==' do
     it 'returns true when values are equal' do
       expect(subject).to eq described_class.new hex
