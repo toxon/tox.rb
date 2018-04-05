@@ -58,20 +58,24 @@ RSpec.describe 'Two clients' do
       send_queue << text
     end
 
-    sleep 10
+    begin
+      Timeout.timeout 60 do
+        sleep 1 while recv_queue.size < send_data.size
+      end
 
-    recv_data = Set.new
+      recv_data = Set.new
 
-    recv_queue.size.times do
-      recv_data << recv_queue.pop(true)
+      recv_queue.size.times do
+        recv_data << recv_queue.pop(true)
+      end
+
+      expect(recv_data).to eq send_data.to_set
+    ensure
+      send_client.stop
+      recv_client.stop
+
+      send_thread.join
+      recv_thread.join
     end
-
-    expect(recv_data).to eq send_data.to_set
-
-    send_client.stop
-    recv_client.stop
-
-    send_thread.join
-    recv_thread.join
   end
 end
