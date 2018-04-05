@@ -205,11 +205,13 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
 
   TOX_ERR_BOOTSTRAP error;
 
-  tox_bootstrap(self_cdata->tox,
-                RSTRING_PTR(rb_funcall(node, rb_intern("resolv_ipv4"), 0)),
-                NUM2INT(rb_funcall(node, rb_intern("port"), 0)),
-                RSTRING_PTR(rb_funcall(rb_funcall(node, rb_intern("public_key"), 0), rb_intern("value"), 0)),
-                &error);
+  tox_bootstrap(
+    self_cdata->tox,
+    RSTRING_PTR(rb_funcall(node, rb_intern("resolv_ipv4"), 0)),
+    NUM2INT(rb_funcall(node, rb_intern("port"), 0)),
+    RSTRING_PTR(rb_funcall(rb_funcall(node, rb_intern("public_key"), 0), rb_intern("value"), 0)),
+    &error
+  );
 
   switch (error) {
     case TOX_ERR_BOOTSTRAP_OK:
