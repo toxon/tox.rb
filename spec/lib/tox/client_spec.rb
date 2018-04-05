@@ -79,6 +79,18 @@ RSpec.describe Tox::Client do
         expect(subject.address).to eq old_tox.address
       end
     end
+
+    context 'when nospam was changed' do
+      before do
+        subject.nospam = new_nospam
+      end
+
+      let(:new_nospam) { Tox::Nospam.new SecureRandom.hex Tox::Nospam.bytesize }
+
+      specify do
+        expect(subject.address.nospam).to eq new_nospam
+      end
+    end
   end
 
   describe '#public_key' do
@@ -141,6 +153,29 @@ RSpec.describe Tox::Client do
 
       it 'equals nospam extracted from old address' do
         expect(subject.nospam).to eq old_tox.address.nospam
+      end
+    end
+
+    context 'when it was changed' do
+      before do
+        subject.nospam = new_nospam
+      end
+
+      let(:new_nospam) { Tox::Nospam.new SecureRandom.hex Tox::Nospam.bytesize }
+
+      specify do
+        expect(subject.nospam).to eq new_nospam
+      end
+    end
+  end
+
+  describe '#nospam=' do
+    context 'when invalid value given' do
+      specify do
+        expect { subject.nospam = :foobar }.to raise_error(
+          TypeError,
+          "expected nospam to be a #{Tox::Nospam}",
+        )
       end
     end
   end

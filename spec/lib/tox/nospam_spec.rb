@@ -14,6 +14,73 @@ RSpec.describe Tox::Nospam do
   end
 
   describe '#initialize' do
+    context 'when integer value provided' do
+      subject { described_class.new int }
+
+      let(:int) { rand 0...2**32 }
+
+      specify do
+        expect(subject.value).to be_instance_of String
+      end
+
+      specify do
+        expect(subject.value).to be_frozen
+      end
+
+      it 'converts it' do
+        expect(subject.value).to eq [int].pack('L').reverse
+      end
+    end
+
+    context 'when integer zero is provided' do
+      subject { described_class.new 0 }
+
+      specify do
+        expect(subject.value).to be_instance_of String
+      end
+
+      specify do
+        expect(subject.value).to be_frozen
+      end
+
+      it 'converts it' do
+        expect(subject.value).to eq ("\x00" * 4).force_encoding('BINARY')
+      end
+    end
+
+    context 'when max integer is provided' do
+      subject { described_class.new 2**32 - 1 }
+
+      specify do
+        expect(subject.value).to be_instance_of String
+      end
+
+      specify do
+        expect(subject.value).to be_frozen
+      end
+
+      it 'converts it' do
+        expect(subject.value).to eq ("\xFF" * 4).force_encoding('BINARY')
+      end
+    end
+
+    context 'when known integer is provided' do
+      subject { described_class.new 0x12345678 }
+
+      specify do
+        expect(subject.value).to be_instance_of String
+      end
+
+      specify do
+        expect(subject.value).to be_frozen
+      end
+
+      it 'converts it' do
+        expect(subject.value).to \
+          eq (+"\x12\x34\x56\x78").force_encoding('BINARY')
+      end
+    end
+
     context 'when binary value provided' do
       subject { described_class.new bin }
 
@@ -47,6 +114,40 @@ RSpec.describe Tox::Nospam do
 
     it 'equals binary value' do
       expect(subject.value).to eq bin
+    end
+  end
+
+  describe '#to_i' do
+    specify do
+      expect(subject.to_i).to be_kind_of Integer
+    end
+
+    specify do
+      expect(subject.to_i).to eq bin.reverse.unpack('L').first
+    end
+
+    context 'when all bytes are zeroes' do
+      let(:hex) { '00000000' }
+
+      specify do
+        expect(subject.to_i).to eq 0
+      end
+    end
+
+    context 'when all bytes are 0xFF' do
+      let(:hex) { 'FFFFFFFF' }
+
+      specify do
+        expect(subject.to_i).to eq 2**32 - 1
+      end
+    end
+
+    context 'for known bytes' do
+      let(:hex) { '12345678' }
+
+      specify do
+        expect(subject.to_i).to eq 0x12345678
+      end
     end
   end
 

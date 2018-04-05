@@ -11,6 +11,7 @@ static void  mTox_cClient_free(mTox_cClient_CDATA *free_cdata);
 static VALUE mTox_cClient_public_key(VALUE self);
 static VALUE mTox_cClient_address(VALUE self);
 static VALUE mTox_cClient_nospam(VALUE self);
+static VALUE mTox_cClient_nospam_EQUALS(VALUE self, VALUE nospam);
 static VALUE mTox_cClient_savedata(VALUE self);
 
 static VALUE mTox_cClient_bootstrap(VALUE self, VALUE node);
@@ -87,10 +88,11 @@ void mTox_cClient_INIT()
 
   // Public methods
 
-  rb_define_method(mTox_cClient, "public_key", mTox_cClient_public_key, 0);
-  rb_define_method(mTox_cClient, "address",    mTox_cClient_address,    0);
-  rb_define_method(mTox_cClient, "nospam",     mTox_cClient_nospam,     0);
-  rb_define_method(mTox_cClient, "savedata",   mTox_cClient_savedata,   0);
+  rb_define_method(mTox_cClient, "public_key", mTox_cClient_public_key,    0);
+  rb_define_method(mTox_cClient, "address",    mTox_cClient_address,       0);
+  rb_define_method(mTox_cClient, "nospam",     mTox_cClient_nospam,        0);
+  rb_define_method(mTox_cClient, "nospam=",    mTox_cClient_nospam_EQUALS, 1);
+  rb_define_method(mTox_cClient, "savedata",   mTox_cClient_savedata,      0);
 
   rb_define_method(mTox_cClient, "bootstrap", mTox_cClient_bootstrap, 1);
 
@@ -193,6 +195,25 @@ VALUE mTox_cClient_nospam(const VALUE self)
     1,
     LONG2FIX(nospam)
   );
+}
+
+// Tox::Client#nospam
+VALUE mTox_cClient_nospam_EQUALS(const VALUE self, const VALUE nospam)
+{
+  if (!rb_funcall(nospam, rb_intern("is_a?"), 1, mTox_cNospam)) {
+    rb_raise(rb_eTypeError, "expected nospam to be a Tox::Nospam");
+  }
+
+  mTox_cClient_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+
+  tox_self_set_nospam(
+    self_cdata->tox,
+    FIX2LONG(rb_funcall(nospam, rb_intern("to_i"), 0))
+  );
+
+  return Qnil;
 }
 
 // Tox::Client#savedata

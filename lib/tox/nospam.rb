@@ -13,5 +13,9 @@ module Tox
       return @value = [value].pack('L').reverse.freeze if value.is_a? Integer
       super
     end
+
+    def to_i
+      @to_i ||= value.reverse.unpack('L').first
+    end
   end
 end
