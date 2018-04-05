@@ -384,6 +384,18 @@ RSpec.describe Tox::Client do
           )
       end
     end
+
+    context 'when public key has invalid type' do
+      let(:new_friend_public_key) { :foobar }
+
+      specify do
+        expect { subject.friend_add_norequest new_friend_public_key }.to \
+          raise_error(
+            TypeError,
+            "expected public key to be a #{Tox::PublicKey}",
+          )
+      end
+    end
   end
 
   describe '#friend_add' do
@@ -473,6 +485,30 @@ RSpec.describe Tox::Client do
           raise_error(
             RuntimeError,
             'tox_friend_add() failed with TOX_ERR_FRIEND_ADD_ALREADY_SENT',
+          )
+      end
+    end
+
+    context 'when address has invalid type' do
+      let(:new_friend_address) { :foobar }
+
+      specify do
+        expect { subject.friend_add new_friend_address, message }.to \
+          raise_error(
+            TypeError,
+            "expected address to be a #{Tox::Address}",
+          )
+      end
+    end
+
+    context 'when message has invalid type' do
+      let(:message) { 123 }
+
+      specify do
+        expect { subject.friend_add new_friend_address, message }.to \
+          raise_error(
+            TypeError,
+            "wrong argument type #{Integer} (expected #{String})",
           )
       end
     end
