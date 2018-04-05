@@ -43,14 +43,14 @@ RSpec.describe Tox::PublicKey do
 
   describe '#to_s' do
     it 'returns hexadecimal value' do
-      expect(subject.to_hex).to eq hex
+      expect(subject.to_s).to eq hex
     end
   end
 
   describe '#inspect' do
     it 'returns inspected value' do
       expect(subject.inspect).to \
-        eq "#<#{described_class}: \"#{subject.to_hex}\">"
+        eq "#<#{described_class}: \"#{subject}\">"
     end
   end
 end

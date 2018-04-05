@@ -20,7 +20,7 @@ module Tox
   ##
   # Binary primitive representation.
   #
-  class Binary < String
+  class Binary
     def self.bytesize
       raise NotImplementedError, "#{self}.bytesize"
     end
@@ -35,24 +35,21 @@ module Tox
       end
 
       if value.bytesize == self.class.bytesize
-        super value
+        @value = value.frozen? ? value : value.dup.freeze
       else
         unless value =~ self.class.hex_re
           raise ArgumentError, 'expected value to be a hex string'
         end
-        super [value].pack('H*')
+        @value = [value].pack('H*').freeze
       end
-
-      to_hex
-      freeze
     end
 
-    def to_hex
-      @to_hex ||= unpack('H*').first.upcase.freeze
+    def to_s
+      @to_s ||= @value.unpack('H*').first.upcase.freeze
     end
 
     def inspect
-      "#<#{self.class}: \"#{to_hex}\">"
+      "#<#{self.class}: \"#{self}\">"
     end
   end
 end

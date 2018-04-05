@@ -31,7 +31,7 @@ tox_client.status = Tox::UserStatus::NONE
 tox_client.status_message = STATUS_MESSAGE
 
 puts
-puts "Address:        #{tox_client.address.to_hex}"
+puts "Address:        #{tox_client.address}"
 puts "Name:           #{tox_client.name}"
 puts "Status:         #{tox_client.status}"
 puts "Status message: #{tox_client.status_message}"
@@ -41,7 +41,7 @@ puts 'Connecting to the nodes from official list...'
 tox_client.bootstrap_official
 
 tox_client.on_friend_request do |public_key|
-  puts "Got friend request with public key #{public_key.to_hex}. " \
+  puts "Got friend request with public key #{public_key}. " \
        'Adding to contacts...'
   puts
 
@@ -52,7 +52,7 @@ tox_client.on_friend_message do |friend, text|
   puts 'Message from friend'
   puts "Number:         #{friend.number}"
   puts "Name:           #{friend.name}"
-  puts "Public key:     #{friend.public_key.to_hex}"
+  puts "Public key:     #{friend.public_key}"
   puts "Status:         #{friend.status}"
   puts "Status message: #{friend.status_message}"
   puts text.inspect

@@ -25,7 +25,7 @@ RSpec.describe Tox::Node do
       'ipv6'       => ipv6,
       'port'       => port,
       'tcp_ports'  => tcp_ports,
-      'public_key' => public_key.to_hex,
+      'public_key' => public_key.to_s,
       'maintainer' => maintainer,
       'location'   => location,
       'status_udp' => status_udp,
