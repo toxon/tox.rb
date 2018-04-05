@@ -300,7 +300,7 @@ VALUE mTox_cClient_name(const VALUE self)
     tox_self_get_name(self_cdata->tox, name_data);
   }
 
-  const VALUE name = rb_str_new(name, name_size_data);
+  const VALUE name = rb_str_new(name_data, name_size_data);
 
   return name;
 }
