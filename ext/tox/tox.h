@@ -60,9 +60,23 @@ extern VALUE mTox_mOutMessage_eEmptyError;
       "\" to be a "expected_type                              \
   )
 
-#define RAISE_ENUM(name)               rb_raise(rb_eNotImpError,    name" has unknown value")
-#define RAISE_FUNC_RESULT(name)        rb_raise(mTox_eUnknownError, name"() failed")
-#define RAISE_FUNC_ERROR_DEFAULT(name) rb_raise(mTox_eUnknownError, name"() failed")
+#define RAISE_ENUM(enum_name)      \
+  rb_raise(                        \
+    rb_eNotImpError,               \
+    enum_name" has unknown value"  \
+  )
+
+#define RAISE_FUNC_RESULT(func_name) \
+  rb_raise(                          \
+    mTox_eUnknownError,              \
+    func_name"() failed"             \
+  )
+
+#define RAISE_FUNC_ERROR_DEFAULT(func_name) \
+  rb_raise(                                 \
+    mTox_eUnknownError,                     \
+    func_name"() failed"                    \
+  )
 
 #define RAISE_FUNC_ERROR(exception_class, func_name, error) \
   rb_raise(                                                 \
