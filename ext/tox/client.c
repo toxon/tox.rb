@@ -310,14 +310,14 @@ VALUE mTox_cClient_name_ASSIGN(const VALUE self, const VALUE name)
       break;
     case TOX_ERR_SET_INFO_NULL:
       RAISE_FUNC_ERROR(
-        mTox_eNullError,
         "tox_self_set_name",
+        mTox_eNullError,
         "TOX_ERR_SET_INFO_NULL"
       );
     case TOX_ERR_SET_INFO_TOO_LONG:
       RAISE_FUNC_ERROR(
-        rb_eRuntimeError,
         "tox_self_set_name",
+        rb_eRuntimeError,
         "TOX_ERR_SET_INFO_TOO_LONG"
       );
     default:
@@ -416,14 +416,14 @@ VALUE mTox_cClient_status_message_ASSIGN(const VALUE self, const VALUE status_me
       break;
     case TOX_ERR_SET_INFO_NULL:
       RAISE_FUNC_ERROR(
-        mTox_eNullError,
         "tox_self_set_status_message",
+        mTox_eNullError,
         "TOX_ERR_SET_INFO_NULL"
       );
     case TOX_ERR_SET_INFO_TOO_LONG:
       RAISE_FUNC_ERROR(
-        rb_eRuntimeError,
         "tox_self_set_status_message",
+        rb_eRuntimeError,
         "TOX_ERR_SET_INFO_TOO_LONG"
       );
     default:
@@ -487,38 +487,38 @@ VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key
       break;
     case TOX_ERR_FRIEND_ADD_NULL:
       RAISE_FUNC_ERROR(
-        mTox_eNullError,
         "tox_friend_add_norequest",
+        mTox_eNullError,
         "TOX_ERR_FRIEND_ADD_NULL"
       );
     case TOX_ERR_FRIEND_ADD_OWN_KEY:
       RAISE_FUNC_ERROR(
-        rb_eRuntimeError,
         "tox_friend_add_norequest",
+        rb_eRuntimeError,
         "TOX_ERR_FRIEND_ADD_OWN_KEY"
       );
     case TOX_ERR_FRIEND_ADD_ALREADY_SENT:
       RAISE_FUNC_ERROR(
-        rb_eRuntimeError,
         "tox_friend_add_norequest",
+        rb_eRuntimeError,
         "TOX_ERR_FRIEND_ADD_ALREADY_SENT"
       );
     case TOX_ERR_FRIEND_ADD_BAD_CHECKSUM:
       RAISE_FUNC_ERROR(
-        rb_eRuntimeError,
         "tox_friend_add_norequest",
+        rb_eRuntimeError,
         "TOX_ERR_FRIEND_ADD_BAD_CHECKSUM"
       );
     case TOX_ERR_FRIEND_ADD_SET_NEW_NOSPAM:
       RAISE_FUNC_ERROR(
-        rb_eRuntimeError,
         "tox_friend_add_norequest",
+        rb_eRuntimeError,
         "TOX_ERR_FRIEND_ADD_SET_NEW_NOSPAM"
       );
     case TOX_ERR_FRIEND_ADD_MALLOC:
       RAISE_FUNC_ERROR(
-        rb_eNoMemError,
         "tox_friend_add_norequest",
+        rb_eNoMemError,
         "TOX_ERR_FRIEND_ADD_MALLOC"
       );
     default:
@@ -561,50 +561,50 @@ VALUE mTox_cClient_friend_add(const VALUE self, const VALUE address, const VALUE
       break;
     case TOX_ERR_FRIEND_ADD_NULL:
       RAISE_FUNC_ERROR(
-        mTox_eNullError,
         "tox_friend_add",
+        mTox_eNullError,
         "TOX_ERR_FRIEND_ADD_NULL"
       );
     case TOX_ERR_FRIEND_ADD_NO_MESSAGE:
       RAISE_FUNC_ERROR(
-        mTox_eNullError,
         "tox_friend_add",
+        mTox_eNullError,
         "TOX_ERR_FRIEND_ADD_NO_MESSAGE"
       );
     case TOX_ERR_FRIEND_ADD_TOO_LONG:
       RAISE_FUNC_ERROR(
-        mTox_eNullError,
         "tox_friend_add",
+        mTox_eNullError,
         "TOX_ERR_FRIEND_ADD_TOO_LONG"
       );
     case TOX_ERR_FRIEND_ADD_OWN_KEY:
       RAISE_FUNC_ERROR(
-        rb_eRuntimeError,
         "tox_friend_add",
+        rb_eRuntimeError,
         "TOX_ERR_FRIEND_ADD_OWN_KEY"
       );
     case TOX_ERR_FRIEND_ADD_ALREADY_SENT:
       RAISE_FUNC_ERROR(
-        rb_eRuntimeError,
         "tox_friend_add",
+        rb_eRuntimeError,
         "TOX_ERR_FRIEND_ADD_ALREADY_SENT"
       );
     case TOX_ERR_FRIEND_ADD_BAD_CHECKSUM:
       RAISE_FUNC_ERROR(
-        rb_eRuntimeError,
         "tox_friend_add",
+        rb_eRuntimeError,
         "TOX_ERR_FRIEND_ADD_BAD_CHECKSUM"
       );
     case TOX_ERR_FRIEND_ADD_SET_NEW_NOSPAM:
       RAISE_FUNC_ERROR(
-        rb_eRuntimeError,
         "tox_friend_add",
+        rb_eRuntimeError,
         "TOX_ERR_FRIEND_ADD_SET_NEW_NOSPAM"
       );
     case TOX_ERR_FRIEND_ADD_MALLOC:
       RAISE_FUNC_ERROR(
-        rb_eNoMemError,
         "tox_friend_add",
+        rb_eNoMemError,
         "TOX_ERR_FRIEND_ADD_MALLOC"
       );
   }
@@ -643,56 +643,56 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
       break;
     case TOX_ERR_NEW_NULL:
       RAISE_FUNC_ERROR(
-        mTox_eNullError,
         "tox_new",
+        mTox_eNullError,
         "TOX_ERR_NEW_NULL"
       );
     case TOX_ERR_NEW_MALLOC:
       RAISE_FUNC_ERROR(
-        rb_eNoMemError,
         "tox_new",
+        rb_eNoMemError,
         "TOX_ERR_NEW_MALLOC"
       );
     case TOX_ERR_NEW_PORT_ALLOC:
       RAISE_FUNC_ERROR(
-        rb_eRuntimeError,
         "tox_new",
+        rb_eRuntimeError,
         "TOX_ERR_NEW_PORT_ALLOC"
       );
     case TOX_ERR_NEW_PROXY_BAD_TYPE:
       RAISE_FUNC_ERROR(
-        rb_eRuntimeError,
         "tox_new",
+        rb_eRuntimeError,
         "TOX_ERR_NEW_PROXY_BAD_TYPE"
       );
     case TOX_ERR_NEW_PROXY_BAD_HOST:
       RAISE_FUNC_ERROR(
-        rb_eRuntimeError,
         "tox_new",
+        rb_eRuntimeError,
         "TOX_ERR_NEW_PROXY_BAD_HOST"
       );
     case TOX_ERR_NEW_PROXY_BAD_PORT:
       RAISE_FUNC_ERROR(
-        rb_eRuntimeError,
         "tox_new",
+        rb_eRuntimeError,
         "TOX_ERR_NEW_PROXY_BAD_PORT"
       );
     case TOX_ERR_NEW_PROXY_NOT_FOUND:
       RAISE_FUNC_ERROR(
-        rb_eRuntimeError,
         "tox_new",
+        rb_eRuntimeError,
         "TOX_ERR_NEW_PROXY_NOT_FOUND"
       );
     case TOX_ERR_NEW_LOAD_ENCRYPTED:
       RAISE_FUNC_ERROR(
-        rb_eRuntimeError,
         "tox_new",
+        rb_eRuntimeError,
         "TOX_ERR_NEW_LOAD_ENCRYPTED"
       );
     case TOX_ERR_NEW_LOAD_BAD_FORMAT:
       RAISE_FUNC_ERROR(
-        mTox_cClient_eBadSavedataError,
         "tox_new",
+        mTox_cClient_eBadSavedataError,
         "TOX_ERR_NEW_LOAD_BAD_FORMAT"
       );
     default:

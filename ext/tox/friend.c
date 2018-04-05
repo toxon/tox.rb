@@ -77,8 +77,8 @@ VALUE mTox_cFriend_public_key(const VALUE self)
       break;
     case TOX_ERR_FRIEND_GET_PUBLIC_KEY_FRIEND_NOT_FOUND:
       RAISE_FUNC_ERROR(
-        mTox_cFriend_eNotFoundError,
         "tox_friend_get_public_key",
+        mTox_cFriend_eNotFoundError,
         "TOX_ERR_FRIEND_GET_PUBLIC_KEY_FRIEND_NOT_FOUND"
       );
     default:
@@ -125,38 +125,38 @@ VALUE mTox_cFriend_send_message(const VALUE self, const VALUE text)
       break;
     case TOX_ERR_FRIEND_SEND_MESSAGE_NULL:
       RAISE_FUNC_ERROR(
-        mTox_eNullError,
         "tox_friend_send_message",
+        mTox_eNullError,
         "TOX_ERR_FRIEND_SEND_MESSAGE_NULL"
       );
     case TOX_ERR_FRIEND_SEND_MESSAGE_FRIEND_NOT_FOUND:
       RAISE_FUNC_ERROR(
-        mTox_cFriend_eNotFoundError,
         "tox_friend_send_message",
+        mTox_cFriend_eNotFoundError,
         "TOX_ERR_FRIEND_SEND_MESSAGE_FRIEND_NOT_FOUND"
       );
     case TOX_ERR_FRIEND_SEND_MESSAGE_FRIEND_NOT_CONNECTED:
       RAISE_FUNC_ERROR(
-        mTox_cFriend_eNotConnectedError,
         "tox_friend_send_message",
+        mTox_cFriend_eNotConnectedError,
         "TOX_ERR_FRIEND_SEND_MESSAGE_FRIEND_NOT_CONNECTED"
       );
     case TOX_ERR_FRIEND_SEND_MESSAGE_SENDQ:
       RAISE_FUNC_ERROR(
-        mTox_mOutMessage_eSendQueueAllocError,
         "tox_friend_send_message",
+        mTox_mOutMessage_eSendQueueAllocError,
         "TOX_ERR_FRIEND_SEND_MESSAGE_SENDQ"
       );
     case TOX_ERR_FRIEND_SEND_MESSAGE_TOO_LONG:
       RAISE_FUNC_ERROR(
-        mTox_mOutMessage_eTooLongError,
         "tox_friend_send_message",
+        mTox_mOutMessage_eTooLongError,
         "TOX_ERR_FRIEND_SEND_MESSAGE_TOO_LONG"
       );
     case TOX_ERR_FRIEND_SEND_MESSAGE_EMPTY:
       RAISE_FUNC_ERROR(
-        mTox_mOutMessage_eEmptyError,
         "tox_friend_send_message",
+        mTox_mOutMessage_eEmptyError,
         "TOX_ERR_FRIEND_SEND_MESSAGE_EMPTY"
       );
     default:
@@ -195,14 +195,14 @@ VALUE mTox_cFriend_name(const VALUE self)
       break;
     case TOX_ERR_FRIEND_QUERY_NULL:
       RAISE_FUNC_ERROR(
-        mTox_eNullError,
         "tox_friend_get_name_size",
+        mTox_eNullError,
         "TOX_ERR_FRIEND_QUERY_NULL"
       );
     case TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND:
       RAISE_FUNC_ERROR(
-        mTox_cFriend_eNotFoundError,
         "tox_friend_get_name_size",
+        mTox_cFriend_eNotFoundError,
         "TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND"
       );
     default:
@@ -223,14 +223,14 @@ VALUE mTox_cFriend_name(const VALUE self)
       break;
     case TOX_ERR_FRIEND_QUERY_NULL:
       RAISE_FUNC_ERROR(
-        mTox_eNullError,
         "tox_friend_get_name",
+        mTox_eNullError,
         "TOX_ERR_FRIEND_QUERY_NULL"
       );
     case TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND:
       RAISE_FUNC_ERROR(
-        mTox_cFriend_eNotFoundError,
         "tox_friend_get_name",
+        mTox_cFriend_eNotFoundError,
         "TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND"
       );
     default:
@@ -267,14 +267,14 @@ VALUE mTox_cFriend_status(const VALUE self)
       break;
     case TOX_ERR_FRIEND_QUERY_NULL:
       RAISE_FUNC_ERROR(
-        mTox_eNullError,
         "tox_friend_get_status",
+        mTox_eNullError,
         "TOX_ERR_FRIEND_QUERY_NULL"
       );
     case TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND:
       RAISE_FUNC_ERROR(
-        mTox_cFriend_eNotFoundError,
         "tox_friend_get_status",
+        mTox_cFriend_eNotFoundError,
         "TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND"
       );
     default:
@@ -316,14 +316,14 @@ VALUE mTox_cFriend_status_message(const VALUE self)
       break;
     case TOX_ERR_FRIEND_QUERY_NULL:
       RAISE_FUNC_ERROR(
-        mTox_eNullError,
         "tox_friend_get_status_message_size",
+        mTox_eNullError,
         "TOX_ERR_FRIEND_QUERY_NULL"
       );
     case TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND:
       RAISE_FUNC_ERROR(
-        mTox_cFriend_eNotFoundError,
         "tox_friend_get_status_message_size",
+        mTox_cFriend_eNotFoundError,
         "TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND"
       );
     default:
@@ -344,14 +344,14 @@ VALUE mTox_cFriend_status_message(const VALUE self)
       break;
     case TOX_ERR_FRIEND_QUERY_NULL:
       RAISE_FUNC_ERROR(
-        mTox_eNullError,
         "tox_friend_get_status_message",
+        mTox_eNullError,
         "TOX_ERR_FRIEND_QUERY_NULL"
       );
     case TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND:
       RAISE_FUNC_ERROR(
-        mTox_cFriend_eNotFoundError,
         "tox_friend_get_status_message",
+        mTox_cFriend_eNotFoundError,
         "TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND"
       );
     default:

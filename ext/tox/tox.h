@@ -78,7 +78,7 @@ extern VALUE mTox_mOutMessage_eEmptyError;
     func_name"() failed"                    \
   )
 
-#define RAISE_FUNC_ERROR(exception_class, func_name, error) \
+#define RAISE_FUNC_ERROR(func_name, exception_class, error) \
   rb_raise(                                                 \
     exception_class,                                        \
     func_name"() failed with "error                         \
