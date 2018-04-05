@@ -7,7 +7,7 @@ def cflags(s)
   $CFLAGS += " #{s} "
 end
 
-cflags '-std=c99'
+cflags '-std=c11'
 cflags '-Wall'
 cflags '-Wextra'
 
