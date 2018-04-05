@@ -58,7 +58,7 @@ RSpec.describe Tox::Client do
   end
 
   describe '#address' do
-    it 'returns string by default' do
+    specify do
       expect(subject.address).to be_a Tox::Address
     end
 
@@ -82,7 +82,7 @@ RSpec.describe Tox::Client do
   end
 
   describe '#public_key' do
-    it 'returns public key by default' do
+    specify do
       expect(subject.public_key).to be_a Tox::PublicKey
     end
 
