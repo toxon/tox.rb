@@ -52,6 +52,14 @@ extern VALUE mTox_mOutMessage_eEmptyError;
 
 // Macros
 
+#define RAISE_TYPECHECK(method_name, arg_name, expected_type) \
+  rb_raise(                                                   \
+    rb_eTypeError,                                            \
+    "Expected method "method_name                             \
+      " argument \""arg_name                                  \
+      "\" to be a "expected_type                              \
+  )
+
 #define RAISE_ENUM(name)               rb_raise(rb_eNotImpError,    name" has unknown value")
 #define RAISE_FUNC_RESULT(name)        rb_raise(mTox_eUnknownError, name"() failed")
 #define RAISE_FUNC_ERROR_DEFAULT(name) rb_raise(mTox_eUnknownError, name"() failed")

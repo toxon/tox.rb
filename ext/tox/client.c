@@ -201,7 +201,7 @@ VALUE mTox_cClient_nospam(const VALUE self)
 VALUE mTox_cClient_nospam_ASSIGN(const VALUE self, const VALUE nospam)
 {
   if (!rb_funcall(nospam, rb_intern("is_a?"), 1, mTox_cNospam)) {
-    rb_raise(rb_eTypeError, "expected nospam to be a Tox::Nospam");
+    RAISE_TYPECHECK("Tox::Client#nospam=", "nospam", "Tox::Nospam");
   }
 
   mTox_cClient_CDATA *self_cdata;
@@ -238,7 +238,7 @@ VALUE mTox_cClient_savedata(const VALUE self)
 VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
 {
   if (!rb_funcall(node, rb_intern("is_a?"), 1, mTox_cNode)) {
-    rb_raise(rb_eTypeError, "expected argument 1 to be a Tox::Node");
+    RAISE_TYPECHECK("Tox::Client#bootstrap", "node", "Tox::Node");
   }
 
   mTox_cClient_CDATA *self_cdata;
@@ -467,7 +467,7 @@ VALUE mTox_cClient_friend_numbers(const VALUE self)
 VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key)
 {
   if (!rb_funcall(public_key, rb_intern("is_a?"), 1, mTox_cPublicKey)) {
-    rb_raise(rb_eTypeError, "expected public key to be a Tox::PublicKey");
+    RAISE_TYPECHECK("Tox::Client#friend_add_norequest", "public_key", "Tox::PublicKey");
   }
 
   mTox_cClient_CDATA *self_cdata;
@@ -537,7 +537,7 @@ VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key
 VALUE mTox_cClient_friend_add(const VALUE self, const VALUE address, const VALUE text)
 {
   if (!rb_funcall(address, rb_intern("is_a?"), 1, mTox_cAddress)) {
-    rb_raise(rb_eTypeError, "expected address to be a Tox::Address");
+    RAISE_TYPECHECK("Tox::Client#friend_add", "address", "Tox::Address");
   }
 
   Check_Type(text, T_STRING);
@@ -628,7 +628,7 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
   mTox_cOptions_CDATA *options_cdata;
 
   if (!rb_funcall(options, rb_intern("is_a?"), 1, mTox_cOptions)) {
-    rb_raise(rb_eTypeError, "expected options to be a Tox::Options");
+    RAISE_TYPECHECK("Tox::Client#initialize_with", "options", "Tox::Options");
   }
 
   Data_Get_Struct(self,    mTox_cClient_CDATA,  self_cdata);
