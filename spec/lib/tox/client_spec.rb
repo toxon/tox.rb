@@ -299,4 +299,55 @@ RSpec.describe Tox::Client do
       end
     end
   end
+
+  describe '#friend_add_norequest' do
+    let :new_friend_public_key do
+      Tox::Client.new.public_key
+    end
+
+    specify do
+      expect(subject.friend_add_norequest(new_friend_public_key)).to \
+        be_instance_of Tox::Friend
+    end
+
+    context 'with own public key' do
+      specify do
+        expect { subject.friend_add_norequest subject.public_key }.to \
+          raise_error(
+            RuntimeError,
+            'tox_friend_add_norequest() failed with TOX_ERR_FRIEND_ADD_OWN_KEY',
+          )
+      end
+    end
+
+    context 'when already added' do
+      before do
+        subject.friend_add_norequest new_friend_public_key
+      end
+
+      specify do
+        expect { subject.friend_add_norequest new_friend_public_key }.to \
+          raise_error(
+            RuntimeError,
+            'tox_friend_add_norequest() failed with ' \
+              'TOX_ERR_FRIEND_ADD_ALREADY_SENT',
+          )
+      end
+    end
+
+    context 'when public key is invalid' do
+      let :new_friend_public_key do
+        Tox::PublicKey.new 'AA' * Tox::PublicKey.bytesize
+      end
+
+      specify do
+        expect { subject.friend_add_norequest new_friend_public_key }.to \
+          raise_error(
+            RuntimeError,
+            'tox_friend_add_norequest() failed with ' \
+              'TOX_ERR_FRIEND_ADD_BAD_CHECKSUM',
+          )
+      end
+    end
+  end
 end

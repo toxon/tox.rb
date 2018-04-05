@@ -427,19 +427,40 @@ VALUE mTox_cClient_friend_numbers(const VALUE self)
 // Tox::Client#friend_add_norequest
 VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key)
 {
-  mTox_cClient_CDATA *self_cdata;
-
   if (!rb_funcall(public_key, rb_intern("is_a?"), 1, mTox_cPublicKey)) {
     rb_raise(rb_eTypeError, "expected public key to be a Tox::PublicKey");
   }
 
+  mTox_cClient_CDATA *self_cdata;
+
   Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+
+  TOX_ERR_FRIEND_ADD error;
 
   const VALUE friend_number = LONG2FIX(tox_friend_add_norequest(
     self_cdata->tox,
     (uint8_t*)RSTRING_PTR(rb_funcall(public_key, rb_intern("value"), 0)),
-    NULL
+    &error
   ));
+
+  switch (error) {
+    case TOX_ERR_FRIEND_ADD_OK:
+      break;
+    case TOX_ERR_FRIEND_ADD_NULL:
+      rb_raise(mTox_eNullError, "tox_friend_add_norequest() failed with TOX_ERR_FRIEND_ADD_NULL");
+    case TOX_ERR_FRIEND_ADD_OWN_KEY:
+      rb_raise(rb_eRuntimeError, "tox_friend_add_norequest() failed with TOX_ERR_FRIEND_ADD_OWN_KEY");
+    case TOX_ERR_FRIEND_ADD_ALREADY_SENT:
+      rb_raise(rb_eRuntimeError, "tox_friend_add_norequest() failed with TOX_ERR_FRIEND_ADD_ALREADY_SENT");
+    case TOX_ERR_FRIEND_ADD_BAD_CHECKSUM:
+      rb_raise(rb_eRuntimeError, "tox_friend_add_norequest() failed with TOX_ERR_FRIEND_ADD_BAD_CHECKSUM");
+    case TOX_ERR_FRIEND_ADD_SET_NEW_NOSPAM:
+      rb_raise(rb_eRuntimeError, "tox_friend_add_norequest() failed with TOX_ERR_FRIEND_ADD_SET_NEW_NOSPAM");
+    case TOX_ERR_FRIEND_ADD_MALLOC:
+      rb_raise(rb_eNoMemError, "tox_friend_add_norequest() failed with TOX_ERR_FRIEND_ADD_MALLOC");
+    default:
+      rb_raise(mTox_eUnknownError, "tox_friend_add_norequest() failed");
+  }
 
   return rb_funcall(
     self,

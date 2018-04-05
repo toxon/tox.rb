@@ -31,6 +31,7 @@ have_macro 'TOX_VERSION_IS_ABI_COMPATIBLE', 'tox/tox.h' and
 have_type 'TOX_ERR_NEW',                   'tox/tox.h' and
 have_type 'TOX_ERR_BOOTSTRAP',             'tox/tox.h' and
 have_type 'TOX_ERR_SET_INFO',              'tox/tox.h' and
+have_type 'TOX_ERR_FRIEND_ADD',            'tox/tox.h' and
 have_type 'TOX_ERR_FRIEND_GET_PUBLIC_KEY', 'tox/tox.h' and
 have_type 'TOX_ERR_FRIEND_QUERY',          'tox/tox.h' and
 have_type 'TOX_ERR_FRIEND_SEND_MESSAGE',   'tox/tox.h' and
@@ -71,6 +72,15 @@ have_const 'TOX_ERR_BOOTSTRAP_BAD_PORT',                     'tox/tox.h' and
 have_const 'TOX_ERR_SET_INFO_OK',                            'tox/tox.h' and
 have_const 'TOX_ERR_SET_INFO_NULL',                          'tox/tox.h' and
 have_const 'TOX_ERR_SET_INFO_TOO_LONG',                      'tox/tox.h' and
+have_const 'TOX_ERR_FRIEND_ADD_OK',                          'tox/tox.h' and
+have_const 'TOX_ERR_FRIEND_ADD_NULL',                        'tox/tox.h' and
+have_const 'TOX_ERR_FRIEND_ADD_TOO_LONG',                    'tox/tox.h' and
+have_const 'TOX_ERR_FRIEND_ADD_NO_MESSAGE',                  'tox/tox.h' and
+have_const 'TOX_ERR_FRIEND_ADD_OWN_KEY',                     'tox/tox.h' and
+have_const 'TOX_ERR_FRIEND_ADD_ALREADY_SENT',                'tox/tox.h' and
+have_const 'TOX_ERR_FRIEND_ADD_BAD_CHECKSUM',                'tox/tox.h' and
+have_const 'TOX_ERR_FRIEND_ADD_SET_NEW_NOSPAM',              'tox/tox.h' and
+have_const 'TOX_ERR_FRIEND_ADD_MALLOC',                      'tox/tox.h' and
 have_const 'TOX_MESSAGE_TYPE_NORMAL',                        'tox/tox.h' and
 have_const 'TOX_MESSAGE_TYPE_ACTION',                        'tox/tox.h' and
 have_const 'TOX_ERR_FRIEND_GET_PUBLIC_KEY_OK',               'tox/tox.h' and
