@@ -472,7 +472,7 @@ RSpec.describe Tox::Client do
       end
     end
 
-    xcontext 'when already added with different nospam value' do
+    context 'when already added with different nospam value' do
       before do
         subject.friend_add new_friend_address, message
 
@@ -484,7 +484,7 @@ RSpec.describe Tox::Client do
         expect { subject.friend_add new_friend_client.address, message }.to \
           raise_error(
             RuntimeError,
-            'tox_friend_add() failed with TOX_ERR_FRIEND_ADD_ALREADY_SENT',
+            'tox_friend_add() failed with TOX_ERR_FRIEND_ADD_SET_NEW_NOSPAM',
           )
       end
     end
