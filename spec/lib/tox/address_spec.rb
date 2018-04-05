@@ -75,5 +75,13 @@ RSpec.describe Tox::Address do
       expect(subject).not_to \
         eq described_class.new SecureRandom.hex described_class.bytesize
     end
+
+    it 'returns false when compared with own hexadecimal value' do
+      expect(subject).not_to eq hex
+    end
+
+    it 'returns false when compared with own binary value' do
+      expect(subject).not_to eq bin
+    end
   end
 end
