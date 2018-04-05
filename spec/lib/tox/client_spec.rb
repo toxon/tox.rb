@@ -86,6 +86,10 @@ RSpec.describe Tox::Client do
       expect(subject.public_key).to be_a Tox::PublicKey
     end
 
+    it 'equals public key extracted from address' do
+      expect(subject.public_key).to eq subject.address.public_key
+    end
+
     context 'when savedata was set' do
       subject { described_class.new tox_options }
 
@@ -101,6 +105,10 @@ RSpec.describe Tox::Client do
 
       it 'can be set via options' do
         expect(subject.public_key).to eq old_tox.public_key
+      end
+
+      it 'equals public key extracted from old address' do
+        expect(subject.public_key).to eq old_tox.address.public_key
       end
     end
   end
