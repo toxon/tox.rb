@@ -10,6 +10,7 @@ end
 cflags '-std=c11'
 cflags '-Wall'
 cflags '-Wextra'
+cflags '-Wno-declaration-after-statement'
 
 have_library 'toxcore' and
 
