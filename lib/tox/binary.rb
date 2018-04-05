@@ -38,7 +38,7 @@ module Tox
     end
 
     def ==(other)
-      return false unless other.is_a? self.class
+      return false unless self.class == other.class
       value == other.value
     end
   end
