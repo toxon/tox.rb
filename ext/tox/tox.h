@@ -49,3 +49,7 @@ extern VALUE mTox_cFriend_cOutMessage;
 extern VALUE mTox_mOutMessage_eSendQueueAllocError;
 extern VALUE mTox_mOutMessage_eTooLongError;
 extern VALUE mTox_mOutMessage_eEmptyError;
+
+// Macros
+
+#define RAISE_UNKNOWN(name) rb_raise(mTox_eUnknownError, name"() failed")

@@ -104,7 +104,7 @@ VALUE mTox_hash(const VALUE self, const VALUE data)
   const uint8_t result[TOX_HASH_LENGTH];
 
   if (true != tox_hash(result, (const uint8_t*)RSTRING_PTR(data), RSTRING_LEN(data))) {
-    rb_raise(mTox_eUnknownError, "tox_hash() failed");
+    RAISE_UNKNOWN("tox_hash");
   }
 
   return rb_str_new(result, TOX_HASH_LENGTH);
