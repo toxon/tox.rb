@@ -16,5 +16,9 @@ module Tox
     def nospam
       @nospam ||= Nospam.new value[32...36]
     end
+
+    def checksum
+      @checksum ||= AddressChecksum.new value[36...38]
+    end
   end
 end

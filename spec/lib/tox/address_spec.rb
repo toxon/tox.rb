@@ -62,6 +62,12 @@ RSpec.describe Tox::Address do
     end
   end
 
+  describe '#checksum' do
+    specify do
+      expect(subject.checksum).to eq Tox::AddressChecksum.new bin[36..-1]
+    end
+  end
+
   describe '#==' do
     it 'returns true when values are equal' do
       expect(subject).to eq described_class.new hex
