@@ -66,8 +66,7 @@ RSpec.describe 'Two clients' do
 
   specify do
     options = Tox::Options.new
-    # FIXME: use bootstrap node instead of local discovery
-    options.local_discovery_enabled = true
+    options.local_discovery_enabled = false
 
     send_queue = Queue.new
     recv_queue = Queue.new
