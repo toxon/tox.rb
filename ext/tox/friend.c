@@ -276,7 +276,7 @@ VALUE mTox_cFriend_status(const VALUE self)
     case TOX_USER_STATUS_BUSY:
       return mTox_mUserStatus_BUSY;
     default:
-      rb_raise(rb_eNotImpError, "Tox::Client#status has unknown value");
+      RAISE_ENUM("TOX_USER_STATUS");
   }
 }
 

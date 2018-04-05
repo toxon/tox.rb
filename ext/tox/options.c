@@ -58,7 +58,7 @@ VALUE mTox_cOptions_savedata(const VALUE self)
     case TOX_SAVEDATA_TYPE_TOX_SAVE:
       return rb_str_new(self_cdata->savedata_data, self_cdata->savedata_length);
     default:
-      rb_raise(rb_eNotImpError, "Tox::Options#savedata has unknown type");
+      RAISE_ENUM("TOX_SAVEDATA_TYPE");
   }
 }
 

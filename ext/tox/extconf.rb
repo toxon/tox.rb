@@ -35,6 +35,7 @@ have_type 'TOX_ERR_FRIEND_ADD',            'tox/tox.h' and
 have_type 'TOX_ERR_FRIEND_GET_PUBLIC_KEY', 'tox/tox.h' and
 have_type 'TOX_ERR_FRIEND_QUERY',          'tox/tox.h' and
 have_type 'TOX_ERR_FRIEND_SEND_MESSAGE',   'tox/tox.h' and
+have_type 'TOX_SAVEDATA_TYPE',             'tox/tox.h' and
 have_type 'TOX_MESSAGE_TYPE',              'tox/tox.h' and
 have_type 'TOX_USER_STATUS',               'tox/tox.h' and
 have_type 'tox_friend_request_cb',         'tox/tox.h' and
