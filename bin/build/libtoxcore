@@ -6,6 +6,6 @@ set -vx
 
 pushd 'vendor/libtoxcore'
 autoreconf -i
-./configure
+./configure --enable-daemon
 make install
 popd

@@ -30,7 +30,7 @@ RSpec.describe 'Two clients' do
     end
   end
 
-  let(:node_vendored) { File.expand_path 'vendor/libtoxcore/tox-bootstrapd' }
+  let(:node_vendored) { File.expand_path 'vendor/libtoxcore/build/tox-bootstrapd' }
   let(:node_local) { '/usr/local/src/c-toxcore/_build/tox-bootstrapd' }
 
   let :node_configs do
