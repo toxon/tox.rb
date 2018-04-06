@@ -7,7 +7,5 @@ set -vx
 pushd 'vendor/libtoxcore'
 autoreconf -i
 ./configure --enable-daemon --enable-dht-bootstrap
-ls -R .
 make install
-ls -R .
 popd
