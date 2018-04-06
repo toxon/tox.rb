@@ -14,7 +14,7 @@ before_install:
   - sudo ./bin/build/libtoxcore
 
   - sudo mkdir -p '/etc/ld.so.conf.d/'
-  - echo '/usr/local/lib/' | sudo tee -a '/etc/ld.so.conf.d/locallib.conf'
+  - echo '/usr/local/lib/x86_64-linux-gnu/' | sudo tee -a '/etc/ld.so.conf.d/locallib.conf'
   - sudo ldconfig
 
 before_script:
