@@ -6,6 +6,7 @@ set -vx
 
 pushd 'vendor/libtoxcore/build'
 cmake ..
+cmake -L
 make
 make install
 popd
