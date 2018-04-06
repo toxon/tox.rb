@@ -26,8 +26,7 @@ RSpec.describe 'Two clients' do
       File.expand_path('vendor/libtoxcore/_build/tox-bootstrapd'),
       File.expand_path('vendor/libtoxcore/build/tox-bootstrapd'),
       '/usr/local/src/c-toxcore/_build/tox-bootstrapd',
-    ].select { |f| File.executable? f } or
-      raise "Executable not found at #{node_vendored} and #{node_local}"
+    ].select { |f| File.executable? f } or raise 'Executable not found'
   end
 
   let :node_configs do
