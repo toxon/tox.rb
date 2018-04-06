@@ -128,4 +128,50 @@ RSpec.describe Tox::Options do
       end
     end
   end
+
+  describe '#proxy_type' do
+    it 'returns NONE by default' do
+      expect(subject.proxy_type).to eq Tox::ProxyType::NONE
+    end
+
+    context 'when it was set to NONE' do
+      before do
+        subject.proxy_type = Tox::ProxyType::HTTP
+        subject.proxy_type = Tox::ProxyType::NONE
+      end
+
+      it 'returns given value' do
+        expect(subject.proxy_type).to eq Tox::ProxyType::NONE
+      end
+    end
+
+    context 'when it was set to HTTP' do
+      before do
+        subject.proxy_type = Tox::ProxyType::HTTP
+      end
+
+      it 'returns given value' do
+        expect(subject.proxy_type).to eq Tox::ProxyType::HTTP
+      end
+    end
+
+    context 'when it was set to SOCKS5' do
+      before do
+        subject.proxy_type = Tox::ProxyType::SOCKS5
+      end
+
+      it 'returns given value' do
+        expect(subject.proxy_type).to eq Tox::ProxyType::SOCKS5
+      end
+    end
+  end
+
+  describe '#proxy_type=' do
+    context 'when invalid value given' do
+      specify do
+        expect { subject.proxy_type = :foobar }.to \
+          raise_error ArgumentError, "Invalid value from #{Tox::ProxyType}"
+      end
+    end
+  end
 end

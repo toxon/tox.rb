@@ -114,6 +114,8 @@ have_func 'tox_options_get_udp_enabled',             'tox/tox.h' and
 have_func 'tox_options_set_udp_enabled',             'tox/tox.h' and
 have_func 'tox_options_get_local_discovery_enabled', 'tox/tox.h' and
 have_func 'tox_options_set_local_discovery_enabled', 'tox/tox.h' and
+have_func 'tox_options_get_proxy_type',              'tox/tox.h' and
+have_func 'tox_options_set_proxy_type',              'tox/tox.h' and
 have_func 'tox_get_savedata_size',                   'tox/tox.h' and
 have_func 'tox_get_savedata',                        'tox/tox.h' and
 have_func 'tox_self_get_address',                    'tox/tox.h' and

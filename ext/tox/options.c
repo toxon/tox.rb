@@ -18,6 +18,9 @@ static VALUE mTox_cOptions_udp_enabled_ASSIGN(VALUE self, VALUE enabled);
 static VALUE mTox_cOptions_local_discovery_enabled(VALUE self);
 static VALUE mTox_cOptions_local_discovery_enabled_ASSIGN(VALUE self, VALUE enabled);
 
+static VALUE mTox_cOptions_proxy_type(VALUE self);
+static VALUE mTox_cOptions_proxy_type_ASSIGN(VALUE self, VALUE proxy_type);
+
 /*************************************************************
  * Initialization
  *************************************************************/
@@ -39,6 +42,9 @@ void mTox_cOptions_INIT()
 
   rb_define_method(mTox_cOptions, "local_discovery_enabled",  mTox_cOptions_local_discovery_enabled,        0);
   rb_define_method(mTox_cOptions, "local_discovery_enabled=", mTox_cOptions_local_discovery_enabled_ASSIGN, 1);
+
+  rb_define_method(mTox_cOptions, "proxy_type",  mTox_cOptions_proxy_type,        0);
+  rb_define_method(mTox_cOptions, "proxy_type=", mTox_cOptions_proxy_type_ASSIGN, 1);
 }
 
 /*************************************************************
@@ -187,4 +193,32 @@ VALUE mTox_cOptions_local_discovery_enabled_ASSIGN(const VALUE self, const VALUE
   tox_options_set_local_discovery_enabled(self_cdata, RTEST(enabled));
 
   return enabled;
+}
+
+// Tox::Options#proxy_type
+VALUE mTox_cOptions_proxy_type(const VALUE self)
+{
+  mTox_cOptions_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+
+  const TOX_PROXY_TYPE proxy_type_data = tox_options_get_proxy_type(self_cdata);
+
+  const VALUE proxy_type = mTox_mProxyType_FROM_DATA(proxy_type_data);
+
+  return proxy_type;
+}
+
+// Tox::Options#proxy_type=
+VALUE mTox_cOptions_proxy_type_ASSIGN(const VALUE self, const VALUE proxy_type)
+{
+  mTox_cOptions_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+
+  const TOX_PROXY_TYPE proxy_type_data = mTox_mProxyType_TO_DATA(proxy_type);
+
+  tox_options_set_proxy_type(self_cdata, proxy_type_data);
+
+  return proxy_type;
 }
