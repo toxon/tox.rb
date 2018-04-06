@@ -4,7 +4,7 @@ set -euo pipefail
 IFS=$'\n\t'
 set -vx
 
-mkdir 'vendor/libtoxcore/_build'
+mkdir -p 'vendor/libtoxcore/_build'
 pushd 'vendor/libtoxcore/_build'
 cmake -L -DBUILD_TOXAV=OFF ..
 make install
