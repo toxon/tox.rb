@@ -5,7 +5,7 @@ IFS=$'\n\t'
 set -vx
 
 pushd 'vendor/libtoxcore/build'
-cmake ..
+cmake -DBUILD_TOXAV=OFF ..
 cmake -L
 make
 make install
