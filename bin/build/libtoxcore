@@ -4,9 +4,8 @@ set -euo pipefail
 IFS=$'\n\t'
 set -vx
 
-pushd 'vendor/libtoxcore'
-autoreconf -i
-./configure --enable-daemon --enable-dht-bootstrap
+pushd 'vendor/libtoxcore/build'
+cmake ..
 make
 make install
 popd
