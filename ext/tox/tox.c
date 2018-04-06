@@ -13,6 +13,7 @@ VALUE mTox_eUnknownError;
 
 VALUE mTox_mVersion;
 VALUE mTox_mUserStatus;
+VALUE mTox_mProxyType;
 VALUE mTox_cOptions;
 VALUE mTox_cClient;
 VALUE mTox_cNode;
@@ -25,6 +26,10 @@ VALUE mTox_mOutMessage;
 VALUE mTox_mUserStatus_NONE;
 VALUE mTox_mUserStatus_AWAY;
 VALUE mTox_mUserStatus_BUSY;
+
+VALUE mTox_mProxyType_NONE;
+VALUE mTox_mProxyType_HTTP;
+VALUE mTox_mProxyType_SOCKS5;
 
 VALUE mTox_cClient_eBadSavedataError;
 
@@ -59,6 +64,7 @@ void Init_tox()
 
   mTox_mVersion    = rb_const_get(mTox, rb_intern("Version"));
   mTox_mUserStatus = rb_const_get(mTox, rb_intern("UserStatus"));
+  mTox_mProxyType  = rb_const_get(mTox, rb_intern("ProxyType"));
   mTox_cOptions    = rb_const_get(mTox, rb_intern("Options"));
   mTox_cClient     = rb_const_get(mTox, rb_intern("Client"));
   mTox_cNode       = rb_const_get(mTox, rb_intern("Node"));
@@ -71,6 +77,10 @@ void Init_tox()
   mTox_mUserStatus_NONE = rb_const_get(mTox_mUserStatus, rb_intern("NONE"));
   mTox_mUserStatus_AWAY = rb_const_get(mTox_mUserStatus, rb_intern("AWAY"));
   mTox_mUserStatus_BUSY = rb_const_get(mTox_mUserStatus, rb_intern("BUSY"));
+
+  mTox_mProxyType_NONE   = rb_const_get(mTox_mProxyType, rb_intern("NONE"));
+  mTox_mProxyType_HTTP   = rb_const_get(mTox_mProxyType, rb_intern("HTTP"));
+  mTox_mProxyType_SOCKS5 = rb_const_get(mTox_mProxyType, rb_intern("SOCKS5"));
 
   mTox_cClient_eBadSavedataError = rb_const_get(mTox_cClient, rb_intern("BadSavedataError"));
 

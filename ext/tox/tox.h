@@ -27,6 +27,7 @@ extern VALUE mTox_eUnknownError;
 
 extern VALUE mTox_mVersion;
 extern VALUE mTox_mUserStatus;
+extern VALUE mTox_mProxyType;
 extern VALUE mTox_cOptions;
 extern VALUE mTox_cClient;
 extern VALUE mTox_cNode;
@@ -39,6 +40,10 @@ extern VALUE mTox_mOutMessage;
 extern VALUE mTox_mUserStatus_NONE;
 extern VALUE mTox_mUserStatus_AWAY;
 extern VALUE mTox_mUserStatus_BUSY;
+
+extern VALUE mTox_mProxyType_NONE;
+extern VALUE mTox_mProxyType_HTTP;
+extern VALUE mTox_mProxyType_SOCKS5;
 
 extern VALUE mTox_cClient_eBadSavedataError;
 
