@@ -356,18 +356,11 @@ VALUE mTox_cClient_status(const VALUE self)
 
   Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
-  const TOX_USER_STATUS result = tox_self_get_status(self_cdata->tox);
+  const TOX_USER_STATUS status_data = tox_self_get_status(self_cdata->tox);
 
-  switch (result) {
-    case TOX_USER_STATUS_NONE:
-      return mTox_mUserStatus_NONE;
-    case TOX_USER_STATUS_AWAY:
-      return mTox_mUserStatus_AWAY;
-    case TOX_USER_STATUS_BUSY:
-      return mTox_mUserStatus_BUSY;
-    default:
-      RAISE_ENUM("TOX_USER_STATUS");
-  }
+  const VALUE status = mTox_mUserStatus_FROM_DATA(status_data);
+
+  return status;
 }
 
 // Tox::Client#status=
@@ -377,18 +370,9 @@ VALUE mTox_cClient_status_ASSIGN(const VALUE self, const VALUE status)
 
   Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
 
-  if (rb_funcall(mTox_mUserStatus_NONE, rb_intern("=="), 1, status)) {
-    tox_self_set_status(self_cdata->tox, TOX_USER_STATUS_NONE);
-  }
-  else if (rb_funcall(mTox_mUserStatus_AWAY, rb_intern("=="), 1, status)) {
-    tox_self_set_status(self_cdata->tox, TOX_USER_STATUS_AWAY);
-  }
-  else if (rb_funcall(mTox_mUserStatus_BUSY, rb_intern("=="), 1, status)) {
-    tox_self_set_status(self_cdata->tox, TOX_USER_STATUS_BUSY);
-  }
-  else {
-    rb_raise(rb_eArgError, "invalid value for Tox::Client#status=");
-  }
+  const TOX_USER_STATUS status_data = mTox_mUserStatus_TO_DATA(status);
+
+  tox_self_set_status(self_cdata->tox, status_data);
 
   return status;
 }
@@ -890,20 +874,10 @@ void on_friend_status_change(
     return;
   }
 
-  VALUE status;
+  const VALUE status = mTox_mUserStatus_TRY_DATA(status_data);
 
-  switch (status_data) {
-    case TOX_USER_STATUS_NONE:
-      status = mTox_mUserStatus_NONE;
-      break;
-    case TOX_USER_STATUS_AWAY:
-      status = mTox_mUserStatus_AWAY;
-      break;
-    case TOX_USER_STATUS_BUSY:
-      status = mTox_mUserStatus_BUSY;
-      break;
-    default:
-      return;
+  if (status == Qnil) {
+    return;
   }
 
   const VALUE friend_number = LONG2FIX(friend_number_data);

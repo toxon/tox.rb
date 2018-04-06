@@ -390,6 +390,15 @@ RSpec.describe Tox::Client do
     end
   end
 
+  describe '#status=' do
+    context 'when invalid value given' do
+      specify do
+        expect { subject.status = :foobar }.to \
+          raise_error ArgumentError, "Invalid value from #{Tox::UserStatus}"
+      end
+    end
+  end
+
   describe '#status_message' do
     it 'returns empty string by default' do
       expect(subject.status_message).to eq ''
