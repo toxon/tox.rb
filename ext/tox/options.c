@@ -12,6 +12,9 @@ static VALUE mTox_cOptions_savedata_ASSIGN(VALUE self, VALUE savedata);
 static VALUE mTox_cOptions_ipv6_enabled(VALUE self);
 static VALUE mTox_cOptions_ipv6_enabled_ASSIGN(VALUE self, VALUE enabled);
 
+static VALUE mTox_cOptions_udp_enabled(VALUE self);
+static VALUE mTox_cOptions_udp_enabled_ASSIGN(VALUE self, VALUE enabled);
+
 static VALUE mTox_cOptions_local_discovery_enabled(VALUE self);
 static VALUE mTox_cOptions_local_discovery_enabled_ASSIGN(VALUE self, VALUE enabled);
 
@@ -30,6 +33,9 @@ void mTox_cOptions_INIT()
 
   rb_define_method(mTox_cOptions, "ipv6_enabled",  mTox_cOptions_ipv6_enabled,        0);
   rb_define_method(mTox_cOptions, "ipv6_enabled=", mTox_cOptions_ipv6_enabled_ASSIGN, 1);
+
+  rb_define_method(mTox_cOptions, "udp_enabled",  mTox_cOptions_udp_enabled,        0);
+  rb_define_method(mTox_cOptions, "udp_enabled=", mTox_cOptions_udp_enabled_ASSIGN, 1);
 
   rb_define_method(mTox_cOptions, "local_discovery_enabled",  mTox_cOptions_local_discovery_enabled,        0);
   rb_define_method(mTox_cOptions, "local_discovery_enabled=", mTox_cOptions_local_discovery_enabled_ASSIGN, 1);
@@ -125,6 +131,33 @@ VALUE mTox_cOptions_ipv6_enabled_ASSIGN(const VALUE self, const VALUE enabled)
   Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
 
   tox_options_set_ipv6_enabled(self_cdata, RTEST(enabled));
+
+  return enabled;
+}
+
+// Tox::Options#udp_enabled
+VALUE mTox_cOptions_udp_enabled(const VALUE self)
+{
+  mTox_cOptions_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+
+  if (tox_options_get_udp_enabled(self_cdata)) {
+    return Qtrue;
+  }
+  else {
+    return Qfalse;
+  }
+}
+
+// Tox::Options#udp_enabled=
+VALUE mTox_cOptions_udp_enabled_ASSIGN(const VALUE self, const VALUE enabled)
+{
+  mTox_cOptions_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+
+  tox_options_set_udp_enabled(self_cdata, RTEST(enabled));
 
   return enabled;
 }

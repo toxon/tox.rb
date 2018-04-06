@@ -75,6 +75,33 @@ RSpec.describe Tox::Options do
     end
   end
 
+  describe '#udp_enabled' do
+    it 'returns true by default' do
+      expect(subject.udp_enabled).to eq true
+    end
+
+    context 'when it was set to false' do
+      before do
+        subject.udp_enabled = false
+      end
+
+      it 'returns given value' do
+        expect(subject.udp_enabled).to eq false
+      end
+    end
+
+    context 'when it was set to true' do
+      before do
+        subject.udp_enabled = false
+        subject.udp_enabled = true
+      end
+
+      it 'returns given value' do
+        expect(subject.udp_enabled).to eq true
+      end
+    end
+  end
+
   describe '#local_discovery_enabled' do
     it 'returns true by default' do
       expect(subject.local_discovery_enabled).to eq true
