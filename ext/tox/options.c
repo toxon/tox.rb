@@ -9,6 +9,9 @@ static void  mTox_cOptions_free(void *free_cdata);
 static VALUE mTox_cOptions_savedata(VALUE self);
 static VALUE mTox_cOptions_savedata_ASSIGN(VALUE self, VALUE savedata);
 
+static VALUE mTox_cOptions_ipv6_enabled(VALUE self);
+static VALUE mTox_cOptions_ipv6_enabled_ASSIGN(VALUE self, VALUE enabled);
+
 static VALUE mTox_cOptions_local_discovery_enabled(VALUE self);
 static VALUE mTox_cOptions_local_discovery_enabled_ASSIGN(VALUE self, VALUE enabled);
 
@@ -24,6 +27,9 @@ void mTox_cOptions_INIT()
   // Public methods
   rb_define_method(mTox_cOptions, "savedata",  mTox_cOptions_savedata,        0);
   rb_define_method(mTox_cOptions, "savedata=", mTox_cOptions_savedata_ASSIGN, 1);
+
+  rb_define_method(mTox_cOptions, "ipv6_enabled",  mTox_cOptions_ipv6_enabled,        0);
+  rb_define_method(mTox_cOptions, "ipv6_enabled=", mTox_cOptions_ipv6_enabled_ASSIGN, 1);
 
   rb_define_method(mTox_cOptions, "local_discovery_enabled",  mTox_cOptions_local_discovery_enabled,        0);
   rb_define_method(mTox_cOptions, "local_discovery_enabled=", mTox_cOptions_local_discovery_enabled_ASSIGN, 1);
@@ -94,6 +100,33 @@ VALUE mTox_cOptions_savedata_ASSIGN(const VALUE self, const VALUE savedata)
   self_cdata->savedata_length = RSTRING_LEN(savedata);
 
   return savedata;
+}
+
+// Tox::Options#ipv6_enabled
+VALUE mTox_cOptions_ipv6_enabled(const VALUE self)
+{
+  mTox_cOptions_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+
+  if (tox_options_get_ipv6_enabled(self_cdata)) {
+    return Qtrue;
+  }
+  else {
+    return Qfalse;
+  }
+}
+
+// Tox::Options#ipv6_enabled=
+VALUE mTox_cOptions_ipv6_enabled_ASSIGN(const VALUE self, const VALUE enabled)
+{
+  mTox_cOptions_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+
+  tox_options_set_ipv6_enabled(self_cdata, RTEST(enabled));
+
+  return enabled;
 }
 
 // Tox::Options#local_discovery_enabled

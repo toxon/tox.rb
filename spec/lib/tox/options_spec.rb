@@ -48,6 +48,33 @@ RSpec.describe Tox::Options do
     end
   end
 
+  describe '#ipv6_enabled' do
+    it 'returns true by default' do
+      expect(subject.ipv6_enabled).to eq true
+    end
+
+    context 'when it was set to false' do
+      before do
+        subject.ipv6_enabled = false
+      end
+
+      it 'returns given value' do
+        expect(subject.ipv6_enabled).to eq false
+      end
+    end
+
+    context 'when it was set to true' do
+      before do
+        subject.ipv6_enabled = false
+        subject.ipv6_enabled = true
+      end
+
+      it 'returns given value' do
+        expect(subject.ipv6_enabled).to eq true
+      end
+    end
+  end
+
   describe '#local_discovery_enabled' do
     it 'returns true by default' do
       expect(subject.local_discovery_enabled).to eq true
