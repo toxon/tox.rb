@@ -46,34 +46,55 @@ VENDOR_PREFIX = File.expand_path('vendor', __dir__).freeze
 VENDOR_PKG_CONFIG_PATH = File.join(VENDOR_PREFIX, 'lib', 'pkgconfig').freeze
 
 namespace :vendor do
-  task :libsodium do
-    chdir 'vendor/src/libsodium' do
-      sh './autogen.sh'
+  task libsodium: 'vendor/lib/pkgconfig/libsodium.pc'
+  task libtoxcore: 'vendor/lib/pkgconfig/libtoxcore.pc'
+end
 
-      sh(
-        { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
-        './configure',
-        '--prefix',
-        VENDOR_PREFIX,
-      )
-
-      sh 'make install'
-    end
+file 'vendor/lib/pkgconfig/libsodium.pc': 'vendor/src/libsodium/Makefile' do
+  chdir 'vendor/src/libsodium' do
+    sh 'make install'
   end
+end
 
-  task :libtoxcore do
-    chdir 'vendor/src/libtoxcore' do
-      sh './autogen.sh'
+file 'vendor/lib/pkgconfig/libtoxcore.pc': 'vendor/src/libtoxcore/Makefile' do
+  chdir 'vendor/src/libtoxcore' do
+    sh 'make install'
+  end
+end
 
-      sh(
-        { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
-        './configure',
-        '--prefix',
-        VENDOR_PREFIX,
-        '--enable-daemon',
-      )
+file 'vendor/src/libsodium/Makefile': 'vendor/src/libsodium/configure' do |t|
+  chdir File.dirname t.name do
+    sh(
+      { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
+      './configure',
+      '--prefix',
+      VENDOR_PREFIX,
+    )
+  end
+end
 
-      sh 'make install'
-    end
+file 'vendor/src/libtoxcore/Makefile':
+       %w[vendor/src/libtoxcore/configure
+          vendor/lib/pkgconfig/libsodium.pc] do |t|
+  chdir File.dirname t.name do
+    sh(
+      { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
+      './configure',
+      '--prefix',
+      VENDOR_PREFIX,
+      '--enable-daemon',
+    )
+  end
+end
+
+file 'vendor/src/libsodium/configure' do |t|
+  chdir File.dirname t.name do
+    sh './autogen.sh'
+  end
+end
+
+file 'vendor/src/libtoxcore/configure' do |t|
+  chdir File.dirname t.name do
+    sh './autogen.sh'
   end
 end
