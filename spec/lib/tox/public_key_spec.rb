@@ -82,7 +82,7 @@ RSpec.describe Tox::PublicKey do
       )
     end
 
-    it 'returns true when compared with subclass instance' do
+    it 'returns false when compared with subclass instance' do
       expect(subject).not_to eq Class.new(described_class).new hex
     end
   end

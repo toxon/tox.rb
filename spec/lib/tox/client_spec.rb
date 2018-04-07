@@ -629,4 +629,48 @@ RSpec.describe Tox::Client do
       end
     end
   end
+
+  describe '#friend' do
+    let(:friend) { subject.friend friend_number }
+
+    let(:friend_number) { rand 0..10 }
+
+    specify do
+      expect(friend).to eq Tox::Friend.new subject, friend_number
+    end
+
+    specify do
+      expect(friend).to be_instance_of Tox::Friend
+    end
+
+    specify do
+      expect(friend.client).to equal subject
+    end
+
+    specify do
+      expect(friend.number).to eq friend_number
+    end
+
+    context 'when friend number has invalid type' do
+      let(:friend_number) { :foobar }
+
+      specify do
+        expect { friend }.to raise_error(
+          TypeError,
+          "Expected #{Integer}, got #{friend_number.class}",
+        )
+      end
+    end
+
+    context 'when friend number is less than zero' do
+      let(:friend_number) { -1 }
+
+      specify do
+        expect { friend }.to raise_error(
+          RuntimeError,
+          'Expected friend number to be greater than or equal to zero',
+        )
+      end
+    end
+  end
 end

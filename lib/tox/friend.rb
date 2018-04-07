@@ -19,6 +19,12 @@ module Tox
 
     alias exists! exist!
 
+    def ==(other)
+      return false unless self.class == other.class
+      self.client == other.client &&
+        self.number == other.number
+    end
+
   private
 
     def client=(value)
@@ -30,11 +36,10 @@ module Tox
 
     def number=(value)
       unless value.is_a? Integer
-        raise TypeError, "expected number to be a #{Integer}"
+        raise TypeError, "Expected #{Integer}, got #{value.class}"
       end
       unless value >= 0
-        raise ArgumentError,
-              'expected number to be greater than or equal to zero'
+        raise 'Expected friend number to be greater than or equal to zero'
       end
       @number = value
     end
