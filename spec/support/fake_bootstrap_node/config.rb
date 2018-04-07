@@ -168,7 +168,7 @@ module Support
           unless value.is_a? String
             raise TypeError, "Expected #{String}, got #{value.class}"
           end
-          @address = value.frozen? ? value : value.freeze
+          @address = value.frozen? ? value : value.dup.freeze
         end
 
         def port=(value)
@@ -185,7 +185,7 @@ module Support
           unless value.is_a? String
             raise TypeError, "Expected #{String}, got #{value.class}"
           end
-          @public_key = value.frozen? ? value : value.freeze
+          @public_key = value.frozen? ? value : value.dup.freeze
         end
       end
     end
