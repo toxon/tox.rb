@@ -116,6 +116,8 @@ have_func 'tox_options_get_local_discovery_enabled', 'tox/tox.h' and
 have_func 'tox_options_set_local_discovery_enabled', 'tox/tox.h' and
 have_func 'tox_options_get_proxy_type',              'tox/tox.h' and
 have_func 'tox_options_set_proxy_type',              'tox/tox.h' and
+have_func 'tox_options_get_proxy_port',              'tox/tox.h' and
+have_func 'tox_options_set_proxy_port',              'tox/tox.h' and
 have_func 'tox_options_get_start_port',              'tox/tox.h' and
 have_func 'tox_options_set_start_port',              'tox/tox.h' and
 have_func 'tox_options_get_end_port',                'tox/tox.h' and

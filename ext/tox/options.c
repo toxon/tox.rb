@@ -21,12 +21,14 @@ static VALUE mTox_cOptions_local_discovery_enabled_ASSIGN(VALUE self, VALUE enab
 static VALUE mTox_cOptions_proxy_type(VALUE self);
 static VALUE mTox_cOptions_proxy_type_ASSIGN(VALUE self, VALUE proxy_type);
 
+static VALUE mTox_cOptions_proxy_port(VALUE self);
 static VALUE mTox_cOptions_start_port(VALUE self);
 static VALUE mTox_cOptions_end_port(VALUE self);
 static VALUE mTox_cOptions_tcp_port(VALUE self);
 
 // Private methods
 
+static VALUE mTox_cOptions_proxy_port_internal_ASSIGN(VALUE self, VALUE proxy_port);
 static VALUE mTox_cOptions_start_port_internal_ASSIGN(VALUE self, VALUE start_port);
 static VALUE mTox_cOptions_end_port_internal_ASSIGN(VALUE self, VALUE end_port);
 static VALUE mTox_cOptions_tcp_port_internal_ASSIGN(VALUE self, VALUE tcp_port);
@@ -56,14 +58,16 @@ void mTox_cOptions_INIT()
   rb_define_method(mTox_cOptions, "proxy_type",  mTox_cOptions_proxy_type,        0);
   rb_define_method(mTox_cOptions, "proxy_type=", mTox_cOptions_proxy_type_ASSIGN, 1);
 
+  rb_define_method(mTox_cOptions, "proxy_port", mTox_cOptions_proxy_port, 0);
   rb_define_method(mTox_cOptions, "start_port", mTox_cOptions_start_port, 0);
   rb_define_method(mTox_cOptions, "end_port",   mTox_cOptions_end_port,   0);
   rb_define_method(mTox_cOptions, "tcp_port",   mTox_cOptions_tcp_port,   0);
 
   // Private methods
-  rb_define_method(mTox_cOptions, "start_port_internal=", mTox_cOptions_start_port_internal_ASSIGN, 1);
-  rb_define_method(mTox_cOptions, "end_port_internal=",   mTox_cOptions_end_port_internal_ASSIGN,   1);
-  rb_define_method(mTox_cOptions, "tcp_port_internal=",   mTox_cOptions_tcp_port_internal_ASSIGN,   1);
+  rb_define_private_method(mTox_cOptions, "proxy_port_internal=", mTox_cOptions_proxy_port_internal_ASSIGN, 1);
+  rb_define_private_method(mTox_cOptions, "start_port_internal=", mTox_cOptions_start_port_internal_ASSIGN, 1);
+  rb_define_private_method(mTox_cOptions, "end_port_internal=",   mTox_cOptions_end_port_internal_ASSIGN,   1);
+  rb_define_private_method(mTox_cOptions, "tcp_port_internal=",   mTox_cOptions_tcp_port_internal_ASSIGN,   1);
 }
 
 /*************************************************************
@@ -242,6 +246,20 @@ VALUE mTox_cOptions_proxy_type_ASSIGN(const VALUE self, const VALUE proxy_type)
   return proxy_type;
 }
 
+// Tox::Options#proxy_port
+VALUE mTox_cOptions_proxy_port(const VALUE self)
+{
+  mTox_cOptions_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+
+  const uint16_t proxy_port_data = tox_options_get_proxy_port(self_cdata);
+
+  const VALUE proxy_port = LONG2FIX(proxy_port_data);
+
+  return proxy_port;
+}
+
 // Tox::Options#start_port
 VALUE mTox_cOptions_start_port(const VALUE self)
 {
@@ -252,20 +270,6 @@ VALUE mTox_cOptions_start_port(const VALUE self)
   const uint16_t start_port_data = tox_options_get_start_port(self_cdata);
 
   const VALUE start_port = LONG2FIX(start_port_data);
-
-  return start_port;
-}
-
-// Tox::Options#start_port_internal=
-VALUE mTox_cOptions_start_port_internal_ASSIGN(const VALUE self, const VALUE start_port)
-{
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
-
-  const uint16_t start_port_data = FIX2LONG(start_port);
-
-  tox_options_set_start_port(self_cdata, start_port_data);
 
   return start_port;
 }
@@ -284,20 +288,6 @@ VALUE mTox_cOptions_end_port(const VALUE self)
   return end_port;
 }
 
-// Tox::Options#end_port_internal=
-VALUE mTox_cOptions_end_port_internal_ASSIGN(const VALUE self, const VALUE end_port)
-{
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
-
-  const uint16_t end_port_data = FIX2LONG(end_port);
-
-  tox_options_set_end_port(self_cdata, end_port_data);
-
-  return end_port;
-}
-
 // Tox::Options#tcp_port
 VALUE mTox_cOptions_tcp_port(const VALUE self)
 {
@@ -310,6 +300,52 @@ VALUE mTox_cOptions_tcp_port(const VALUE self)
   const VALUE tcp_port = LONG2FIX(tcp_port_data);
 
   return tcp_port;
+}
+
+/*************************************************************
+ * Private methods
+ *************************************************************/
+
+// Tox::Options#proxy_port_internal=
+VALUE mTox_cOptions_proxy_port_internal_ASSIGN(const VALUE self, const VALUE proxy_port)
+{
+  mTox_cOptions_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+
+  const uint16_t proxy_port_data = FIX2LONG(proxy_port);
+
+  tox_options_set_proxy_port(self_cdata, proxy_port_data);
+
+  return proxy_port;
+}
+
+// Tox::Options#start_port_internal=
+VALUE mTox_cOptions_start_port_internal_ASSIGN(const VALUE self, const VALUE start_port)
+{
+  mTox_cOptions_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+
+  const uint16_t start_port_data = FIX2LONG(start_port);
+
+  tox_options_set_start_port(self_cdata, start_port_data);
+
+  return start_port;
+}
+
+// Tox::Options#end_port_internal=
+VALUE mTox_cOptions_end_port_internal_ASSIGN(const VALUE self, const VALUE end_port)
+{
+  mTox_cOptions_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+
+  const uint16_t end_port_data = FIX2LONG(end_port);
+
+  tox_options_set_end_port(self_cdata, end_port_data);
+
+  return end_port;
 }
 
 // Tox::Options#tcp_port_internal=

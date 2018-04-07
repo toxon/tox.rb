@@ -3,6 +3,11 @@
 RSpec.describe Tox::Options do
   subject { described_class.new }
 
+  it { is_expected.not_to respond_to :proxy_port_internal= }
+  it { is_expected.not_to respond_to :start_port_internal= }
+  it { is_expected.not_to respond_to :end_port_internal=   }
+  it { is_expected.not_to respond_to :tcp_port_internal=   }
+
   describe '#savedata' do
     it 'returns nil by default' do
       expect(subject.savedata).to eq nil
@@ -171,6 +176,53 @@ RSpec.describe Tox::Options do
       specify do
         expect { subject.proxy_type = :foobar }.to \
           raise_error ArgumentError, "Invalid value from #{Tox::ProxyType}"
+      end
+    end
+  end
+
+  describe '#proxy_port' do
+    it 'returns default value' do
+      expect(subject.proxy_port).to eq 0
+    end
+
+    context 'when it was set to some value' do
+      before do
+        subject.proxy_port = proxy_port
+      end
+
+      let(:proxy_port) { rand 1..65_535 }
+
+      it 'returns given value' do
+        expect(subject.proxy_port).to eq proxy_port
+      end
+    end
+  end
+
+  describe '#proxy_port=' do
+    context 'when value has invalid type' do
+      specify do
+        expect { subject.proxy_port = :foobar }.to raise_error(
+          TypeError,
+          "Expected #{Integer}, got #{Symbol}",
+        )
+      end
+    end
+
+    context 'when value is zero' do
+      specify do
+        expect { subject.proxy_port = 0 }.to raise_error(
+          RuntimeError,
+          'Expected value to be from range 1..65535',
+        )
+      end
+    end
+
+    context 'when value is greater than 65`535' do
+      specify do
+        expect { subject.proxy_port = 65_536 }.to raise_error(
+          RuntimeError,
+          'Expected value to be from range 1..65535',
+        )
       end
     end
   end
