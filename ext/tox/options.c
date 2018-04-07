@@ -23,6 +23,9 @@ static VALUE mTox_cOptions_local_discovery_enabled_ASSIGN(VALUE self, VALUE enab
 static VALUE mTox_cOptions_proxy_type(VALUE self);
 static VALUE mTox_cOptions_proxy_type_ASSIGN(VALUE self, VALUE proxy_type);
 
+static VALUE mTox_cOptions_proxy_host(VALUE self);
+static VALUE mTox_cOptions_proxy_host_ASSIGN(VALUE self, VALUE proxy_host);
+
 static VALUE mTox_cOptions_proxy_port(VALUE self);
 static VALUE mTox_cOptions_start_port(VALUE self);
 static VALUE mTox_cOptions_end_port(VALUE self);
@@ -61,6 +64,9 @@ void mTox_cOptions_INIT()
 
   rb_define_method(mTox_cOptions, "proxy_type",  mTox_cOptions_proxy_type,        0);
   rb_define_method(mTox_cOptions, "proxy_type=", mTox_cOptions_proxy_type_ASSIGN, 1);
+
+  rb_define_method(mTox_cOptions, "proxy_host",  mTox_cOptions_proxy_host,        0);
+  rb_define_method(mTox_cOptions, "proxy_host=", mTox_cOptions_proxy_host_ASSIGN, 1);
 
   rb_define_method(mTox_cOptions, "proxy_port", mTox_cOptions_proxy_port, 0);
   rb_define_method(mTox_cOptions, "start_port", mTox_cOptions_start_port, 0);
@@ -110,6 +116,8 @@ VALUE mTox_cOptions_initialize(const VALUE self)
   TOX_ERR_OPTIONS_NEW error;
 
   self_cdata->tox_options = tox_options_new(&error);
+
+  tox_options_set_proxy_host(self_cdata->tox_options, NULL);
 
   switch (error) {
     case TOX_ERR_OPTIONS_NEW_OK:
@@ -285,6 +293,61 @@ VALUE mTox_cOptions_proxy_type_ASSIGN(const VALUE self, const VALUE proxy_type)
   tox_options_set_proxy_type(self_cdata->tox_options, proxy_type_data);
 
   return proxy_type;
+}
+
+// Tox::Options#proxy_host
+VALUE mTox_cOptions_proxy_host(const VALUE self)
+{
+  mTox_cOptions_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+
+  const char *proxy_host_data = tox_options_get_proxy_host(self_cdata->tox_options);
+
+  if (!proxy_host_data) {
+    return Qnil;
+  }
+
+  const VALUE proxy_host = rb_str_new_cstr(self_cdata->tox_options->proxy_host);
+
+  return proxy_host;
+}
+
+// Tox::Options#proxy_host=
+VALUE mTox_cOptions_proxy_host_ASSIGN(const VALUE self, const VALUE proxy_host)
+{
+  mTox_cOptions_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+
+  tox_options_set_proxy_host(self_cdata->tox_options, NULL);
+
+  if (proxy_host == Qnil) {
+    return Qnil;
+  }
+
+  Check_Type(proxy_host, T_STRING);
+
+  const char *proxy_host_data         = RSTRING_PTR(proxy_host);
+  const size_t proxy_host_length_data = RSTRING_LEN(proxy_host);
+
+  if (proxy_host_length_data == 0 || proxy_host_data[0] == '\0') {
+    return Qnil;
+  }
+
+  if (proxy_host_length_data > 255) {
+    rb_raise(
+      rb_eRuntimeError,
+      "Proxy host string can not be longer than 255 bytes"
+    );
+  }
+
+  memcpy(self_cdata->proxy_host, proxy_host_data, proxy_host_length_data);
+  self_cdata->proxy_host[proxy_host_length_data] = '\0';
+
+  tox_options_set_proxy_host(self_cdata->tox_options, self_cdata->proxy_host);
+
+  return proxy_host;
 }
 
 // Tox::Options#proxy_port

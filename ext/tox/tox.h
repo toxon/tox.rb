@@ -14,6 +14,7 @@ void mTox_cFriend_INIT();
 
 typedef struct {
   struct Tox_Options *tox_options;
+  char proxy_host[256];
 } mTox_cOptions_CDATA;
 
 typedef struct {

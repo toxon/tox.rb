@@ -180,6 +180,78 @@ RSpec.describe Tox::Options do
     end
   end
 
+  describe '#proxy_host' do
+    let(:proxy_host) { '127.0.0.1' }
+
+    it 'returns nil by default' do
+      expect(subject.proxy_host).to eq nil
+    end
+
+    context 'when it was set to some value' do
+      before do
+        subject.proxy_host = proxy_host
+      end
+
+      it 'returns given value' do
+        expect(subject.proxy_host).to eq proxy_host
+      end
+    end
+
+    context 'when it was set to nil' do
+      before do
+        subject.proxy_host = proxy_host
+        subject.proxy_host = nil
+      end
+
+      it 'returns nil' do
+        expect(subject.proxy_host).to eq nil
+      end
+    end
+
+    context 'when it was set to empty string' do
+      before do
+        subject.proxy_host = proxy_host
+        subject.proxy_host = ''
+      end
+
+      it 'returns nil' do
+        expect(subject.proxy_host).to eq nil
+      end
+    end
+
+    context 'when it was set to string beginning with zero byte' do
+      before do
+        subject.proxy_host = proxy_host
+        subject.proxy_host = "\x00111.222.333.444"
+      end
+
+      it 'returns nil' do
+        expect(subject.proxy_host).to eq nil
+      end
+    end
+  end
+
+  describe '#proxy_host=' do
+    context 'when value has invalid type' do
+      specify do
+        expect { subject.proxy_host = :foobar }.to raise_error(
+          TypeError,
+          "wrong argument type #{Symbol} (expected #{String})",
+        )
+      end
+    end
+
+    context 'when value is too long' do
+      specify do
+        expect { subject.proxy_host = SecureRandom.alphanumeric 256 }.to \
+          raise_error(
+            RuntimeError,
+            'Proxy host string can not be longer than 255 bytes',
+          )
+      end
+    end
+  end
+
   describe '#proxy_port' do
     it 'returns default value' do
       expect(subject.proxy_port).to eq 0
