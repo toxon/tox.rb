@@ -30,6 +30,7 @@ Style/DoubleNegation:
 Style/GlobalVars:
   Exclude:
     - 'ext/**/*'
+    - 'spec/network_helper.rb'
 
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma

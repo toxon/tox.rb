@@ -19,7 +19,7 @@ RSpec.describe 'Two clients' do
     sleep 0.1 until send_client.friends.last.exist?
     sleep 0.1 until recv_client.friends.last.exist?
 
-    fake_nodes.each do |node|
+    FAKE_NODES.each do |node|
       expect(send_client.bootstrap(node)).to eq true
       expect(recv_client.bootstrap(node)).to eq true
     end
