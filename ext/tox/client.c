@@ -311,7 +311,7 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
 
   TOX_ERR_BOOTSTRAP error;
 
-  const result = tox_bootstrap(
+  const bool result = tox_bootstrap(
     self_cdata->tox,
     RSTRING_PTR(node_resolv_ipv4),
     NUM2INT(node_port),
@@ -699,7 +699,7 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
 
   TOX_ERR_NEW error;
 
-  self_cdata->tox = tox_new(options_cdata, &error);
+  self_cdata->tox = tox_new(options_cdata->tox_options, &error);
 
   switch (error) {
     case TOX_ERR_NEW_OK:
@@ -760,6 +760,10 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
       );
     default:
       RAISE_FUNC_ERROR_DEFAULT("tox_new");
+  }
+
+  if (!self_cdata->tox) {
+    RAISE_FUNC_RESULT("tox_new");
   }
 
   tox_callback_friend_request       (self_cdata->tox, on_friend_request);

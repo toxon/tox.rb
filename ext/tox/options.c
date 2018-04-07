@@ -2,9 +2,11 @@
 
 // Memory management
 static VALUE mTox_cOptions_alloc(VALUE klass);
-static void  mTox_cOptions_free(void *free_cdata);
+static void  mTox_cOptions_free(mTox_cOptions_CDATA *free_cdata);
 
 // Public methods
+
+static VALUE mTox_cOptions_initialize(VALUE self);
 
 static VALUE mTox_cOptions_savedata(VALUE self);
 static VALUE mTox_cOptions_savedata_ASSIGN(VALUE self, VALUE savedata);
@@ -43,6 +45,8 @@ void mTox_cOptions_INIT()
   rb_define_alloc_func(mTox_cOptions, mTox_cOptions_alloc);
 
   // Public methods
+  rb_define_method(mTox_cOptions, "initialize", mTox_cOptions_initialize, 0);
+
   rb_define_method(mTox_cOptions, "savedata",  mTox_cOptions_savedata,        0);
   rb_define_method(mTox_cOptions, "savedata=", mTox_cOptions_savedata_ASSIGN, 1);
 
@@ -78,19 +82,54 @@ VALUE mTox_cOptions_alloc(const VALUE klass)
 {
   mTox_cOptions_CDATA *alloc_cdata = ALLOC(mTox_cOptions_CDATA);
 
-  tox_options_default(alloc_cdata);
+  alloc_cdata->tox_options = NULL;
 
   return Data_Wrap_Struct(klass, NULL, mTox_cOptions_free, alloc_cdata);
 }
 
-void mTox_cOptions_free(void *const free_cdata)
+void mTox_cOptions_free(mTox_cOptions_CDATA *const free_cdata)
 {
+  if (free_cdata->tox_options) {
+    tox_options_free(free_cdata->tox_options);
+  }
+
   free(free_cdata);
 }
 
 /*************************************************************
  * Public methods
  *************************************************************/
+
+// Tox::Options#initialize
+VALUE mTox_cOptions_initialize(const VALUE self)
+{
+  mTox_cOptions_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+
+  TOX_ERR_OPTIONS_NEW error;
+
+  self_cdata->tox_options = tox_options_new(&error);
+
+  switch (error) {
+    case TOX_ERR_OPTIONS_NEW_OK:
+      break;
+    case TOX_ERR_OPTIONS_NEW_MALLOC:
+      RAISE_FUNC_ERROR(
+        "tox_options_new",
+        rb_eNoMemError,
+        "TOX_ERR_OPTIONS_NEW_MALLOC"
+      );
+    default:
+      RAISE_FUNC_ERROR_DEFAULT("tox_options_new");
+  }
+
+  if (!self_cdata->tox_options) {
+    RAISE_FUNC_RESULT("tox_options_new");
+  }
+
+  return self;
+}
 
 // Tox::Options#savedata
 VALUE mTox_cOptions_savedata(const VALUE self)
@@ -99,13 +138,15 @@ VALUE mTox_cOptions_savedata(const VALUE self)
 
   Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
 
-  switch (self_cdata->savedata_type) {
+  switch (self_cdata->tox_options->savedata_type) {
     case TOX_SAVEDATA_TYPE_NONE:
       return Qnil;
     case TOX_SAVEDATA_TYPE_TOX_SAVE:
     {
-      const VALUE savedata =
-        rb_str_new(self_cdata->savedata_data, self_cdata->savedata_length);
+      const VALUE savedata = rb_str_new(
+        self_cdata->tox_options->savedata_data,
+        self_cdata->tox_options->savedata_length
+      );
       return savedata;
     }
     default:
@@ -121,18 +162,18 @@ VALUE mTox_cOptions_savedata_ASSIGN(const VALUE self, const VALUE savedata)
   Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
 
   if (Qnil == savedata) {
-    self_cdata->savedata_type = TOX_SAVEDATA_TYPE_NONE;
-    self_cdata->savedata_data = NULL;
-    self_cdata->savedata_length = 0;
+    self_cdata->tox_options->savedata_type = TOX_SAVEDATA_TYPE_NONE;
+    self_cdata->tox_options->savedata_data = NULL;
+    self_cdata->tox_options->savedata_length = 0;
 
     return Qnil;
   }
 
   Check_Type(savedata, T_STRING);
 
-  self_cdata->savedata_type = TOX_SAVEDATA_TYPE_TOX_SAVE;
-  self_cdata->savedata_data = RSTRING_PTR(savedata);
-  self_cdata->savedata_length = RSTRING_LEN(savedata);
+  self_cdata->tox_options->savedata_type = TOX_SAVEDATA_TYPE_TOX_SAVE;
+  self_cdata->tox_options->savedata_data = RSTRING_PTR(savedata);
+  self_cdata->tox_options->savedata_length = RSTRING_LEN(savedata);
 
   return savedata;
 }
@@ -144,7 +185,7 @@ VALUE mTox_cOptions_ipv6_enabled(const VALUE self)
 
   Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
 
-  if (tox_options_get_ipv6_enabled(self_cdata)) {
+  if (tox_options_get_ipv6_enabled(self_cdata->tox_options)) {
     return Qtrue;
   }
   else {
@@ -159,7 +200,7 @@ VALUE mTox_cOptions_ipv6_enabled_ASSIGN(const VALUE self, const VALUE enabled)
 
   Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
 
-  tox_options_set_ipv6_enabled(self_cdata, RTEST(enabled));
+  tox_options_set_ipv6_enabled(self_cdata->tox_options, RTEST(enabled));
 
   return enabled;
 }
@@ -171,7 +212,7 @@ VALUE mTox_cOptions_udp_enabled(const VALUE self)
 
   Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
 
-  if (tox_options_get_udp_enabled(self_cdata)) {
+  if (tox_options_get_udp_enabled(self_cdata->tox_options)) {
     return Qtrue;
   }
   else {
@@ -186,7 +227,7 @@ VALUE mTox_cOptions_udp_enabled_ASSIGN(const VALUE self, const VALUE enabled)
 
   Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
 
-  tox_options_set_udp_enabled(self_cdata, RTEST(enabled));
+  tox_options_set_udp_enabled(self_cdata->tox_options, RTEST(enabled));
 
   return enabled;
 }
@@ -198,7 +239,7 @@ VALUE mTox_cOptions_local_discovery_enabled(const VALUE self)
 
   Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
 
-  if (tox_options_get_local_discovery_enabled(self_cdata)) {
+  if (tox_options_get_local_discovery_enabled(self_cdata->tox_options)) {
     return Qtrue;
   }
   else {
@@ -213,7 +254,7 @@ VALUE mTox_cOptions_local_discovery_enabled_ASSIGN(const VALUE self, const VALUE
 
   Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
 
-  tox_options_set_local_discovery_enabled(self_cdata, RTEST(enabled));
+  tox_options_set_local_discovery_enabled(self_cdata->tox_options, RTEST(enabled));
 
   return enabled;
 }
@@ -225,7 +266,7 @@ VALUE mTox_cOptions_proxy_type(const VALUE self)
 
   Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
 
-  const TOX_PROXY_TYPE proxy_type_data = tox_options_get_proxy_type(self_cdata);
+  const TOX_PROXY_TYPE proxy_type_data = tox_options_get_proxy_type(self_cdata->tox_options);
 
   const VALUE proxy_type = mTox_mProxyType_FROM_DATA(proxy_type_data);
 
@@ -241,7 +282,7 @@ VALUE mTox_cOptions_proxy_type_ASSIGN(const VALUE self, const VALUE proxy_type)
 
   const TOX_PROXY_TYPE proxy_type_data = mTox_mProxyType_TO_DATA(proxy_type);
 
-  tox_options_set_proxy_type(self_cdata, proxy_type_data);
+  tox_options_set_proxy_type(self_cdata->tox_options, proxy_type_data);
 
   return proxy_type;
 }
@@ -253,7 +294,7 @@ VALUE mTox_cOptions_proxy_port(const VALUE self)
 
   Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
 
-  const uint16_t proxy_port_data = tox_options_get_proxy_port(self_cdata);
+  const uint16_t proxy_port_data = tox_options_get_proxy_port(self_cdata->tox_options);
 
   const VALUE proxy_port = LONG2FIX(proxy_port_data);
 
@@ -267,7 +308,7 @@ VALUE mTox_cOptions_start_port(const VALUE self)
 
   Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
 
-  const uint16_t start_port_data = tox_options_get_start_port(self_cdata);
+  const uint16_t start_port_data = tox_options_get_start_port(self_cdata->tox_options);
 
   const VALUE start_port = LONG2FIX(start_port_data);
 
@@ -281,7 +322,7 @@ VALUE mTox_cOptions_end_port(const VALUE self)
 
   Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
 
-  const uint16_t end_port_data = tox_options_get_end_port(self_cdata);
+  const uint16_t end_port_data = tox_options_get_end_port(self_cdata->tox_options);
 
   const VALUE end_port = LONG2FIX(end_port_data);
 
@@ -295,7 +336,7 @@ VALUE mTox_cOptions_tcp_port(const VALUE self)
 
   Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
 
-  const uint16_t tcp_port_data = tox_options_get_tcp_port(self_cdata);
+  const uint16_t tcp_port_data = tox_options_get_tcp_port(self_cdata->tox_options);
 
   const VALUE tcp_port = LONG2FIX(tcp_port_data);
 
@@ -315,7 +356,7 @@ VALUE mTox_cOptions_proxy_port_internal_ASSIGN(const VALUE self, const VALUE pro
 
   const uint16_t proxy_port_data = FIX2LONG(proxy_port);
 
-  tox_options_set_proxy_port(self_cdata, proxy_port_data);
+  tox_options_set_proxy_port(self_cdata->tox_options, proxy_port_data);
 
   return proxy_port;
 }
@@ -329,7 +370,7 @@ VALUE mTox_cOptions_start_port_internal_ASSIGN(const VALUE self, const VALUE sta
 
   const uint16_t start_port_data = FIX2LONG(start_port);
 
-  tox_options_set_start_port(self_cdata, start_port_data);
+  tox_options_set_start_port(self_cdata->tox_options, start_port_data);
 
   return start_port;
 }
@@ -343,7 +384,7 @@ VALUE mTox_cOptions_end_port_internal_ASSIGN(const VALUE self, const VALUE end_p
 
   const uint16_t end_port_data = FIX2LONG(end_port);
 
-  tox_options_set_end_port(self_cdata, end_port_data);
+  tox_options_set_end_port(self_cdata->tox_options, end_port_data);
 
   return end_port;
 }
@@ -357,7 +398,7 @@ VALUE mTox_cOptions_tcp_port_internal_ASSIGN(const VALUE self, const VALUE tcp_p
 
   const uint16_t tcp_port_data = FIX2LONG(tcp_port);
 
-  tox_options_set_tcp_port(self_cdata, tcp_port_data);
+  tox_options_set_tcp_port(self_cdata->tox_options, tcp_port_data);
 
   return tcp_port;
 }

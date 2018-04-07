@@ -29,6 +29,7 @@ have_func 'nanosleep' and
 have_macro 'TOX_VERSION_IS_API_COMPATIBLE', 'tox/tox.h' and
 have_macro 'TOX_VERSION_IS_ABI_COMPATIBLE', 'tox/tox.h' and
 
+have_type 'TOX_ERR_OPTIONS_NEW',           'tox/tox.h' and
 have_type 'TOX_ERR_NEW',                   'tox/tox.h' and
 have_type 'TOX_ERR_BOOTSTRAP',             'tox/tox.h' and
 have_type 'TOX_ERR_SET_INFO',              'tox/tox.h' and
@@ -55,6 +56,8 @@ have_const 'TOX_VERSION_PATCH',                              'tox/tox.h' and
 have_const 'TOX_HASH_LENGTH',                                'tox/tox.h' and
 have_const 'TOX_SAVEDATA_TYPE_NONE',                         'tox/tox.h' and
 have_const 'TOX_SAVEDATA_TYPE_TOX_SAVE',                     'tox/tox.h' and
+have_const 'TOX_ERR_OPTIONS_NEW_OK',                         'tox/tox.h' and
+have_const 'TOX_ERR_OPTIONS_NEW_MALLOC',                     'tox/tox.h' and
 have_const 'TOX_ERR_NEW_OK',                                 'tox/tox.h' and
 have_const 'TOX_ERR_NEW_NULL',                               'tox/tox.h' and
 have_const 'TOX_ERR_NEW_MALLOC',                             'tox/tox.h' and

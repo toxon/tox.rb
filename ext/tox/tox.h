@@ -12,7 +12,9 @@ void mTox_cFriend_INIT();
 
 // C data
 
-typedef struct Tox_Options mTox_cOptions_CDATA;
+typedef struct {
+  struct Tox_Options *tox_options;
+} mTox_cOptions_CDATA;
 
 typedef struct {
   Tox *tox;
