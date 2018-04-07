@@ -6,11 +6,9 @@ module Support
 
     ROOT_DIR = File.expand_path('../..', __dir__).freeze
 
-    before do
+    around do |example|
       fake_node_pids
-    end
-
-    after do
+      example.run
       fake_node_pids.each do |fake_node_pid|
         Process.kill :SIGINT, fake_node_pid
       end
