@@ -52,6 +52,7 @@ namespace :vendor do
   end
 
   task :libtoxcore do
+    mkdir_p 'vendor/libtoxcore/_build'
     chdir 'vendor/libtoxcore/_build' do
       sh 'cmake -L -DBUILD_TOXAV=OFF ..'
       sh 'make'
