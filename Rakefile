@@ -2,8 +2,6 @@
 
 require 'bundler/gem_tasks'
 
-GEMSPEC = Gem::Specification.load 'lita-tox.gemspec'
-
 task default: %i[compile spec lint]
 
 task lint: :rubocop
@@ -34,7 +32,7 @@ end
 begin
   require 'rake/extensiontask'
 
-  Rake::ExtensionTask.new 'tox', GEMSPEC do |ext|
+  Rake::ExtensionTask.new 'tox' do |ext|
     ext.lib_dir = 'lib/tox'
   end
 rescue LoadError
