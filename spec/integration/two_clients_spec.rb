@@ -24,11 +24,35 @@ RSpec.describe 'Two clients' do
       expect(recv_client.bootstrap(node)).to eq true
     end
 
+    send_friend = send_client.friends.last.exist!
+
+    expect(send_friend).to be_instance_of Tox::Friend
+
+    expect(send_friend.client).to be_instance_of Tox::Client
+    expect(send_friend.client).to equal send_client
+
+    expect(send_friend.number).to be_kind_of Integer
+    expect(send_friend.number).to be >= 0
+
+    # TODO: test friend public key
+
     send_client.on_iteration do
       send_queue.size.times do
         text = send_queue.pop true
+
         begin
-          send_client.friends.last.exist!.send_message text
+          out_friend_message = send_friend.send_message text
+
+          expect(out_friend_message).to be_instance_of Tox::OutFriendMessage
+
+          expect(out_friend_message.client).to be_instance_of Tox::Client
+          expect(out_friend_message.client).to equal send_client
+
+          expect(out_friend_message.friend).to be_instance_of Tox::Friend
+          expect(out_friend_message.friend).to eq send_friend
+
+          expect(out_friend_message.id).to be_kind_of Integer
+          expect(out_friend_message.id).to be >= 0
         rescue Tox::Friend::NotConnectedError
           send_queue << text
         end
