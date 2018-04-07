@@ -11,8 +11,8 @@ before_install:
   - sudo apt-get install -y build-essential libtool autotools-dev automake checkinstall check git yasm cmake libconfig-dev
 
 before_script:
-  - rake vendor:libsodium
-  - rake vendor:libtoxcore
+  - rake vendor:install:libsodium
+  - rake vendor:install:libtoxcore
 
   - sudo mkdir -p '/etc/ld.so.conf.d/'
   - echo '/usr/local/lib/x86_64-linux-gnu/' | sudo tee -a '/etc/ld.so.conf.d/locallib.conf'
