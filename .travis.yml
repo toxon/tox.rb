@@ -12,4 +12,4 @@ before_install:
 
 before_script:
   - rake vendor:install
-  - rake compile -- --with-opt-dir="$(pwd)/vendor"
+  - rake compile
