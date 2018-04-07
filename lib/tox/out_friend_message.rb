@@ -22,17 +22,17 @@ module Tox
 
     def friend=(value)
       unless value.is_a? Friend
-        raise TypeError, "expected friend to be a #{Friend}"
+        raise TypeError, "Expected #{Friend}, got #{value.class}"
       end
       @friend = value
     end
 
     def id=(value)
       unless value.is_a? Integer
-        raise TypeError, "expected id to be an #{Integer}"
+        raise TypeError, "Expected #{Integer}, got #{value.class}"
       end
       unless value >= 0
-        raise ArgumentError, 'expected id to be greater than or equal to zero'
+        raise 'Expected message ID to be greater than or equal to zero'
       end
       @id = value
     end

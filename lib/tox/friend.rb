@@ -29,7 +29,7 @@ module Tox
 
     def client=(value)
       unless value.is_a? Client
-        raise TypeError, "expected client to be a #{Client}"
+        raise TypeError, "Expected #{Client}, got #{value.class}"
       end
       @client = value
     end

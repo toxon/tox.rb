@@ -8,6 +8,17 @@ RSpec.describe Tox::Friend do
   let(:friend_number) { rand 0..10 }
 
   describe '#initialize' do
+    context 'when client has invalid type' do
+      let(:client) { :foobar }
+
+      specify do
+        expect { subject }.to raise_error(
+          TypeError,
+          "Expected #{Tox::Client}, got #{client.class}",
+        )
+      end
+    end
+
     context 'when friend number has invalid type' do
       let(:friend_number) { :foobar }
 
