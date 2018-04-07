@@ -43,3 +43,7 @@
 
 # Rake-compiled extension files:
 /lib/tox/tox.so
+
+# Vendored dependencies:
+/vendor/*
+!/vendor/src/

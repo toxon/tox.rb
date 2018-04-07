@@ -41,22 +41,39 @@ rescue LoadError
   nil
 end
 
+VENDOR_PREFIX = File.expand_path('vendor', __dir__).freeze
+
+VENDOR_PKG_CONFIG_PATH = File.join(VENDOR_PREFIX, 'lib', 'pkgconfig').freeze
+
 namespace :vendor do
   task :libsodium do
     chdir 'vendor/src/libsodium' do
       sh './autogen.sh'
-      sh './configure'
-      sh 'make'
-      sh 'sudo make install'
+
+      sh(
+        { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
+        './configure',
+        '--prefix',
+        VENDOR_PREFIX,
+      )
+
+      sh 'make install'
     end
   end
 
   task :libtoxcore do
     chdir 'vendor/src/libtoxcore' do
       sh './autogen.sh'
-      sh './configure', '--enable-daemon'
-      sh 'make'
-      sh 'sudo make install'
+
+      sh(
+        { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
+        './configure',
+        '--prefix',
+        VENDOR_PREFIX,
+        '--enable-daemon',
+      )
+
+      sh 'make install'
     end
   end
 end

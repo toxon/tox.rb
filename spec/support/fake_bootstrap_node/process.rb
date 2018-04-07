@@ -8,7 +8,7 @@ module Support
       ROOT_DIR = File.expand_path('../../..', __dir__).freeze
 
       DAEMON_FILE_PATH = File.expand_path(
-        'vendor/src/libtoxcore/_build/tox-bootstrapd',
+        'vendor/bin/tox-bootstrapd',
         ROOT_DIR,
       ).freeze
 
