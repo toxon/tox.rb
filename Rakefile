@@ -45,6 +45,7 @@ rescue LoadError
 end
 
 namespace :vendor do
+  desc 'Build and install vendored dependencies into "./vendor/"'
   task install: %i[install:libsodium install:libtoxcore]
 
   namespace :install do
