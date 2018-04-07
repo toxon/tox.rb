@@ -10,15 +10,12 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install -y build-essential libtool autotools-dev automake checkinstall check git yasm cmake libconfig-dev
 
-  - ./bin/build/libsodium
-  - sudo make -C vendor/libsodium/ install
-
-  - ./bin/build/libtoxcore
-  - sudo make -C vendor/libtoxcore/_build/ install
+before_script:
+  - sudo rake vendor:libsodium
+  - sudo rake vendor:libtoxcore
 
   - sudo mkdir -p '/etc/ld.so.conf.d/'
   - echo '/usr/local/lib/x86_64-linux-gnu/' | sudo tee -a '/etc/ld.so.conf.d/locallib.conf'
   - sudo ldconfig
 
-before_script:
   - rake compile

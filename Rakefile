@@ -40,3 +40,20 @@ begin
 rescue LoadError
   nil
 end
+
+namespace :vendor do
+  task :libsodium do
+    chdir 'vendor/libsodium' do
+      sh './autogen.sh'
+      sh './configure'
+      sh 'make install'
+    end
+  end
+
+  task :libtoxcore do
+    chdir 'vendor/libtoxcore/_build' do
+      sh 'cmake -L -DBUILD_TOXAV=OFF ..'
+      sh 'make install'
+    end
+  end
+end
