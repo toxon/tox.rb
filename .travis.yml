@@ -12,9 +12,4 @@ before_install:
 
 before_script:
   - rake vendor:install
-
-  - sudo mkdir -p '/etc/ld.so.conf.d/'
-  - echo '/usr/local/lib/x86_64-linux-gnu/' | sudo tee -a '/etc/ld.so.conf.d/locallib.conf'
-  - sudo ldconfig
-
   - rake compile -- --with-opt-dir="$(pwd)/vendor"
