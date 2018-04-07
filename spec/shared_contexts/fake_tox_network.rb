@@ -7,20 +7,20 @@ module SharedContexts
     ROOT_DIR = File.expand_path('../..', __dir__).freeze
 
     before do
-      node_pids
+      fake_node_pids
     end
 
     after do
-      node_pids.each do |node_pid|
-        Process.kill :SIGINT, node_pid
+      fake_node_pids.each do |fake_node_pid|
+        Process.kill :SIGINT, fake_node_pid
       end
     end
 
-    let :node_executable do
+    let :fake_node_executable do
       File.join(ROOT_DIR, 'vendor/bin/tox-bootstrapd').freeze
     end
 
-    let :node_configs do
+    let :fake_node_configs do
       [
         File.join(ROOT_DIR, 'config/node1_conf').freeze,
         File.join(ROOT_DIR, 'config/node2_conf').freeze,
@@ -28,20 +28,20 @@ module SharedContexts
       ].freeze
     end
 
-    let :node_pids do
-      node_configs.map do |node_config|
+    let :fake_node_pids do
+      fake_node_configs.map do |fake_node_config|
         Process.spawn(
-          node_executable,
+          fake_node_executable,
           '--foreground',
           '--log-backend',
           'stdout',
           '--config',
-          node_config,
+          fake_node_config,
         )
       end.freeze
     end
 
-    let :nodes do
+    let :fake_nodes do
       [
         Tox::Node.new(
           ipv4: '127.0.0.1',
