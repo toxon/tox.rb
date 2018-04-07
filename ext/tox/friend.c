@@ -165,7 +165,7 @@ VALUE mTox_cFriend_send_message(const VALUE self, const VALUE text)
   }
 
   const VALUE friend_out_message =
-    rb_funcall(mTox_cFriend_cOutMessage, rb_intern("new"), 2,
+    rb_funcall(mTox_cOutFriendMessage, rb_intern("new"), 2,
                self,
                result);
 }

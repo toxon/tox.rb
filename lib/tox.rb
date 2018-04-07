@@ -12,8 +12,8 @@ require 'tox/client'
 require 'tox/status'
 require 'tox/node'
 require 'tox/out_message'
+require 'tox/out_friend_message'
 require 'tox/friend'
-require 'tox/friend/out_message'
 
 # Enumerations
 require 'tox/user_status'

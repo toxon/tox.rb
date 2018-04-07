@@ -21,8 +21,8 @@ module Tox
 
     def ==(other)
       return false unless self.class == other.class
-      self.client == other.client &&
-        self.number == other.number
+      client == other.client &&
+        number == other.number
     end
 
   private

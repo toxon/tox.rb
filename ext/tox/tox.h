@@ -36,6 +36,7 @@ extern VALUE mTox_cAddress;
 extern VALUE mTox_cPublicKey;
 extern VALUE mTox_cNospam;
 extern VALUE mTox_mOutMessage;
+extern VALUE mTox_cOutFriendMessage;
 
 extern VALUE mTox_mUserStatus_NONE;
 extern VALUE mTox_mUserStatus_AWAY;
@@ -49,7 +50,6 @@ extern VALUE mTox_cClient_eBadSavedataError;
 
 extern VALUE mTox_cFriend_eNotFoundError;
 extern VALUE mTox_cFriend_eNotConnectedError;
-extern VALUE mTox_cFriend_cOutMessage;
 
 extern VALUE mTox_mOutMessage_eSendQueueAllocError;
 extern VALUE mTox_mOutMessage_eTooLongError;

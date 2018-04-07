@@ -22,6 +22,7 @@ VALUE mTox_cAddress;
 VALUE mTox_cNospam;
 VALUE mTox_cPublicKey;
 VALUE mTox_mOutMessage;
+VALUE mTox_cOutFriendMessage;
 
 VALUE mTox_mUserStatus_NONE;
 VALUE mTox_mUserStatus_AWAY;
@@ -35,7 +36,6 @@ VALUE mTox_cClient_eBadSavedataError;
 
 VALUE mTox_cFriend_eNotFoundError;
 VALUE mTox_cFriend_eNotConnectedError;
-VALUE mTox_cFriend_cOutMessage;
 
 VALUE mTox_mOutMessage_eSendQueueAllocError;
 VALUE mTox_mOutMessage_eTooLongError;
@@ -62,17 +62,18 @@ void Init_tox()
   mTox_eNullError    = rb_const_get(mTox, rb_intern("NullError"));
   mTox_eUnknownError = rb_const_get(mTox, rb_intern("UnknownError"));
 
-  mTox_mVersion    = rb_const_get(mTox, rb_intern("Version"));
-  mTox_mUserStatus = rb_const_get(mTox, rb_intern("UserStatus"));
-  mTox_mProxyType  = rb_const_get(mTox, rb_intern("ProxyType"));
-  mTox_cOptions    = rb_const_get(mTox, rb_intern("Options"));
-  mTox_cClient     = rb_const_get(mTox, rb_intern("Client"));
-  mTox_cNode       = rb_const_get(mTox, rb_intern("Node"));
-  mTox_cFriend     = rb_const_get(mTox, rb_intern("Friend"));
-  mTox_cAddress    = rb_const_get(mTox, rb_intern("Address"));
-  mTox_cNospam     = rb_const_get(mTox, rb_intern("Nospam"));
-  mTox_cPublicKey  = rb_const_get(mTox, rb_intern("PublicKey"));
-  mTox_mOutMessage = rb_const_get(mTox, rb_intern("OutMessage"));
+  mTox_mVersion          = rb_const_get(mTox, rb_intern("Version"));
+  mTox_mUserStatus       = rb_const_get(mTox, rb_intern("UserStatus"));
+  mTox_mProxyType        = rb_const_get(mTox, rb_intern("ProxyType"));
+  mTox_cOptions          = rb_const_get(mTox, rb_intern("Options"));
+  mTox_cClient           = rb_const_get(mTox, rb_intern("Client"));
+  mTox_cNode             = rb_const_get(mTox, rb_intern("Node"));
+  mTox_cFriend           = rb_const_get(mTox, rb_intern("Friend"));
+  mTox_cAddress          = rb_const_get(mTox, rb_intern("Address"));
+  mTox_cNospam           = rb_const_get(mTox, rb_intern("Nospam"));
+  mTox_cPublicKey        = rb_const_get(mTox, rb_intern("PublicKey"));
+  mTox_mOutMessage       = rb_const_get(mTox, rb_intern("OutMessage"));
+  mTox_cOutFriendMessage = rb_const_get(mTox, rb_intern("OutFriendMessage"));
 
   mTox_mUserStatus_NONE = rb_const_get(mTox_mUserStatus, rb_intern("NONE"));
   mTox_mUserStatus_AWAY = rb_const_get(mTox_mUserStatus, rb_intern("AWAY"));
@@ -86,7 +87,6 @@ void Init_tox()
 
   mTox_cFriend_eNotFoundError     = rb_const_get(mTox_cFriend, rb_intern("NotFoundError"));
   mTox_cFriend_eNotConnectedError = rb_const_get(mTox_cFriend, rb_intern("NotConnectedError"));
-  mTox_cFriend_cOutMessage        = rb_const_get(mTox_cFriend, rb_intern("OutMessage"));
 
   mTox_mOutMessage_eSendQueueAllocError = rb_const_get(mTox_mOutMessage, rb_intern("SendQueueAllocError"));
   mTox_mOutMessage_eTooLongError        = rb_const_get(mTox_mOutMessage, rb_intern("TooLongError"));
