@@ -174,4 +174,175 @@ RSpec.describe Tox::Options do
       end
     end
   end
+
+  describe '#start_port' do
+    it 'returns default value' do
+      expect(subject.start_port).to eq 0
+    end
+
+    context 'when it was set to some value' do
+      before do
+        subject.start_port = start_port
+      end
+
+      let(:start_port) { rand 1..65_535 }
+
+      it 'returns given value' do
+        expect(subject.start_port).to eq start_port
+      end
+    end
+
+    context 'when it was set to zero' do
+      before do
+        subject.start_port = 0
+      end
+
+      it 'returns zero' do
+        expect(subject.start_port).to eq 0
+      end
+    end
+  end
+
+  describe '#start_port=' do
+    context 'when value has invalid type' do
+      specify do
+        expect { subject.start_port = :foobar }.to raise_error(
+          TypeError,
+          "Expected #{Integer}, got #{Symbol}",
+        )
+      end
+    end
+
+    context 'when value is less than zero' do
+      specify do
+        expect { subject.start_port = -1 }.to raise_error(
+          RuntimeError,
+          'Expected value to be from range 0..65535',
+        )
+      end
+    end
+
+    context 'when value is greater than 65`535' do
+      specify do
+        expect { subject.start_port = 65_536 }.to raise_error(
+          RuntimeError,
+          'Expected value to be from range 0..65535',
+        )
+      end
+    end
+  end
+
+  describe '#end_port' do
+    it 'returns default value' do
+      expect(subject.end_port).to eq 0
+    end
+
+    context 'when it was set to some value' do
+      before do
+        subject.end_port = end_port
+      end
+
+      let(:end_port) { rand 1..65_535 }
+
+      it 'returns given value' do
+        expect(subject.end_port).to eq end_port
+      end
+    end
+
+    context 'when it was set to zero' do
+      before do
+        subject.end_port = 0
+      end
+
+      it 'returns zero' do
+        expect(subject.end_port).to eq 0
+      end
+    end
+  end
+
+  describe '#end_port=' do
+    context 'when value has invalid type' do
+      specify do
+        expect { subject.end_port = :foobar }.to raise_error(
+          TypeError,
+          "Expected #{Integer}, got #{Symbol}",
+        )
+      end
+    end
+
+    context 'when value is less than zero' do
+      specify do
+        expect { subject.end_port = -1 }.to raise_error(
+          RuntimeError,
+          'Expected value to be from range 0..65535',
+        )
+      end
+    end
+
+    context 'when value is greater than 65`535' do
+      specify do
+        expect { subject.end_port = 65_536 }.to raise_error(
+          RuntimeError,
+          'Expected value to be from range 0..65535',
+        )
+      end
+    end
+  end
+
+  describe '#tcp_port' do
+    it 'returns default value' do
+      expect(subject.tcp_port).to eq 0
+    end
+
+    context 'when it was set to some value' do
+      before do
+        subject.tcp_port = tcp_port
+      end
+
+      let(:tcp_port) { rand 1..65_535 }
+
+      it 'returns given value' do
+        expect(subject.tcp_port).to eq tcp_port
+      end
+    end
+
+    context 'when it was set to zero' do
+      before do
+        subject.tcp_port = 0
+      end
+
+      it 'returns zero' do
+        expect(subject.tcp_port).to eq 0
+      end
+    end
+  end
+
+  describe '#tcp_port=' do
+    context 'when value has invalid type' do
+      specify do
+        expect { subject.tcp_port = :foobar }.to raise_error(
+          TypeError,
+          "Expected #{Integer}, got #{Symbol}",
+        )
+      end
+    end
+
+    context 'when value is less than zero' do
+      specify do
+        expect { subject.tcp_port = -1 }.to raise_error(
+          RuntimeError,
+          'Expected value to be from range 0..65535',
+        )
+      end
+    end
+
+    context 'when value is greater than 65`535' do
+      specify do
+        expect { subject.tcp_port = 65_536 }.to raise_error(
+          RuntimeError,
+          'Expected value to be from range 0..65535',
+        )
+      end
+    end
+  end
 end

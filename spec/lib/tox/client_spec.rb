@@ -192,6 +192,70 @@ RSpec.describe Tox::Client do
     end
   end
 
+  describe '#udp_port' do
+    subject { described_class.new options }
+
+    let :options do
+      Tox::Options.new.tap do |options|
+        options.udp_enabled = udp_enabled
+        options.start_port = udp_port
+        options.end_port = udp_port
+      end
+    end
+
+    let(:udp_port) { rand 1024..64_535 }
+
+    context 'when UDP is disabled' do
+      let(:udp_enabled) { false }
+
+      specify do
+        expect(subject.udp_port).to eq nil
+      end
+    end
+
+    context 'when UDP is enabled' do
+      let(:udp_enabled) { true }
+
+      specify do
+        expect(subject.udp_port).to be_kind_of Integer
+      end
+
+      specify do
+        expect(subject.udp_port).to eq udp_port
+      end
+    end
+  end
+
+  describe '#tcp_port' do
+    subject { described_class.new options }
+
+    let :options do
+      Tox::Options.new.tap do |options|
+        options.tcp_port = tcp_port
+      end
+    end
+
+    context 'when TCP is disabled' do
+      let(:tcp_port) { 0 }
+
+      specify do
+        expect(subject.tcp_port).to eq nil
+      end
+    end
+
+    context 'when TCP is enabled' do
+      let(:tcp_port) { rand 1024..64_535 }
+
+      specify do
+        expect(subject.tcp_port).to be_kind_of Integer
+      end
+
+      specify do
+        expect(subject.tcp_port).to eq tcp_port
+      end
+    end
+  end
+
   describe '#running?' do
     it 'returns false by default' do
       expect(subject.running?).to eq false

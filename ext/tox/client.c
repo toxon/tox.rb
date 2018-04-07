@@ -13,6 +13,8 @@ static VALUE mTox_cClient_address(VALUE self);
 static VALUE mTox_cClient_nospam(VALUE self);
 static VALUE mTox_cClient_nospam_ASSIGN(VALUE self, VALUE nospam);
 static VALUE mTox_cClient_savedata(VALUE self);
+static VALUE mTox_cClient_udp_port(VALUE self);
+static VALUE mTox_cClient_tcp_port(VALUE self);
 
 static VALUE mTox_cClient_bootstrap(VALUE self, VALUE node);
 
@@ -93,6 +95,8 @@ void mTox_cClient_INIT()
   rb_define_method(mTox_cClient, "nospam",     mTox_cClient_nospam,        0);
   rb_define_method(mTox_cClient, "nospam=",    mTox_cClient_nospam_ASSIGN, 1);
   rb_define_method(mTox_cClient, "savedata",   mTox_cClient_savedata,      0);
+  rb_define_method(mTox_cClient, "udp_port",   mTox_cClient_udp_port,      0);
+  rb_define_method(mTox_cClient, "tcp_port",   mTox_cClient_tcp_port,      0);
 
   rb_define_method(mTox_cClient, "bootstrap", mTox_cClient_bootstrap, 1);
 
@@ -237,6 +241,56 @@ VALUE mTox_cClient_savedata(const VALUE self)
   const VALUE savedata = rb_str_new(data, data_size);
 
   return savedata;
+}
+
+// Tox::Client#udp_port
+VALUE mTox_cClient_udp_port(const VALUE self)
+{
+  mTox_cClient_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+
+  TOX_ERR_GET_PORT error;
+
+  const uint16_t udp_port_data = tox_self_get_udp_port(self_cdata->tox, &error);
+
+  switch (error) {
+    case TOX_ERR_GET_PORT_OK:
+      break;
+    case TOX_ERR_GET_PORT_NOT_BOUND:
+      return Qnil;
+    default:
+      return Qnil;
+  }
+
+  const VALUE udp_port = LONG2FIX(udp_port_data);
+
+  return udp_port;
+}
+
+// Tox::Client#tcp_port
+VALUE mTox_cClient_tcp_port(const VALUE self)
+{
+  mTox_cClient_CDATA *self_cdata;
+
+  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+
+  TOX_ERR_GET_PORT error;
+
+  const uint16_t tcp_port_data = tox_self_get_tcp_port(self_cdata->tox, &error);
+
+  switch (error) {
+    case TOX_ERR_GET_PORT_OK:
+      break;
+    case TOX_ERR_GET_PORT_NOT_BOUND:
+      return Qnil;
+    default:
+      return Qnil;
+  }
+
+  const VALUE tcp_port = LONG2FIX(tcp_port_data);
+
+  return tcp_port;
 }
 
 // Tox::Client#bootstrap
