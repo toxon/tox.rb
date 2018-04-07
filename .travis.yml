@@ -10,8 +10,11 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install -y build-essential libtool autotools-dev automake checkinstall check git yasm cmake libconfig-dev
 
-  - sudo ./bin/build/libsodium
-  - sudo ./bin/build/libtoxcore
+  - ./bin/build/libsodium
+  - sudo make -C vendor/libsodium/ install
+
+  - ./bin/build/libtoxcore
+  - sudo make -C vendor/libtoxcore/_build/ install
 
   - sudo mkdir -p '/etc/ld.so.conf.d/'
   - echo '/usr/local/lib/x86_64-linux-gnu/' | sudo tee -a '/etc/ld.so.conf.d/locallib.conf'

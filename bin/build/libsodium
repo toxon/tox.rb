@@ -7,5 +7,5 @@ set -vx
 pushd 'vendor/libsodium'
 ./autogen.sh
 ./configure
-make install
+make
 popd

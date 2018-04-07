@@ -7,5 +7,5 @@ set -vx
 mkdir -p 'vendor/libtoxcore/_build'
 pushd 'vendor/libtoxcore/_build'
 cmake -L -DBUILD_TOXAV=OFF ..
-make install
+make
 popd
