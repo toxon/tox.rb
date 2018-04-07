@@ -7,8 +7,8 @@ require 'simplecov'
 
 require 'spec_helper'
 
-require 'shared_contexts/fake_tox_network'
+require 'support/fake_tox_network'
 
 RSpec.configure do |config|
-  config.include SharedContexts::FakeToxNetwork
+  config.include Support::FakeToxNetwork
 end

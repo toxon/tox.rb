@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module SharedContexts
+module Support
   module FakeToxNetwork
     extend RSpec::SharedContext
 
