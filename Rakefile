@@ -38,7 +38,7 @@ begin
 
   Rake::ExtensionTask.new 'tox' do |ext|
     ext.lib_dir = 'lib/tox'
-    ext.config_options << "--with-opt-dir=\"#{VENDOR_PREFIX}\""
+    ext.config_options << "--with-opt-dir=#{VENDOR_PREFIX.shellescape}"
   end
 rescue LoadError
   nil
