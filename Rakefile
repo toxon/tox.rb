@@ -7,7 +7,7 @@ VENDOR_PREFIX = File.expand_path('vendor', __dir__).freeze
 VENDOR_PKG_CONFIG_PATH = File.join(VENDOR_PREFIX, 'lib', 'pkgconfig').freeze
 
 desc 'Run all checks (test, lint...)'
-task default: %i[compile test lint]
+task default: %i[test lint]
 
 desc 'Run all tests (specs, benchmarks...)'
 task test: :spec
@@ -21,9 +21,12 @@ task fix: 'rubocop:auto_correct'
 desc 'Compile all extensions (and their dependencies)'
 task ext: %i[ext:tox]
 
+require 'pry'
+
 begin
   require 'rspec/core/rake_task'
   RSpec::Core::RakeTask.new
+  Rake::Task[:spec].enhance %i[ext]
 rescue LoadError
   nil
 end
