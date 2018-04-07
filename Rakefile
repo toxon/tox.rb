@@ -45,19 +45,36 @@ rescue LoadError
 end
 
 namespace :vendor do
-  desc 'Build and install vendored dependencies into "./vendor/"'
+  desc 'Install vendored dependencies into "./vendor/{bin,include,lib}/"'
   task install: %i[install:libsodium install:libtoxcore]
 
-  desc 'Uninstall vendored dependencies from "./vendor/"'
+  desc 'Uninstall vendored dependencies from "./vendor/{bin,include,lib}/"'
   task :uninstall do
     rm_rf File.join VENDOR_PREFIX, 'bin'
     rm_rf File.join VENDOR_PREFIX, 'include'
     rm_rf File.join VENDOR_PREFIX, 'lib'
   end
 
+  desc 'Delete compiled vendored dependencies from "./vendor/"'
+  task clean: %i[uninstall clean:libsodium clean:libtoxcore]
+
   namespace :install do
     task libsodium: 'vendor/lib/pkgconfig/libsodium.pc'
     task libtoxcore: 'vendor/lib/pkgconfig/libtoxcore.pc'
+  end
+
+  namespace :clean do
+    task :libsodium do
+      chdir 'vendor/src/libsodium' do
+        sh 'make clean'
+      end
+    end
+
+    task :libtoxcore do
+      chdir 'vendor/src/libtoxcore' do
+        sh 'make clean'
+      end
+    end
   end
 end
 

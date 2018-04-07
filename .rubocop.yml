@@ -17,6 +17,7 @@ Lint/InheritException:
 
 Metrics/BlockLength:
   Exclude:
+    - 'Rakefile'
     - '**/*.gemspec'
     - 'spec/**/*'
 
