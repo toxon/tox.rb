@@ -2,6 +2,10 @@
 
 require 'bundler/gem_tasks'
 
+VENDOR_PREFIX = File.expand_path('vendor', __dir__).freeze
+
+VENDOR_PKG_CONFIG_PATH = File.join(VENDOR_PREFIX, 'lib', 'pkgconfig').freeze
+
 task default: %i[compile spec lint]
 
 task lint: :rubocop
@@ -38,10 +42,6 @@ begin
 rescue LoadError
   nil
 end
-
-VENDOR_PREFIX = File.expand_path('vendor', __dir__).freeze
-
-VENDOR_PKG_CONFIG_PATH = File.join(VENDOR_PREFIX, 'lib', 'pkgconfig').freeze
 
 namespace :vendor do
   task install: %i[install:libsodium install:libtoxcore]
