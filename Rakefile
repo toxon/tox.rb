@@ -48,6 +48,13 @@ namespace :vendor do
   desc 'Build and install vendored dependencies into "./vendor/"'
   task install: %i[install:libsodium install:libtoxcore]
 
+  desc 'Uninstall vendored dependencies from "./vendor/"'
+  task :uninstall do
+    rm_rf File.join VENDOR_PREFIX, 'bin'
+    rm_rf File.join VENDOR_PREFIX, 'include'
+    rm_rf File.join VENDOR_PREFIX, 'lib'
+  end
+
   namespace :install do
     task libsodium: 'vendor/lib/pkgconfig/libsodium.pc'
     task libtoxcore: 'vendor/lib/pkgconfig/libtoxcore.pc'
