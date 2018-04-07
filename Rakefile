@@ -6,11 +6,20 @@ VENDOR_PREFIX = File.expand_path('vendor', __dir__).freeze
 
 VENDOR_PKG_CONFIG_PATH = File.join(VENDOR_PREFIX, 'lib', 'pkgconfig').freeze
 
-task default: %i[compile spec lint]
+desc 'Run all checks (test, lint...)'
+task default: %i[compile test lint]
 
+desc 'Run all tests (specs, benchmarks...)'
+task test: :spec
+
+desc 'Run all code analysis tools (RuboCop...)'
 task lint: :rubocop
 
+desc 'Fix code style (rubocop --auto-correct)'
 task fix: 'rubocop:auto_correct'
+
+desc 'Compile all extensions (and their dependencies)'
+task ext: %i[ext:tox]
 
 begin
   require 'rspec/core/rake_task'
@@ -40,8 +49,19 @@ begin
     ext.lib_dir = 'lib/tox'
     ext.config_options << "--with-opt-dir=#{VENDOR_PREFIX.shellescape}"
   end
+
+  Rake::Task[:compile].clear_comments
+  Rake::Task['compile:tox'].clear_comments
 rescue LoadError
   nil
+end
+
+namespace :ext do
+  desc 'Compile "tox" extension (and it\'s dependencies)'
+  task tox: %i[
+    vendor/lib/pkgconfig/libtoxcore.pc
+    compile:tox
+  ]
 end
 
 namespace :vendor do
@@ -102,7 +122,7 @@ file 'vendor/src/libsodium/Makefile': 'vendor/src/libsodium/configure' do |t|
 end
 
 file 'vendor/src/libtoxcore/Makefile':
-       %w[vendor/src/libtoxcore/configure
+       %i[vendor/src/libtoxcore/configure
           vendor/lib/pkgconfig/libsodium.pc] do |t|
   chdir File.dirname t.name do
     sh(
