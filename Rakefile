@@ -54,7 +54,7 @@ namespace :vendor do
   task :libtoxcore do
     chdir 'vendor/libtoxcore' do
       sh './autogen.sh'
-      sh './configure'
+      sh './configure', '--enable-daemon'
       sh 'make'
       sh 'sudo make install'
     end
