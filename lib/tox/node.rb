@@ -6,7 +6,7 @@ module Tox
   #
   class Node
     # Range of valid port numbers.
-    PORT_RANGE = 0..65_535
+    PORT_RANGE = 1..65_535
 
     def initialize(data)
       @data = data.map { |k, v| [k.to_sym, v] }.to_h.freeze

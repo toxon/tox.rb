@@ -1,0 +1,19 @@
+keys_file_path = <%= keys_file_path %>
+pid_file_path = <%= pid_file_path %>
+port = <%= port %>
+enable_ipv6 = <%= enable_ipv6 %>
+enable_ipv4_fallback = <%= enable_ipv4_fallback %>
+enable_lan_discovery = <%= enable_lan_discovery %>
+enable_tcp_relay = <%= enable_tcp_relay %>
+tcp_relay_ports = <%= tcp_relay_ports %>
+enable_motd = <%= enable_motd %>
+motd = <%= motd %>
+bootstrap_nodes = (
+<% bootstrap_nodes.each do |node| %>
+  {
+    address = <%= node.address %>
+    port = <%= node.port %>
+    public_key = <%= node.public_key %>
+  }
+<% end %>
+)
