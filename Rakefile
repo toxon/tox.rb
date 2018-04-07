@@ -43,7 +43,7 @@ end
 
 namespace :vendor do
   task :libsodium do
-    chdir 'vendor/libsodium' do
+    chdir 'vendor/src/libsodium' do
       sh './autogen.sh'
       sh './configure'
       sh 'make'
@@ -52,7 +52,7 @@ namespace :vendor do
   end
 
   task :libtoxcore do
-    chdir 'vendor/libtoxcore' do
+    chdir 'vendor/src/libtoxcore' do
       sh './autogen.sh'
       sh './configure', '--enable-daemon'
       sh 'make'

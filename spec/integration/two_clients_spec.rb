@@ -21,7 +21,7 @@ RSpec.describe 'Two clients' do
   end
 
   let :node_executable do
-    File.expand_path('vendor/libtoxcore/build/tox-bootstrapd').freeze
+    File.expand_path('vendor/src/libtoxcore/build/tox-bootstrapd').freeze
   end
 
   let :node_configs do
