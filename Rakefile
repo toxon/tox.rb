@@ -46,6 +46,8 @@ VENDOR_PREFIX = File.expand_path('vendor', __dir__).freeze
 VENDOR_PKG_CONFIG_PATH = File.join(VENDOR_PREFIX, 'lib', 'pkgconfig').freeze
 
 namespace :vendor do
+  task install: %i[install:libsodium install:libtoxcore]
+
   namespace :install do
     task libsodium: 'vendor/lib/pkgconfig/libsodium.pc'
     task libtoxcore: 'vendor/lib/pkgconfig/libtoxcore.pc'
