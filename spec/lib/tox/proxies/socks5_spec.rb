@@ -98,4 +98,47 @@ RSpec.describe Tox::Proxies::SOCKS5 do
       expect(subject.port).to eq port
     end
   end
+
+  describe '#==' do
+    let(:other) { described_class.new other_host, other_port }
+
+    let(:other_host) { host }
+    let(:other_port) { port }
+
+    specify do
+      expect(subject).to eq other
+    end
+
+    context 'when values differ by host' do
+      let(:other_host) { Faker::Internet.ip_v4_address }
+
+      specify do
+        expect(subject).not_to eq other
+      end
+    end
+
+    context 'when values differ by port' do
+      let(:other_port) { rand 1..65_535 }
+
+      specify do
+        expect(subject).not_to eq other
+      end
+    end
+
+    context 'when compared with different kind of proxy' do
+      let(:other) { Tox::Proxies::HTTP.new host, port }
+
+      specify do
+        expect(subject).not_to eq other
+      end
+    end
+
+    context 'when compared with subclass instance' do
+      let(:other) { Class.new(described_class).new host, port }
+
+      specify do
+        expect(subject).not_to eq other
+      end
+    end
+  end
 end
