@@ -14,7 +14,7 @@ module Tox
         @proxy = nil
         self.proxy_type = ProxyType::NONE
         self.proxy_host = nil
-        self.proxy_port_internal = 0
+        self.proxy_port = 0
         return
       end
       unless value.is_a? Proxies::Base
@@ -23,7 +23,7 @@ module Tox
       @proxy = value
       self.proxy_type = value.type
       self.proxy_host = value.host
-      self.proxy_port_internal = value.port
+      self.proxy_port = value.port
     end
 
     def start_port=(value)

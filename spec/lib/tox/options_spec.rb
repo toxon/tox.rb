@@ -3,7 +3,6 @@
 RSpec.describe Tox::Options do
   subject { described_class.new }
 
-  it { is_expected.not_to respond_to :proxy_port_internal= }
   it { is_expected.not_to respond_to :start_port_internal= }
   it { is_expected.not_to respond_to :end_port_internal=   }
   it { is_expected.not_to respond_to :tcp_port_internal=   }
