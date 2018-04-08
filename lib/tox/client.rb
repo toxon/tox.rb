@@ -19,7 +19,7 @@ module Tox
 
     def bootstrap_official
       Status.new.udp_nodes.each do |node|
-        bootstrap node
+        bootstrap node.resolv_ipv4, node.port, node.public_key
       end
     end
 
