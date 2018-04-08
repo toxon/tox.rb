@@ -17,6 +17,12 @@ module Tox
         self.port = port
       end
 
+      def ==(other)
+        self.class == other.class &&
+          host == other.host &&
+          port == other.port
+      end
+
     private
 
       def host=(value)
