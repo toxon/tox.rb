@@ -32,6 +32,10 @@ Style/GlobalVars:
     - 'ext/**/*'
     - 'spec/network_helper.rb'
 
+Style/PredicateName:
+  Exclude:
+    - 'ext/tox/extconf.rb'
+
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
 
