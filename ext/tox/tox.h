@@ -32,6 +32,7 @@ extern VALUE mTox_eUnknownError;
 
 extern VALUE mTox_mVersion;
 extern VALUE mTox_mUserStatus;
+extern VALUE mTox_mConnectionStatus;
 extern VALUE mTox_mProxyType;
 extern VALUE mTox_cOptions;
 extern VALUE mTox_cClient;
@@ -51,6 +52,10 @@ extern VALUE mTox_mProxyType_NONE;
 extern VALUE mTox_mProxyType_HTTP;
 extern VALUE mTox_mProxyType_SOCKS5;
 
+extern VALUE mTox_mConnectionStatus_NONE;
+extern VALUE mTox_mConnectionStatus_TCP;
+extern VALUE mTox_mConnectionStatus_UDP;
+
 extern VALUE mTox_cClient_eBadSavedataError;
 
 extern VALUE mTox_cFriend_eNotFoundError;
@@ -69,6 +74,10 @@ static inline TOX_USER_STATUS mTox_mUserStatus_TO_DATA(VALUE value);
 static inline VALUE          mTox_mProxyType_FROM_DATA(TOX_PROXY_TYPE data);
 static inline VALUE          mTox_mProxyType_TRY_DATA(TOX_PROXY_TYPE data);
 static inline TOX_PROXY_TYPE mTox_mProxyType_TO_DATA(VALUE value);
+
+static inline VALUE          mTox_mConnectionStatus_FROM_DATA(TOX_CONNECTION data);
+static inline VALUE          mTox_mConnectionStatus_TRY_DATA(TOX_CONNECTION data);
+static inline TOX_CONNECTION mTox_mConnectionStatus_TO_DATA(VALUE value);
 
 // Macros
 
@@ -195,5 +204,46 @@ TOX_PROXY_TYPE mTox_mProxyType_TO_DATA(const VALUE value)
   }
   else {
     RAISE_OPTION("Tox::ProxyType");
+  }
+}
+
+VALUE mTox_mConnectionStatus_FROM_DATA(const TOX_CONNECTION data)
+{
+  const VALUE result = mTox_mConnectionStatus_TRY_DATA(data);
+
+  if (result == Qnil) {
+    RAISE_ENUM("TOX_CONNECTION");
+  }
+
+  return result;
+}
+
+VALUE mTox_mConnectionStatus_TRY_DATA(const TOX_CONNECTION data)
+{
+  switch (data) {
+    case TOX_CONNECTION_NONE:
+      return mTox_mConnectionStatus_NONE;
+    case TOX_CONNECTION_TCP:
+      return mTox_mConnectionStatus_TCP;
+    case TOX_CONNECTION_UDP:
+      return mTox_mConnectionStatus_UDP;
+    default:
+      return Qnil;
+  }
+}
+
+TOX_CONNECTION mTox_mConnectionStatus_TO_DATA(const VALUE value)
+{
+  if (value == mTox_mConnectionStatus_NONE) {
+    return TOX_CONNECTION_NONE;
+  }
+  else if (value == mTox_mConnectionStatus_TCP) {
+    return TOX_CONNECTION_TCP;
+  }
+  else if (value == mTox_mConnectionStatus_UDP) {
+    return TOX_CONNECTION_UDP;
+  }
+  else {
+    RAISE_OPTION("Tox::ConnectionStatus");
   }
 }

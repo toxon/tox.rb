@@ -22,6 +22,9 @@ RSpec.describe 'Two clients' do
     sleep 0.1 until send_client.friends.last.exist?
     sleep 0.1 until recv_client.friends.last.exist?
 
+    expect(send_client.connection_status).to eq Tox::ConnectionStatus::NONE
+    expect(recv_client.connection_status).to eq Tox::ConnectionStatus::NONE
+
     FAKE_NODES.each do |node|
       expect(
         send_client.bootstrap(node.resolv_ipv4, node.port, node.public_key),

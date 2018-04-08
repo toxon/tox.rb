@@ -22,6 +22,7 @@ require 'tox/proxies/socks5'
 # Enumerations
 require 'tox/user_status'
 require 'tox/proxy_type'
+require 'tox/connection_status'
 
 # Primitives
 require 'tox/binary'
