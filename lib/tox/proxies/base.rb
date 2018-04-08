@@ -17,6 +17,10 @@ module Tox
         self.port = port
       end
 
+      def type
+        raise NotImplementedError, "#{self.class}#type"
+      end
+
       def ==(other)
         self.class == other.class &&
           host == other.host &&

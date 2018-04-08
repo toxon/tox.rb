@@ -204,14 +204,17 @@ RSpec.describe Tox::Options do
   end
 
   describe '#proxy_type' do
+    let(:proxy_host) { Faker::Internet.ip_v4_address }
+    let(:proxy_port) { rand 1..65_535 }
+
     it 'returns NONE by default' do
       expect(subject.proxy_type).to eq Tox::ProxyType::NONE
     end
 
     context 'when it was set to NONE' do
       before do
-        subject.proxy_type = Tox::ProxyType::HTTP
-        subject.proxy_type = Tox::ProxyType::NONE
+        subject.proxy = Tox::Proxies::HTTP.new proxy_host, proxy_port
+        subject.proxy = nil
       end
 
       it 'returns given value' do
@@ -221,7 +224,7 @@ RSpec.describe Tox::Options do
 
     context 'when it was set to HTTP' do
       before do
-        subject.proxy_type = Tox::ProxyType::HTTP
+        subject.proxy = Tox::Proxies::HTTP.new proxy_host, proxy_port
       end
 
       it 'returns given value' do
@@ -231,7 +234,7 @@ RSpec.describe Tox::Options do
 
     context 'when it was set to SOCKS5' do
       before do
-        subject.proxy_type = Tox::ProxyType::SOCKS5
+        subject.proxy = Tox::Proxies::SOCKS5.new proxy_host, proxy_port
       end
 
       it 'returns given value' do
@@ -240,25 +243,27 @@ RSpec.describe Tox::Options do
     end
   end
 
-  describe '#proxy_type=' do
-    context 'when invalid value given' do
-      specify do
-        expect { subject.proxy_type = :foobar }.to \
-          raise_error ArgumentError, "Invalid value from #{Tox::ProxyType}"
-      end
-    end
-  end
-
   describe '#proxy_host' do
-    let(:proxy_host) { '127.0.0.1' }
+    let(:proxy_host) { Faker::Internet.ip_v4_address }
+    let(:proxy_port) { rand 1..65_535 }
 
     it 'returns nil by default' do
       expect(subject.proxy_host).to eq nil
     end
 
-    context 'when it was set to some value' do
+    context 'when it was set to some value for HTTP' do
       before do
-        subject.proxy_host = proxy_host
+        subject.proxy = Tox::Proxies::HTTP.new proxy_host, proxy_port
+      end
+
+      it 'returns given value' do
+        expect(subject.proxy_host).to eq proxy_host
+      end
+    end
+
+    context 'when it was set to some value for SOCKS5' do
+      before do
+        subject.proxy = Tox::Proxies::SOCKS5.new proxy_host, proxy_port
       end
 
       it 'returns given value' do
@@ -268,102 +273,52 @@ RSpec.describe Tox::Options do
 
     context 'when it was set to nil' do
       before do
-        subject.proxy_host = proxy_host
-        subject.proxy_host = nil
+        subject.proxy = Tox::Proxies::HTTP.new proxy_host, proxy_port
+        subject.proxy = nil
       end
 
       it 'returns nil' do
         expect(subject.proxy_host).to eq nil
-      end
-    end
-
-    context 'when it was set to empty string' do
-      before do
-        subject.proxy_host = proxy_host
-        subject.proxy_host = ''
-      end
-
-      it 'returns nil' do
-        expect(subject.proxy_host).to eq nil
-      end
-    end
-
-    context 'when it was set to string beginning with zero byte' do
-      before do
-        subject.proxy_host = proxy_host
-        subject.proxy_host = "\x00111.222.333.444"
-      end
-
-      it 'returns nil' do
-        expect(subject.proxy_host).to eq nil
-      end
-    end
-  end
-
-  describe '#proxy_host=' do
-    context 'when value has invalid type' do
-      specify do
-        expect { subject.proxy_host = :foobar }.to raise_error(
-          TypeError,
-          "wrong argument type #{Symbol} (expected #{String})",
-        )
-      end
-    end
-
-    context 'when value is too long' do
-      specify do
-        expect { subject.proxy_host = 'a' * 256 }.to \
-          raise_error(
-            RuntimeError,
-            'Proxy host string can not be longer than 255 bytes',
-          )
       end
     end
   end
 
   describe '#proxy_port' do
+    let(:proxy_host) { Faker::Internet.ip_v4_address }
+    let(:proxy_port) { rand 1..65_535 }
+
     it 'returns default value' do
       expect(subject.proxy_port).to eq 0
     end
 
-    context 'when it was set to some value' do
+    context 'when it was set to some value for HTTP' do
       before do
-        subject.proxy_port = proxy_port
+        subject.proxy = Tox::Proxies::HTTP.new proxy_host, proxy_port
       end
-
-      let(:proxy_port) { rand 1..65_535 }
 
       it 'returns given value' do
         expect(subject.proxy_port).to eq proxy_port
       end
     end
-  end
 
-  describe '#proxy_port=' do
-    context 'when value has invalid type' do
-      specify do
-        expect { subject.proxy_port = :foobar }.to raise_error(
-          TypeError,
-          "Expected #{Integer}, got #{Symbol}",
-        )
+    context 'when it was set to some value for SOCKS5' do
+      before do
+        subject.proxy = Tox::Proxies::SOCKS5.new proxy_host, proxy_port
+      end
+
+      it 'returns given value' do
+        expect(subject.proxy_port).to eq proxy_port
       end
     end
 
-    context 'when value is zero' do
-      specify do
-        expect { subject.proxy_port = 0 }.to raise_error(
-          RuntimeError,
-          'Expected value to be from range 1..65535',
-        )
+    context 'when it was set to nil' do
+      before do
+        subject.proxy = Tox::Proxies::HTTP.new proxy_host, proxy_port
+        subject.proxy = nil
       end
-    end
 
-    context 'when value is greater than 65`535' do
-      specify do
-        expect { subject.proxy_port = 65_536 }.to raise_error(
-          RuntimeError,
-          'Expected value to be from range 1..65535',
-        )
+      it 'returns nil' do
+        expect(subject.proxy_port).to eq 0
       end
     end
   end

@@ -55,6 +55,12 @@ RSpec.describe Tox::Proxies::HTTP do
     end
   end
 
+  describe '#type' do
+    specify do
+      expect(subject.type).to eq Tox::ProxyType::HTTP
+    end
+  end
+
   describe '#host' do
     specify do
       expect(subject.host).to be_instance_of String

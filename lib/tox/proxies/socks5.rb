@@ -6,6 +6,9 @@ module Tox
     # SOCKS5 proxy used to connect to TCP relays.
     #
     class SOCKS5 < Base
+      def type
+        ProxyType::SOCKS5
+      end
     end
   end
 end

@@ -55,6 +55,12 @@ RSpec.describe Tox::Proxies::SOCKS5 do
     end
   end
 
+  describe '#type' do
+    specify do
+      expect(subject.type).to eq Tox::ProxyType::SOCKS5
+    end
+  end
+
   describe '#host' do
     specify do
       expect(subject.host).to be_instance_of String
