@@ -149,9 +149,7 @@ void mTox_cClient_free(mTox_cClient_CDATA *const free_cdata)
 // Tox::Client#public_key
 VALUE mTox_cClient_public_key(const VALUE self)
 {
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
   char public_key_data[TOX_PUBLIC_KEY_SIZE];
 
@@ -169,9 +167,7 @@ VALUE mTox_cClient_public_key(const VALUE self)
 // Tox::Client#address
 VALUE mTox_cClient_address(const VALUE self)
 {
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
   char address_data[TOX_ADDRESS_SIZE];
 
@@ -188,9 +184,7 @@ VALUE mTox_cClient_address(const VALUE self)
 // Tox::Client#nospam
 VALUE mTox_cClient_nospam(const VALUE self)
 {
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
   uint32_t nospam_data = tox_self_get_nospam(self_cdata->tox);
 
@@ -209,9 +203,7 @@ VALUE mTox_cClient_nospam_ASSIGN(const VALUE self, const VALUE nospam)
     RAISE_TYPECHECK("Tox::Client#nospam=", "nospam", "Tox::Nospam");
   }
 
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
   const VALUE nospam_as_integer = rb_funcall(nospam, rb_intern("to_i"), 0);
 
@@ -226,15 +218,10 @@ VALUE mTox_cClient_nospam_ASSIGN(const VALUE self, const VALUE nospam)
 // Tox::Client#savedata
 VALUE mTox_cClient_savedata(const VALUE self)
 {
-  mTox_cClient_CDATA *self_cdata;
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
-  size_t data_size;
-  char *data;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
-
-  data_size = tox_get_savedata_size(self_cdata->tox);
-  data = ALLOC_N(char, data_size);
+  size_t data_size = tox_get_savedata_size(self_cdata->tox);
+  char *data = ALLOC_N(char, data_size);
 
   tox_get_savedata(self_cdata->tox, data);
 
@@ -246,9 +233,7 @@ VALUE mTox_cClient_savedata(const VALUE self)
 // Tox::Client#udp_port
 VALUE mTox_cClient_udp_port(const VALUE self)
 {
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
   TOX_ERR_GET_PORT error;
 
@@ -271,9 +256,7 @@ VALUE mTox_cClient_udp_port(const VALUE self)
 // Tox::Client#tcp_port
 VALUE mTox_cClient_tcp_port(const VALUE self)
 {
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
   TOX_ERR_GET_PORT error;
 
@@ -300,9 +283,7 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
     RAISE_TYPECHECK("Tox::Client#bootstrap", "node", "Tox::Node");
   }
 
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
   const VALUE node_resolv_ipv4      = rb_funcall(node,            rb_intern("resolv_ipv4"), 0);
   const VALUE node_port             = rb_funcall(node,            rb_intern("port"),        0);
@@ -342,9 +323,7 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE node)
 // Tox::Client#name
 VALUE mTox_cClient_name(const VALUE self)
 {
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
   const size_t name_size_data = tox_self_get_name_size(self_cdata->tox);
 
@@ -364,9 +343,7 @@ VALUE mTox_cClient_name_ASSIGN(const VALUE self, const VALUE name)
 {
   Check_Type(name, T_STRING);
 
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
   TOX_ERR_SET_INFO error;
 
@@ -406,9 +383,7 @@ VALUE mTox_cClient_name_ASSIGN(const VALUE self, const VALUE name)
 // Tox::Client#status
 VALUE mTox_cClient_status(const VALUE self)
 {
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
   const TOX_USER_STATUS status_data = tox_self_get_status(self_cdata->tox);
 
@@ -420,9 +395,7 @@ VALUE mTox_cClient_status(const VALUE self)
 // Tox::Client#status=
 VALUE mTox_cClient_status_ASSIGN(const VALUE self, const VALUE status)
 {
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
   const TOX_USER_STATUS status_data = mTox_mUserStatus_TO_DATA(status);
 
@@ -434,9 +407,7 @@ VALUE mTox_cClient_status_ASSIGN(const VALUE self, const VALUE status)
 // Tox::Client#status_message
 VALUE mTox_cClient_status_message(const VALUE self)
 {
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
   const size_t status_message_size_data =
     tox_self_get_status_message_size(self_cdata->tox);
@@ -458,9 +429,7 @@ VALUE mTox_cClient_status_message_ASSIGN(const VALUE self, const VALUE status_me
 {
   Check_Type(status_message, T_STRING);
 
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
   TOX_ERR_SET_INFO error;
 
@@ -500,9 +469,7 @@ VALUE mTox_cClient_status_message_ASSIGN(const VALUE self, const VALUE status_me
 // Tox::Client#friend_numbers
 VALUE mTox_cClient_friend_numbers(const VALUE self)
 {
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
   const size_t friend_numbers_size = tox_self_get_friend_list_size(self_cdata->tox);
 
@@ -533,9 +500,7 @@ VALUE mTox_cClient_friend_add_norequest(const VALUE self, const VALUE public_key
     RAISE_TYPECHECK("Tox::Client#friend_add_norequest", "public_key", "Tox::PublicKey");
   }
 
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
   const VALUE public_key_value = rb_funcall(public_key, rb_intern("value"), 0);
 
@@ -605,9 +570,7 @@ VALUE mTox_cClient_friend_add(const VALUE self, const VALUE address, const VALUE
 
   Check_Type(text, T_STRING);
 
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
   TOX_ERR_FRIEND_ADD error;
 
@@ -687,15 +650,12 @@ VALUE mTox_cClient_friend_add(const VALUE self, const VALUE address, const VALUE
 // Tox::Client#initialize_with
 VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
 {
-  mTox_cClient_CDATA  *self_cdata;
-  mTox_cOptions_CDATA *options_cdata;
-
   if (!rb_funcall(options, rb_intern("is_a?"), 1, mTox_cOptions)) {
     RAISE_TYPECHECK("Tox::Client#initialize_with", "options", "Tox::Options");
   }
 
-  Data_Get_Struct(self,    mTox_cClient_CDATA,  self_cdata);
-  Data_Get_Struct(options, mTox_cOptions_CDATA, options_cdata);
+  CDATA(self,    mTox_cClient_CDATA,  self_cdata);
+  CDATA(options, mTox_cOptions_CDATA, options_cdata);
 
   TOX_ERR_NEW error;
 
@@ -778,9 +738,7 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
 // Tox::Client#run_loop
 VALUE mTox_cClient_run_loop(const VALUE self)
 {
-  mTox_cClient_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cClient_CDATA, self_cdata);
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
 
   struct timespec delay;
 

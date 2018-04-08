@@ -70,6 +70,10 @@ static inline TOX_PROXY_TYPE mTox_mProxyType_TO_DATA(VALUE value);
 
 // Macros
 
+#define CDATA(value, cdata_type, cdata)          \
+  cdata_type *(cdata);                           \
+  Data_Get_Struct((value), cdata_type, (cdata));
+
 #define RAISE_TYPECHECK(method_name, arg_name, expected_type) \
   rb_raise(                                                   \
     rb_eTypeError,                                            \

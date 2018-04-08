@@ -109,9 +109,7 @@ void mTox_cOptions_free(mTox_cOptions_CDATA *const free_cdata)
 // Tox::Options#initialize
 VALUE mTox_cOptions_initialize(const VALUE self)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   TOX_ERR_OPTIONS_NEW error;
 
@@ -142,9 +140,7 @@ VALUE mTox_cOptions_initialize(const VALUE self)
 // Tox::Options#savedata
 VALUE mTox_cOptions_savedata(const VALUE self)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   switch (self_cdata->tox_options->savedata_type) {
     case TOX_SAVEDATA_TYPE_NONE:
@@ -165,9 +161,7 @@ VALUE mTox_cOptions_savedata(const VALUE self)
 // Tox::Options#savedata=
 VALUE mTox_cOptions_savedata_ASSIGN(const VALUE self, const VALUE savedata)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   if (Qnil == savedata) {
     self_cdata->tox_options->savedata_type = TOX_SAVEDATA_TYPE_NONE;
@@ -189,9 +183,7 @@ VALUE mTox_cOptions_savedata_ASSIGN(const VALUE self, const VALUE savedata)
 // Tox::Options#ipv6_enabled
 VALUE mTox_cOptions_ipv6_enabled(const VALUE self)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   if (tox_options_get_ipv6_enabled(self_cdata->tox_options)) {
     return Qtrue;
@@ -204,9 +196,7 @@ VALUE mTox_cOptions_ipv6_enabled(const VALUE self)
 // Tox::Options#ipv6_enabled=
 VALUE mTox_cOptions_ipv6_enabled_ASSIGN(const VALUE self, const VALUE enabled)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   tox_options_set_ipv6_enabled(self_cdata->tox_options, RTEST(enabled));
 
@@ -216,9 +206,7 @@ VALUE mTox_cOptions_ipv6_enabled_ASSIGN(const VALUE self, const VALUE enabled)
 // Tox::Options#udp_enabled
 VALUE mTox_cOptions_udp_enabled(const VALUE self)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   if (tox_options_get_udp_enabled(self_cdata->tox_options)) {
     return Qtrue;
@@ -231,9 +219,7 @@ VALUE mTox_cOptions_udp_enabled(const VALUE self)
 // Tox::Options#udp_enabled=
 VALUE mTox_cOptions_udp_enabled_ASSIGN(const VALUE self, const VALUE enabled)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   tox_options_set_udp_enabled(self_cdata->tox_options, RTEST(enabled));
 
@@ -243,9 +229,7 @@ VALUE mTox_cOptions_udp_enabled_ASSIGN(const VALUE self, const VALUE enabled)
 // Tox::Options#local_discovery_enabled
 VALUE mTox_cOptions_local_discovery_enabled(const VALUE self)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   if (tox_options_get_local_discovery_enabled(self_cdata->tox_options)) {
     return Qtrue;
@@ -258,9 +242,7 @@ VALUE mTox_cOptions_local_discovery_enabled(const VALUE self)
 // Tox::Options#local_discovery_enabled=
 VALUE mTox_cOptions_local_discovery_enabled_ASSIGN(const VALUE self, const VALUE enabled)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   tox_options_set_local_discovery_enabled(self_cdata->tox_options, RTEST(enabled));
 
@@ -270,9 +252,7 @@ VALUE mTox_cOptions_local_discovery_enabled_ASSIGN(const VALUE self, const VALUE
 // Tox::Options#proxy_type
 VALUE mTox_cOptions_proxy_type(const VALUE self)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   const TOX_PROXY_TYPE proxy_type_data = tox_options_get_proxy_type(self_cdata->tox_options);
 
@@ -284,9 +264,7 @@ VALUE mTox_cOptions_proxy_type(const VALUE self)
 // Tox::Options#proxy_type=
 VALUE mTox_cOptions_proxy_type_ASSIGN(const VALUE self, const VALUE proxy_type)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   const TOX_PROXY_TYPE proxy_type_data = mTox_mProxyType_TO_DATA(proxy_type);
 
@@ -298,9 +276,7 @@ VALUE mTox_cOptions_proxy_type_ASSIGN(const VALUE self, const VALUE proxy_type)
 // Tox::Options#proxy_host
 VALUE mTox_cOptions_proxy_host(const VALUE self)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   const char *proxy_host_data = tox_options_get_proxy_host(self_cdata->tox_options);
 
@@ -316,9 +292,7 @@ VALUE mTox_cOptions_proxy_host(const VALUE self)
 // Tox::Options#proxy_host=
 VALUE mTox_cOptions_proxy_host_ASSIGN(const VALUE self, const VALUE proxy_host)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   tox_options_set_proxy_host(self_cdata->tox_options, NULL);
 
@@ -353,9 +327,7 @@ VALUE mTox_cOptions_proxy_host_ASSIGN(const VALUE self, const VALUE proxy_host)
 // Tox::Options#proxy_port
 VALUE mTox_cOptions_proxy_port(const VALUE self)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   const uint16_t proxy_port_data = tox_options_get_proxy_port(self_cdata->tox_options);
 
@@ -367,9 +339,7 @@ VALUE mTox_cOptions_proxy_port(const VALUE self)
 // Tox::Options#start_port
 VALUE mTox_cOptions_start_port(const VALUE self)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   const uint16_t start_port_data = tox_options_get_start_port(self_cdata->tox_options);
 
@@ -381,9 +351,7 @@ VALUE mTox_cOptions_start_port(const VALUE self)
 // Tox::Options#end_port
 VALUE mTox_cOptions_end_port(const VALUE self)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   const uint16_t end_port_data = tox_options_get_end_port(self_cdata->tox_options);
 
@@ -395,9 +363,7 @@ VALUE mTox_cOptions_end_port(const VALUE self)
 // Tox::Options#tcp_port
 VALUE mTox_cOptions_tcp_port(const VALUE self)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   const uint16_t tcp_port_data = tox_options_get_tcp_port(self_cdata->tox_options);
 
@@ -413,9 +379,7 @@ VALUE mTox_cOptions_tcp_port(const VALUE self)
 // Tox::Options#proxy_port_internal=
 VALUE mTox_cOptions_proxy_port_internal_ASSIGN(const VALUE self, const VALUE proxy_port)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   const uint16_t proxy_port_data = FIX2LONG(proxy_port);
 
@@ -427,9 +391,7 @@ VALUE mTox_cOptions_proxy_port_internal_ASSIGN(const VALUE self, const VALUE pro
 // Tox::Options#start_port_internal=
 VALUE mTox_cOptions_start_port_internal_ASSIGN(const VALUE self, const VALUE start_port)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   const uint16_t start_port_data = FIX2LONG(start_port);
 
@@ -441,9 +403,7 @@ VALUE mTox_cOptions_start_port_internal_ASSIGN(const VALUE self, const VALUE sta
 // Tox::Options#end_port_internal=
 VALUE mTox_cOptions_end_port_internal_ASSIGN(const VALUE self, const VALUE end_port)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   const uint16_t end_port_data = FIX2LONG(end_port);
 
@@ -455,9 +415,7 @@ VALUE mTox_cOptions_end_port_internal_ASSIGN(const VALUE self, const VALUE end_p
 // Tox::Options#tcp_port_internal=
 VALUE mTox_cOptions_tcp_port_internal_ASSIGN(const VALUE self, const VALUE tcp_port)
 {
-  mTox_cOptions_CDATA *self_cdata;
-
-  Data_Get_Struct(self, mTox_cOptions_CDATA, self_cdata);
+  CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   const uint16_t tcp_port_data = FIX2LONG(tcp_port);
 

@@ -37,9 +37,7 @@ VALUE mTox_cFriend_exist_QUESTION(const VALUE self)
   const VALUE client = rb_iv_get(self, "@client");
   const VALUE number = rb_iv_get(self, "@number");
 
-  mTox_cClient_CDATA *client_cdata;
-
-  Data_Get_Struct(client, mTox_cClient_CDATA, client_cdata);
+  CDATA(client, mTox_cClient_CDATA, client_cdata)
 
   const bool result = tox_friend_exists(client_cdata->tox, NUM2LONG(number));
 
@@ -57,9 +55,7 @@ VALUE mTox_cFriend_public_key(const VALUE self)
   const VALUE client = rb_iv_get(self, "@client");
   const VALUE number = rb_iv_get(self, "@number");
 
-  mTox_cClient_CDATA *client_cdata;
-
-  Data_Get_Struct(client, mTox_cClient_CDATA, client_cdata);
+  CDATA(client, mTox_cClient_CDATA, client_cdata);
 
   uint8_t public_key_data[TOX_PUBLIC_KEY_SIZE];
 
@@ -106,9 +102,7 @@ VALUE mTox_cFriend_send_message(const VALUE self, const VALUE text)
   const VALUE client = rb_iv_get(self, "@client");
   const VALUE number = rb_iv_get(self, "@number");
 
-  mTox_cClient_CDATA *client_cdata;
-
-  Data_Get_Struct(client, mTox_cClient_CDATA, client_cdata);
+  CDATA(client, mTox_cClient_CDATA, client_cdata);
 
   TOX_ERR_FRIEND_ADD error;
 
@@ -176,9 +170,7 @@ VALUE mTox_cFriend_name(const VALUE self)
   const VALUE client = rb_iv_get(self, "@client");
   const VALUE number = rb_iv_get(self, "@number");
 
-  mTox_cClient_CDATA *client_cdata;
-
-  Data_Get_Struct(client, mTox_cClient_CDATA, client_cdata);
+  CDATA(client, mTox_cClient_CDATA, client_cdata);
 
   TOX_ERR_FRIEND_QUERY error;
 
@@ -250,9 +242,7 @@ VALUE mTox_cFriend_status(const VALUE self)
   const VALUE client = rb_iv_get(self, "@client");
   const VALUE number = rb_iv_get(self, "@number");
 
-  mTox_cClient_CDATA *client_cdata;
-
-  Data_Get_Struct(client, mTox_cClient_CDATA, client_cdata);
+  CDATA(client, mTox_cClient_CDATA, client_cdata);
 
   TOX_ERR_FRIEND_QUERY error;
 
@@ -299,9 +289,7 @@ VALUE mTox_cFriend_status_message(const VALUE self)
   const VALUE client = rb_iv_get(self, "@client");
   const VALUE number = rb_iv_get(self, "@number");
 
-  mTox_cClient_CDATA *client_cdata;
-
-  Data_Get_Struct(client, mTox_cClient_CDATA, client_cdata);
+  CDATA(client, mTox_cClient_CDATA, client_cdata);
 
   TOX_ERR_FRIEND_QUERY error;
 
