@@ -3,10 +3,13 @@
 require 'network_helper'
 
 RSpec.describe 'Two clients' do
-  specify do
-    options = Tox::Options.new
-    options.local_discovery_enabled = false
+  let :options do
+    Tox::Options.new.tap do |options|
+      options.local_discovery_enabled = false
+    end
+  end
 
+  specify do
     send_queue = Queue.new
     recv_queue = Queue.new
 
