@@ -243,7 +243,7 @@ RSpec.describe Tox::Options do
 
     context 'when value is too long' do
       specify do
-        expect { subject.proxy_host = SecureRandom.alphanumeric 256 }.to \
+        expect { subject.proxy_host = 'a' * 256 }.to \
           raise_error(
             RuntimeError,
             'Proxy host string can not be longer than 255 bytes',
