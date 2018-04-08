@@ -3,6 +3,10 @@
 RSpec.describe Tox::Client do
   subject { described_class.new }
 
+  pending '#bootstrap'
+  pending '#bootstrap_official'
+  pending '#add_tcp_relay'
+
   describe '#initialize' do
     context 'when options is nil' do
       specify do

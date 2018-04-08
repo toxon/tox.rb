@@ -39,6 +39,21 @@ FAKE_NODES = [
   ),
 ].freeze
 
+FAKE_TCP_RELAYS = [
+  {
+    public_key: FAKE_NODES[0].public_key,
+    ports: [10_101, 10_102, 10_103],
+  },
+  {
+    public_key: FAKE_NODES[0].public_key,
+    ports: [10_201, 10_202, 10_203],
+  },
+  {
+    public_key: FAKE_NODES[0].public_key,
+    ports: [10_301, 10_302, 10_303],
+  },
+].freeze
+
 HTTP_PROXY_PORT = rand 1024..65_535
 
 RSpec.configure do |config|

@@ -32,6 +32,18 @@ RSpec.describe 'Two clients' do
       ).to eq true
     end
 
+    FAKE_TCP_RELAYS.each do |tcp_relay|
+      tcp_relay[:ports].each do |port|
+        expect(
+          send_client.add_tcp_relay('127.0.0.1', port, tcp_relay[:public_key]),
+        ).to eq true
+
+        expect(
+          recv_client.add_tcp_relay('127.0.0.1', port, tcp_relay[:public_key]),
+        ).to eq true
+      end
+    end
+
     send_friend = send_client.friends.last.exist!
 
     expect(send_friend).to be_instance_of Tox::Friend

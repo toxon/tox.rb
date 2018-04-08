@@ -17,6 +17,7 @@ static VALUE mTox_cClient_udp_port(VALUE self);
 static VALUE mTox_cClient_tcp_port(VALUE self);
 
 static VALUE mTox_cClient_bootstrap(VALUE self, VALUE address, VALUE port, VALUE public_key);
+static VALUE mTox_cClient_add_tcp_relay(VALUE self, VALUE address, VALUE port, VALUE public_key);
 
 static VALUE mTox_cClient_name(VALUE self);
 static VALUE mTox_cClient_name_ASSIGN(VALUE self, VALUE name);
@@ -98,7 +99,8 @@ void mTox_cClient_INIT()
   rb_define_method(mTox_cClient, "udp_port",   mTox_cClient_udp_port,      0);
   rb_define_method(mTox_cClient, "tcp_port",   mTox_cClient_tcp_port,      0);
 
-  rb_define_method(mTox_cClient, "bootstrap", mTox_cClient_bootstrap, 3);
+  rb_define_method(mTox_cClient, "bootstrap",     mTox_cClient_bootstrap,     3);
+  rb_define_method(mTox_cClient, "add_tcp_relay", mTox_cClient_add_tcp_relay, 3);
 
   rb_define_method(mTox_cClient, "name",  mTox_cClient_name,        0);
   rb_define_method(mTox_cClient, "name=", mTox_cClient_name_ASSIGN, 1);
@@ -298,6 +300,55 @@ VALUE mTox_cClient_bootstrap(const VALUE self, const VALUE address, const VALUE 
   TOX_ERR_BOOTSTRAP error;
 
   const bool result = tox_bootstrap(
+    self_cdata->tox,
+    address_data,
+    port_data,
+    public_key_data,
+    &error
+  );
+
+  switch (error) {
+    case TOX_ERR_BOOTSTRAP_OK:
+      break;
+    case TOX_ERR_BOOTSTRAP_NULL:
+      return Qfalse;
+    case TOX_ERR_BOOTSTRAP_BAD_HOST:
+      return Qfalse;
+    case TOX_ERR_BOOTSTRAP_BAD_PORT:
+      return Qfalse;
+    default:
+      return Qfalse;
+  }
+
+  if (!result) {
+    return Qfalse;
+  }
+
+  return Qtrue;
+}
+
+// Tox::Client#add_tcp_relay
+VALUE mTox_cClient_add_tcp_relay(const VALUE self, const VALUE address, const VALUE port, const VALUE public_key)
+{
+  Check_Type(address, T_STRING);
+
+  if (!rb_funcall(public_key, rb_intern("is_a?"), 1, mTox_cPublicKey)) {
+    RAISE_TYPECHECK("Tox::Client#bootstrap", "public_key", "Tox::PublicKey");
+  }
+
+  StringValueCStr(address);
+
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
+
+  const VALUE public_key_value = rb_funcall(public_key, rb_intern("value"), 0);
+
+  const char *address_data = RSTRING_PTR(address);
+  const uint16_t port_data = NUM2USHORT(port);
+  const char *public_key_data = RSTRING_PTR(public_key_value);
+
+  TOX_ERR_BOOTSTRAP error;
+
+  const bool result = tox_add_tcp_relay(
     self_cdata->tox,
     address_data,
     port_data,
