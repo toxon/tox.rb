@@ -12,18 +12,14 @@ module Tox
     def proxy=(value)
       if value.nil?
         @proxy = nil
-        self.proxy_type = ProxyType::NONE
-        self.proxy_host = nil
-        self.proxy_port = 0
+        set_proxy_params ProxyType::NONE, nil, 0
         return
       end
       unless value.is_a? Proxies::Base
         raise TypeError, "Expected #{Proxies::Base}, got #{value.class}"
       end
       @proxy = value
-      self.proxy_type = value.type
-      self.proxy_host = value.host
-      self.proxy_port = value.port
+      set_proxy_params value.type, value.host, value.port
     end
 
     def start_port=(value)
@@ -54,6 +50,14 @@ module Tox
         raise "Expected value to be from range #{BIND_PORT_RANGE}"
       end
       self.tcp_port_internal = value
+    end
+
+  private
+
+    def set_proxy_params(type, host, port)
+      self.proxy_type = type
+      self.proxy_host = host
+      self.proxy_port = port
     end
   end
 end
