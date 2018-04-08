@@ -309,7 +309,7 @@ VALUE mTox_cOptions_proxy_host_ASSIGN(const VALUE self, const VALUE proxy_host)
     return Qnil;
   }
 
-  if (proxy_host_length_data > 255) {
+  if (proxy_host_length_data >= mTox_cOptions_CDATA_PROXY_HOST_BUFFER_SIZE) {
     rb_raise(
       rb_eRuntimeError,
       "Proxy host string can not be longer than 255 bytes"

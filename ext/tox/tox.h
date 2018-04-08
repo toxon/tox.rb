@@ -12,9 +12,11 @@ void mTox_cFriend_INIT();
 
 // C data
 
+#define mTox_cOptions_CDATA_PROXY_HOST_BUFFER_SIZE 256
+
 typedef struct {
   struct Tox_Options *tox_options;
-  char proxy_host[256];
+  char proxy_host[mTox_cOptions_CDATA_PROXY_HOST_BUFFER_SIZE];
 } mTox_cOptions_CDATA;
 
 typedef struct {
