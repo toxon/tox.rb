@@ -9,7 +9,8 @@ require 'spec_helper'
 
 ROOT_DIR = File.expand_path('..', __dir__).freeze
 
-FAKE_NODE_EXECUTABLE = File.join(ROOT_DIR, 'vendor/bin/tox-bootstrapd').freeze
+FAKE_NODE_EXECUTABLE  = File.join(ROOT_DIR, 'vendor/bin/tox-bootstrapd').freeze
+HTTP_PROXY_EXECUTABLE = File.join(ROOT_DIR, 'bin/proxy').freeze
 
 FAKE_NODE_CONFIG_FILES = [
   File.join(ROOT_DIR, 'config/node1_conf').freeze,
@@ -38,6 +39,8 @@ FAKE_NODES = [
   ),
 ].freeze
 
+HTTP_PROXY_PORT = rand 1024..65_535
+
 RSpec.configure do |config|
   config.before :suite do
     $fake_node_pids = FAKE_NODE_CONFIG_FILES.map do |fake_node_config|
@@ -56,5 +59,16 @@ RSpec.configure do |config|
     $fake_node_pids.each do |fake_node_pid|
       Process.kill :SIGINT, fake_node_pid
     end
+  end
+
+  config.before :suite do
+    $http_proxy_pid = Process.spawn(
+      HTTP_PROXY_EXECUTABLE,
+      HTTP_PROXY_PORT.to_s,
+    )
+  end
+
+  config.after :suite do
+    Process.kill :SIGINT, $http_proxy_pid
   end
 end
