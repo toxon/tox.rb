@@ -15,6 +15,10 @@ require 'tox/out_message'
 require 'tox/out_friend_message'
 require 'tox/friend'
 
+require 'tox/proxies/base'
+require 'tox/proxies/http'
+require 'tox/proxies/socks5'
+
 # Enumerations
 require 'tox/user_status'
 require 'tox/proxy_type'
