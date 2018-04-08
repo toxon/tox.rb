@@ -134,6 +134,75 @@ RSpec.describe Tox::Options do
     end
   end
 
+  describe '#proxy' do
+    let(:proxy_host) { Faker::Internet.ip_v4_address }
+    let(:proxy_port) { rand 1..65_535 }
+
+    it 'returns nil by default' do
+      expect(subject.proxy).to eq nil
+    end
+
+    context 'when it was set to nil' do
+      before do
+        subject.proxy = Tox::Proxies::HTTP.new proxy_host, proxy_port
+        subject.proxy = nil
+      end
+
+      specify do
+        expect(subject.proxy).to eq nil
+      end
+    end
+
+    context 'when it was set to be a Tox::Proxies::HTTP' do
+      before do
+        subject.proxy = proxy
+      end
+
+      let(:proxy) { Tox::Proxies::HTTP.new proxy_host, proxy_port }
+
+      specify do
+        expect(subject.proxy).to eq proxy
+      end
+
+      specify do
+        expect(subject.proxy.host).to eq proxy_host
+      end
+
+      specify do
+        expect(subject.proxy.port).to eq proxy_port
+      end
+    end
+
+    context 'when it was set to be a Tox::Proxies::SOCKS5' do
+      before do
+        subject.proxy = proxy
+      end
+
+      let(:proxy) { Tox::Proxies::SOCKS5.new proxy_host, proxy_port }
+
+      specify do
+        expect(subject.proxy).to eq proxy
+      end
+
+      specify do
+        expect(subject.proxy.host).to eq proxy_host
+      end
+
+      specify do
+        expect(subject.proxy.port).to eq proxy_port
+      end
+    end
+  end
+
+  describe '#proxy=' do
+    context 'when given value has invalid type' do
+      specify do
+        expect { subject.proxy = :foobar }.to \
+          raise_error TypeError, "Expected #{Tox::Proxies::Base}, got #{Symbol}"
+      end
+    end
+  end
+
   describe '#proxy_type' do
     it 'returns NONE by default' do
       expect(subject.proxy_type).to eq Tox::ProxyType::NONE

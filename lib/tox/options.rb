@@ -8,6 +8,16 @@ module Tox
     PROXY_PORT_RANGE = 1..65_535
     BIND_PORT_RANGE = 0..65_535
 
+    attr_reader :proxy
+
+    def proxy=(value)
+      return @proxy = nil if value.nil?
+      unless value.is_a? Proxies::Base
+        raise TypeError, "Expected #{Proxies::Base}, got #{value.class}"
+      end
+      @proxy = value
+    end
+
     def proxy_port=(value)
       unless value.is_a? Integer
         raise TypeError, "Expected #{Integer}, got #{value.class}"
