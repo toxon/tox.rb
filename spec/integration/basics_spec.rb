@@ -12,6 +12,10 @@ class Wrapper
     @client.on_friend_message(&method(:on_friend_message))
   end
 
+  def connection_status
+    @client.connection_status
+  end
+
   def public_key
     @client.public_key
   end
@@ -66,8 +70,8 @@ RSpec.describe 'Basics' do
     client_1_wrapper.friend_add_norequest client_2_wrapper.public_key
     client_2_wrapper.friend_add_norequest client_1_wrapper.public_key
 
-    expect(client_1.connection_status).to eq Tox::ConnectionStatus::NONE
-    expect(client_2.connection_status).to eq Tox::ConnectionStatus::NONE
+    expect(client_1_wrapper.connection_status).to eq Tox::ConnectionStatus::NONE
+    expect(client_2_wrapper.connection_status).to eq Tox::ConnectionStatus::NONE
 
     FAKE_NODES.each do |node|
       expect(
