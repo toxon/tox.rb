@@ -24,15 +24,15 @@ class Wrapper
     @friend_messages ||= []
   end
 
-  def friend_add_norequest(public_key)
-    @client.friend_add_norequest public_key
-  end
-
   def run
     loop do
       sleep @client.iteration_interval
       @client.iterate
     end
+  end
+
+  def friend_add_norequest(public_key)
+    @client.friend_add_norequest public_key
   end
 
   def send_friend_message(friend_number, text)
