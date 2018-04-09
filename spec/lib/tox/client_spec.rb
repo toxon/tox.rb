@@ -420,6 +420,11 @@ RSpec.describe Tox::Client do
         be_instance_of Tox::Friend
     end
 
+    specify do
+      expect(subject.friend_add_norequest(new_friend_public_key).client).to \
+        equal subject
+    end
+
     context 'with own public key' do
       specify do
         expect { subject.friend_add_norequest subject.public_key }.to \

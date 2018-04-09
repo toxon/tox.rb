@@ -75,8 +75,11 @@ RSpec.describe 'Basics' do
     client_1_wrapper = Wrapper.new client_1
     client_2_wrapper = Wrapper.new client_2
 
-    client_1_wrapper.friend_add_norequest client_2_wrapper.public_key
-    client_2_wrapper.friend_add_norequest client_1_wrapper.public_key
+    client_1_friend_2 =
+      client_1_wrapper.friend_add_norequest client_2_wrapper.public_key
+
+    _client_2_friend_1 =
+      client_2_wrapper.friend_add_norequest client_1_wrapper.public_key
 
     expect(client_1_wrapper.connection_status).to eq Tox::ConnectionStatus::NONE
     expect(client_2_wrapper.connection_status).to eq Tox::ConnectionStatus::NONE
@@ -118,18 +121,6 @@ RSpec.describe 'Basics' do
         ).to eq true
       end
     end
-
-    client_1_friend_2 = client_1.friends.last.exist!
-
-    expect(client_1_friend_2).to be_instance_of Tox::Friend
-
-    expect(client_1_friend_2.client).to be_instance_of Tox::Client
-    expect(client_1_friend_2.client).to equal client_1
-
-    expect(client_1_friend_2.number).to be_kind_of Integer
-    expect(client_1_friend_2.number).to be >= 0
-
-    # TODO: test friend public key
 
     client_1_wrapper.async.run
     client_2_wrapper.async.run
