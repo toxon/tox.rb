@@ -60,23 +60,29 @@ end
 # rubocop:disable Style/VariableNumber
 
 RSpec.describe 'Basics' do
-  specify do
-    options_1 = Tox::Options.new.tap do |options|
+  let(:messages) { %w[foo bar car].freeze }
+
+  let(:client_1_wrapper) { Wrapper.new options_1 }
+  let(:client_2_wrapper) { Wrapper.new options_2 }
+
+  let :options_1 do
+    Tox::Options.new.tap do |options|
       options.local_discovery_enabled = false
     end
+  end
 
-    options_2 = Tox::Options.new.tap do |options|
+  let :options_2 do
+    Tox::Options.new.tap do |options|
       options.local_discovery_enabled = false
     end
+  end
 
+  before do
     nodes_1 = FAKE_NODES
     nodes_2 = FAKE_NODES
 
     tcp_relays_1 = FAKE_TCP_RELAYS
     tcp_relays_2 = FAKE_TCP_RELAYS
-
-    client_1_wrapper = Wrapper.new options_1
-    client_2_wrapper = Wrapper.new options_2
 
     client_1_wrapper.friend_add_norequest client_2_wrapper.public_key
     client_2_wrapper.friend_add_norequest client_1_wrapper.public_key
@@ -104,28 +110,25 @@ RSpec.describe 'Basics' do
     client_1_wrapper.async.run
     client_2_wrapper.async.run
 
-    messages = %w[foo bar car].freeze
+    messages.each do |text|
+      client_1_wrapper.send_friend_message text
+    end
 
-    send_messages client_1_wrapper, messages
-    wait_messages client_2_wrapper, messages.count
+    begin
+      Timeout.timeout 20 do
+        sleep 0.01 while client_2_wrapper.friend_messages.count < messages.count
+      end
+    rescue Timeout::Error
+      nil
+    end
+  end
 
-    expect(client_2_wrapper.friend_messages.to_set).to eq messages.to_set
-
+  after do
     client_1_wrapper.terminate
     client_2_wrapper.terminate
   end
 
-  def send_messages(sender, messages)
-    messages.each do |text|
-      sender.send_friend_message text
-    end
-  end
-
-  def wait_messages(receiver, count)
-    Timeout.timeout 20 do
-      sleep 0.01 while receiver.friend_messages.count < count
-    end
-  rescue Timeout::Error
-    nil
+  specify do
+    expect(client_2_wrapper.friend_messages.to_set).to eq messages.to_set
   end
 end
