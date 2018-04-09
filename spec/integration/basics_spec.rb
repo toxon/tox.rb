@@ -3,15 +3,17 @@
 require 'network_helper'
 
 RSpec.describe 'Basics' do
-  let :options do
-    Tox::Options.new.tap do |options|
+  specify do
+    options_1 = Tox::Options.new.tap do |options|
       options.local_discovery_enabled = false
     end
-  end
 
-  specify do
-    client_1 = Tox::Client.new options
-    client_2 = Tox::Client.new options
+    options_2 = Tox::Options.new.tap do |options|
+      options.local_discovery_enabled = false
+    end
+
+    client_1 = Tox::Client.new options_1
+    client_2 = Tox::Client.new options_2
 
     client_1.friend_add_norequest client_2.public_key
     client_2.friend_add_norequest client_1.public_key
