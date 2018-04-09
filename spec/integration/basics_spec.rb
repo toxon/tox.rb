@@ -42,6 +42,14 @@ class Wrapper
     retry
   end
 
+  def bootstrap(address, port, public_key)
+    @client.bootstrap address, port, public_key
+  end
+
+  def add_tcp_relay(address, port, public_key)
+    @client.add_tcp_relay address, port, public_key
+  end
+
 private
 
   def on_friend_message(_friend, text)
@@ -75,22 +83,38 @@ RSpec.describe 'Basics' do
 
     FAKE_NODES.each do |node|
       expect(
-        client_1.bootstrap(node.resolv_ipv4, node.port, node.public_key),
+        client_1_wrapper.bootstrap(
+          node.resolv_ipv4,
+          node.port,
+          node.public_key,
+        ),
       ).to eq true
 
       expect(
-        client_2.bootstrap(node.resolv_ipv4, node.port, node.public_key),
+        client_2_wrapper.bootstrap(
+          node.resolv_ipv4,
+          node.port,
+          node.public_key,
+        ),
       ).to eq true
     end
 
     FAKE_TCP_RELAYS.each do |tcp_relay|
       tcp_relay[:ports].each do |port|
         expect(
-          client_1.add_tcp_relay('127.0.0.1', port, tcp_relay[:public_key]),
+          client_1_wrapper.add_tcp_relay(
+            '127.0.0.1',
+            port,
+            tcp_relay[:public_key],
+          ),
         ).to eq true
 
         expect(
-          client_2.add_tcp_relay('127.0.0.1', port, tcp_relay[:public_key]),
+          client_2_wrapper.add_tcp_relay(
+            '127.0.0.1',
+            port,
+            tcp_relay[:public_key],
+          ),
         ).to eq true
       end
     end
