@@ -7,23 +7,22 @@ require 'celluloid'
 class Wrapper
   include Celluloid
 
-  execute_block_on_receiver :on_iteration
-
   def initialize(client)
     @client = client
-    @on_iteration = nil
   end
 
   def run
     loop do
       sleep @client.iteration_interval
       @client.iterate
-      @on_iteration&.call
     end
   end
 
-  def on_iteration(&block)
-    @on_iteration = block
+  def send_friend_message(friend_number, text)
+    @client.friend(friend_number).send_message text
+  rescue Tox::Friend::NotConnectedError
+    sleep 0.01
+    retry
   end
 end
 
@@ -88,31 +87,7 @@ RSpec.describe 'Basics' do
     client_1_wrapper = Wrapper.new client_1
     client_2_wrapper = Wrapper.new client_2
 
-    client_1_send_queue = Queue.new
     client_2_recv_queue = Queue.new
-
-    client_1_wrapper.on_iteration do
-      client_1_send_queue.size.times do
-        text = client_1_send_queue.pop true
-
-        begin
-          out_friend_message = client_1_friend_2.send_message text
-
-          expect(out_friend_message).to be_instance_of Tox::OutFriendMessage
-
-          expect(out_friend_message.client).to be_instance_of Tox::Client
-          expect(out_friend_message.client).to equal client_1
-
-          expect(out_friend_message.friend).to be_instance_of Tox::Friend
-          expect(out_friend_message.friend).to eq client_1_friend_2
-
-          expect(out_friend_message.id).to be_kind_of Integer
-          expect(out_friend_message.id).to be >= 0
-        rescue Tox::Friend::NotConnectedError
-          client_1_send_queue << text
-        end
-      end
-    end
 
     client_2.on_friend_message do |_friend, text|
       client_2_recv_queue << text
@@ -124,7 +99,21 @@ RSpec.describe 'Basics' do
     send_data = %w[foo bar car].freeze
 
     send_data.each do |text|
-      client_1_send_queue << text
+      out_friend_message = client_1_wrapper.send_friend_message(
+        client_1_friend_2.number,
+        text,
+      )
+
+      expect(out_friend_message).to be_instance_of Tox::OutFriendMessage
+
+      expect(out_friend_message.client).to be_instance_of Tox::Client
+      expect(out_friend_message.client).to equal client_1
+
+      expect(out_friend_message.friend).to be_instance_of Tox::Friend
+      expect(out_friend_message.friend).to eq client_1_friend_2
+
+      expect(out_friend_message.id).to be_kind_of Integer
+      expect(out_friend_message.id).to be >= 0
     end
 
     Timeout.timeout 60 do
