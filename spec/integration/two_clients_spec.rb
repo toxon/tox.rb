@@ -65,21 +65,29 @@ RSpec.describe 'Two clients' do
 
   let :options_1 do
     Tox::Options.new.tap do |options|
-      options.local_discovery_enabled = false
+      options.local_discovery_enabled = local_discovery_enabled_1
+      options.udp_enabled             = udp_enabled_1
     end
   end
 
   let :options_2 do
     Tox::Options.new.tap do |options|
-      options.local_discovery_enabled = false
+      options.local_discovery_enabled = local_discovery_enabled_2
+      options.udp_enabled             = udp_enabled_2
     end
   end
 
-  let(:nodes_1) { FAKE_NODES }
-  let(:nodes_2) { FAKE_NODES }
+  let(:local_discovery_enabled_1) { false }
+  let(:local_discovery_enabled_2) { false }
 
-  let(:tcp_relays_1) { FAKE_TCP_RELAYS }
-  let(:tcp_relays_2) { FAKE_TCP_RELAYS }
+  let(:udp_enabled_1) { true }
+  let(:udp_enabled_2) { true }
+
+  let(:nodes_1) { [] }
+  let(:nodes_2) { [] }
+
+  let(:tcp_relays_1) { [] }
+  let(:tcp_relays_2) { [] }
 
   before do
     client_1_wrapper.friend_add_norequest client_2_wrapper.public_key
@@ -109,7 +117,7 @@ RSpec.describe 'Two clients' do
     client_2_wrapper.async.run
 
     messages.each do |text|
-      client_1_wrapper.send_friend_message text
+      client_1_wrapper.async.send_friend_message text
     end
 
     begin
@@ -127,6 +135,15 @@ RSpec.describe 'Two clients' do
   end
 
   specify do
-    expect(client_2_wrapper.friend_messages.to_set).to eq messages.to_set
+    expect(client_2_wrapper.friend_messages).to eq []
+  end
+
+  context 'when both use UDP' do
+    let(:nodes_1) { FAKE_NODES }
+    let(:nodes_2) { FAKE_NODES }
+
+    specify do
+      expect(client_2_wrapper.friend_messages.to_set).to eq messages.to_set
+    end
   end
 end
