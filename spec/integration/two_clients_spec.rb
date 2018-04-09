@@ -57,8 +57,6 @@ private
   end
 end
 
-# rubocop:disable Style/VariableNumber
-
 RSpec.describe 'Two clients' do
   let(:messages) { %w[foo bar car].freeze }
 
@@ -77,13 +75,13 @@ RSpec.describe 'Two clients' do
     end
   end
 
+  let(:nodes_1) { FAKE_NODES }
+  let(:nodes_2) { FAKE_NODES }
+
+  let(:tcp_relays_1) { FAKE_TCP_RELAYS }
+  let(:tcp_relays_2) { FAKE_TCP_RELAYS }
+
   before do
-    nodes_1 = FAKE_NODES
-    nodes_2 = FAKE_NODES
-
-    tcp_relays_1 = FAKE_TCP_RELAYS
-    tcp_relays_2 = FAKE_TCP_RELAYS
-
     client_1_wrapper.friend_add_norequest client_2_wrapper.public_key
     client_2_wrapper.friend_add_norequest client_1_wrapper.public_key
 
