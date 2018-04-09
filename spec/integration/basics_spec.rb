@@ -10,9 +10,6 @@ RSpec.describe 'Basics' do
   end
 
   specify do
-    client_1_send_queue = Queue.new
-    client_2_recv_queue = Queue.new
-
     client_1 = Tox::Client.new options
     client_2 = Tox::Client.new options
 
@@ -58,6 +55,9 @@ RSpec.describe 'Basics' do
     expect(client_1_friend_2.number).to be >= 0
 
     # TODO: test friend public key
+
+    client_1_send_queue = Queue.new
+    client_2_recv_queue = Queue.new
 
     client_1.on_iteration do
       client_1_send_queue.size.times do
