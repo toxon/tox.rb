@@ -9,6 +9,11 @@ class Wrapper
 
   def initialize(client)
     @client = client
+    @client.on_friend_message(&method(:on_friend_message))
+  end
+
+  def friend_messages
+    @friend_messages ||= []
   end
 
   def run
@@ -23,6 +28,12 @@ class Wrapper
   rescue Tox::Friend::NotConnectedError
     sleep 0.01
     retry
+  end
+
+private
+
+  def on_friend_message(_friend, text)
+    @friend_messages << text
   end
 end
 
@@ -87,12 +98,6 @@ RSpec.describe 'Basics' do
     client_1_wrapper = Wrapper.new client_1
     client_2_wrapper = Wrapper.new client_2
 
-    client_2_recv_queue = Queue.new
-
-    client_2.on_friend_message do |_friend, text|
-      client_2_recv_queue << text
-    end
-
     client_1_wrapper.async.run
     client_2_wrapper.async.run
 
@@ -117,15 +122,9 @@ RSpec.describe 'Basics' do
     end
 
     Timeout.timeout 60 do
-      sleep 1 while client_2_recv_queue.size < send_data.size
+      sleep 1 while client_2_wrapper.friend_messages.size < send_data.size
     end
 
-    recv_data = Set.new
-
-    client_2_recv_queue.size.times do
-      recv_data << client_2_recv_queue.pop(true)
-    end
-
-    expect(recv_data).to eq send_data.to_set
+    expect(client_2_wrapper.friend_messages.to_set).to eq send_data.to_set
   end
 end
