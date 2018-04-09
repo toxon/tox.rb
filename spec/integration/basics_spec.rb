@@ -104,23 +104,28 @@ RSpec.describe 'Basics' do
     client_1_wrapper.async.run
     client_2_wrapper.async.run
 
-    send_data = %w[foo bar car].freeze
+    messages = %w[foo bar car].freeze
 
-    send_data.each do |text|
-      client_1_wrapper.send_friend_message text
-    end
+    send_messages client_1_wrapper, messages
+    wait_messages client_2_wrapper, messages.count
 
-    begin
-      Timeout.timeout 20 do
-        sleep 1 while client_2_wrapper.friend_messages.size < send_data.size
-      end
-    rescue Timeout::Error
-      nil
-    end
-
-    expect(client_2_wrapper.friend_messages.to_set).to eq send_data.to_set
+    expect(client_2_wrapper.friend_messages.to_set).to eq messages.to_set
 
     client_1_wrapper.terminate
     client_2_wrapper.terminate
+  end
+
+  def send_messages(sender, messages)
+    messages.each do |text|
+      sender.send_friend_message text
+    end
+  end
+
+  def wait_messages(receiver, count)
+    Timeout.timeout 20 do
+      sleep 0.01 while receiver.friend_messages.count < count
+    end
+  rescue Timeout::Error
+    nil
   end
 end
