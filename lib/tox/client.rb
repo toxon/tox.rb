@@ -102,6 +102,14 @@ module Tox
       self.thread = nil
     end
 
+    def run_loop
+      while running?
+        sleep iteration_interval
+        iterate
+        @on_iteration&.call
+      end
+    end
+
     class Error < RuntimeError; end
     class BadSavedataError < Error; end
     class AlreadyRunningError < Error; end

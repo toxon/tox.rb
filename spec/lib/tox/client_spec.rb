@@ -49,6 +49,22 @@ RSpec.describe Tox::Client do
     end
   end
 
+  describe '#iteration_interval' do
+    specify do
+      expect(subject.iteration_interval).to be_instance_of Float
+    end
+
+    specify do
+      expect(subject.iteration_interval).to be >= 0
+    end
+  end
+
+  describe '#iterate' do
+    specify do
+      expect(subject.iterate).to eq nil
+    end
+  end
+
   describe '#savedata' do
     it 'returns string by default' do
       expect(subject.savedata).to be_a String

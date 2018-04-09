@@ -8,6 +8,9 @@ static void  mTox_cClient_free(mTox_cClient_CDATA *free_cdata);
 
 // Public methods
 
+static VALUE mTox_cClient_iteration_interval(VALUE self);
+static VALUE mTox_cClient_iterate(VALUE self);
+
 static VALUE mTox_cClient_connection_status(VALUE self);
 static VALUE mTox_cClient_public_key(VALUE self);
 static VALUE mTox_cClient_address(VALUE self);
@@ -37,7 +40,6 @@ static VALUE mTox_cClient_friend_add(VALUE self, VALUE address, VALUE text);
 // Private methods
 
 static VALUE mTox_cClient_initialize_with(VALUE self, VALUE options);
-static VALUE mTox_cClient_run_loop(VALUE self);
 
 // Callbacks
 
@@ -92,6 +94,9 @@ void mTox_cClient_INIT()
 
   // Public methods
 
+  rb_define_method(mTox_cClient, "iteration_interval", mTox_cClient_iteration_interval, 0);
+  rb_define_method(mTox_cClient, "iterate",            mTox_cClient_iterate,            0);
+
   rb_define_method(mTox_cClient, "connection_status", mTox_cClient_connection_status, 0);
   rb_define_method(mTox_cClient, "public_key",        mTox_cClient_public_key,        0);
   rb_define_method(mTox_cClient, "address",           mTox_cClient_address,           0);
@@ -121,7 +126,6 @@ void mTox_cClient_INIT()
   // Private methods
 
   rb_define_private_method(mTox_cClient, "initialize_with", mTox_cClient_initialize_with, 1);
-  rb_define_private_method(mTox_cClient, "run_loop",        mTox_cClient_run_loop,        0);
 }
 
 /*************************************************************
@@ -149,6 +153,32 @@ void mTox_cClient_free(mTox_cClient_CDATA *const free_cdata)
 /*************************************************************
  * Public methods
  *************************************************************/
+
+// Tox::Client#iteration_interval
+VALUE mTox_cClient_iteration_interval(const VALUE self)
+{
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
+
+  uint32_t iteration_interval_msec_data =
+    tox_iteration_interval(self_cdata->tox);
+
+  const double iteration_interval_sec_data =
+    ((double)iteration_interval_msec_data) * 0.001;
+
+  const VALUE iteration_interval_sec = DBL2NUM(iteration_interval_sec_data);
+
+  return iteration_interval_sec;
+}
+
+// Tox::Client#iterate
+VALUE mTox_cClient_iterate(const VALUE self)
+{
+  CDATA(self, mTox_cClient_CDATA, self_cdata);
+
+  tox_iterate(self_cdata->tox, self);
+
+  return Qnil;
+}
 
 // Tox::Client#connection_status
 VALUE mTox_cClient_connection_status(const VALUE self)
@@ -803,31 +833,6 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
   tox_callback_friend_name          (self_cdata->tox, on_friend_name_change);
   tox_callback_friend_status_message(self_cdata->tox, on_friend_status_message_change);
   tox_callback_friend_status        (self_cdata->tox, on_friend_status_change);
-
-  return self;
-}
-
-// Tox::Client#run_loop
-VALUE mTox_cClient_run_loop(const VALUE self)
-{
-  CDATA(self, mTox_cClient_CDATA, self_cdata);
-
-  struct timespec delay;
-
-  delay.tv_sec = 0;
-
-  const VALUE ivar_on_iteration = rb_iv_get(self, "@on_iteration");
-
-  while (rb_funcall(self, rb_intern("running?"), 0)) {
-    delay.tv_nsec = tox_iteration_interval(self_cdata->tox) * 1000000;
-    nanosleep(&delay, NULL);
-
-    tox_iterate(self_cdata->tox, self);
-
-    if (Qnil != ivar_on_iteration) {
-      rb_funcall(ivar_on_iteration, rb_intern("call"), 0);
-    }
-  }
 
   return self;
 }
