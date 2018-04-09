@@ -136,7 +136,7 @@ RSpec.describe 'Basics' do
 
     send_data = %w[foo bar car].freeze
 
-    send_data.each do |text|
+    send_data.each_with_index do |text, index|
       out_friend_message = client_1_wrapper.send_friend_message(
         client_1_friend_2.number,
         text,
@@ -144,14 +144,8 @@ RSpec.describe 'Basics' do
 
       expect(out_friend_message).to be_instance_of Tox::OutFriendMessage
 
-      expect(out_friend_message.client).to be_instance_of Tox::Client
-      expect(out_friend_message.client).to equal client_1
-
-      expect(out_friend_message.friend).to be_instance_of Tox::Friend
-      expect(out_friend_message.friend).to eq client_1_friend_2
-
-      expect(out_friend_message.id).to be_kind_of Integer
-      expect(out_friend_message.id).to be >= 0
+      expect(out_friend_message).to \
+        eq Tox::OutFriendMessage.new client_1_friend_2, index + 1
     end
 
     Timeout.timeout 60 do
