@@ -12,8 +12,16 @@ class Wrapper
     @client.on_friend_message(&method(:on_friend_message))
   end
 
+  def public_key
+    @client.public_key
+  end
+
   def friend_messages
     @friend_messages ||= []
+  end
+
+  def friend_add_norequest(public_key)
+    @client.friend_add_norequest public_key
   end
 
   def run
@@ -55,8 +63,8 @@ RSpec.describe 'Basics' do
     client_1_wrapper = Wrapper.new client_1
     client_2_wrapper = Wrapper.new client_2
 
-    client_1.friend_add_norequest client_2.public_key
-    client_2.friend_add_norequest client_1.public_key
+    client_1_wrapper.friend_add_norequest client_2_wrapper.public_key
+    client_2_wrapper.friend_add_norequest client_1_wrapper.public_key
 
     expect(client_1.connection_status).to eq Tox::ConnectionStatus::NONE
     expect(client_2.connection_status).to eq Tox::ConnectionStatus::NONE
