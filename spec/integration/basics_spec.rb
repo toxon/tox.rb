@@ -81,44 +81,15 @@ RSpec.describe 'Basics' do
     _client_2_friend_1 =
       client_2_wrapper.friend_add_norequest client_1_wrapper.public_key
 
-    expect(client_1_wrapper.connection_status).to eq Tox::ConnectionStatus::NONE
-    expect(client_2_wrapper.connection_status).to eq Tox::ConnectionStatus::NONE
-
     FAKE_NODES.each do |node|
-      expect(
-        client_1_wrapper.bootstrap(
-          node.resolv_ipv4,
-          node.port,
-          node.public_key,
-        ),
-      ).to eq true
-
-      expect(
-        client_2_wrapper.bootstrap(
-          node.resolv_ipv4,
-          node.port,
-          node.public_key,
-        ),
-      ).to eq true
+      client_1_wrapper.bootstrap node.resolv_ipv4, node.port, node.public_key
+      client_2_wrapper.bootstrap node.resolv_ipv4, node.port, node.public_key
     end
 
     FAKE_TCP_RELAYS.each do |tcp_relay|
       tcp_relay[:ports].each do |port|
-        expect(
-          client_1_wrapper.add_tcp_relay(
-            '127.0.0.1',
-            port,
-            tcp_relay[:public_key],
-          ),
-        ).to eq true
-
-        expect(
-          client_2_wrapper.add_tcp_relay(
-            '127.0.0.1',
-            port,
-            tcp_relay[:public_key],
-          ),
-        ).to eq true
+        client_1_wrapper.add_tcp_relay '127.0.0.1', port, tcp_relay[:public_key]
+        client_2_wrapper.add_tcp_relay '127.0.0.1', port, tcp_relay[:public_key]
       end
     end
 
@@ -127,16 +98,8 @@ RSpec.describe 'Basics' do
 
     send_data = %w[foo bar car].freeze
 
-    send_data.each_with_index do |text, index|
-      out_friend_message = client_1_wrapper.send_friend_message(
-        client_1_friend_2.number,
-        text,
-      )
-
-      expect(out_friend_message).to be_instance_of Tox::OutFriendMessage
-
-      expect(out_friend_message).to \
-        eq Tox::OutFriendMessage.new client_1_friend_2, index + 1
+    send_data.each do |text|
+      client_1_wrapper.send_friend_message client_1_friend_2.number, text
     end
 
     Timeout.timeout 60 do
