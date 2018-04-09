@@ -73,20 +73,34 @@ RSpec.describe 'Basics' do
       options.local_discovery_enabled = false
     end
 
+    nodes_1 = FAKE_NODES
+    nodes_2 = FAKE_NODES
+
+    tcp_relays_1 = FAKE_TCP_RELAYS
+    tcp_relays_2 = FAKE_TCP_RELAYS
+
     client_1_wrapper = Wrapper.new options_1
     client_2_wrapper = Wrapper.new options_2
 
     client_1_wrapper.friend_add_norequest client_2_wrapper.public_key
     client_2_wrapper.friend_add_norequest client_1_wrapper.public_key
 
-    FAKE_NODES.each do |node|
+    nodes_1.each do |node|
       client_1_wrapper.bootstrap node.resolv_ipv4, node.port, node.public_key
+    end
+
+    nodes_2.each do |node|
       client_2_wrapper.bootstrap node.resolv_ipv4, node.port, node.public_key
     end
 
-    FAKE_TCP_RELAYS.each do |tcp_relay|
+    tcp_relays_1.each do |tcp_relay|
       tcp_relay[:ports].each do |port|
         client_1_wrapper.add_tcp_relay '127.0.0.1', port, tcp_relay[:public_key]
+      end
+    end
+
+    tcp_relays_2.each do |tcp_relay|
+      tcp_relay[:ports].each do |port|
         client_2_wrapper.add_tcp_relay '127.0.0.1', port, tcp_relay[:public_key]
       end
     end
