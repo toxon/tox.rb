@@ -20,8 +20,8 @@ class Wrapper
     @client.public_key
   end
 
-  def friend_numbers
-    @client.friend_numbers
+  def friend_number
+    @client.friend_numbers.last
   end
 
   def friend_messages
@@ -111,10 +111,7 @@ RSpec.describe 'Basics' do
     send_data = %w[foo bar car].freeze
 
     send_data.each do |text|
-      client_1_wrapper.send_friend_message(
-        client_1_wrapper.friend_numbers.first,
-        text,
-      )
+      client_1_wrapper.send_friend_message client_1_wrapper.friend_number, text
     end
 
     Timeout.timeout 60 do
