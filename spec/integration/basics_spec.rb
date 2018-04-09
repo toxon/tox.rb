@@ -2,7 +2,7 @@
 
 require 'network_helper'
 
-RSpec.describe 'Two clients' do
+RSpec.describe 'Basics' do
   let :options do
     Tox::Options.new.tap do |options|
       options.local_discovery_enabled = false
