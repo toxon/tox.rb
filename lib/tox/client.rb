@@ -34,13 +34,14 @@ module Tox
     end
 
     def run
-      unless mutex.try_lock
-        raise AlreadyRunningError, "already running in #{thread}"
+      self.running = true
+      while running?
+        sleep iteration_interval
+        iterate
+        @on_iteration&.call
       end
-
-      run_internal
-
-      mutex.unlock
+    ensure
+      self.running = false
     end
 
     def friends
@@ -83,31 +84,8 @@ module Tox
 
   private
 
-    attr_accessor :thread
-
-    def mutex
-      @mutex ||= Mutex.new
-    end
-
     def running=(value)
       @running = !!value
-    end
-
-    def run_internal
-      self.running = true
-      self.thread = Thread.current
-      run_loop
-    ensure
-      self.running = false
-      self.thread = nil
-    end
-
-    def run_loop
-      while running?
-        sleep iteration_interval
-        iterate
-        @on_iteration&.call
-      end
     end
 
     class Error < RuntimeError; end

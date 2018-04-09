@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'thread'
 require 'uri'
 require 'net/http'
 require 'json'
