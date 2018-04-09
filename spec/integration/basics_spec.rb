@@ -2,6 +2,20 @@
 
 require 'network_helper'
 
+require 'celluloid'
+
+class Wrapper
+  include Celluloid
+
+  def initialize(client)
+    @client = client
+  end
+
+  def run
+    @client.run
+  end
+end
+
 # rubocop:disable Style/VariableNumber
 
 RSpec.describe 'Basics' do
@@ -90,13 +104,11 @@ RSpec.describe 'Basics' do
       client_2_recv_queue << text
     end
 
-    client_1_thread = Thread.start do
-      client_1.run
-    end
+    client_1_wrapper = Wrapper.new client_1
+    client_2_wrapper = Wrapper.new client_2
 
-    client_2_thread = Thread.start do
-      client_2.run
-    end
+    client_1_wrapper.async.run
+    client_2_wrapper.async.run
 
     sleep 0.1 until client_1.running?
     sleep 0.1 until client_2.running?
@@ -122,9 +134,6 @@ RSpec.describe 'Basics' do
     ensure
       client_1.stop
       client_2.stop
-
-      client_1_thread.join
-      client_2_thread.join
     end
   end
 end
