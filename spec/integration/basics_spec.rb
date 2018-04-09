@@ -2,6 +2,8 @@
 
 require 'network_helper'
 
+# rubocop:disable Style/VariableNumber
+
 RSpec.describe 'Basics' do
   specify do
     options_1 = Tox::Options.new.tap do |options|
