@@ -11,29 +11,15 @@ class Wrapper
 
   def initialize(client)
     @client = client
-    @running = false
     @on_iteration = nil
   end
 
-  def running?
-    @running
-  end
-
-  def stop
-    return false unless running?
-    @running = false
-    true
-  end
-
   def run
-    @running = true
-    while running?
+    loop do
       sleep @client.iteration_interval
       @client.iterate
       @on_iteration&.call
     end
-  ensure
-    @running = false
   end
 
   def on_iteration(&block)
@@ -135,30 +121,22 @@ RSpec.describe 'Basics' do
     client_1_wrapper.async.run
     client_2_wrapper.async.run
 
-    sleep 0.1 until client_1_wrapper.running?
-    sleep 0.1 until client_2_wrapper.running?
-
     send_data = %w[foo bar car].freeze
 
     send_data.each do |text|
       client_1_send_queue << text
     end
 
-    begin
-      Timeout.timeout 60 do
-        sleep 1 while client_2_recv_queue.size < send_data.size
-      end
-
-      recv_data = Set.new
-
-      client_2_recv_queue.size.times do
-        recv_data << client_2_recv_queue.pop(true)
-      end
-
-      expect(recv_data).to eq send_data.to_set
-    ensure
-      client_1_wrapper.stop
-      client_2_wrapper.stop
+    Timeout.timeout 60 do
+      sleep 1 while client_2_recv_queue.size < send_data.size
     end
+
+    recv_data = Set.new
+
+    client_2_recv_queue.size.times do
+      recv_data << client_2_recv_queue.pop(true)
+    end
+
+    expect(recv_data).to eq send_data.to_set
   end
 end
