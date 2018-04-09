@@ -67,7 +67,10 @@ puts 'Running. Send me friend request, I\'ll accept it immediately. ' \
 
 begin
   puts
-  tox_client.run
+  loop do
+    sleep tox_client.iteration_interval
+    tox_client.iterate
+  end
   puts
 rescue SignalException
   puts

@@ -7,12 +7,37 @@ require 'celluloid'
 class Wrapper
   include Celluloid
 
+  execute_block_on_receiver :on_iteration
+
   def initialize(client)
     @client = client
+    @running = false
+    @on_iteration = nil
+  end
+
+  def running?
+    @running
+  end
+
+  def stop
+    return false unless running?
+    @running = false
+    true
   end
 
   def run
-    @client.run
+    @running = true
+    while running?
+      sleep @client.iteration_interval
+      @client.iterate
+      @on_iteration&.call
+    end
+  ensure
+    @running = false
+  end
+
+  def on_iteration(&block)
+    @on_iteration = block
   end
 end
 
@@ -74,10 +99,13 @@ RSpec.describe 'Basics' do
 
     # TODO: test friend public key
 
+    client_1_wrapper = Wrapper.new client_1
+    client_2_wrapper = Wrapper.new client_2
+
     client_1_send_queue = Queue.new
     client_2_recv_queue = Queue.new
 
-    client_1.on_iteration do
+    client_1_wrapper.on_iteration do
       client_1_send_queue.size.times do
         text = client_1_send_queue.pop true
 
@@ -104,14 +132,11 @@ RSpec.describe 'Basics' do
       client_2_recv_queue << text
     end
 
-    client_1_wrapper = Wrapper.new client_1
-    client_2_wrapper = Wrapper.new client_2
-
     client_1_wrapper.async.run
     client_2_wrapper.async.run
 
-    sleep 0.1 until client_1.running?
-    sleep 0.1 until client_2.running?
+    sleep 0.1 until client_1_wrapper.running?
+    sleep 0.1 until client_2_wrapper.running?
 
     send_data = %w[foo bar car].freeze
 
@@ -132,8 +157,8 @@ RSpec.describe 'Basics' do
 
       expect(recv_data).to eq send_data.to_set
     ensure
-      client_1.stop
-      client_2.stop
+      client_1_wrapper.stop
+      client_2_wrapper.stop
     end
   end
 end
