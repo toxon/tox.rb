@@ -57,7 +57,7 @@ class Wrapper
 private
 
   def on_friend_message(_friend, text)
-    @friend_messages << text
+    friend_messages << text
   end
 end
 
@@ -114,8 +114,12 @@ RSpec.describe 'Basics' do
       client_1_wrapper.send_friend_message client_1_wrapper.friend_number, text
     end
 
-    Timeout.timeout 20 do
-      sleep 1 while client_2_wrapper.friend_messages.size < send_data.size
+    begin
+      Timeout.timeout 20 do
+        sleep 1 while client_2_wrapper.friend_messages.size < send_data.size
+      end
+    rescue Timeout::Error
+      nil
     end
 
     expect(client_2_wrapper.friend_messages.to_set).to eq send_data.to_set
