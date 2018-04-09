@@ -55,9 +55,6 @@ RSpec.describe 'Basics' do
     client_1.friend_add_norequest client_2.public_key
     client_2.friend_add_norequest client_1.public_key
 
-    sleep 0.1 until client_1.friends.last.exist?
-    sleep 0.1 until client_2.friends.last.exist?
-
     expect(client_1.connection_status).to eq Tox::ConnectionStatus::NONE
     expect(client_2.connection_status).to eq Tox::ConnectionStatus::NONE
 
