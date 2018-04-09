@@ -20,6 +20,10 @@ class Wrapper
     @client.public_key
   end
 
+  def friend_numbers
+    @client.friend_numbers
+  end
+
   def friend_messages
     @friend_messages ||= []
   end
@@ -75,11 +79,8 @@ RSpec.describe 'Basics' do
     client_1_wrapper = Wrapper.new client_1
     client_2_wrapper = Wrapper.new client_2
 
-    client_1_friend_2 =
-      client_1_wrapper.friend_add_norequest client_2_wrapper.public_key
-
-    _client_2_friend_1 =
-      client_2_wrapper.friend_add_norequest client_1_wrapper.public_key
+    client_1_wrapper.friend_add_norequest client_2_wrapper.public_key
+    client_2_wrapper.friend_add_norequest client_1_wrapper.public_key
 
     FAKE_NODES.each do |node|
       client_1_wrapper.bootstrap node.resolv_ipv4, node.port, node.public_key
@@ -99,7 +100,10 @@ RSpec.describe 'Basics' do
     send_data = %w[foo bar car].freeze
 
     send_data.each do |text|
-      client_1_wrapper.send_friend_message client_1_friend_2.number, text
+      client_1_wrapper.send_friend_message(
+        client_1_wrapper.friend_numbers.first,
+        text,
+      )
     end
 
     Timeout.timeout 60 do
