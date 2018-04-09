@@ -10,117 +10,117 @@ RSpec.describe 'Basics' do
   end
 
   specify do
-    send_queue = Queue.new
-    recv_queue = Queue.new
+    client_1_send_queue = Queue.new
+    client_2_recv_queue = Queue.new
 
-    send_client = Tox::Client.new options
-    recv_client = Tox::Client.new options
+    client_1 = Tox::Client.new options
+    client_2 = Tox::Client.new options
 
-    send_client.friend_add_norequest recv_client.public_key
-    recv_client.friend_add_norequest send_client.public_key
+    client_1.friend_add_norequest client_2.public_key
+    client_2.friend_add_norequest client_1.public_key
 
-    sleep 0.1 until send_client.friends.last.exist?
-    sleep 0.1 until recv_client.friends.last.exist?
+    sleep 0.1 until client_1.friends.last.exist?
+    sleep 0.1 until client_2.friends.last.exist?
 
-    expect(send_client.connection_status).to eq Tox::ConnectionStatus::NONE
-    expect(recv_client.connection_status).to eq Tox::ConnectionStatus::NONE
+    expect(client_1.connection_status).to eq Tox::ConnectionStatus::NONE
+    expect(client_2.connection_status).to eq Tox::ConnectionStatus::NONE
 
     FAKE_NODES.each do |node|
       expect(
-        send_client.bootstrap(node.resolv_ipv4, node.port, node.public_key),
+        client_1.bootstrap(node.resolv_ipv4, node.port, node.public_key),
       ).to eq true
 
       expect(
-        recv_client.bootstrap(node.resolv_ipv4, node.port, node.public_key),
+        client_2.bootstrap(node.resolv_ipv4, node.port, node.public_key),
       ).to eq true
     end
 
     FAKE_TCP_RELAYS.each do |tcp_relay|
       tcp_relay[:ports].each do |port|
         expect(
-          send_client.add_tcp_relay('127.0.0.1', port, tcp_relay[:public_key]),
+          client_1.add_tcp_relay('127.0.0.1', port, tcp_relay[:public_key]),
         ).to eq true
 
         expect(
-          recv_client.add_tcp_relay('127.0.0.1', port, tcp_relay[:public_key]),
+          client_2.add_tcp_relay('127.0.0.1', port, tcp_relay[:public_key]),
         ).to eq true
       end
     end
 
-    send_friend = send_client.friends.last.exist!
+    client_1_friend_2 = client_1.friends.last.exist!
 
-    expect(send_friend).to be_instance_of Tox::Friend
+    expect(client_1_friend_2).to be_instance_of Tox::Friend
 
-    expect(send_friend.client).to be_instance_of Tox::Client
-    expect(send_friend.client).to equal send_client
+    expect(client_1_friend_2.client).to be_instance_of Tox::Client
+    expect(client_1_friend_2.client).to equal client_1
 
-    expect(send_friend.number).to be_kind_of Integer
-    expect(send_friend.number).to be >= 0
+    expect(client_1_friend_2.number).to be_kind_of Integer
+    expect(client_1_friend_2.number).to be >= 0
 
     # TODO: test friend public key
 
-    send_client.on_iteration do
-      send_queue.size.times do
-        text = send_queue.pop true
+    client_1.on_iteration do
+      client_1_send_queue.size.times do
+        text = client_1_send_queue.pop true
 
         begin
-          out_friend_message = send_friend.send_message text
+          out_friend_message = client_1_friend_2.send_message text
 
           expect(out_friend_message).to be_instance_of Tox::OutFriendMessage
 
           expect(out_friend_message.client).to be_instance_of Tox::Client
-          expect(out_friend_message.client).to equal send_client
+          expect(out_friend_message.client).to equal client_1
 
           expect(out_friend_message.friend).to be_instance_of Tox::Friend
-          expect(out_friend_message.friend).to eq send_friend
+          expect(out_friend_message.friend).to eq client_1_friend_2
 
           expect(out_friend_message.id).to be_kind_of Integer
           expect(out_friend_message.id).to be >= 0
         rescue Tox::Friend::NotConnectedError
-          send_queue << text
+          client_1_send_queue << text
         end
       end
     end
 
-    recv_client.on_friend_message do |_friend, text|
-      recv_queue << text
+    client_2.on_friend_message do |_friend, text|
+      client_2_recv_queue << text
     end
 
-    send_thread = Thread.start do
-      send_client.run
+    client_1_thread = Thread.start do
+      client_1.run
     end
 
-    recv_thread = Thread.start do
-      recv_client.run
+    client_2_thread = Thread.start do
+      client_2.run
     end
 
-    sleep 0.1 until send_client.running?
-    sleep 0.1 until recv_client.running?
+    sleep 0.1 until client_1.running?
+    sleep 0.1 until client_2.running?
 
     send_data = %w[foo bar car].freeze
 
     send_data.each do |text|
-      send_queue << text
+      client_1_send_queue << text
     end
 
     begin
       Timeout.timeout 60 do
-        sleep 1 while recv_queue.size < send_data.size
+        sleep 1 while client_2_recv_queue.size < send_data.size
       end
 
       recv_data = Set.new
 
-      recv_queue.size.times do
-        recv_data << recv_queue.pop(true)
+      client_2_recv_queue.size.times do
+        recv_data << client_2_recv_queue.pop(true)
       end
 
       expect(recv_data).to eq send_data.to_set
     ensure
-      send_client.stop
-      recv_client.stop
+      client_1.stop
+      client_2.stop
 
-      send_thread.join
-      recv_thread.join
+      client_1_thread.join
+      client_2_thread.join
     end
   end
 end
