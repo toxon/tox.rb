@@ -59,7 +59,7 @@ end
 
 # rubocop:disable Style/VariableNumber
 
-RSpec.describe 'Basics' do
+RSpec.describe 'Two clients' do
   let(:messages) { %w[foo bar car].freeze }
 
   let(:client_1_wrapper) { Wrapper.new options_1 }
