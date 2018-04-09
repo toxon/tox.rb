@@ -52,6 +52,9 @@ RSpec.describe 'Basics' do
     client_1 = Tox::Client.new options_1
     client_2 = Tox::Client.new options_2
 
+    client_1_wrapper = Wrapper.new client_1
+    client_2_wrapper = Wrapper.new client_2
+
     client_1.friend_add_norequest client_2.public_key
     client_2.friend_add_norequest client_1.public_key
 
@@ -91,9 +94,6 @@ RSpec.describe 'Basics' do
     expect(client_1_friend_2.number).to be >= 0
 
     # TODO: test friend public key
-
-    client_1_wrapper = Wrapper.new client_1
-    client_2_wrapper = Wrapper.new client_2
 
     client_1_wrapper.async.run
     client_2_wrapper.async.run
