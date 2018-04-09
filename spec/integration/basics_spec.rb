@@ -7,8 +7,8 @@ require 'celluloid'
 class Wrapper
   include Celluloid
 
-  def initialize(client)
-    @client = client
+  def initialize(options)
+    @client = Tox::Client.new options
     @client.on_friend_message(&method(:on_friend_message))
   end
 
@@ -73,11 +73,8 @@ RSpec.describe 'Basics' do
       options.local_discovery_enabled = false
     end
 
-    client_1 = Tox::Client.new options_1
-    client_2 = Tox::Client.new options_2
-
-    client_1_wrapper = Wrapper.new client_1
-    client_2_wrapper = Wrapper.new client_2
+    client_1_wrapper = Wrapper.new options_1
+    client_2_wrapper = Wrapper.new options_2
 
     client_1_wrapper.friend_add_norequest client_2_wrapper.public_key
     client_2_wrapper.friend_add_norequest client_1_wrapper.public_key
