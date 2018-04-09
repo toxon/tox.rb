@@ -114,7 +114,7 @@ RSpec.describe 'Basics' do
       client_1_wrapper.send_friend_message client_1_wrapper.friend_number, text
     end
 
-    Timeout.timeout 60 do
+    Timeout.timeout 20 do
       sleep 1 while client_2_wrapper.friend_messages.size < send_data.size
     end
 
