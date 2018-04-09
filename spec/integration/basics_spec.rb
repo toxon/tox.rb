@@ -107,5 +107,8 @@ RSpec.describe 'Basics' do
     end
 
     expect(client_2_wrapper.friend_messages.to_set).to eq send_data.to_set
+
+    client_1_wrapper.terminate
+    client_2_wrapper.terminate
   end
 end
