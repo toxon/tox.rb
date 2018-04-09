@@ -20,10 +20,6 @@ class Wrapper
     @client.public_key
   end
 
-  def friend_number
-    @client.friend_numbers.last
-  end
-
   def friend_messages
     @friend_messages ||= []
   end
@@ -39,8 +35,8 @@ class Wrapper
     @client.friend_add_norequest public_key
   end
 
-  def send_friend_message(friend_number, text)
-    @client.friend(friend_number).send_message text
+  def send_friend_message(text)
+    @client.friend(@client.friend_numbers.last).send_message text
   rescue Tox::Friend::NotConnectedError
     sleep 0.01
     retry
@@ -111,7 +107,7 @@ RSpec.describe 'Basics' do
     send_data = %w[foo bar car].freeze
 
     send_data.each do |text|
-      client_1_wrapper.send_friend_message client_1_wrapper.friend_number, text
+      client_1_wrapper.send_friend_message text
     end
 
     begin
