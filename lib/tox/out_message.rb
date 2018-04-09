@@ -13,6 +13,12 @@ module Tox
       raise NotImplementedError, "#{self.class}#client"
     end
 
+    def ==(other)
+      self.class == other.class &&
+        friend == other.friend &&
+        id == other.id
+    end
+
     class SendQueueAllocError < NoMemoryError; end
     class TooLongError        < RuntimeError;  end
     class EmptyError          < RuntimeError;  end
