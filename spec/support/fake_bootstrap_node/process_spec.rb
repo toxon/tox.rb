@@ -76,6 +76,14 @@ RSpec.describe Support::FakeBootstrapNode::Process do
     end
 
     it 'contains public key' do
+      begin
+        Timeout.timeout 2 do
+          sleep 0.01 while subject.stdout_lines.grep(/^Public Key:/).empty?
+        end
+      rescue Timeout::Error
+        nil
+      end
+
       expect(subject.stdout_lines.grep(
         /^Public Key: [0-9A-Z]{#{2 * Tox::PublicKey.bytesize}}$/,
       ).count).to eq 1
