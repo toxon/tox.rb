@@ -6,20 +6,20 @@
 
 require 'English'
 
+TRAPS = %i[HUP INT QUIT TRAP ABRT TERM USR1 USR2].freeze
+
 pid = spawn(*ARGV, in: :in, out: :out, err: :err)
 
-Signal.list.each_value do |signo|
+signal = lambda do |signo|
   begin
-    trap signo do
-      begin
-        Process.kill signo, pid
-      rescue
-        nil
-      end
-    end
+    Process.kill signo, pid
   rescue
     nil
   end
+end
+
+TRAPS.each do |signame|
+  trap signame, &signal
 end
 
 Thread.start pid do |pid| # rubocop:disable Lint/ShadowingOuterLocalVariable
@@ -28,13 +28,23 @@ Thread.start pid do |pid| # rubocop:disable Lint/ShadowingOuterLocalVariable
       sleep 1
       Process.kill 0, Process.ppid
     rescue
-      Process.kill :SIGTERM, pid
-      sleep 2
-      Process.kill :SIGKILL, pid
+      begin
+        Process.kill :SIGTERM, pid
+        sleep 2
+        Process.kill :SIGKILL, pid
+      rescue
+        nil
+      end
     end
   end
 end
 
 Process.wait pid
 
-exit $CHILD_STATUS.exitstatus.to_i
+exit $CHILD_STATUS.exitstatus unless $CHILD_STATUS.exitstatus.nil?
+
+TRAPS.each do |signame|
+  trap signame, 'SYSTEM_DEFAULT'
+end
+
+Process.kill $CHILD_STATUS.termsig, 0
