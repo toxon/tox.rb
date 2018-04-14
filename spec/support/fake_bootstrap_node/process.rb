@@ -7,6 +7,8 @@ module Support
     class Process
       ROOT_DIR = File.expand_path('../../..', __dir__).freeze
 
+      WRAPPER_FILE_PATH = File.expand_path('bin/childprocess', ROOT_DIR).freeze
+
       DAEMON_FILE_PATH = File.expand_path(
         'vendor/bin/tox-bootstrapd',
         ROOT_DIR,
@@ -36,6 +38,7 @@ module Support
 
       def start_process
         _stdin, @stdout, @stderr, @wait_thr = Open3.popen3(
+          WRAPPER_FILE_PATH,
           DAEMON_FILE_PATH,
           '--foreground',
           '--log-backend',

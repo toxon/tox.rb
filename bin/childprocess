@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# This wrapper ensures than child process is terminated/killed
+# if parent process does not exist anymore.
+
+require 'English'
+
+pid = spawn(*ARGV, in: :in, out: :out, err: :err)
+
+Thread.start pid do |pid| # rubocop:disable Lint/ShadowingOuterLocalVariable
+  loop do
+    begin
+      sleep 1
+      Process.kill 0, Process.ppid
+    rescue
+      Process.kill :SIGTERM, pid
+      sleep 2
+      Process.kill :SIGKILL, pid
+    end
+  end
+end
+
+Process.wait pid
+
+exit $CHILD_STATUS.exitstatus
