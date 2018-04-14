@@ -41,10 +41,4 @@ end
 
 Process.wait pid
 
-exit $CHILD_STATUS.exitstatus unless $CHILD_STATUS.exitstatus.nil?
-
-TRAPS.each do |signame|
-  trap signame, 'SYSTEM_DEFAULT'
-end
-
-Process.kill $CHILD_STATUS.termsig, 0
+exit $CHILD_STATUS.exitstatus || 1
