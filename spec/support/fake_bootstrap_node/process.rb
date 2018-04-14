@@ -49,7 +49,7 @@ module Support
         @stdout_poll_thread ||= Thread.start do
           until @stdout.eof?
             begin
-              @stdout_lines = [*@stdout_lines, @stdout.readline].freeze
+              @stdout_lines = [*@stdout_lines, @stdout.readline.freeze].freeze
             rescue EOFError
               IO.select [@stdout]
             end
@@ -61,7 +61,7 @@ module Support
         @stderr_poll_thread ||= Thread.start do
           until @stderr.eof?
             begin
-              @stderr_lines = [*@stderr_lines, @stderr.readline].freeze
+              @stderr_lines = [*@stderr_lines, @stderr.readline.freeze].freeze
             rescue EOFError
               IO.select [@stderr]
             end
