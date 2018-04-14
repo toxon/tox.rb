@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'support/fake_bootstrap_node/instance'
+require 'support/fake_bootstrap_network/instance'
 
-RSpec.describe Support::FakeBootstrapNode::Instance do
+RSpec.describe Support::FakeBootstrapNetwork::Instance do
   subject { described_class.new port: port }
 
   let(:port) { rand 1024..65_535 }

@@ -3,7 +3,7 @@
 require 'erb'
 
 module Support
-  module FakeBootstrapNode
+  module FakeBootstrapNetwork
     class Config # rubocop:disable Metrics/ClassLength
       TEMPLATE_FILE_PATH = File.expand_path('config.erb', __dir__).freeze
 

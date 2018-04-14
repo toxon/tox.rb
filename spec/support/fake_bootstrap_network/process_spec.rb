@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'support/fake_bootstrap_node/process'
-require 'support/fake_bootstrap_node/config'
+require 'support/fake_bootstrap_network/process'
+require 'support/fake_bootstrap_network/config'
 
-RSpec.describe Support::FakeBootstrapNode::Process do
+RSpec.describe Support::FakeBootstrapNetwork::Process do
   subject { described_class.new config_file_path }
 
   let(:tmpdir) { Dir.mktmpdir('tox-').freeze }
@@ -15,7 +15,7 @@ RSpec.describe Support::FakeBootstrapNode::Process do
   let(:port) { rand 1024..65_535 }
 
   let :config do
-    Support::FakeBootstrapNode::Config.new(
+    Support::FakeBootstrapNetwork::Config.new(
       keys_file_path: keys_file_path,
       pid_file_path: pid_file_path,
       port: port,

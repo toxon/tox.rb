@@ -3,7 +3,7 @@
 require 'open3'
 
 module Support
-  module FakeBootstrapNode
+  module FakeBootstrapNetwork
     class Process
       ROOT_DIR = File.expand_path('../../..', __dir__).freeze
 

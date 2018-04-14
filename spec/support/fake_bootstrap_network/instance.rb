@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'support/fake_bootstrap_node/process'
-require 'support/fake_bootstrap_node/config'
+require 'support/fake_bootstrap_network/process'
+require 'support/fake_bootstrap_network/config'
 
 module Support
-  module FakeBootstrapNode
+  module FakeBootstrapNetwork
     class Instance
       PORT_RANGE = 1..65_535
       PUBLIC_KEY_RE = /^Public Key: ([0-9A-Z]{#{2 * Tox::PublicKey.bytesize}})$/

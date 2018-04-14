@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'support/fake_bootstrap_node/config'
+require 'support/fake_bootstrap_network/config'
 
-RSpec.describe Support::FakeBootstrapNode::Config do
+RSpec.describe Support::FakeBootstrapNetwork::Config do
   subject do
     described_class.new(
       keys_file_path: 'keys',
