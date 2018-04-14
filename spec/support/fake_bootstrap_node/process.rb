@@ -26,7 +26,7 @@ module Support
       end
 
       def close
-        ::Process.kill :SIGKILL, @wait_thr.pid
+        ::Process.kill :SIGTERM, @wait_thr.pid
         nil
       end
 

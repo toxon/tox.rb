@@ -8,6 +8,20 @@ require 'English'
 
 pid = spawn(*ARGV, in: :in, out: :out, err: :err)
 
+Signal.list.each_value do |signo|
+  begin
+    trap signo do
+      begin
+        Process.kill signo, pid
+      rescue
+        nil
+      end
+    end
+  rescue
+    nil
+  end
+end
+
 Thread.start pid do |pid| # rubocop:disable Lint/ShadowingOuterLocalVariable
   loop do
     begin
@@ -23,4 +37,4 @@ end
 
 Process.wait pid
 
-exit $CHILD_STATUS.exitstatus
+exit $CHILD_STATUS.exitstatus.to_i
