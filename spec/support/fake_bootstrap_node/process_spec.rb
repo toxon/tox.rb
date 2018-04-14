@@ -66,13 +66,12 @@ RSpec.describe Support::FakeBootstrapNode::Process do
     end
 
     it 'chomps lines' do
-      expect(subject.stdout_lines.grep(/\n/).count).to eq 0
+      expect(subject.stdout_lines).not_to grep(/\n/)
     end
 
     it 'contains version' do
-      expect(subject.stdout_lines.grep(
-        /^Running "tox-bootstrapd" version \d+\.$/,
-      ).count).to eq 1
+      expect(subject.stdout_lines).to \
+        grep(/^Running "tox-bootstrapd" version \d+\.$/)
     end
 
     it 'contains public key' do
@@ -84,9 +83,8 @@ RSpec.describe Support::FakeBootstrapNode::Process do
         nil
       end
 
-      expect(subject.stdout_lines.grep(
-        /^Public Key: [0-9A-Z]{#{2 * Tox::PublicKey.bytesize}}$/,
-      ).count).to eq 1
+      expect(subject.stdout_lines).to \
+        grep(/^Public Key: [0-9A-Z]{#{2 * Tox::PublicKey.bytesize}}$/)
     end
   end
 
@@ -110,7 +108,7 @@ RSpec.describe Support::FakeBootstrapNode::Process do
     end
 
     it 'chomps lines' do
-      expect(subject.stderr_lines.grep(/\n/).count).to eq 0
+      expect(subject.stderr_lines).not_to grep(/\n/)
     end
   end
 end
