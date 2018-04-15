@@ -219,6 +219,7 @@ file 'vendor/src/libvpx/Makefile': 'vendor/src/libvpx/configure' do |t|
       { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
       './configure',
       "--prefix=#{VENDOR_PREFIX}",
+      '--enable-shared',
       '--disable-examples',
       '--disable-unit-tests',
     )
