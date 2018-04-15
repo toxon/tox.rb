@@ -78,6 +78,14 @@ namespace :vendor do
     clean:libtoxcore
   ]
 
+  desc 'Delete configured vendored dependencies from "./vendor/"'
+  task distclean: %i[
+    distclean:libsodium
+    distclean:opus
+    distclean:libvpx
+    distclean:libtoxcore
+  ]
+
   namespace :install do
     task libsodium: 'vendor/src/libsodium/Makefile' do
       chdir 'vendor/src/libsodium' do
@@ -152,6 +160,32 @@ namespace :vendor do
     task libtoxcore: 'vendor/src/libtoxcore/Makefile' do
       chdir 'vendor/src/libtoxcore' do
         sh 'make clean'
+      end
+    end
+  end
+
+  namespace :distclean do
+    task libsodium: 'vendor/src/libsodium/Makefile' do
+      chdir 'vendor/src/libsodium' do
+        sh 'make distclean'
+      end
+    end
+
+    task opus: 'vendor/src/opus/Makefile' do
+      chdir 'vendor/src/opus' do
+        sh 'make distclean'
+      end
+    end
+
+    task libvpx: 'vendor/src/libvpx/Makefile' do
+      chdir 'vendor/src/libvpx' do
+        sh 'make distclean'
+      end
+    end
+
+    task libtoxcore: 'vendor/src/libtoxcore/Makefile' do
+      chdir 'vendor/src/libtoxcore' do
+        sh 'make distclean'
       end
     end
   end
