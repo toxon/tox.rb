@@ -7,3 +7,6 @@
 [submodule "vendor/src/opus"]
 	path = vendor/src/opus
 	url = https://github.com/xiph/opus.git
+[submodule "vendor/src/libvpx"]
+	path = vendor/src/libvpx
+	url = https://chromium.googlesource.com/webm/libvpx.git
