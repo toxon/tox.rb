@@ -41,10 +41,12 @@ cflags '-Wextra'
 cflags '-Wno-declaration-after-statement'
 
 have_library! 'toxcore'
+have_library! 'toxav'
 
 have_header! 'ruby.h'
 have_header! 'time.h'
 have_header! 'tox/tox.h'
+have_header! 'tox/toxav.h'
 
 have_struct_member! nil, 'struct timespec', 'tv_sec'
 have_struct_member! nil, 'struct timespec', 'tv_nsec'
