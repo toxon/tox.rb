@@ -69,26 +69,34 @@ end
 
 namespace :vendor do
   desc 'Install vendored dependencies into "./vendor/{bin,include,lib}/"'
-  task install: %i[install:libsodium install:libtoxcore]
+  task install: %i[install:libsodium install:opus install:libtoxcore]
 
   desc 'Uninstall vendored dependencies from "./vendor/{bin,include,lib}/"'
   task :uninstall do
     rm_rf File.join VENDOR_PREFIX, 'bin'
     rm_rf File.join VENDOR_PREFIX, 'include'
     rm_rf File.join VENDOR_PREFIX, 'lib'
+    rm_rf File.join VENDOR_PREFIX, 'share'
   end
 
   desc 'Delete compiled vendored dependencies from "./vendor/"'
-  task clean: %i[uninstall clean:libsodium clean:libtoxcore]
+  task clean: %i[uninstall clean:libsodium clean:opus clean:libtoxcore]
 
   namespace :install do
-    task libsodium: 'vendor/lib/pkgconfig/libsodium.pc'
+    task libsodium:  'vendor/lib/pkgconfig/libsodium.pc'
+    task opus:       'vendor/lib/pkgconfig/opus.pc'
     task libtoxcore: 'vendor/lib/pkgconfig/libtoxcore.pc'
   end
 
   namespace :clean do
     task :libsodium do
       chdir 'vendor/src/libsodium' do
+        sh 'make clean'
+      end
+    end
+
+    task :opus do
+      chdir 'vendor/src/opus' do
         sh 'make clean'
       end
     end
@@ -107,6 +115,12 @@ file 'vendor/lib/pkgconfig/libsodium.pc': 'vendor/src/libsodium/Makefile' do
   end
 end
 
+file 'vendor/lib/pkgconfig/opus.pc': 'vendor/src/opus/Makefile' do
+  chdir 'vendor/src/opus' do
+    sh 'make install'
+  end
+end
+
 file 'vendor/lib/pkgconfig/libtoxcore.pc': 'vendor/src/libtoxcore/Makefile' do
   chdir 'vendor/src/libtoxcore' do
     sh 'make install'
@@ -114,6 +128,17 @@ file 'vendor/lib/pkgconfig/libtoxcore.pc': 'vendor/src/libtoxcore/Makefile' do
 end
 
 file 'vendor/src/libsodium/Makefile': 'vendor/src/libsodium/configure' do |t|
+  chdir File.dirname t.name do
+    sh(
+      { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
+      './configure',
+      '--prefix',
+      VENDOR_PREFIX,
+    )
+  end
+end
+
+file 'vendor/src/opus/Makefile': 'vendor/src/opus/configure' do |t|
   chdir File.dirname t.name do
     sh(
       { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
@@ -139,6 +164,12 @@ file 'vendor/src/libtoxcore/Makefile':
 end
 
 file 'vendor/src/libsodium/configure' do |t|
+  chdir File.dirname t.name do
+    sh './autogen.sh'
+  end
+end
+
+file 'vendor/src/opus/configure' do |t|
   chdir File.dirname t.name do
     sh './autogen.sh'
   end
