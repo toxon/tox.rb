@@ -255,6 +255,7 @@ file 'vendor/src/libtoxcore/Makefile': 'vendor/src/libtoxcore/configure' do |t|
       '--disable-testing',
 
       '--enable-daemon',
+      '--enable-av',
     )
   end
 end
