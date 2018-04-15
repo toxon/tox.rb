@@ -10,5 +10,5 @@ require 'spec_helper'
 require 'support/fake_bootstrap_network'
 
 RSpec.configure do |config|
-  config.include Support::FakeBootstrapNetwork
+  config.include Support::FakeBootstrapNetwork, type: :integration
 end

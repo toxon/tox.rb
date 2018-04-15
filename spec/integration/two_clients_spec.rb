@@ -57,7 +57,7 @@ private
   end
 end
 
-RSpec.describe 'Two clients' do
+RSpec.describe 'Two clients', type: :integration do
   let(:messages) { %w[foo bar car].freeze }
 
   let(:client_1_wrapper) { Wrapper.new options_1 }
