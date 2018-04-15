@@ -11,4 +11,5 @@ before_install:
   - sudo apt-get install -y yasm libconfig-dev
 
 before_script:
-  - rake ext
+  - rake vendor:install
+  - rake compile

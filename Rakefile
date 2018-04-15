@@ -18,15 +18,12 @@ task lint: :rubocop
 desc 'Fix code style (rubocop --auto-correct)'
 task fix: 'rubocop:auto_correct'
 
-desc 'Compile all extensions (and their dependencies)'
-task ext: %i[ext:tox]
-
 require 'pry'
 
 begin
   require 'rspec/core/rake_task'
   RSpec::Core::RakeTask.new
-  Rake::Task[:spec].enhance %i[ext]
+  Rake::Task[:spec].enhance %i[compile]
 rescue LoadError
   nil
 end
@@ -52,78 +49,90 @@ begin
     ext.lib_dir = 'lib/tox'
     ext.config_options << "--with-opt-dir=#{VENDOR_PREFIX.shellescape}"
   end
-
-  Rake::Task[:compile].clear_comments
-  Rake::Task['compile:tox'].clear_comments
 rescue LoadError
   nil
 end
 
-namespace :ext do
-  desc 'Compile "tox" extension (and it\'s dependencies)'
-  task tox: %i[
-    vendor/lib/pkgconfig/libtoxcore.pc
-    compile:tox
-  ]
-end
-
 namespace :vendor do
   desc 'Install vendored dependencies into "./vendor/{bin,include,lib}/"'
-  task install: %i[install:libsodium install:opus install:libtoxcore]
+  task install: %i[
+    install:libsodium
+    install:opus
+    install:libtoxcore
+  ]
 
   desc 'Uninstall vendored dependencies from "./vendor/{bin,include,lib}/"'
-  task :uninstall do
-    rm_rf File.join VENDOR_PREFIX, 'bin'
-    rm_rf File.join VENDOR_PREFIX, 'include'
-    rm_rf File.join VENDOR_PREFIX, 'lib'
-    rm_rf File.join VENDOR_PREFIX, 'share'
-  end
+  task uninstall: %i[
+    uninstall:libsodium
+    uninstall:opus
+    uninstall:libtoxcore
+  ]
 
   desc 'Delete compiled vendored dependencies from "./vendor/"'
-  task clean: %i[uninstall clean:libsodium clean:opus clean:libtoxcore]
+  task clean: %i[
+    clean:libsodium
+    clean:opus
+    clean:libtoxcore
+  ]
 
   namespace :install do
-    task libsodium:  'vendor/lib/pkgconfig/libsodium.pc'
-    task opus:       'vendor/lib/pkgconfig/opus.pc'
-    task libtoxcore: 'vendor/lib/pkgconfig/libtoxcore.pc'
+    task libsodium: 'vendor/src/libsodium/Makefile' do
+      chdir 'vendor/src/libsodium' do
+        sh 'make install'
+      end
+    end
+
+    task opus: 'vendor/src/opus/Makefile' do
+      chdir 'vendor/src/opus' do
+        sh 'make install'
+      end
+    end
+
+    task libtoxcore: 'vendor/src/libtoxcore/Makefile' do
+      chdir 'vendor/src/libtoxcore' do
+        sh 'make install'
+      end
+    end
+  end
+
+  namespace :uninstall do
+    task libsodium: 'vendor/src/libsodium/Makefile' do
+      chdir 'vendor/src/libsodium' do
+        sh 'make uninstall'
+      end
+    end
+
+    task opus: 'vendor/src/opus/Makefile' do
+      chdir 'vendor/src/opus' do
+        sh 'make uninstall'
+      end
+    end
+
+    task libtoxcore: 'vendor/src/libtoxcore/Makefile' do
+      chdir 'vendor/src/libtoxcore' do
+        sh 'make uninstall'
+      end
+    end
   end
 
   namespace :clean do
-    task :libsodium do
+    task libsodium: 'vendor/src/libsodium/Makefile' do
       chdir 'vendor/src/libsodium' do
         sh 'make clean'
       end
     end
 
-    task :opus do
+    task opus: 'vendor/src/opus/Makefile' do
       chdir 'vendor/src/opus' do
         sh 'make clean'
       end
     end
 
-    task :libtoxcore do
+    task libtoxcore: 'vendor/src/libtoxcore/Makefile' do
       chdir 'vendor/src/libtoxcore' do
         sh 'make clean'
       end
     end
-  end
-end
-
-file 'vendor/lib/pkgconfig/libsodium.pc': 'vendor/src/libsodium/Makefile' do
-  chdir 'vendor/src/libsodium' do
-    sh 'make install'
-  end
-end
-
-file 'vendor/lib/pkgconfig/opus.pc': 'vendor/src/opus/Makefile' do
-  chdir 'vendor/src/opus' do
-    sh 'make install'
-  end
-end
-
-file 'vendor/lib/pkgconfig/libtoxcore.pc': 'vendor/src/libtoxcore/Makefile' do
-  chdir 'vendor/src/libtoxcore' do
-    sh 'make install'
   end
 end
 
@@ -149,9 +158,7 @@ file 'vendor/src/opus/Makefile': 'vendor/src/opus/configure' do |t|
   end
 end
 
-file 'vendor/src/libtoxcore/Makefile':
-       %i[vendor/src/libtoxcore/configure
-          vendor/lib/pkgconfig/libsodium.pc] do |t|
+file 'vendor/src/libtoxcore/Makefile': 'vendor/src/libtoxcore/configure' do |t|
   chdir File.dirname t.name do
     sh(
       { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
