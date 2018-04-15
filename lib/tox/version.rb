@@ -6,7 +6,7 @@ module Tox
   #
   module Version
     # Gem version.
-    GEM_VERSION = '0.0.2'
+    GEM_VERSION = '0.0.3'
 
     def self.const_missing(name)
       return "#{API_MAJOR}.#{API_MINOR}.#{API_PATCH}" if name == :API_VERSION
