@@ -35,11 +35,7 @@ RSpec.describe Support::FakeBootstrapNetwork::Process do
   end
 
   after do
-    FileUtils.rm_f config_file_path
-    FileUtils.rm_f keys_file_path
-    FileUtils.rm_f pid_file_path
-
-    Dir.rmdir tmpdir
+    FileUtils.rm_rf tmpdir
   end
 
   describe '#stdout_lines' do
