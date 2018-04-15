@@ -215,6 +215,8 @@ file 'vendor/src/opus/Makefile': 'vendor/src/opus/configure' do |t|
 
       '--enable-shared',
       '--disable-static',
+
+      '--disable-extra-programs',
     )
   end
 end
@@ -230,6 +232,8 @@ file 'vendor/src/libvpx/Makefile': 'vendor/src/libvpx/configure' do |t|
       '--disable-static',
 
       '--disable-examples',
+      '--disable-tools',
+      '--disable-docs',
       '--disable-unit-tests',
     )
   end
@@ -245,6 +249,10 @@ file 'vendor/src/libtoxcore/Makefile': 'vendor/src/libtoxcore/configure' do |t|
 
       '--enable-shared',
       '--disable-static',
+
+      '--disable-tests',
+      '--disable-dht-bootstrap',
+      '--disable-testing',
 
       '--enable-daemon',
     )
