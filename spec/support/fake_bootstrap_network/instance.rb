@@ -33,6 +33,20 @@ module Support
         write_initial_config
         obtain_public_key
         raise 'Can not obtain public key' if public_key.nil?
+        @process = nil
+      end
+
+      def start(bootstrap_nodes)
+        raise 'Already running' unless @process.nil?
+        File.write config_file_path, build_config(bootstrap_nodes).render
+        @process = Process.new config_file_path
+        nil
+      end
+
+      def stop
+        raise 'Not running' if @process.nil?
+        @process.close
+        @process = nil
       end
 
       def datadir

@@ -7,6 +7,8 @@ require 'simplecov'
 
 require 'spec_helper'
 
+require 'support/fake_bootstrap_network'
+
 ROOT_DIR = File.expand_path('..', __dir__).freeze
 
 FAKE_NODE_EXECUTABLE  = File.join(ROOT_DIR, 'vendor/bin/tox-bootstrapd').freeze
@@ -57,6 +59,8 @@ FAKE_TCP_RELAYS = [
 HTTP_PROXY_PORT = rand 1024..65_535
 
 RSpec.configure do |config|
+  config.include Support::FakeBootstrapNetwork
+
   config.before :suite do
     $fake_node_pids = FAKE_NODE_CONFIG_FILES.map do |fake_node_config|
       Process.spawn(

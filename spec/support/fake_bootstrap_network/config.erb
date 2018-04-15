@@ -9,11 +9,11 @@ tcp_relay_ports = <%= tcp_relay_ports %>
 enable_motd = <%= enable_motd %>
 motd = <%= motd %>
 bootstrap_nodes = (
-<% bootstrap_nodes.each do |node| %>
+<% bootstrap_nodes.each_with_index do |node, index| %>
   {
     address = <%= node.address %>
     port = <%= node.port %>
     public_key = <%= node.public_key %>
-  }
+  }<%= ',' unless index == bootstrap_nodes.count - 1 %>
 <% end %>
 )
