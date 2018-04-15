@@ -198,6 +198,9 @@ file 'vendor/src/libsodium/Makefile': 'vendor/src/libsodium/configure' do |t|
       './configure',
       '--prefix',
       VENDOR_PREFIX,
+
+      '--enable-shared',
+      '--disable-static',
     )
   end
 end
@@ -209,6 +212,9 @@ file 'vendor/src/opus/Makefile': 'vendor/src/opus/configure' do |t|
       './configure',
       '--prefix',
       VENDOR_PREFIX,
+
+      '--enable-shared',
+      '--disable-static',
     )
   end
 end
@@ -219,7 +225,10 @@ file 'vendor/src/libvpx/Makefile': 'vendor/src/libvpx/configure' do |t|
       { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
       './configure',
       "--prefix=#{VENDOR_PREFIX}",
+
       '--enable-shared',
+      '--disable-static',
+
       '--disable-examples',
       '--disable-unit-tests',
     )
@@ -233,6 +242,10 @@ file 'vendor/src/libtoxcore/Makefile': 'vendor/src/libtoxcore/configure' do |t|
       './configure',
       '--prefix',
       VENDOR_PREFIX,
+
+      '--enable-shared',
+      '--disable-static',
+
       '--enable-daemon',
     )
   end
