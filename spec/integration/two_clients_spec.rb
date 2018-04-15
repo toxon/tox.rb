@@ -94,11 +94,11 @@ RSpec.describe 'Two clients' do
     client_2_wrapper.friend_add_norequest client_1_wrapper.public_key
 
     nodes_1.each do |node|
-      client_1_wrapper.bootstrap node.resolv_ipv4, node.port, node.public_key
+      client_1_wrapper.bootstrap '127.0.0.1', node.port, node.public_key
     end
 
     nodes_2.each do |node|
-      client_2_wrapper.bootstrap node.resolv_ipv4, node.port, node.public_key
+      client_2_wrapper.bootstrap '127.0.0.1', node.port, node.public_key
     end
 
     tcp_relays_1.each do |tcp_relay|
@@ -139,8 +139,8 @@ RSpec.describe 'Two clients' do
   end
 
   context 'when both use UDP' do
-    let(:nodes_1) { FAKE_NODES }
-    let(:nodes_2) { FAKE_NODES }
+    let(:nodes_1) { bootstrap_nodes }
+    let(:nodes_2) { bootstrap_nodes }
 
     specify do
       expect(client_2_wrapper.friend_messages.to_set).to eq messages.to_set
