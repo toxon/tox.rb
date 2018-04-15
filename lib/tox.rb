@@ -13,6 +13,7 @@ require 'tox/node'
 require 'tox/out_message'
 require 'tox/out_friend_message'
 require 'tox/friend'
+require 'tox/av'
 
 require 'tox/proxies/base'
 require 'tox/proxies/http'

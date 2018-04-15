@@ -24,6 +24,7 @@ VALUE mTox_cNospam;
 VALUE mTox_cPublicKey;
 VALUE mTox_mOutMessage;
 VALUE mTox_cOutFriendMessage;
+VALUE mTox_cAV;
 
 VALUE mTox_mUserStatus_NONE;
 VALUE mTox_mUserStatus_AWAY;
@@ -80,6 +81,7 @@ void Init_tox()
   mTox_cPublicKey        = rb_const_get(mTox, rb_intern("PublicKey"));
   mTox_mOutMessage       = rb_const_get(mTox, rb_intern("OutMessage"));
   mTox_cOutFriendMessage = rb_const_get(mTox, rb_intern("OutFriendMessage"));
+  mTox_cAV               = rb_const_get(mTox, rb_intern("AV"));
 
   mTox_mUserStatus_NONE = rb_const_get(mTox_mUserStatus, rb_intern("NONE"));
   mTox_mUserStatus_AWAY = rb_const_get(mTox_mUserStatus, rb_intern("AWAY"));
@@ -110,6 +112,7 @@ void Init_tox()
   mTox_cOptions_INIT();
   mTox_cClient_INIT();
   mTox_cFriend_INIT();
+  mTox_cAV_INIT();
 }
 
 /*************************************************************

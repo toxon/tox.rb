@@ -77,6 +77,8 @@ have_type! 'tox/tox.h', 'tox_friend_name_cb'
 have_type! 'tox/tox.h', 'tox_friend_status_message_cb'
 have_type! 'tox/tox.h', 'tox_friend_status_cb'
 
+have_type! 'tox/toxav.h', 'TOXAV_ERR_NEW'
+
 have_struct_member! 'tox/tox.h', 'struct Tox_Options', 'savedata_type'
 have_struct_member! 'tox/tox.h', 'struct Tox_Options', 'savedata_length'
 have_struct_member! 'tox/tox.h', 'struct Tox_Options', 'savedata_data'
@@ -137,6 +139,11 @@ have_const! 'tox/tox.h', 'TOX_ERR_FRIEND_SEND_MESSAGE_EMPTY'
 have_const! 'tox/tox.h', 'TOX_CONNECTION_NONE'
 have_const! 'tox/tox.h', 'TOX_CONNECTION_TCP'
 have_const! 'tox/tox.h', 'TOX_CONNECTION_UDP'
+
+have_const! 'tox/toxav.h', 'TOXAV_ERR_NEW_OK'
+have_const! 'tox/toxav.h', 'TOXAV_ERR_NEW_NULL'
+have_const! 'tox/toxav.h', 'TOXAV_ERR_NEW_MALLOC'
+have_const! 'tox/toxav.h', 'TOXAV_ERR_NEW_MULTIPLE'
 
 have_func! 'tox/tox.h', 'tox_version_major'
 have_func! 'tox/tox.h', 'tox_version_minor'
@@ -199,5 +206,8 @@ have_func! 'tox/tox.h', 'tox_friend_get_status'
 have_func! 'tox/tox.h', 'tox_callback_friend_name'
 have_func! 'tox/tox.h', 'tox_callback_friend_status_message'
 have_func! 'tox/tox.h', 'tox_callback_friend_status'
+
+have_func! 'tox/toxav.h', 'toxav_new'
+have_func! 'tox/toxav.h', 'toxav_kill'
 
 create_makefile 'tox/tox' or exit 1

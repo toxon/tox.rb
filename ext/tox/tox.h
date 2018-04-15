@@ -1,6 +1,7 @@
 #include <ruby.h>
 
 #include <tox/tox.h>
+#include <tox/toxav.h>
 
 // C extension initialization
 
@@ -9,6 +10,7 @@ void mTox_mVersion_INIT();
 void mTox_cOptions_INIT();
 void mTox_cClient_INIT();
 void mTox_cFriend_INIT();
+void mTox_cAV_INIT();
 
 // C data
 
@@ -22,6 +24,10 @@ typedef struct {
 typedef struct {
   Tox *tox;
 } mTox_cClient_CDATA;
+
+typedef struct {
+  ToxAV *tox_av;
+} mTox_cAV_CDATA;
 
 // Instances
 
@@ -43,6 +49,7 @@ extern VALUE mTox_cPublicKey;
 extern VALUE mTox_cNospam;
 extern VALUE mTox_mOutMessage;
 extern VALUE mTox_cOutFriendMessage;
+extern VALUE mTox_cAV;
 
 extern VALUE mTox_mUserStatus_NONE;
 extern VALUE mTox_mUserStatus_AWAY;
