@@ -58,6 +58,7 @@ namespace :vendor do
   task install: %i[
     install:libsodium
     install:opus
+    install:libvpx
     install:libtoxcore
   ]
 
@@ -65,6 +66,7 @@ namespace :vendor do
   task uninstall: %i[
     uninstall:libsodium
     uninstall:opus
+    uninstall:libvpx
     uninstall:libtoxcore
   ]
 
@@ -72,6 +74,7 @@ namespace :vendor do
   task clean: %i[
     clean:libsodium
     clean:opus
+    clean:libvpx
     clean:libtoxcore
   ]
 
@@ -84,6 +87,12 @@ namespace :vendor do
 
     task opus: 'vendor/src/opus/Makefile' do
       chdir 'vendor/src/opus' do
+        sh 'make install'
+      end
+    end
+
+    task libvpx: 'vendor/src/libvpx/Makefile' do
+      chdir 'vendor/src/libvpx' do
         sh 'make install'
       end
     end
@@ -108,6 +117,12 @@ namespace :vendor do
       end
     end
 
+    task libvpx: 'vendor/src/libvpx/Makefile' do
+      chdir 'vendor/src/libvpx' do
+        sh 'make uninstall'
+      end
+    end
+
     task libtoxcore: 'vendor/src/libtoxcore/Makefile' do
       chdir 'vendor/src/libtoxcore' do
         sh 'make uninstall'
@@ -124,6 +139,12 @@ namespace :vendor do
 
     task opus: 'vendor/src/opus/Makefile' do
       chdir 'vendor/src/opus' do
+        sh 'make clean'
+      end
+    end
+
+    task libvpx: 'vendor/src/libvpx/Makefile' do
+      chdir 'vendor/src/libvpx' do
         sh 'make clean'
       end
     end
@@ -154,6 +175,16 @@ file 'vendor/src/opus/Makefile': 'vendor/src/opus/configure' do |t|
       './configure',
       '--prefix',
       VENDOR_PREFIX,
+    )
+  end
+end
+
+file 'vendor/src/libvpx/Makefile': 'vendor/src/libvpx/configure' do |t|
+  chdir File.dirname t.name do
+    sh(
+      { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
+      './configure',
+      "--prefix=#{VENDOR_PREFIX}",
     )
   end
 end
