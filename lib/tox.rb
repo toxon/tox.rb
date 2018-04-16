@@ -26,6 +26,7 @@ require 'tox/user_status'
 require 'tox/proxy_type'
 require 'tox/connection_status'
 require 'tox/file_kind'
+require 'tox/file_control'
 
 # Primitives
 require 'tox/binary'
