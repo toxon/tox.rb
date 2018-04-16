@@ -97,7 +97,7 @@ VALUE mTox_cOutFriendFile_send_chunk(
     case TOX_ERR_FILE_SEND_CHUNK_SENDQ:
       RAISE_FUNC_ERROR(
         "tox_file_send_chunk",
-        rb_eRuntimeError,
+        mTox_eSendQueueError,
         "TOX_ERR_FILE_SEND_CHUNK_SENDQ"
       );
     case TOX_ERR_FILE_SEND_CHUNK_WRONG_POSITION:

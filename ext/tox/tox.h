@@ -35,6 +35,7 @@ typedef struct {
 extern VALUE mTox;
 
 extern VALUE mTox_eNullError;
+extern VALUE mTox_eSendQueueError;
 extern VALUE mTox_eUnknownError;
 
 extern VALUE mTox_mVersion;
@@ -75,7 +76,6 @@ extern VALUE mTox_cClient_eBadSavedataError;
 extern VALUE mTox_cFriend_eNotFoundError;
 extern VALUE mTox_cFriend_eNotConnectedError;
 
-extern VALUE mTox_mOutMessage_eSendQueueAllocError;
 extern VALUE mTox_mOutMessage_eTooLongError;
 extern VALUE mTox_mOutMessage_eEmptyError;
 

@@ -141,7 +141,7 @@ VALUE mTox_cFriend_send_message(const VALUE self, const VALUE text)
     case TOX_ERR_FRIEND_SEND_MESSAGE_SENDQ:
       RAISE_FUNC_ERROR(
         "tox_friend_send_message",
-        mTox_mOutMessage_eSendQueueAllocError,
+        mTox_eSendQueueError,
         "TOX_ERR_FRIEND_SEND_MESSAGE_SENDQ"
       );
     case TOX_ERR_FRIEND_SEND_MESSAGE_TOO_LONG:

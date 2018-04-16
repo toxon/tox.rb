@@ -53,6 +53,11 @@ module Tox
   class NullError < RuntimeError; end
 
   ##
+  # Exception of this type is raised when packet send queue is full.
+  #
+  class SendQueueError < RuntimeError; end
+
+  ##
   # Exception of this type is raised when Tox function failed with unknown
   # error code or returned false success status. It can indicate minor version
   # upgrade of libtoxcore. Specific handling is not needed for the time beeing.

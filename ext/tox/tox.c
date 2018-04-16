@@ -9,6 +9,7 @@
 VALUE mTox;
 
 VALUE mTox_eNullError;
+VALUE mTox_eSendQueueError;
 VALUE mTox_eUnknownError;
 
 VALUE mTox_mVersion;
@@ -49,7 +50,6 @@ VALUE mTox_cClient_eBadSavedataError;
 VALUE mTox_cFriend_eNotFoundError;
 VALUE mTox_cFriend_eNotConnectedError;
 
-VALUE mTox_mOutMessage_eSendQueueAllocError;
 VALUE mTox_mOutMessage_eTooLongError;
 VALUE mTox_mOutMessage_eEmptyError;
 
@@ -74,8 +74,9 @@ void Init_tox()
 
   mTox = rb_const_get(rb_cObject, rb_intern("Tox"));
 
-  mTox_eNullError    = rb_const_get(mTox, rb_intern("NullError"));
-  mTox_eUnknownError = rb_const_get(mTox, rb_intern("UnknownError"));
+  mTox_eNullError      = rb_const_get(mTox, rb_intern("NullError"));
+  mTox_eSendQueueError = rb_const_get(mTox, rb_intern("SendQueueError"));
+  mTox_eUnknownError   = rb_const_get(mTox, rb_intern("UnknownError"));
 
   mTox_mVersion          = rb_const_get(mTox, rb_intern("Version"));
   mTox_mUserStatus       = rb_const_get(mTox, rb_intern("UserStatus"));
@@ -115,9 +116,8 @@ void Init_tox()
   mTox_cFriend_eNotFoundError     = rb_const_get(mTox_cFriend, rb_intern("NotFoundError"));
   mTox_cFriend_eNotConnectedError = rb_const_get(mTox_cFriend, rb_intern("NotConnectedError"));
 
-  mTox_mOutMessage_eSendQueueAllocError = rb_const_get(mTox_mOutMessage, rb_intern("SendQueueAllocError"));
-  mTox_mOutMessage_eTooLongError        = rb_const_get(mTox_mOutMessage, rb_intern("TooLongError"));
-  mTox_mOutMessage_eEmptyError          = rb_const_get(mTox_mOutMessage, rb_intern("EmptyError"));
+  mTox_mOutMessage_eTooLongError = rb_const_get(mTox_mOutMessage, rb_intern("TooLongError"));
+  mTox_mOutMessage_eEmptyError   = rb_const_get(mTox_mOutMessage, rb_intern("EmptyError"));
 
   mTox_cOutFriendFile_eNameTooLongError = rb_const_get(mTox_cOutFriendFile, rb_intern("NameTooLongError"));
   mTox_cOutFriendFile_eTooManyError     = rb_const_get(mTox_cOutFriendFile, rb_intern("TooManyError"));

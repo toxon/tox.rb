@@ -19,8 +19,7 @@ module Tox
         id == other.id
     end
 
-    class SendQueueAllocError < NoMemoryError; end
-    class TooLongError        < RuntimeError;  end
-    class EmptyError          < RuntimeError;  end
+    class TooLongError < RuntimeError;  end
+    class EmptyError   < RuntimeError;  end
   end
 end
