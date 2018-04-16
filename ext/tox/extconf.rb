@@ -80,6 +80,7 @@ have_type! 'tox/tox.h', 'tox_friend_name_cb'
 have_type! 'tox/tox.h', 'tox_friend_status_message_cb'
 have_type! 'tox/tox.h', 'tox_friend_status_cb'
 have_type! 'tox/tox.h', 'tox_file_chunk_request_cb'
+have_type! 'tox/tox.h', 'tox_file_recv_cb'
 
 have_type! 'tox/toxav.h', 'TOXAV_ERR_NEW'
 
@@ -230,6 +231,7 @@ have_func! 'tox/tox.h', 'tox_callback_friend_status'
 have_func! 'tox/tox.h', 'tox_file_send'
 have_func! 'tox/tox.h', 'tox_file_send_chunk'
 have_func! 'tox/tox.h', 'tox_callback_file_chunk_request'
+have_func! 'tox/tox.h', 'tox_callback_file_recv'
 
 have_func! 'tox/toxav.h', 'toxav_new'
 have_func! 'tox/toxav.h', 'toxav_kill'
