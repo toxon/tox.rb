@@ -11,6 +11,7 @@ void mTox_cOptions_INIT();
 void mTox_cClient_INIT();
 void mTox_cFriend_INIT();
 void mTox_cAV_INIT();
+void mTox_cOutFriendFile_INIT();
 
 // C data
 
@@ -50,6 +51,8 @@ extern VALUE mTox_cNospam;
 extern VALUE mTox_mOutMessage;
 extern VALUE mTox_cOutFriendMessage;
 extern VALUE mTox_cAV;
+extern VALUE mTox_mFileKind;
+extern VALUE mTox_cOutFriendFile;
 
 extern VALUE mTox_mUserStatus_NONE;
 extern VALUE mTox_mUserStatus_AWAY;
@@ -63,6 +66,9 @@ extern VALUE mTox_mConnectionStatus_NONE;
 extern VALUE mTox_mConnectionStatus_TCP;
 extern VALUE mTox_mConnectionStatus_UDP;
 
+extern VALUE mTox_mFileKind_DATA;
+extern VALUE mTox_mFileKind_AVATAR;
+
 extern VALUE mTox_cClient_eBadSavedataError;
 
 extern VALUE mTox_cFriend_eNotFoundError;
@@ -71,6 +77,9 @@ extern VALUE mTox_cFriend_eNotConnectedError;
 extern VALUE mTox_mOutMessage_eSendQueueAllocError;
 extern VALUE mTox_mOutMessage_eTooLongError;
 extern VALUE mTox_mOutMessage_eEmptyError;
+
+extern VALUE mTox_cOutFriendFile_eNameTooLongError;
+extern VALUE mTox_cOutFriendFile_eTooManyError;
 
 // Inline functions
 
@@ -85,6 +94,10 @@ static inline TOX_PROXY_TYPE mTox_mProxyType_TO_DATA(VALUE value);
 static inline VALUE          mTox_mConnectionStatus_FROM_DATA(TOX_CONNECTION data);
 static inline VALUE          mTox_mConnectionStatus_TRY_DATA(TOX_CONNECTION data);
 static inline TOX_CONNECTION mTox_mConnectionStatus_TO_DATA(VALUE value);
+
+static inline VALUE              mTox_mFileKind_FROM_DATA(enum TOX_FILE_KIND data);
+static inline VALUE              mTox_mFileKind_TRY_DATA(enum TOX_FILE_KIND data);
+static inline enum TOX_FILE_KIND mTox_mFileKind_TO_DATA(VALUE value);
 
 // Macros
 
@@ -252,5 +265,41 @@ TOX_CONNECTION mTox_mConnectionStatus_TO_DATA(const VALUE value)
   }
   else {
     RAISE_OPTION("Tox::ConnectionStatus");
+  }
+}
+
+VALUE mTox_mFileKind_FROM_DATA(const enum TOX_FILE_KIND data)
+{
+  const VALUE result = mTox_mFileKind_TRY_DATA(data);
+
+  if (result == Qnil) {
+    RAISE_ENUM("TOX_CONNECTION");
+  }
+
+  return result;
+}
+
+VALUE mTox_mFileKind_TRY_DATA(const enum TOX_FILE_KIND data)
+{
+  switch (data) {
+    case TOX_FILE_KIND_DATA:
+      return mTox_mFileKind_DATA;
+    case TOX_FILE_KIND_AVATAR:
+      return mTox_mFileKind_AVATAR;
+    default:
+      return Qnil;
+  }
+}
+
+enum TOX_FILE_KIND mTox_mFileKind_TO_DATA(const VALUE value)
+{
+  if (value == mTox_mFileKind_DATA) {
+    return TOX_FILE_KIND_DATA;
+  }
+  else if (value == mTox_mFileKind_AVATAR) {
+    return TOX_FILE_KIND_AVATAR;
+  }
+  else {
+    RAISE_OPTION("Tox::FileKind");
   }
 }

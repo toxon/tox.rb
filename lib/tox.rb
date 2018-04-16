@@ -14,6 +14,7 @@ require 'tox/out_message'
 require 'tox/out_friend_message'
 require 'tox/friend'
 require 'tox/av'
+require 'tox/out_friend_file'
 
 require 'tox/proxies/base'
 require 'tox/proxies/http'
@@ -23,6 +24,7 @@ require 'tox/proxies/socks5'
 require 'tox/user_status'
 require 'tox/proxy_type'
 require 'tox/connection_status'
+require 'tox/file_kind'
 
 # Primitives
 require 'tox/binary'

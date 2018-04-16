@@ -25,6 +25,8 @@ VALUE mTox_cPublicKey;
 VALUE mTox_mOutMessage;
 VALUE mTox_cOutFriendMessage;
 VALUE mTox_cAV;
+VALUE mTox_mFileKind;
+VALUE mTox_cOutFriendFile;
 
 VALUE mTox_mUserStatus_NONE;
 VALUE mTox_mUserStatus_AWAY;
@@ -38,6 +40,9 @@ VALUE mTox_mConnectionStatus_NONE;
 VALUE mTox_mConnectionStatus_TCP;
 VALUE mTox_mConnectionStatus_UDP;
 
+VALUE mTox_mFileKind_DATA;
+VALUE mTox_mFileKind_AVATAR;
+
 VALUE mTox_cClient_eBadSavedataError;
 
 VALUE mTox_cFriend_eNotFoundError;
@@ -46,6 +51,9 @@ VALUE mTox_cFriend_eNotConnectedError;
 VALUE mTox_mOutMessage_eSendQueueAllocError;
 VALUE mTox_mOutMessage_eTooLongError;
 VALUE mTox_mOutMessage_eEmptyError;
+
+VALUE mTox_cOutFriendFile_eNameTooLongError;
+VALUE mTox_cOutFriendFile_eTooManyError;
 
 // Singleton methods
 
@@ -82,6 +90,8 @@ void Init_tox()
   mTox_mOutMessage       = rb_const_get(mTox, rb_intern("OutMessage"));
   mTox_cOutFriendMessage = rb_const_get(mTox, rb_intern("OutFriendMessage"));
   mTox_cAV               = rb_const_get(mTox, rb_intern("AV"));
+  mTox_mFileKind         = rb_const_get(mTox, rb_intern("FileKind"));
+  mTox_cOutFriendFile    = rb_const_get(mTox, rb_intern("OutFriendFile"));
 
   mTox_mUserStatus_NONE = rb_const_get(mTox_mUserStatus, rb_intern("NONE"));
   mTox_mUserStatus_AWAY = rb_const_get(mTox_mUserStatus, rb_intern("AWAY"));
@@ -95,6 +105,9 @@ void Init_tox()
   mTox_mConnectionStatus_TCP  = rb_const_get(mTox_mConnectionStatus, rb_intern("TCP"));
   mTox_mConnectionStatus_UDP  = rb_const_get(mTox_mConnectionStatus, rb_intern("UDP"));
 
+  mTox_mFileKind_DATA   = rb_const_get(mTox_mFileKind, rb_intern("DATA"));
+  mTox_mFileKind_AVATAR = rb_const_get(mTox_mFileKind, rb_intern("AVATAR"));
+
   mTox_cClient_eBadSavedataError = rb_const_get(mTox_cClient, rb_intern("BadSavedataError"));
 
   mTox_cFriend_eNotFoundError     = rb_const_get(mTox_cFriend, rb_intern("NotFoundError"));
@@ -103,6 +116,9 @@ void Init_tox()
   mTox_mOutMessage_eSendQueueAllocError = rb_const_get(mTox_mOutMessage, rb_intern("SendQueueAllocError"));
   mTox_mOutMessage_eTooLongError        = rb_const_get(mTox_mOutMessage, rb_intern("TooLongError"));
   mTox_mOutMessage_eEmptyError          = rb_const_get(mTox_mOutMessage, rb_intern("EmptyError"));
+
+  mTox_cOutFriendFile_eNameTooLongError = rb_const_get(mTox_cOutFriendFile, rb_intern("NameTooLongError"));
+  mTox_cOutFriendFile_eTooManyError     = rb_const_get(mTox_cOutFriendFile, rb_intern("TooManyError"));
 
   // Singleton methods
 
@@ -113,6 +129,7 @@ void Init_tox()
   mTox_cClient_INIT();
   mTox_cFriend_INIT();
   mTox_cAV_INIT();
+  mTox_cOutFriendFile_INIT();
 }
 
 /*************************************************************

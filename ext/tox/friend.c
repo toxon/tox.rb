@@ -8,6 +8,7 @@ static VALUE mTox_cFriend_send_message(VALUE self, VALUE text);
 static VALUE mTox_cFriend_name(VALUE self);
 static VALUE mTox_cFriend_status(VALUE self);
 static VALUE mTox_cFriend_status_message(VALUE self);
+static VALUE mTox_cFriend_send_file(VALUE self, VALUE file_kind, VALUE file_size, VALUE filename);
 
 /*************************************************************
  * Initialization
@@ -24,6 +25,7 @@ void mTox_cFriend_INIT()
   rb_define_method(mTox_cFriend, "name",           mTox_cFriend_name,           0);
   rb_define_method(mTox_cFriend, "status",         mTox_cFriend_status,         0);
   rb_define_method(mTox_cFriend, "status_message", mTox_cFriend_status_message, 0);
+  rb_define_method(mTox_cFriend, "send_file",      mTox_cFriend_send_file,      3);
 }
 
 /*************************************************************
@@ -162,6 +164,8 @@ VALUE mTox_cFriend_send_message(const VALUE self, const VALUE text)
     rb_funcall(mTox_cOutFriendMessage, rb_intern("new"), 2,
                self,
                result);
+
+  return friend_out_message;
 }
 
 // Tox::Friend#name
@@ -354,4 +358,88 @@ VALUE mTox_cFriend_status_message(const VALUE self)
     rb_str_new(status_message_data, status_message_size_data);
 
   return status_message;
+}
+
+// Tox::Friend#send_file
+VALUE mTox_cFriend_send_file(const VALUE self, const VALUE file_kind, const VALUE file_size, const VALUE filename)
+{
+  const enum TOX_FILE_KIND file_kind_data = mTox_mFileKind_TO_DATA(file_kind);
+
+  const uint64_t file_size_data =
+    file_size == Qnil
+    ? UINT64_MAX
+    : NUM2ULL(file_size);
+
+  Check_Type(filename, T_STRING);
+
+  const VALUE client = rb_iv_get(self, "@client");
+
+  CDATA(client, mTox_cClient_CDATA, client_cdata);
+
+  const VALUE friend_number = rb_iv_get(self, "@number");
+
+  const uint32_t friend_number_data = NUM2ULONG(friend_number);
+
+  TOX_ERR_FILE_SEND file_send_error;
+
+  const uint32_t file_number_data = tox_file_send(
+    client_cdata->tox,
+    friend_number_data,
+    file_kind_data,
+    file_size_data,
+    NULL,
+    RSTRING_PTR(filename),
+    RSTRING_LEN(filename),
+    &file_send_error
+  );
+
+  switch (file_send_error) {
+    case TOX_ERR_FILE_SEND_OK:
+      break;
+    case TOX_ERR_FILE_SEND_NULL:
+      RAISE_FUNC_ERROR(
+        "tox_file_send",
+        mTox_eNullError,
+        "TOX_ERR_FILE_SEND_NULL"
+      );
+    case TOX_ERR_FILE_SEND_FRIEND_NOT_FOUND:
+      RAISE_FUNC_ERROR(
+        "tox_file_send",
+        mTox_cFriend_eNotFoundError,
+        "TOX_ERR_FILE_SEND_FRIEND_NOT_FOUND"
+      );
+    case TOX_ERR_FILE_SEND_FRIEND_NOT_CONNECTED:
+      RAISE_FUNC_ERROR(
+        "tox_file_send",
+        mTox_cFriend_eNotConnectedError,
+        "TOX_ERR_FILE_SEND_FRIEND_NOT_CONNECTED"
+      );
+    case TOX_ERR_FILE_SEND_NAME_TOO_LONG:
+      RAISE_FUNC_ERROR(
+        "tox_file_send",
+        mTox_cOutFriendFile_eNameTooLongError,
+        "TOX_ERR_FILE_SEND_NAME_TOO_LONG"
+      );
+    case TOX_ERR_FILE_SEND_TOO_MANY:
+      RAISE_FUNC_ERROR(
+        "tox_file_send",
+        mTox_cOutFriendFile_eTooManyError,
+        "TOX_ERR_FILE_SEND_TOO_MANY"
+      );
+    default:
+      RAISE_FUNC_ERROR_DEFAULT("tox_file_send");
+  }
+
+  if (file_number_data == UINT32_MAX) {
+    RAISE_FUNC_RESULT("tox_file_send");
+  }
+
+  const VALUE file_number = LONG2FIX(file_number_data);
+
+  const VALUE friend_out_file =
+    rb_funcall(mTox_cOutFriendFile, rb_intern("new"), 2,
+               self,
+               file_number);
+
+  return friend_out_file;
 }
