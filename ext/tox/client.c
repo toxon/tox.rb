@@ -1037,6 +1037,6 @@ static void on_file_chunk_request(
     3,
     out_friend_file,
     position,
-    length,
+    length
   );
 }
