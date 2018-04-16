@@ -92,6 +92,17 @@ static void on_file_chunk_request(
   VALUE self
 );
 
+static void on_file_recv_request(
+  Tox *tox,
+  uint32_t friend_number,
+  uint32_t file_number,
+  enum TOX_FILE_KIND file_kind,
+  uint64_t file_size,
+  const uint8_t *filename,
+  size_t filename_length,
+  VALUE self
+);
+
 /*************************************************************
  * Initialization
  *************************************************************/
@@ -843,6 +854,7 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
   tox_callback_friend_status_message(self_cdata->tox, on_friend_status_message_change);
   tox_callback_friend_status        (self_cdata->tox, on_friend_status_change);
   tox_callback_file_chunk_request   (self_cdata->tox, on_file_chunk_request);
+  tox_callback_file_recv            (self_cdata->tox, on_file_recv_request);
 
   return self;
 }
@@ -994,7 +1006,7 @@ void on_friend_status_change(
              status);
 }
 
-static void on_file_chunk_request(
+void on_file_chunk_request(
   Tox *const tox,
   const uint32_t friend_number_data,
   const uint32_t file_number_data,
@@ -1038,5 +1050,58 @@ static void on_file_chunk_request(
     out_friend_file,
     position,
     length
+  );
+}
+
+void on_file_recv_request(
+  Tox *const tox,
+  const uint32_t friend_number_data,
+  const uint32_t file_number_data,
+  const enum TOX_FILE_KIND file_kind_data,
+  const uint64_t file_size_data,
+  const uint8_t *const filename_data,
+  const size_t filename_length_data,
+  const VALUE self
+)
+{
+  const VALUE ivar_on_file_recv_request =
+    rb_iv_get(self, "@on_file_recv_request");
+
+  if (Qnil == ivar_on_file_recv_request) {
+    return;
+  }
+
+  const VALUE friend_number = ULONG2NUM(friend_number_data);
+  const VALUE file_number   = ULONG2NUM(file_number_data);
+  const VALUE file_size     = ULL2NUM(file_size_data);
+
+  const VALUE file_kind = mTox_mFileKind_FROM_DATA(file_kind_data);
+
+  const VALUE filename = rb_str_new(filename_data, filename_length_data);
+
+  const VALUE friend = rb_funcall(
+    mTox_cFriend,
+    rb_intern("new"),
+    2,
+    self,
+    friend_number
+  );
+
+  const VALUE in_friend_file = rb_funcall(
+    mTox_cInFriendFile,
+    rb_intern("new"),
+    2,
+    friend,
+    file_number
+  );
+
+  rb_funcall(
+    ivar_on_file_recv_request,
+    rb_intern("call"),
+    4,
+    in_friend_file,
+    file_kind,
+    file_size,
+    filename
   );
 }

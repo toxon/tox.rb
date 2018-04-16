@@ -12,6 +12,7 @@ module Tox
       @on_friend_status_message_change = nil
       @on_friend_status_change = nil
       @on_file_chunk_request = nil
+      @on_file_recv_request = nil
 
       initialize_with options
     end
@@ -58,6 +59,10 @@ module Tox
 
     def on_file_chunk_request(&block)
       @on_file_chunk_request = block
+    end
+
+    def on_file_recv_request(&block)
+      @on_file_recv_request = block
     end
 
     class Error < RuntimeError; end

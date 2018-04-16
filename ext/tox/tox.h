@@ -53,6 +53,7 @@ extern VALUE mTox_cOutFriendMessage;
 extern VALUE mTox_cAV;
 extern VALUE mTox_mFileKind;
 extern VALUE mTox_cOutFriendFile;
+extern VALUE mTox_cInFriendFile;
 
 extern VALUE mTox_mUserStatus_NONE;
 extern VALUE mTox_mUserStatus_AWAY;

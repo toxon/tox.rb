@@ -27,6 +27,7 @@ VALUE mTox_cOutFriendMessage;
 VALUE mTox_cAV;
 VALUE mTox_mFileKind;
 VALUE mTox_cOutFriendFile;
+VALUE mTox_cInFriendFile;
 
 VALUE mTox_mUserStatus_NONE;
 VALUE mTox_mUserStatus_AWAY;
@@ -92,6 +93,7 @@ void Init_tox()
   mTox_cAV               = rb_const_get(mTox, rb_intern("AV"));
   mTox_mFileKind         = rb_const_get(mTox, rb_intern("FileKind"));
   mTox_cOutFriendFile    = rb_const_get(mTox, rb_intern("OutFriendFile"));
+  mTox_cInFriendFile     = rb_const_get(mTox, rb_intern("InFriendFile"));
 
   mTox_mUserStatus_NONE = rb_const_get(mTox_mUserStatus, rb_intern("NONE"));
   mTox_mUserStatus_AWAY = rb_const_get(mTox_mUserStatus, rb_intern("AWAY"));

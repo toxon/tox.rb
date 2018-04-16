@@ -15,6 +15,7 @@ require 'tox/out_friend_message'
 require 'tox/friend'
 require 'tox/av'
 require 'tox/out_friend_file'
+require 'tox/in_friend_file'
 
 require 'tox/proxies/base'
 require 'tox/proxies/http'
