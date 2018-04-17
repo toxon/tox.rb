@@ -12,6 +12,7 @@ void mTox_cClient_INIT();
 void mTox_cFriend_INIT();
 void mTox_cAV_INIT();
 void mTox_cOutFriendFile_INIT();
+void mTox_cInFriendFile_INIT();
 
 // C data
 

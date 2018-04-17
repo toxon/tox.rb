@@ -142,6 +142,7 @@ void Init_tox()
   mTox_cFriend_INIT();
   mTox_cAV_INIT();
   mTox_cOutFriendFile_INIT();
+  mTox_cInFriendFile_INIT();
 }
 
 /*************************************************************
