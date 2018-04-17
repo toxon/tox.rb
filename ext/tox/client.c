@@ -1086,7 +1086,11 @@ void on_file_recv_request(
   const VALUE file_number   = ULONG2NUM(file_number_data);
   const VALUE file_size     = ULL2NUM(file_size_data);
 
-  const VALUE file_kind = mTox_mFileKind_FROM_DATA(file_kind_data);
+  const VALUE file_kind = mTox_mFileKind_TRY_DATA(file_kind_data);
+
+  if (Qnil == file_kind) {
+    return;
+  }
 
   const VALUE filename = rb_str_new(filename_data, filename_length_data);
 
