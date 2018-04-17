@@ -1,14 +1,14 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-# This bot accepts and friendship request and sends own source code
+# This bot accepts any friendship request and sends own source code
 # when it receives any message from user.
 
 require 'bundler/setup'
 
 require 'tox'
 
-NAME = 'FileBot'
+NAME = 'FileSendBot'
 STATUS_MESSAGE = 'Send me a message'
 
 FILE_NAME = File.basename(__FILE__).freeze

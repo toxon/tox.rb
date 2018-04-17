@@ -30,6 +30,7 @@ Style/DoubleNegation:
 Style/GlobalVars:
   Exclude:
     - 'ext/**/*'
+    - 'examples/**/*'
     - 'spec/network_helper.rb'
 
 Style/PredicateName:
