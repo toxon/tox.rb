@@ -29,6 +29,7 @@ VALUE mTox_cAV;
 VALUE mTox_mFileKind;
 VALUE mTox_cOutFriendFile;
 VALUE mTox_cInFriendFile;
+VALUE mTox_mFileControl;
 
 VALUE mTox_mUserStatus_NONE;
 VALUE mTox_mUserStatus_AWAY;
@@ -44,6 +45,10 @@ VALUE mTox_mConnectionStatus_UDP;
 
 VALUE mTox_mFileKind_DATA;
 VALUE mTox_mFileKind_AVATAR;
+
+VALUE mTox_mFileControl_RESUME;
+VALUE mTox_mFileControl_PAUSE;
+VALUE mTox_mFileControl_CANCEL;
 
 VALUE mTox_cClient_eBadSavedataError;
 
@@ -95,6 +100,7 @@ void Init_tox()
   mTox_mFileKind         = rb_const_get(mTox, rb_intern("FileKind"));
   mTox_cOutFriendFile    = rb_const_get(mTox, rb_intern("OutFriendFile"));
   mTox_cInFriendFile     = rb_const_get(mTox, rb_intern("InFriendFile"));
+  mTox_mFileControl      = rb_const_get(mTox, rb_intern("FileControl"));
 
   mTox_mUserStatus_NONE = rb_const_get(mTox_mUserStatus, rb_intern("NONE"));
   mTox_mUserStatus_AWAY = rb_const_get(mTox_mUserStatus, rb_intern("AWAY"));
@@ -110,6 +116,10 @@ void Init_tox()
 
   mTox_mFileKind_DATA   = rb_const_get(mTox_mFileKind, rb_intern("DATA"));
   mTox_mFileKind_AVATAR = rb_const_get(mTox_mFileKind, rb_intern("AVATAR"));
+
+  mTox_mFileControl_RESUME = rb_const_get(mTox_mFileControl, rb_intern("RESUME"));
+  mTox_mFileControl_PAUSE  = rb_const_get(mTox_mFileControl, rb_intern("PAUSE"));
+  mTox_mFileControl_CANCEL = rb_const_get(mTox_mFileControl, rb_intern("CANCEL"));
 
   mTox_cClient_eBadSavedataError = rb_const_get(mTox_cClient, rb_intern("BadSavedataError"));
 

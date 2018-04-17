@@ -55,6 +55,7 @@ extern VALUE mTox_cAV;
 extern VALUE mTox_mFileKind;
 extern VALUE mTox_cOutFriendFile;
 extern VALUE mTox_cInFriendFile;
+extern VALUE mTox_mFileControl;
 
 extern VALUE mTox_mUserStatus_NONE;
 extern VALUE mTox_mUserStatus_AWAY;
@@ -70,6 +71,10 @@ extern VALUE mTox_mConnectionStatus_UDP;
 
 extern VALUE mTox_mFileKind_DATA;
 extern VALUE mTox_mFileKind_AVATAR;
+
+extern VALUE mTox_mFileControl_RESUME;
+extern VALUE mTox_mFileControl_PAUSE;
+extern VALUE mTox_mFileControl_CANCEL;
 
 extern VALUE mTox_cClient_eBadSavedataError;
 
@@ -99,6 +104,10 @@ static inline TOX_CONNECTION mTox_mConnectionStatus_TO_DATA(VALUE value);
 static inline VALUE              mTox_mFileKind_FROM_DATA(enum TOX_FILE_KIND data);
 static inline VALUE              mTox_mFileKind_TRY_DATA(enum TOX_FILE_KIND data);
 static inline enum TOX_FILE_KIND mTox_mFileKind_TO_DATA(VALUE value);
+
+static inline VALUE                 mTox_mFileControl_FROM_DATA(enum TOX_FILE_KIND data);
+static inline VALUE                 mTox_mFileControl_TRY_DATA(enum TOX_FILE_KIND data);
+static inline enum TOX_FILE_CONTROL mTox_mFileControl_TO_DATA(VALUE value);
 
 // Macros
 
@@ -274,7 +283,7 @@ VALUE mTox_mFileKind_FROM_DATA(const enum TOX_FILE_KIND data)
   const VALUE result = mTox_mFileKind_TRY_DATA(data);
 
   if (result == Qnil) {
-    RAISE_ENUM("TOX_CONNECTION");
+    RAISE_ENUM("TOX_FILE_KIND");
   }
 
   return result;
@@ -302,5 +311,46 @@ enum TOX_FILE_KIND mTox_mFileKind_TO_DATA(const VALUE value)
   }
   else {
     RAISE_OPTION("Tox::FileKind");
+  }
+}
+
+VALUE mTox_mFileControl_FROM_DATA(const enum TOX_FILE_KIND data)
+{
+  const VALUE result = mTox_mFileControl_TRY_DATA(data);
+
+  if (result == Qnil) {
+    RAISE_ENUM("TOX_FILE_CONTROL");
+  }
+
+  return result;
+}
+
+VALUE mTox_mFileControl_TRY_DATA(const enum TOX_FILE_KIND data)
+{
+  switch (data) {
+    case TOX_FILE_CONTROL_RESUME:
+      return mTox_mFileControl_RESUME;
+    case TOX_FILE_CONTROL_PAUSE:
+      return mTox_mFileControl_PAUSE;
+    case TOX_FILE_CONTROL_CANCEL:
+      return mTox_mFileControl_CANCEL;
+    default:
+      return Qnil;
+  }
+}
+
+enum TOX_FILE_CONTROL mTox_mFileControl_TO_DATA(const VALUE value)
+{
+  if (value == mTox_mFileControl_RESUME) {
+    return TOX_FILE_CONTROL_RESUME;
+  }
+  else if (value == mTox_mFileControl_PAUSE) {
+    return TOX_FILE_CONTROL_PAUSE;
+  }
+  else if (value == mTox_mFileControl_CANCEL) {
+    return TOX_FILE_CONTROL_CANCEL;
+  }
+  else {
+    RAISE_OPTION("Tox::FileControl");
   }
 }
