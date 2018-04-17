@@ -14,6 +14,7 @@ module Tox
       @on_file_chunk_request = nil
       @on_file_recv_request = nil
       @on_file_recv_chunk = nil
+      @on_file_recv_control = nil
 
       initialize_with options
     end
@@ -68,6 +69,10 @@ module Tox
 
     def on_file_recv_chunk(&block)
       @on_file_recv_chunk = block
+    end
+
+    def on_file_recv_control(&block)
+      @on_file_recv_control = block
     end
 
     class Error < RuntimeError; end

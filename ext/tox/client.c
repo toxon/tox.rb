@@ -113,6 +113,14 @@ static void on_file_recv_chunk(
   VALUE self
 );
 
+static void on_file_recv_control(
+  Tox *tox,
+  uint32_t friend_number,
+  uint32_t file_number,
+  TOX_FILE_CONTROL file_control,
+  VALUE self
+);
+
 /*************************************************************
  * Initialization
  *************************************************************/
@@ -866,6 +874,7 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
   tox_callback_file_chunk_request   (self_cdata->tox, on_file_chunk_request);
   tox_callback_file_recv            (self_cdata->tox, on_file_recv_request);
   tox_callback_file_recv_chunk      (self_cdata->tox, on_file_recv_chunk);
+  tox_callback_file_recv_control    (self_cdata->tox, on_file_recv_control);
 
   return self;
 }
@@ -1166,5 +1175,54 @@ void on_file_recv_chunk(
     in_friend_file,
     position,
     data
+  );
+}
+
+void on_file_recv_control(
+  Tox *const tox,
+  const uint32_t friend_number_data,
+  const uint32_t file_number_data,
+  const TOX_FILE_CONTROL file_control_data,
+  const VALUE self
+)
+{
+  const VALUE ivar_on_file_recv_control =
+    rb_iv_get(self, "@on_file_recv_control");
+
+  if (Qnil == ivar_on_file_recv_control) {
+    return;
+  }
+
+  const VALUE file_control = mTox_mFileControl_TRY_DATA(file_control_data);
+
+  if (Qnil == file_control) {
+    return;
+  }
+
+  const VALUE friend_number = ULONG2NUM(friend_number_data);
+  const VALUE file_number   = ULONG2NUM(file_number_data);
+
+  const VALUE friend = rb_funcall(
+    mTox_cFriend,
+    rb_intern("new"),
+    2,
+    self,
+    friend_number
+  );
+
+  const VALUE in_friend_file = rb_funcall(
+    mTox_cInFriendFile,
+    rb_intern("new"),
+    2,
+    friend,
+    file_number
+  );
+
+  rb_funcall(
+    ivar_on_file_recv_control,
+    rb_intern("call"),
+    2,
+    in_friend_file,
+    file_control
   );
 }
