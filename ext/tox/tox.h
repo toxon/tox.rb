@@ -3,6 +3,8 @@
 #include <tox/tox.h>
 #include <tox/toxav.h>
 
+#include "callbacks.h"
+
 // C extension initialization
 
 void Init_tox();
