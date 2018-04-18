@@ -83,6 +83,13 @@ static void on_friend_status_change(
   VALUE self
 );
 
+static void on_friend_connection_status_change(
+  Tox *tox,
+  uint32_t friend_number,
+  TOX_CONNECTION tox_connection,
+  VALUE self
+);
+
 static void on_file_chunk_request(
   Tox *tox,
   uint32_t friend_number,
@@ -866,15 +873,16 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
     RAISE_FUNC_RESULT("tox_new");
   }
 
-  tox_callback_friend_request       (self_cdata->tox, on_friend_request);
-  tox_callback_friend_message       (self_cdata->tox, on_friend_message);
-  tox_callback_friend_name          (self_cdata->tox, on_friend_name_change);
-  tox_callback_friend_status_message(self_cdata->tox, on_friend_status_message_change);
-  tox_callback_friend_status        (self_cdata->tox, on_friend_status_change);
-  tox_callback_file_chunk_request   (self_cdata->tox, on_file_chunk_request);
-  tox_callback_file_recv            (self_cdata->tox, on_file_recv_request);
-  tox_callback_file_recv_chunk      (self_cdata->tox, on_file_recv_chunk);
-  tox_callback_file_recv_control    (self_cdata->tox, on_file_recv_control);
+  tox_callback_friend_request          (self_cdata->tox, on_friend_request);
+  tox_callback_friend_message          (self_cdata->tox, on_friend_message);
+  tox_callback_friend_name             (self_cdata->tox, on_friend_name_change);
+  tox_callback_friend_status_message   (self_cdata->tox, on_friend_status_message_change);
+  tox_callback_friend_status           (self_cdata->tox, on_friend_status_change);
+  tox_callback_friend_connection_status(self_cdata->tox, on_friend_connection_status_change);
+  tox_callback_file_chunk_request      (self_cdata->tox, on_file_chunk_request);
+  tox_callback_file_recv               (self_cdata->tox, on_file_recv_request);
+  tox_callback_file_recv_chunk         (self_cdata->tox, on_file_recv_chunk);
+  tox_callback_file_recv_control       (self_cdata->tox, on_file_recv_control);
 
   return self;
 }
@@ -1024,6 +1032,42 @@ void on_friend_status_change(
   rb_funcall(ivar_on_friend_status_change, rb_intern("call"), 2,
              friend,
              status);
+}
+
+void on_friend_connection_status_change(
+  Tox *const tox,
+  const uint32_t friend_number_data,
+  const TOX_CONNECTION connection_status_data,
+  const VALUE self
+)
+{
+  const VALUE ivar_on_friend_connection_status_change =
+    rb_iv_get(self, "@on_friend_connection_status_change");
+
+  if (Qnil == ivar_on_friend_connection_status_change) {
+    return;
+  }
+
+  const VALUE friend_number = ULONG2NUM(friend_number_data);
+
+  const VALUE friend = rb_funcall(
+    mTox_cFriend,
+    rb_intern("new"),
+    2,
+    self,
+    friend_number
+  );
+
+  const VALUE connection_status =
+    mTox_mConnectionStatus_FROM_DATA(connection_status_data);
+
+  rb_funcall(
+    ivar_on_friend_connection_status_change,
+    rb_intern("call"),
+    2,
+    friend,
+    connection_status
+  );
 }
 
 void on_file_chunk_request(

@@ -5,12 +5,15 @@ module Tox
   # Tox client.
   #
   class Client
-    def initialize(options = Tox::Options.new)
+    def initialize( # rubocop:disable Metrics/MethodLength
+      options = Tox::Options.new
+    )
       @on_friend_request = nil
       @on_friend_message = nil
       @on_friend_name_change = nil
       @on_friend_status_message_change = nil
       @on_friend_status_change = nil
+      @on_friend_connection_status_change = nil
       @on_file_chunk_request = nil
       @on_file_recv_request = nil
       @on_file_recv_chunk = nil
@@ -57,6 +60,10 @@ module Tox
 
     def on_friend_status_change(&block)
       @on_friend_status_change = block
+    end
+
+    def on_friend_connection_status_change(&block)
+      @on_friend_connection_status_change = block
     end
 
     def on_file_chunk_request(&block)
