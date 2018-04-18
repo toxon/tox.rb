@@ -11,7 +11,6 @@ static void  mTox_cClient_free(mTox_cClient_CDATA *free_cdata);
 static VALUE mTox_cClient_iteration_interval(VALUE self);
 static VALUE mTox_cClient_iterate(VALUE self);
 
-static VALUE mTox_cClient_connection_status(VALUE self);
 static VALUE mTox_cClient_public_key(VALUE self);
 static VALUE mTox_cClient_address(VALUE self);
 static VALUE mTox_cClient_nospam(VALUE self);
@@ -152,14 +151,13 @@ void mTox_cClient_INIT()
   rb_define_method(mTox_cClient, "iteration_interval", mTox_cClient_iteration_interval, 0);
   rb_define_method(mTox_cClient, "iterate",            mTox_cClient_iterate,            0);
 
-  rb_define_method(mTox_cClient, "connection_status", mTox_cClient_connection_status, 0);
-  rb_define_method(mTox_cClient, "public_key",        mTox_cClient_public_key,        0);
-  rb_define_method(mTox_cClient, "address",           mTox_cClient_address,           0);
-  rb_define_method(mTox_cClient, "nospam",            mTox_cClient_nospam,            0);
-  rb_define_method(mTox_cClient, "nospam=",           mTox_cClient_nospam_ASSIGN,     1);
-  rb_define_method(mTox_cClient, "savedata",          mTox_cClient_savedata,          0);
-  rb_define_method(mTox_cClient, "udp_port",          mTox_cClient_udp_port,          0);
-  rb_define_method(mTox_cClient, "tcp_port",          mTox_cClient_tcp_port,          0);
+  rb_define_method(mTox_cClient, "public_key", mTox_cClient_public_key,    0);
+  rb_define_method(mTox_cClient, "address",    mTox_cClient_address,       0);
+  rb_define_method(mTox_cClient, "nospam",     mTox_cClient_nospam,        0);
+  rb_define_method(mTox_cClient, "nospam=",    mTox_cClient_nospam_ASSIGN, 1);
+  rb_define_method(mTox_cClient, "savedata",   mTox_cClient_savedata,      0);
+  rb_define_method(mTox_cClient, "udp_port",   mTox_cClient_udp_port,      0);
+  rb_define_method(mTox_cClient, "tcp_port",   mTox_cClient_tcp_port,      0);
 
   rb_define_method(mTox_cClient, "bootstrap",     mTox_cClient_bootstrap,     3);
   rb_define_method(mTox_cClient, "add_tcp_relay", mTox_cClient_add_tcp_relay, 3);
@@ -233,20 +231,6 @@ VALUE mTox_cClient_iterate(const VALUE self)
   tox_iterate(self_cdata->tox, self);
 
   return Qnil;
-}
-
-// Tox::Client#connection_status
-VALUE mTox_cClient_connection_status(const VALUE self)
-{
-  CDATA(self, mTox_cClient_CDATA, self_cdata);
-
-  TOX_CONNECTION connection_status_data =
-    tox_self_get_connection_status(self_cdata->tox);
-
-  const VALUE connection_status =
-    mTox_mConnectionStatus_FROM_DATA(connection_status_data);
-
-  return connection_status;
 }
 
 // Tox::Client#public_key
