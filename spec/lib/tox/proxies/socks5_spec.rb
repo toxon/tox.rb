@@ -4,7 +4,7 @@ RSpec.describe Tox::Proxies::SOCKS5 do
   subject { described_class.new host, port }
 
   let(:host) { '127.0.0.1' }
-  let(:port) { rand 1..65_535 }
+  let(:port) { random_port }
 
   describe '#initialize' do
     context 'when given host value has invalid type' do
@@ -124,7 +124,7 @@ RSpec.describe Tox::Proxies::SOCKS5 do
     end
 
     context 'when values differ by port' do
-      let(:other_port) { rand 1..65_535 }
+      let(:other_port) { random_port }
 
       specify do
         expect(subject).not_to eq other

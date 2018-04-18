@@ -223,7 +223,7 @@ RSpec.describe Tox::Client do
       end
     end
 
-    let(:udp_port) { rand 1024..64_535 }
+    let(:udp_port) { random_port }
 
     context 'when UDP is disabled' do
       let(:udp_enabled) { false }
@@ -264,7 +264,7 @@ RSpec.describe Tox::Client do
     end
 
     context 'when TCP is enabled' do
-      let(:tcp_port) { rand 1024..64_535 }
+      let(:tcp_port) { random_port }
 
       specify do
         expect(subject.tcp_port).to be_kind_of Integer

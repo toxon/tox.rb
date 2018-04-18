@@ -12,7 +12,7 @@ RSpec.describe Support::FakeBootstrapNetwork::Process do
   let(:keys_file_path)   { File.join(tmpdir, 'keys').freeze   }
   let(:pid_file_path)    { File.join(tmpdir, 'pid').freeze    }
 
-  let(:port) { rand 1024..65_535 }
+  let(:port) { random_port }
 
   let :config do
     Support::FakeBootstrapNetwork::Config.new(

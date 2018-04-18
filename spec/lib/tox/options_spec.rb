@@ -135,7 +135,7 @@ RSpec.describe Tox::Options do
 
   describe '#proxy' do
     let(:proxy_host) { Faker::Internet.ip_v4_address }
-    let(:proxy_port) { rand 1..65_535 }
+    let(:proxy_port) { random_port }
 
     it 'returns nil by default' do
       expect(subject.proxy).to eq nil
@@ -204,7 +204,7 @@ RSpec.describe Tox::Options do
 
   describe '#proxy_type' do
     let(:proxy_host) { Faker::Internet.ip_v4_address }
-    let(:proxy_port) { rand 1..65_535 }
+    let(:proxy_port) { random_port }
 
     it 'returns NONE by default' do
       expect(subject.proxy_type).to eq Tox::ProxyType::NONE
@@ -244,7 +244,7 @@ RSpec.describe Tox::Options do
 
   describe '#proxy_host' do
     let(:proxy_host) { Faker::Internet.ip_v4_address }
-    let(:proxy_port) { rand 1..65_535 }
+    let(:proxy_port) { random_port }
 
     it 'returns nil by default' do
       expect(subject.proxy_host).to eq nil
@@ -284,7 +284,7 @@ RSpec.describe Tox::Options do
 
   describe '#proxy_port' do
     let(:proxy_host) { Faker::Internet.ip_v4_address }
-    let(:proxy_port) { rand 1..65_535 }
+    let(:proxy_port) { random_port }
 
     it 'returns default value' do
       expect(subject.proxy_port).to eq 0
@@ -332,7 +332,7 @@ RSpec.describe Tox::Options do
         subject.start_port = start_port
       end
 
-      let(:start_port) { rand 1..65_535 }
+      let(:start_port) { random_port }
 
       it 'returns given value' do
         expect(subject.start_port).to eq start_port
@@ -389,7 +389,7 @@ RSpec.describe Tox::Options do
         subject.end_port = end_port
       end
 
-      let(:end_port) { rand 1..65_535 }
+      let(:end_port) { random_port }
 
       it 'returns given value' do
         expect(subject.end_port).to eq end_port
@@ -446,7 +446,7 @@ RSpec.describe Tox::Options do
         subject.tcp_port = tcp_port
       end
 
-      let(:tcp_port) { rand 1..65_535 }
+      let(:tcp_port) { random_port }
 
       it 'returns given value' do
         expect(subject.tcp_port).to eq tcp_port
