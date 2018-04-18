@@ -119,7 +119,7 @@ void on_friend_status_message_change(
   Tox *const tox,
   const uint32_t friend_number_data,
   const uint8_t *const status_message_data,
-  size_t status_message_length_data,
+  const size_t status_message_length_data,
   const VALUE self
 )
 {
