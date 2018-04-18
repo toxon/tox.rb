@@ -258,6 +258,7 @@ have_func! 'tox/tox.h', 'tox_callback_file_chunk_request'
 have_func! 'tox/tox.h', 'tox_callback_file_recv'
 have_func! 'tox/tox.h', 'tox_callback_file_recv_chunk'
 have_func! 'tox/tox.h', 'tox_file_control'
+have_func! 'tox/tox.h', 'tox_callback_self_connection_status'
 
 have_func! 'tox/toxav.h', 'toxav_new'
 have_func! 'tox/toxav.h', 'toxav_kill'

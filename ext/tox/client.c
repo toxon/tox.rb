@@ -41,7 +41,15 @@ static VALUE mTox_cClient_friend_add(VALUE self, VALUE address, VALUE text);
 
 static VALUE mTox_cClient_initialize_with(VALUE self, VALUE options);
 
-// Callbacks
+// Self callbacks
+
+static void on_self_connection_status_change(
+  Tox *tox,
+  TOX_CONNECTION connection_status,
+  VALUE self
+);
+
+// Friend callbacks
 
 static void on_friend_request(
   Tox *tox,
@@ -89,6 +97,8 @@ static void on_friend_connection_status_change(
   TOX_CONNECTION tox_connection,
   VALUE self
 );
+
+// File callbacks
 
 static void on_file_chunk_request(
   Tox *tox,
@@ -873,22 +883,56 @@ VALUE mTox_cClient_initialize_with(const VALUE self, const VALUE options)
     RAISE_FUNC_RESULT("tox_new");
   }
 
+  // Self callbacks
+  tox_callback_self_connection_status(self_cdata->tox, on_self_connection_status_change);
+
+  // Friend callbacks
   tox_callback_friend_request          (self_cdata->tox, on_friend_request);
   tox_callback_friend_message          (self_cdata->tox, on_friend_message);
   tox_callback_friend_name             (self_cdata->tox, on_friend_name_change);
   tox_callback_friend_status_message   (self_cdata->tox, on_friend_status_message_change);
   tox_callback_friend_status           (self_cdata->tox, on_friend_status_change);
   tox_callback_friend_connection_status(self_cdata->tox, on_friend_connection_status_change);
-  tox_callback_file_chunk_request      (self_cdata->tox, on_file_chunk_request);
-  tox_callback_file_recv               (self_cdata->tox, on_file_recv_request);
-  tox_callback_file_recv_chunk         (self_cdata->tox, on_file_recv_chunk);
-  tox_callback_file_recv_control       (self_cdata->tox, on_file_recv_control);
+
+  // File callbacks
+  tox_callback_file_chunk_request(self_cdata->tox, on_file_chunk_request);
+  tox_callback_file_recv         (self_cdata->tox, on_file_recv_request);
+  tox_callback_file_recv_chunk   (self_cdata->tox, on_file_recv_chunk);
+  tox_callback_file_recv_control (self_cdata->tox, on_file_recv_control);
 
   return self;
 }
 
 /*************************************************************
- * Callbacks
+ * Self callbacks
+ *************************************************************/
+
+void on_self_connection_status_change(
+  Tox *const tox,
+  const TOX_CONNECTION connection_status_data,
+  const VALUE self
+)
+{
+  const VALUE ivar_on_self_connection_status_change =
+    rb_iv_get(self, "@on_self_connection_status_change");
+
+  if (Qnil == ivar_on_self_connection_status_change) {
+    return;
+  }
+
+  const VALUE connection_status =
+    mTox_mConnectionStatus_FROM_DATA(connection_status_data);
+
+  rb_funcall(
+    ivar_on_self_connection_status_change,
+    rb_intern("call"),
+    1,
+    connection_status
+  );
+}
+
+/*************************************************************
+ * Friend callbacks
  *************************************************************/
 
 void on_friend_request(
@@ -1069,6 +1113,10 @@ void on_friend_connection_status_change(
     connection_status
   );
 }
+
+/*************************************************************
+ * File callbacks
+ *************************************************************/
 
 void on_file_chunk_request(
   Tox *const tox,

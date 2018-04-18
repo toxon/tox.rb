@@ -12,10 +12,6 @@ class Wrapper
     @client.on_friend_message(&method(:on_friend_message))
   end
 
-  def connection_status
-    @client.connection_status
-  end
-
   def public_key
     @client.public_key
   end

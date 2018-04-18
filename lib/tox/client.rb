@@ -8,6 +8,7 @@ module Tox
     def initialize( # rubocop:disable Metrics/MethodLength
       options = Tox::Options.new
     )
+      @on_self_connection_status_change = nil
       @on_friend_request = nil
       @on_friend_message = nil
       @on_friend_name_change = nil
@@ -40,6 +41,10 @@ module Tox
 
     def friend!(number)
       Friend.new(self, number).exist!
+    end
+
+    def on_self_connection_status_change(&block)
+      @on_self_connection_status_change = block
     end
 
     def on_friend_request(&block)
