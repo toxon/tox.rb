@@ -1,12 +1,16 @@
 [submodule "vendor/src/libtoxcore"]
 	path = vendor/src/libtoxcore
 	url = https://github.com/TokTok/c-toxcore.git
+	branch = "v0.2.2"
 [submodule "vendor/src/libsodium"]
 	path = vendor/src/libsodium
 	url = https://github.com/jedisct1/libsodium.git
+	branch = "1.0.11"
 [submodule "vendor/src/opus"]
 	path = vendor/src/opus
 	url = https://github.com/xiph/opus.git
+	branch = "v1.1.3"
 [submodule "vendor/src/libvpx"]
 	path = vendor/src/libvpx
 	url = https://chromium.googlesource.com/webm/libvpx.git
+	branch = "v1.6.0"
