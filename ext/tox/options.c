@@ -141,17 +141,27 @@ VALUE mTox_cOptions_savedata(const VALUE self)
 {
   CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
-  switch (self_cdata->tox_options->savedata_type) {
+  const TOX_SAVEDATA_TYPE savedata_type_data =
+    tox_options_get_savedata_type(self_cdata->tox_options);
+
+  switch (savedata_type_data) {
     case TOX_SAVEDATA_TYPE_NONE:
       return Qnil;
     case TOX_SAVEDATA_TYPE_TOX_SAVE:
     {
-      const VALUE savedata = rb_str_new(
-        self_cdata->tox_options->savedata_data,
-        self_cdata->tox_options->savedata_length
-      );
+      const uint8_t *const savedata_ptr_data =
+        tox_options_get_savedata_data(self_cdata->tox_options);
+
+      const size_t savedata_length_data =
+        tox_options_get_savedata_length(self_cdata->tox_options);
+
+      const VALUE savedata =
+        rb_str_new(savedata_ptr_data, savedata_length_data);
+
       return savedata;
     }
+    case TOX_SAVEDATA_TYPE_SECRET_KEY:
+      RAISE_ENUM("TOX_SAVEDATA_TYPE");
     default:
       RAISE_ENUM("TOX_SAVEDATA_TYPE");
   }
@@ -163,18 +173,34 @@ VALUE mTox_cOptions_savedata_ASSIGN(const VALUE self, const VALUE savedata)
   CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
   if (Qnil == savedata) {
-    self_cdata->tox_options->savedata_type = TOX_SAVEDATA_TYPE_NONE;
-    self_cdata->tox_options->savedata_data = NULL;
-    self_cdata->tox_options->savedata_length = 0;
+    tox_options_set_savedata_type(
+      self_cdata->tox_options,
+      TOX_SAVEDATA_TYPE_NONE
+    );
+
+    tox_options_set_savedata_data(self_cdata->tox_options, NULL, 0);
+    tox_options_set_savedata_length(self_cdata->tox_options, 0);
 
     return Qnil;
   }
 
   Check_Type(savedata, T_STRING);
 
-  self_cdata->tox_options->savedata_type = TOX_SAVEDATA_TYPE_TOX_SAVE;
-  self_cdata->tox_options->savedata_data = RSTRING_PTR(savedata);
-  self_cdata->tox_options->savedata_length = RSTRING_LEN(savedata);
+  tox_options_set_savedata_type(
+    self_cdata->tox_options,
+    TOX_SAVEDATA_TYPE_TOX_SAVE
+  );
+
+  tox_options_set_savedata_data(
+    self_cdata->tox_options,
+    RSTRING_PTR(savedata),
+    RSTRING_LEN(savedata)
+  );
+
+  tox_options_set_savedata_length(
+    self_cdata->tox_options,
+    RSTRING_LEN(savedata)
+  );
 
   return savedata;
 }
@@ -265,13 +291,13 @@ VALUE mTox_cOptions_proxy_host(const VALUE self)
 {
   CDATA(self, mTox_cOptions_CDATA, self_cdata);
 
-  const char *proxy_host_data = tox_options_get_proxy_host(self_cdata->tox_options);
+  const char *const proxy_host_data = tox_options_get_proxy_host(self_cdata->tox_options);
 
   if (!proxy_host_data) {
     return Qnil;
   }
 
-  const VALUE proxy_host = rb_str_new_cstr(self_cdata->tox_options->proxy_host);
+  const VALUE proxy_host = rb_str_new_cstr(proxy_host_data);
 
   return proxy_host;
 }
