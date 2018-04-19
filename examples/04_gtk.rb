@@ -18,6 +18,7 @@ $current_friend_number = nil
 
 $friends_list_store = Gtk::ListStore.new Integer, String
 $message_text_buffer = Gtk::TextBuffer.new
+$history_text_buffer = Gtk::TextBuffer.new
 
 $tox_client = Tox::Client.new
 
@@ -50,10 +51,12 @@ end
 
 def on_send_button_clicked_cb(_)
   return if $current_friend_number.nil?
-  text = $message_text_buffer.text
+  text = $message_text_buffer.text.strip
   return if text.empty?
   $tox_client.friend($current_friend_number).send_message text
   $message_text_buffer.text = ''
+  $history_text_buffer.insert $history_text_buffer.end_iter, "Me:\n"
+  $history_text_buffer.insert $history_text_buffer.end_iter, "#{text}\n"
 end
 
 gtk_builder.connect_signals do |handler|
@@ -68,6 +71,7 @@ gtk_builder['friends_tree_view'].append_column(
 
 gtk_builder['friends_tree_view'].model = $friends_list_store
 gtk_builder['message_text_view'].buffer = $message_text_buffer
+gtk_builder['history_text_view'].buffer = $history_text_buffer
 
 puts 'Running. Send me friend request, I\'ll accept it immediately.'
 
