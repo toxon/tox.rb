@@ -18,7 +18,9 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child internal-child="selection">
-              <object class="GtkTreeSelection"/>
+              <object class="GtkTreeSelection" id="friends_tree_selection">
+                <signal name="changed" handler="friends_tree_selection_changed_cb" swapped="no"/>
+              </object>
             </child>
           </object>
           <packing>

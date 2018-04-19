@@ -15,15 +15,18 @@ def on_main_window_destroy_cb
   Gtk.main_quit
 end
 
+def on_friends_tree_selection_changed_cb(selection)
+  selected = selection.selected
+  return if selected.nil?
+  friend_number = selected[0]
+  p friend_number
+end
+
 gtk_builder.connect_signals do |handler|
   method "on_#{handler}"
 end
 
 gtk_builder['main_window'].show_all
-
-gtk_builder['friends_tree_view'].append_column(
-  Gtk::TreeViewColumn.new('#', Gtk::CellRendererText.new, text: 0),
-)
 
 gtk_builder['friends_tree_view'].append_column(
   Gtk::TreeViewColumn.new('Name', Gtk::CellRendererText.new, text: 1),
