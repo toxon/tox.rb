@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# FIXME: GTK is not thread-safe, but this fact is ignored here.
+
 require 'bundler/setup'
 
 require 'tox'
