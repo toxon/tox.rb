@@ -30,14 +30,25 @@ puts "Address: #{$tox_client.address}"
 puts 'Connecting to the nodes from official list...'
 $tox_client.bootstrap_official
 
+gtk_builder = Gtk::Builder.new
+
+gtk_builder.add_from_file GLADE_FILE
+
 $tox_client.on_friend_request do |public_key, _text|
   friend = $tox_client.friend_add_norequest public_key
   $friends_list_store.append.set_values 0 => friend.number
 end
 
-gtk_builder = Gtk::Builder.new
+$tox_client.on_friend_message do |friend, text|
+  text = text.strip
+  next if text.empty?
 
-gtk_builder.add_from_file GLADE_FILE
+  friend_name = friend.name.strip
+  friend_name = 'Friend' if friend_name.empty?
+
+  $history_text_buffer.insert $history_text_buffer.end_iter, "#{friend_name}:\n"
+  $history_text_buffer.insert $history_text_buffer.end_iter, "#{text}:\n"
+end
 
 def on_main_window_destroy_cb
   Gtk.main_quit
