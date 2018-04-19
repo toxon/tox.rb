@@ -51,16 +51,11 @@ $tox_client.on_friend_message do |friend, text|
   friend_name = friend.name.strip
   friend_name = 'Friend' if friend_name.empty?
 
-  $history_text_buffer.insert(
-    $history_text_buffer.end_iter,
-    "#{friend_name}:\n",
-    tags: [$history_bold_text_tag],
-  )
+  $history_text_buffer.insert $history_text_buffer.end_iter,
+                              "#{friend_name}:\n",
+                              tags: [$history_bold_text_tag]
 
-  $history_text_buffer.insert(
-    $history_text_buffer.end_iter,
-    "#{text}\n",
-  )
+  $history_text_buffer.insert $history_text_buffer.end_iter, "#{text}\n"
 end
 
 def on_main_window_destroy_cb
@@ -80,16 +75,10 @@ def on_send_button_clicked_cb(_)
   $tox_client.friend($current_friend_number).send_message text
   $message_text_buffer.text = ''
 
-  $history_text_buffer.insert(
-    $history_text_buffer.end_iter,
-    "Me:\n",
-    tags: [$history_bold_text_tag],
-  )
+  $history_text_buffer.insert $history_text_buffer.end_iter, "Me:\n",
+                              tags: [$history_bold_text_tag]
 
-  $history_text_buffer.insert(
-    $history_text_buffer.end_iter,
-    "#{text}\n",
-  )
+  $history_text_buffer.insert $history_text_buffer.end_iter, "#{text}\n"
 end
 
 gtk_builder.connect_signals do |handler|
