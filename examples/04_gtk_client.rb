@@ -47,7 +47,7 @@ $tox_client.on_friend_message do |friend, text|
   friend_name = 'Friend' if friend_name.empty?
 
   $history_text_buffer.insert $history_text_buffer.end_iter, "#{friend_name}:\n"
-  $history_text_buffer.insert $history_text_buffer.end_iter, "#{text}:\n"
+  $history_text_buffer.insert $history_text_buffer.end_iter, "#{text}\n"
 end
 
 def on_main_window_destroy_cb
