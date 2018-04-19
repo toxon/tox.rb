@@ -6,3 +6,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'coveralls', group: :test, require: false
+
+group :examples do
+  gem 'gtk3', '~> 3.2'
+end

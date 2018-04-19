@@ -47,3 +47,6 @@
 # Vendored dependencies:
 /vendor/*
 !/vendor/src/
+
+# Other stuff:
+/examples/ui.glade~
