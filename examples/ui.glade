@@ -13,10 +13,13 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkListBox" id="contact_list_box">
+          <object class="GtkTreeView" id="friends_tree_view">
             <property name="width_request">160</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection"/>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>

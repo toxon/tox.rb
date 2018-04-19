@@ -21,4 +21,20 @@ end
 
 gtk_builder['main_window'].show_all
 
+gtk_builder['friends_tree_view'].append_column(
+  Gtk::TreeViewColumn.new('#', Gtk::CellRendererText.new, text: 0),
+)
+
+gtk_builder['friends_tree_view'].append_column(
+  Gtk::TreeViewColumn.new('Name', Gtk::CellRendererText.new, text: 1),
+)
+
+friends_list_store = Gtk::ListStore.new Integer, String
+
+gtk_builder['friends_tree_view'].model = friends_list_store
+
+friends_list_store.append.set_values 0 => 0, 1 => 'Braiden Vasco'
+friends_list_store.append.set_values 0 => 1, 1 => 'Satoshi Nakamoto'
+friends_list_store.append.set_values 0 => 2, 1 => 'Elon Musk'
+
 Gtk.main
