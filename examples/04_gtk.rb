@@ -36,8 +36,11 @@ friends_list_store = Gtk::ListStore.new Integer, String
 
 gtk_builder['friends_tree_view'].model = friends_list_store
 
-friends_list_store.append.set_values 0 => 0, 1 => 'Braiden Vasco'
-friends_list_store.append.set_values 0 => 1, 1 => 'Satoshi Nakamoto'
-friends_list_store.append.set_values 0 => 2, 1 => 'Elon Musk'
+10.times do
+  friends_list_store.append.set_values 0 => 0, 1 => 'Braiden Vasco'
+  friends_list_store.append.set_values 0 => 1, 1 => 'Satoshi Nakamoto'
+  friends_list_store.append.set_values 0 => 2, 1 => 'Elon Musk'
+  friends_list_store.append.set_values 0 => 3, 1 => 'a' * 50
+end
 
 Gtk.main
