@@ -18,8 +18,6 @@ task lint: :rubocop
 desc 'Fix code style (rubocop --auto-correct)'
 task fix: 'rubocop:auto_correct'
 
-require 'pry'
-
 begin
   require 'rspec/core/rake_task'
   RSpec::Core::RakeTask.new
