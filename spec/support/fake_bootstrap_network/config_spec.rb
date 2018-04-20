@@ -27,7 +27,7 @@ RSpec.describe Support::FakeBootstrapNetwork::Config do
 
   describe '#render' do
     it 'works' do
-      expect(subject.render).to eq <<~END
+      expect(subject.render).to eq <<~CONFIG
         keys_file_path = "\\x6B\\x65\\x79\\x73"
         pid_file_path = "\\x70\\x69\\x64"
         port = 10100
@@ -45,7 +45,7 @@ RSpec.describe Support::FakeBootstrapNetwork::Config do
             public_key = "\\x70\\x75\\x62\\x6C\\x69\\x63\\x5F\\x6B\\x65\\x79"
           }
         )
-      END
+      CONFIG
     end
   end
 end

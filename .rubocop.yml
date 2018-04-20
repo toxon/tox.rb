@@ -8,6 +8,9 @@ AllCops:
 Layout/AccessModifierIndentation:
   EnforcedStyle: outdent
 
+Layout/EmptyLinesAroundArguments:
+  Enabled: false
+
 Layout/MultilineOperationIndentation:
   Exclude:
     - 'ext/**/*'
@@ -21,6 +24,10 @@ Metrics/BlockLength:
     - '**/*.gemspec'
     - 'spec/**/*'
 
+Naming/PredicateName:
+  Exclude:
+    - 'ext/tox/extconf.rb'
+
 Style/AndOr:
   EnforcedStyle: conditionals
 
@@ -33,14 +40,16 @@ Style/GlobalVars:
     - 'examples/**/*'
     - 'spec/network_helper.rb'
 
-Style/PredicateName:
-  Exclude:
-    - 'ext/tox/extconf.rb'
+Style/RescueStandardError:
+  Enabled: false
 
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
 
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: comma
 
 Style/VariableInterpolation:

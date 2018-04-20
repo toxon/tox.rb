@@ -23,12 +23,12 @@ module Support
         bootstrap_nodes
       ].freeze
 
-      def self.encode(s)
-        "\"#{encode_raw(s)}\""
+      def self.encode(str)
+        "\"#{encode_raw(str)}\""
       end
 
-      def self.encode_raw(s)
-        s                             #=> "\xAA\x00\xFF"
+      def self.encode_raw(str)
+        str                           #=> "\xAA\x00\xFF"
           .unpack('H*')               #=> ['aa00ff']
           .first                      #=> 'aa00ff'
           .upcase                     #=> 'AA00FF'

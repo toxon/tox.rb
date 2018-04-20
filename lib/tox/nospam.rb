@@ -10,7 +10,11 @@ module Tox
     end
 
     def initialize(value)
-      return @value = [value].pack('L').reverse.freeze if value.is_a? Integer
+      if value.is_a? Integer
+        @value = [value].pack('L').reverse.freeze
+        return
+      end
+
       super
     end
 

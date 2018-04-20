@@ -68,7 +68,7 @@ def on_friends_tree_selection_changed_cb(selection)
   $current_friend_number = selected[0]
 end
 
-def on_send_button_clicked_cb(_)
+def on_send_button_clicked_cb(_button)
   return if $current_friend_number.nil?
   text = $message_text_buffer.text.strip
   return if text.empty?

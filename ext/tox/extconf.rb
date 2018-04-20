@@ -3,8 +3,8 @@
 
 require 'mkmf'
 
-def cflags(s)
-  $CFLAGS += " #{s} "
+def cflags(str)
+  $CFLAGS += " #{str} "
 end
 
 def have_library!(*args)
