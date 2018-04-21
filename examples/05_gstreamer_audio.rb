@@ -5,23 +5,43 @@ require 'gst'
 
 FILENAME = File.expand_path('test.mp3', __dir__).freeze
 
-playbin = Gst::ElementFactory.make 'playbin'
+filesrc        = Gst::ElementFactory.make 'filesrc'
+mpegaudioparse = Gst::ElementFactory.make 'mpegaudioparse'
+mpg123audiodec = Gst::ElementFactory.make 'mpg123audiodec'
+audioresample  = Gst::ElementFactory.make 'audioresample'
+opusenc        = Gst::ElementFactory.make 'opusenc'
+opusdec        = Gst::ElementFactory.make 'opusdec'
+autoaudiosink  = Gst::ElementFactory.make 'autoaudiosink'
 
-if playbin.nil?
-  puts 'Missing GStreamer plugin "playbin"'
-  exit false
-end
+filesrc.location = FILENAME
 
-playbin.uri = Gst.filename_to_uri FILENAME
+elements = [
+  filesrc,
+  mpegaudioparse,
+  mpg123audiodec,
+  audioresample,
+  opusenc,
+  opusdec,
+  autoaudiosink,
+]
+
+pipeline = Gst::Pipeline.new
+
+elements.inject(pipeline, &:<<) # pipeline << filesrc << mpegaudioparse << ...
+elements.inject(&:>>)           # filesrc >> mpegaudioparse >> ...
 
 main_loop = GLib::MainLoop.new
 
-bus = playbin.bus
+bus = pipeline.bus
 
 bus.add_watch do |_bus, message|
   case message.type
   when Gst::MessageType::EOS
     main_loop.quit
+  when Gst::MessageType::WARNING
+    warning, debug = message.parse_warning
+    puts "Debugging ingo: #{debug || :none}"
+    puts "Warning: #{warning.message}"
   when Gst::MessageType::ERROR
     error, debug = message.parse_error
     puts "Debugging info: #{debug || :none}"
@@ -31,7 +51,7 @@ bus.add_watch do |_bus, message|
   true
 end
 
-playbin.play
+pipeline.play
 
 begin
   main_loop.run
@@ -40,5 +60,5 @@ rescue Interrupt
 rescue => error
   puts "Error: #{error.message}"
 ensure
-  playbin.stop
+  pipeline.stop
 end
