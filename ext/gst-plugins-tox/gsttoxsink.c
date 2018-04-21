@@ -1,7 +1,7 @@
 #include "gsttoxsink.h"
 
 #ifndef PACKAGE
-#define PACKAGE "toxsink"
+#define PACKAGE GST_TOXSINK_PLUGIN_NAME
 #endif
 
 GST_DEBUG_CATEGORY_STATIC(gst_tox_sink_debug);
@@ -57,22 +57,27 @@ static GstStaticPadTemplate sink_factory = GST_STATIC_PAD_TEMPLATE(
 GST_PLUGIN_DEFINE(
   GST_VERSION_MAJOR,
   GST_VERSION_MINOR,
-  toxsink,
-  "Sends Opus audio to Tox",
+  GST_TOXSINK_PLUGIN_SYMBOL,
+  GST_TOXSINK_PLUGIN_DESCRIPTION,
   tox_sink_init,
-  "0.0.0",
-  "GPL",
-  "gst-plugins-tox",
-  "https://github.com/toxon/tox.rb"
+  GST_TOXSINK_PLUGIN_VERSION,
+  GST_TOXSINK_PLUGIN_LICENSE,
+  GST_TOXSINK_PLUGIN_PACKAGE,
+  GST_TOXSINK_PLUGIN_URL
 )
 
 gboolean tox_sink_init(GstPlugin *const plugin)
 {
-  GST_DEBUG_CATEGORY_INIT(gst_tox_sink_debug, "toxsink", 0, "ToxSink");
+  GST_DEBUG_CATEGORY_INIT(
+    gst_tox_sink_debug,
+    GST_TOXSINK_PLUGIN_NAME,
+    0,
+    GST_TOXSINK_PLUGIN_CLASS_NAME
+  );
 
   return gst_element_register(
     plugin,
-    "toxsink",
+    GST_TOXSINK_PLUGIN_NAME,
     GST_RANK_NONE,
     GST_TYPE_TOXSINK
   );
@@ -100,10 +105,10 @@ void gst_tox_sink_class_init(GstToxSinkClass *const klass)
 
   gst_element_class_set_details_simple(
     gst_element_class,
-    "ToxSink",
-    "Generic",
-    "Sends Opus audio to Tox",
-    "Braiden Vasco <braiden-vasco@users.noreply.github.com>"
+    GST_TOXSINK_PLUGIN_CLASS_NAME,
+    GST_TOXSINK_PLUGIN_CATEGORIES,
+    GST_TOXSINK_PLUGIN_DESCRIPTION,
+    GST_TOXSINK_PLUGIN_AUTHOR
   );
 
   gst_element_class_add_pad_template(

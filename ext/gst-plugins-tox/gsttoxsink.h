@@ -3,6 +3,8 @@
 
 #include <gst/gst.h>
 
+#include "config.h"
+
 #define GST_TYPE_TOXSINK \
   (gst_tox_sink_get_type())
 
