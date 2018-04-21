@@ -4,7 +4,7 @@
 #include <gst/gst.h>
 
 #define GST_TYPE_TOXSINK \
-  (get_tox_sink_get_type())
+  (gst_tox_sink_get_type())
 
 #define GST_TOXSINK(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST((obj),GST_TYPE_TOXSINK,GstToxSink))
@@ -37,20 +37,22 @@ GType get_tox_sink_get_type();
 
 #endif // __GST_TOXSINK_H__
 
+#ifndef PACKAGE
+#define PACKAGE "toxsink"
+#endif
+
+GST_DEBUG_CATEGORY_STATIC(gst_tox_sink_debug);
+#define GST_CAT_DEFAULT gst_tox_sink_debug
+
 enum {
   PROP_0,
   PROP_SILENT
 };
 
-static GstStaticPadTemplate sink_factory = GST_STATIC_PAD_TEMPLATE(
-  "sink",
-  GST_PAD_SINK,
-  GST_PAD_ALWAYS,
-  GST_STATIC_CAPS("ANY")
-);
-
 #define gst_tox_sink_parent_class parent_class
 G_DEFINE_TYPE(GstToxSink, gst_tox_sink, GST_TYPE_ELEMENT);
+
+static gboolean tox_sink_init(GstPlugin *plugin);
 
 static void gst_tox_sink_class_init(GstToxSinkClass *klass);
 
@@ -82,6 +84,37 @@ static GstFlowReturn gst_tox_sink_chain(
   GstBuffer *buffer
 );
 
+static GstStaticPadTemplate sink_factory = GST_STATIC_PAD_TEMPLATE(
+  "sink",
+  GST_PAD_SINK,
+  GST_PAD_ALWAYS,
+  GST_STATIC_CAPS("ANY")
+);
+
+GST_PLUGIN_DEFINE(
+  GST_VERSION_MAJOR,
+  GST_VERSION_MINOR,
+  toxsink,
+  "Sends Opus audio to Tox",
+  tox_sink_init,
+  "0.0.0",
+  "GPL",
+  "gst-plugins-tox",
+  "https://github.com/toxon/tox.rb"
+)
+
+gboolean tox_sink_init(GstPlugin *const plugin)
+{
+  GST_DEBUG_CATEGORY_INIT(gst_tox_sink_debug, "toxsink", 0, "ToxSink");
+
+  return gst_element_register(
+    plugin,
+    "toxsink",
+    GST_RANK_NONE,
+    GST_TYPE_TOXSINK
+  );
+}
+
 void gst_tox_sink_class_init(GstToxSinkClass *const klass)
 {
   GObjectClass    *const gobject_class     = (GObjectClass*)klass;
@@ -93,8 +126,13 @@ void gst_tox_sink_class_init(GstToxSinkClass *const klass)
   g_object_class_install_property(
     gobject_class,
     PROP_SILENT,
-    g_param_spec_boolean("silent", "Silent", "Produce verbose output?",
-                         FALSE, G_PARAM_READWRITE)
+    g_param_spec_boolean(
+      "silent",
+      "Silent",
+      "Produce verbose output?",
+      FALSE,
+      G_PARAM_READWRITE
+    )
   );
 
   gst_element_class_set_details_simple(
