@@ -43,7 +43,7 @@
 
 # Rake-compiled extension files:
 /lib/tox/tox.so
-/examples/gst-plugins-tox.so
+/share/gst-plugins-tox.so
 
 # Vendored dependencies:
 /vendor/*
