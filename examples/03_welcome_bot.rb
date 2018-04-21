@@ -74,7 +74,7 @@ begin
     tox_client.iterate
   end
   puts
-rescue SignalException
+rescue Interrupt
   puts
 end
 
