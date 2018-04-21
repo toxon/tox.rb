@@ -26,7 +26,7 @@ Metrics/BlockLength:
 
 Naming/PredicateName:
   Exclude:
-    - 'ext/tox/extconf.rb'
+    - 'ext/*/extconf.rb'
 
 Style/AndOr:
   EnforcedStyle: conditionals
