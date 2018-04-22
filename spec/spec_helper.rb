@@ -26,6 +26,7 @@ require 'openssl'
 require 'faker'
 
 require 'tox'
+require 'gst/plugins/tox'
 
 require 'support/random_port'
 

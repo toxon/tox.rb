@@ -1,15 +1,7 @@
 # frozen_string_literal: true
 
-require 'gst'
-
 RSpec.describe 'toxaudiosink' do
-  subject { registry.find_plugin 'toxaudiosink' }
-
-  let(:registry) { Gst::Registry.get }
-
-  before do
-    registry.scan_path File.expand_path '../../../lib', __dir__
-  end
+  subject { Gst::Registry.get.find_plugin 'toxaudiosink' }
 
   describe '#description' do
     specify do

@@ -1,7 +1,10 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'gst'
+require 'bundler/setup'
+
+require 'tox'
+require 'gst/plugins/tox'
 
 FILENAME = File.expand_path('test.mp3', __dir__).freeze
 
