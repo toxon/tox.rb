@@ -39,6 +39,10 @@ def have_const!(header, *args)
   exit 1 unless have_const(*args, header)
 end
 
+##########
+# Common #
+##########
+
 cflags '-std=c11'
 cflags '-Wall'
 cflags '-Wextra'
@@ -49,6 +53,10 @@ pkg_config! 'gstreamer-1.0'
 have_library! 'gstreamer-1.0'
 
 have_header! 'gst/gst.h'
+
+########
+# GLib #
+########
 
 have_type! 'gst/gst.h', 'gboolean'
 have_type! 'gst/gst.h', 'guint'
@@ -71,6 +79,10 @@ have_func! 'gst/gst.h', 'g_object_class_install_property'
 have_func! 'gst/gst.h', 'g_param_spec_boolean'
 # have_func!' gst/gst.h', 'g_value_get_boolean'
 have_func 'gst/gst.h', 'g_value_set_boolean'
+
+#############
+# GStreamer #
+#############
 
 have_type! 'gst/gst.h', 'GstObject'
 have_type! 'gst/gst.h', 'GstElement'
@@ -113,5 +125,9 @@ have_func! 'gst/gst.h', 'gst_element_add_pad'
 have_func! 'gst/gst.h', 'gst_pad_event_default'
 have_func! 'gst/gst.h', 'gst_event_parse_caps'
 have_func! 'gst/gst.h', 'gst_element_register'
+
+##########
+# Common #
+##########
 
 create_makefile 'gst-plugins-tox' or exit 1
