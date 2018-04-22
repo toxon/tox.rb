@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-RSpec.describe 'toxaudiosink' do
-  subject { Gst::Registry.get.find_plugin 'toxaudiosink' }
+RSpec.describe 'lib/gst-plugins-tox.so' do
+  subject { Gst::Registry.get.find_plugin 'tox' }
 
   describe '#description' do
     specify do
-      expect(subject.description).to eq 'Sends Opus audio to Tox'
+      expect(subject.description).to eq 'Tox audio/video sink/src'
     end
   end
 
@@ -17,7 +17,7 @@ RSpec.describe 'toxaudiosink' do
 
   describe '#name' do
     specify do
-      expect(subject.name).to eq 'toxaudiosink'
+      expect(subject.name).to eq 'tox'
     end
   end
 
@@ -35,7 +35,7 @@ RSpec.describe 'toxaudiosink' do
 
   describe '#source' do
     specify do
-      expect(subject.source).to eq 'toxaudiosink'
+      expect(subject.source).to eq 'tox'
     end
   end
 

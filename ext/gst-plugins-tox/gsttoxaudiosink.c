@@ -1,9 +1,5 @@
 #include "gsttoxaudiosink.h"
 
-#ifndef PACKAGE
-#define PACKAGE GST_TOXAUDIOSINK_PLUGIN_NAME
-#endif
-
 GST_DEBUG_CATEGORY_STATIC(gst_tox_sink_debug);
 #define GST_CAT_DEFAULT gst_tox_sink_debug
 
@@ -14,8 +10,6 @@ enum {
 
 #define gst_tox_sink_parent_class parent_class
 G_DEFINE_TYPE(GstToxAudioSink, gst_tox_sink, GST_TYPE_ELEMENT);
-
-static gboolean tox_sink_init(GstPlugin *plugin);
 
 static void gst_tox_sink_class_init(GstToxAudioSinkClass *klass);
 
@@ -54,37 +48,15 @@ static GstStaticPadTemplate sink_factory = GST_STATIC_PAD_TEMPLATE(
   GST_STATIC_CAPS("ANY")
 );
 
-GST_PLUGIN_DEFINE(
-  GST_VERSION_MAJOR,
-  GST_VERSION_MINOR,
-  GST_TOXAUDIOSINK_PLUGIN_SYMBOL,
-  GST_TOXAUDIOSINK_PLUGIN_DESCRIPTION,
-  tox_sink_init,
-  GST_TOXAUDIOSINK_PLUGIN_VERSION,
-  GST_TOXAUDIOSINK_PLUGIN_LICENSE,
-  GST_TOXAUDIOSINK_PLUGIN_PACKAGE,
-  GST_TOXAUDIOSINK_PLUGIN_URL
-)
-
-gboolean tox_sink_init(GstPlugin *const plugin)
+void gst_tox_sink_class_init(GstToxAudioSinkClass *const klass)
 {
   GST_DEBUG_CATEGORY_INIT(
     gst_tox_sink_debug,
-    GST_TOXAUDIOSINK_PLUGIN_NAME,
+    "toxsink",
     0,
-    GST_TOXAUDIOSINK_PLUGIN_CLASS_NAME
+    "toxsink element"
   );
 
-  return gst_element_register(
-    plugin,
-    GST_TOXAUDIOSINK_PLUGIN_NAME,
-    GST_RANK_NONE,
-    GST_TYPE_TOXAUDIOSINK
-  );
-}
-
-void gst_tox_sink_class_init(GstToxAudioSinkClass *const klass)
-{
   GObjectClass    *const gobject_class     = (GObjectClass*)klass;
   GstElementClass *const gst_element_class = (GstElementClass*)klass;
 
@@ -105,10 +77,10 @@ void gst_tox_sink_class_init(GstToxAudioSinkClass *const klass)
 
   gst_element_class_set_details_simple(
     gst_element_class,
-    GST_TOXAUDIOSINK_PLUGIN_CLASS_NAME,
-    GST_TOXAUDIOSINK_PLUGIN_CATEGORIES,
-    GST_TOXAUDIOSINK_PLUGIN_DESCRIPTION,
-    GST_TOXAUDIOSINK_PLUGIN_AUTHOR
+    "ToxAudioSink",
+    "Generic",
+    "Sends Opus audio to Tox",
+    "Braiden Vasco <braiden-vasco@users.noreply.github.com>"
   );
 
   gst_element_class_add_pad_template(

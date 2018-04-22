@@ -3,8 +3,6 @@
 
 #include <gst/gst.h>
 
-#include "config.h"
-
 #define GST_TYPE_TOXAUDIOSINK \
   (gst_tox_sink_get_type())
 
@@ -35,6 +33,6 @@ struct _GstToxAudioSinkClass {
   GstElementClass parent_class;
 };
 
-GType get_tox_sink_get_type();
+GType gst_tox_sink_get_type();
 
 #endif // __GST_TOXAUDIOSINK_H__
