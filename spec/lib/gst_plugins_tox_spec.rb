@@ -9,8 +9,8 @@ RSpec.describe 'lib/gst-plugins-tox.so' do
     registry.scan_path File.expand_path '../../lib', __dir__
   end
 
-  describe '"toxsink" plugin' do
-    subject { registry.find_plugin 'toxsink' }
+  describe '"toxaudiosink" plugin' do
+    subject { registry.find_plugin 'toxaudiosink' }
 
     describe '#description' do
       specify do
@@ -26,7 +26,7 @@ RSpec.describe 'lib/gst-plugins-tox.so' do
 
     describe '#name' do
       specify do
-        expect(subject.name).to eq 'toxsink'
+        expect(subject.name).to eq 'toxaudiosink'
       end
     end
 
@@ -44,7 +44,7 @@ RSpec.describe 'lib/gst-plugins-tox.so' do
 
     describe '#source' do
       specify do
-        expect(subject.source).to eq 'toxsink'
+        expect(subject.source).to eq 'toxaudiosink'
       end
     end
 

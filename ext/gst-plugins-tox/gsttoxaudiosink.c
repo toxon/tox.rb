@@ -1,7 +1,7 @@
-#include "gsttoxsink.h"
+#include "gsttoxaudiosink.h"
 
 #ifndef PACKAGE
-#define PACKAGE GST_TOXSINK_PLUGIN_NAME
+#define PACKAGE GST_TOXAUDIOSINK_PLUGIN_NAME
 #endif
 
 GST_DEBUG_CATEGORY_STATIC(gst_tox_sink_debug);
@@ -13,13 +13,13 @@ enum {
 };
 
 #define gst_tox_sink_parent_class parent_class
-G_DEFINE_TYPE(GstToxSink, gst_tox_sink, GST_TYPE_ELEMENT);
+G_DEFINE_TYPE(GstToxAudioSink, gst_tox_sink, GST_TYPE_ELEMENT);
 
 static gboolean tox_sink_init(GstPlugin *plugin);
 
-static void gst_tox_sink_class_init(GstToxSinkClass *klass);
+static void gst_tox_sink_class_init(GstToxAudioSinkClass *klass);
 
-static void gst_tox_sink_init(GstToxSink *element);
+static void gst_tox_sink_init(GstToxAudioSink *element);
 
 static void gst_tox_sink_set_property(
   GObject *object,
@@ -57,33 +57,33 @@ static GstStaticPadTemplate sink_factory = GST_STATIC_PAD_TEMPLATE(
 GST_PLUGIN_DEFINE(
   GST_VERSION_MAJOR,
   GST_VERSION_MINOR,
-  GST_TOXSINK_PLUGIN_SYMBOL,
-  GST_TOXSINK_PLUGIN_DESCRIPTION,
+  GST_TOXAUDIOSINK_PLUGIN_SYMBOL,
+  GST_TOXAUDIOSINK_PLUGIN_DESCRIPTION,
   tox_sink_init,
-  GST_TOXSINK_PLUGIN_VERSION,
-  GST_TOXSINK_PLUGIN_LICENSE,
-  GST_TOXSINK_PLUGIN_PACKAGE,
-  GST_TOXSINK_PLUGIN_URL
+  GST_TOXAUDIOSINK_PLUGIN_VERSION,
+  GST_TOXAUDIOSINK_PLUGIN_LICENSE,
+  GST_TOXAUDIOSINK_PLUGIN_PACKAGE,
+  GST_TOXAUDIOSINK_PLUGIN_URL
 )
 
 gboolean tox_sink_init(GstPlugin *const plugin)
 {
   GST_DEBUG_CATEGORY_INIT(
     gst_tox_sink_debug,
-    GST_TOXSINK_PLUGIN_NAME,
+    GST_TOXAUDIOSINK_PLUGIN_NAME,
     0,
-    GST_TOXSINK_PLUGIN_CLASS_NAME
+    GST_TOXAUDIOSINK_PLUGIN_CLASS_NAME
   );
 
   return gst_element_register(
     plugin,
-    GST_TOXSINK_PLUGIN_NAME,
+    GST_TOXAUDIOSINK_PLUGIN_NAME,
     GST_RANK_NONE,
-    GST_TYPE_TOXSINK
+    GST_TYPE_TOXAUDIOSINK
   );
 }
 
-void gst_tox_sink_class_init(GstToxSinkClass *const klass)
+void gst_tox_sink_class_init(GstToxAudioSinkClass *const klass)
 {
   GObjectClass    *const gobject_class     = (GObjectClass*)klass;
   GstElementClass *const gst_element_class = (GstElementClass*)klass;
@@ -105,10 +105,10 @@ void gst_tox_sink_class_init(GstToxSinkClass *const klass)
 
   gst_element_class_set_details_simple(
     gst_element_class,
-    GST_TOXSINK_PLUGIN_CLASS_NAME,
-    GST_TOXSINK_PLUGIN_CATEGORIES,
-    GST_TOXSINK_PLUGIN_DESCRIPTION,
-    GST_TOXSINK_PLUGIN_AUTHOR
+    GST_TOXAUDIOSINK_PLUGIN_CLASS_NAME,
+    GST_TOXAUDIOSINK_PLUGIN_CATEGORIES,
+    GST_TOXAUDIOSINK_PLUGIN_DESCRIPTION,
+    GST_TOXAUDIOSINK_PLUGIN_AUTHOR
   );
 
   gst_element_class_add_pad_template(
@@ -116,7 +116,7 @@ void gst_tox_sink_class_init(GstToxSinkClass *const klass)
   );
 }
 
-void gst_tox_sink_init(GstToxSink *const element)
+void gst_tox_sink_init(GstToxAudioSink *const element)
 {
   element->sinkpad = gst_pad_new_from_static_template(&sink_factory, "sink");
 
@@ -140,7 +140,7 @@ void gst_tox_sink_set_property(
   GParamSpec *const pspec
 )
 {
-  GstToxSink *const element = GST_TOXSINK(object);
+  GstToxAudioSink *const element = GST_TOXAUDIOSINK(object);
 
   switch (prop_id) {
     case PROP_SILENT:
@@ -158,7 +158,7 @@ void gst_tox_sink_get_property(
   GParamSpec *const pspec
 )
 {
-  GstToxSink *const element = GST_TOXSINK(object);
+  GstToxAudioSink *const element = GST_TOXAUDIOSINK(object);
 
   switch (prop_id) {
     case PROP_SILENT:
@@ -175,7 +175,7 @@ gboolean gst_tox_sink_sink_event(
   GstEvent *const event
 )
 {
-  GstToxSink *element = GST_TOXSINK(parent);
+  GstToxAudioSink *element = GST_TOXAUDIOSINK(parent);
 
   GST_LOG_OBJECT(
     element,
