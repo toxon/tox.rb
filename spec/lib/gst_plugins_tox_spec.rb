@@ -2,11 +2,11 @@
 
 require 'gst'
 
-RSpec.describe 'share/gst-plugins-tox.so' do
+RSpec.describe 'lib/gst-plugins-tox.so' do
   let(:registry) { Gst::Registry.get }
 
   before do
-    registry.scan_path File.expand_path '../../share', __dir__
+    registry.scan_path File.expand_path '../../lib', __dir__
   end
 
   describe '"toxsink" plugin' do

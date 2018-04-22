@@ -49,7 +49,7 @@ begin
   end
 
   Rake::ExtensionTask.new 'gst-plugins-tox' do |ext|
-    ext.lib_dir = File.expand_path('share', __dir__).freeze
+    ext.lib_dir = File.expand_path('lib', __dir__).freeze
   end
 rescue LoadError
   nil
