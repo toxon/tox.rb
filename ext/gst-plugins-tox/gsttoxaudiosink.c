@@ -45,7 +45,14 @@ static GstStaticPadTemplate sink_factory = GST_STATIC_PAD_TEMPLATE(
   "sink",
   GST_PAD_SINK,
   GST_PAD_ALWAYS,
-  GST_STATIC_CAPS("ANY")
+  GST_STATIC_CAPS(
+    "audio/x-opus, "
+    "rate = (int) 48000, "
+    "channels = (int) 1, "
+    "channel-mapping-family = (int) 0, "
+    "stream-count = (int) 1, "
+    "coupled-count = (int) 0"
+  )
 );
 
 void gst_tox_sink_class_init(GstToxAudioSinkClass *const klass)
@@ -73,6 +80,14 @@ void gst_tox_sink_class_init(GstToxAudioSinkClass *const klass)
       FALSE,
       G_PARAM_READWRITE
     )
+  );
+
+  gst_element_class_set_details_simple(
+    gst_element_class,
+    "ToxAudioSink",
+    "Generic",
+    "Sends Opus audio to Tox",
+    "Braiden Vasco <braiden-vasco@users.noreply.github.com>"
   );
 
   gst_element_class_add_pad_template(

@@ -13,7 +13,7 @@ mpegaudioparse = Gst::ElementFactory.make 'mpegaudioparse'
 mpg123audiodec = Gst::ElementFactory.make 'mpg123audiodec'
 audioresample  = Gst::ElementFactory.make 'audioresample'
 opusenc        = Gst::ElementFactory.make 'opusenc'
-appsink        = Gst::ElementFactory.make 'appsink'
+toxaudiosink   = Gst::ElementFactory.make 'toxaudiosink'
 
 elements = [
   filesrc,
@@ -21,7 +21,7 @@ elements = [
   mpg123audiodec,
   audioresample,
   opusenc,
-  appsink,
+  toxaudiosink,
 ]
 
 unless elements.all?
@@ -30,20 +30,6 @@ unless elements.all?
 end
 
 filesrc.location = FILENAME
-
-appsink.emit_signals = true
-appsink.wait_on_eos = false
-appsink.drop = true
-appsink.max_buffers = 100
-
-appsink.signal_connect 'new-sample' do |_appsink|
-  sample = appsink.pull_sample
-  next Gst::FlowReturn::EOS if sample.nil?
-  timestamp = Time.at(sample.buffer.pts / 1_000_000_000.0)
-                  .utc.strftime('%H:%M:%S.%N')
-  puts "have new-sample sample #{sample}, timestamp #{timestamp}"
-  Gst::FlowReturn::OK
-end
 
 pipeline = Gst::Pipeline.new
 

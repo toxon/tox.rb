@@ -50,9 +50,17 @@ cflags '-Wno-declaration-after-statement'
 
 pkg_config! 'gstreamer-1.0'
 
+have_library! 'toxav'
 have_library! 'gstreamer-1.0'
 
+have_header! 'tox/tox.h'
 have_header! 'gst/gst.h'
+
+#########
+# ToxAV #
+#########
+
+have_func! 'tox/toxav.h', 'toxav_audio_send_frame'
 
 ########
 # GLib #
@@ -116,6 +124,7 @@ have_const! 'gst/gst.h', 'GST_EVENT_CAPS'
 have_const! 'gst/gst.h', 'GST_FLOW_OK'
 have_const! 'gst/gst.h', 'GST_RANK_NONE'
 
+have_func! 'gst/gst.h', 'gst_element_class_set_details_simple'
 have_func! 'gst/gst.h', 'gst_element_class_add_pad_template'
 have_func! 'gst/gst.h', 'gst_static_pad_template_get'
 have_func! 'gst/gst.h', 'gst_pad_new_from_static_template'

@@ -50,6 +50,7 @@ begin
 
   Rake::ExtensionTask.new 'gst-plugins-tox' do |ext|
     ext.lib_dir = File.expand_path('lib', __dir__).freeze
+    ext.config_options << "--with-opt-dir=#{VENDOR_PREFIX.shellescape}"
   end
 rescue LoadError
   nil
