@@ -104,7 +104,6 @@ have_const! 'gst/gst.h', 'GST_EVENT_CAPS'
 have_const! 'gst/gst.h', 'GST_FLOW_OK'
 have_const! 'gst/gst.h', 'GST_RANK_NONE'
 
-have_func! 'gst/gst.h', 'gst_element_class_set_details_simple'
 have_func! 'gst/gst.h', 'gst_element_class_add_pad_template'
 have_func! 'gst/gst.h', 'gst_static_pad_template_get'
 have_func! 'gst/gst.h', 'gst_pad_new_from_static_template'

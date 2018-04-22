@@ -75,14 +75,6 @@ void gst_tox_sink_class_init(GstToxAudioSinkClass *const klass)
     )
   );
 
-  gst_element_class_set_details_simple(
-    gst_element_class,
-    "ToxAudioSink",
-    "Generic",
-    "Sends Opus audio to Tox",
-    "Braiden Vasco <braiden-vasco@users.noreply.github.com>"
-  );
-
   gst_element_class_add_pad_template(
     gst_element_class, gst_static_pad_template_get(&sink_factory)
   );
