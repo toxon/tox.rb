@@ -48,6 +48,11 @@ static gboolean gst_tox_audio_sink_query(
   GstQuery *gst_query
 );
 
+static gboolean gst_tox_audio_sink_query_accept_caps(
+  GstBaseSink *gst_base_sink,
+  GstQuery *gst_query
+);
+
 static gboolean gst_tox_audio_sink_open(GstAudioSink *gst_audio_sink);
 
 static gboolean gst_tox_audio_sink_close(GstAudioSink *gst_audio_sink);
@@ -196,10 +201,20 @@ gboolean gst_tox_audio_sink_query(
 )
 {
   switch (GST_QUERY_TYPE(gst_query)) {
+    case GST_QUERY_ACCEPT_CAPS:
+      return gst_tox_audio_sink_query_accept_caps(gst_base_sink, gst_query);
     default:
       return GST_BASE_SINK_CLASS(parent_class)->
                query(gst_base_sink, gst_query);
   }
+}
+
+gboolean gst_tox_audio_sink_query_accept_caps(
+  GstBaseSink *gst_base_sink,
+  GstQuery *gst_query
+)
+{
+  return GST_BASE_SINK_CLASS(parent_class)->query(gst_base_sink, gst_query);
 }
 
 gboolean gst_tox_audio_sink_open(GstAudioSink *gst_audio_sink)

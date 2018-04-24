@@ -126,6 +126,7 @@ have_macro! 'gst/base/gstbasesink.h', 'GST_BASE_SINK_PAD'
 have_const! 'gst/gst.h', 'GST_PAD_SINK'
 have_const! 'gst/gst.h', 'GST_PAD_ALWAYS'
 have_const! 'gst/gst.h', 'GST_RANK_NONE'
+have_const! 'gst/gst.h', 'GST_QUERY_ACCEPT_CAPS'
 
 have_func! 'gst/gst.h', 'gst_element_class_set_details_simple'
 have_func! 'gst/gst.h', 'gst_element_register'
