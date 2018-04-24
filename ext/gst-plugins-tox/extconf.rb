@@ -85,7 +85,9 @@ have_macro! 'gst/gst.h', 'G_TYPE_CHECK_INSTANCE_TYPE'
 have_macro! 'gst/gst.h', 'G_TYPE_CHECK_CLASS_TYPE'
 have_macro! 'gst/gst.h', 'G_DEFINE_TYPE'
 have_macro! 'gst/gst.h', 'G_OBJECT_WARN_INVALID_PROPERTY_ID'
+have_macro! 'gst/gst.h', 'G_OBJECT_CLASS'
 
+have_struct_member! 'gst/gst.h', 'GObjectClass', 'finalize'
 have_struct_member! 'gst/gst.h', 'GObjectClass', 'get_property'
 have_struct_member! 'gst/gst.h', 'GObjectClass', 'set_property'
 
@@ -113,7 +115,7 @@ have_macro! 'gst/gst.h', 'GST_DEBUG_CATEGORY_STATIC'
 have_macro! 'gst/gst.h', 'GST_DEBUG_CATEGORY_INIT'
 have_macro! 'gst/gst.h', 'GST_STATIC_CAPS'
 have_macro! 'gst/gst.h', 'GST_DEBUG_FUNCPTR'
-# have_macro! 'gst/gst.g', 'GST_STATIC_PAD_TEMPLATE'
+have_macro! 'gst/gst.h', 'GST_STATIC_PAD_TEMPLATE'
 
 have_macro! 'gst/base/gstbasesink.h', 'GST_BASE_SINK_PAD'
 

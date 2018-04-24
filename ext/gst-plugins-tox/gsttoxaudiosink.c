@@ -22,6 +22,8 @@ static void gst_tox_audio_sink_class_init(GstToxAudioSinkClass *klass);
 
 static void gst_tox_audio_sink_init(GstToxAudioSink *self);
 
+static void gst_tox_audio_sink_finalize(GObject *object);
+
 static void gst_tox_audio_sink_set_property(
   GObject *object,
   guint prop_id,
@@ -104,8 +106,9 @@ void gst_tox_audio_sink_class_init(GstToxAudioSinkClass *const klass)
 
   // GObjectClass
 
-  gobject_class->set_property = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_set_property);
-  gobject_class->get_property = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_get_property);
+  gobject_class->finalize     = gst_tox_audio_sink_finalize;
+  gobject_class->set_property = gst_tox_audio_sink_set_property;
+  gobject_class->get_property = gst_tox_audio_sink_get_property;
 
   // GstElementClass
 
@@ -139,6 +142,11 @@ void gst_tox_audio_sink_class_init(GstToxAudioSinkClass *const klass)
 
 void gst_tox_audio_sink_init(GstToxAudioSink *const self)
 {
+}
+
+void gst_tox_audio_sink_finalize(GObject *const object)
+{
+  G_OBJECT_CLASS(parent_class)->finalize(object);
 }
 
 void gst_tox_audio_sink_set_property(
