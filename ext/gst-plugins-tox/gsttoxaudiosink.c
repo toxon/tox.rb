@@ -3,6 +3,7 @@
 GST_DEBUG_CATEGORY_STATIC(gst_tox_audio_sink_debug);
 #define GST_CAT_DEFAULT gst_tox_audio_sink_debug
 
+#define gst_tox_audio_sink_parent_class parent_class
 G_DEFINE_TYPE(GstToxAudioSink, gst_tox_audio_sink, GST_TYPE_AUDIO_SINK);
 
 /******************************************************************************
@@ -91,6 +92,8 @@ void gst_tox_audio_sink_class_init(GstToxAudioSinkClass *const klass)
     0,
     "toxaudiosink element"
   );
+
+  parent_class = g_type_class_peek_parent(klass);
 
   // Class inheritance hierarchy
 

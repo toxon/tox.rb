@@ -89,6 +89,8 @@ have_macro! 'gst/gst.h', 'G_OBJECT_WARN_INVALID_PROPERTY_ID'
 have_struct_member! 'gst/gst.h', 'GObjectClass', 'get_property'
 have_struct_member! 'gst/gst.h', 'GObjectClass', 'set_property'
 
+have_func! 'gst/gst.h', 'g_type_class_peek_parent'
+
 #############
 # GStreamer #
 #############
