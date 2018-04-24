@@ -110,7 +110,10 @@ void gst_tox_audio_sink_class_init(GstToxAudioSinkClass *const klass)
     "Braiden Vasco <braiden-vasco@users.noreply.github.com>"
   );
 
-  gst_element_class_add_static_pad_template(gst_element_class, &sink_template);
+  gst_element_class_add_pad_template(
+    gst_element_class,
+    gst_static_pad_template_get(&sink_template)
+  );
 }
 
 void gst_tox_audio_sink_init(GstToxAudioSink *const self)

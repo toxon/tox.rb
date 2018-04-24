@@ -103,6 +103,7 @@ have_macro! 'gst/gst.h', 'GST_DEBUG_CATEGORY_STATIC'
 have_macro! 'gst/gst.h', 'GST_DEBUG_CATEGORY_INIT'
 have_macro! 'gst/gst.h', 'GST_STATIC_CAPS'
 have_macro! 'gst/gst.h', 'GST_DEBUG_FUNCPTR'
+# have_macro! 'gst/gst.g', 'GST_STATIC_PAD_TEMPLATE'
 
 have_const! 'gst/gst.h', 'GST_PAD_SINK'
 have_const! 'gst/gst.h', 'GST_PAD_ALWAYS'
@@ -110,6 +111,8 @@ have_const! 'gst/gst.h', 'GST_RANK_NONE'
 
 have_func! 'gst/gst.h', 'gst_element_class_set_details_simple'
 have_func! 'gst/gst.h', 'gst_element_register'
+have_func! 'gst/gst.h', 'gst_element_class_add_pad_template'
+have_func! 'gst/gst.h', 'gst_static_pad_template_get'
 
 ###################
 # GStreamer Audio #
