@@ -63,6 +63,8 @@ namespace :vendor do
     install:opus
     install:libvpx
     install:libtoxcore
+    install:gstreamer
+    install:gst-plugins-base
   ]
 
   desc 'Uninstall vendored dependencies from "./vendor/{bin,include,lib}/"'
@@ -71,6 +73,8 @@ namespace :vendor do
     uninstall:opus
     uninstall:libvpx
     uninstall:libtoxcore
+    uninstall:gstreamer
+    uninstall:gst-plugins-base
   ]
 
   desc 'Delete compiled vendored dependencies from "./vendor/"'
@@ -79,6 +83,8 @@ namespace :vendor do
     clean:opus
     clean:libvpx
     clean:libtoxcore
+    clean:gstreamer
+    clean:gst-plugins-base
   ]
 
   desc 'Delete configured vendored dependencies from "./vendor/"'
@@ -87,6 +93,8 @@ namespace :vendor do
     distclean:opus
     distclean:libvpx
     distclean:libtoxcore
+    distclean:gstreamer
+    distclean:gst-plugins-base
   ]
 
   namespace :install do
@@ -110,6 +118,18 @@ namespace :vendor do
 
     task libtoxcore: 'vendor/src/libtoxcore/Makefile' do
       chdir 'vendor/src/libtoxcore' do
+        sh 'make install'
+      end
+    end
+
+    task gstreamer: 'vendor/src/gstreamer/Makefile' do
+      chdir 'vendor/src/gstreamer' do
+        sh 'make install'
+      end
+    end
+
+    task 'gst-plugins-base': 'vendor/src/gst-plugins-base/Makefile' do
+      chdir 'vendor/src/gst-plugins-base' do
         sh 'make install'
       end
     end
@@ -139,6 +159,18 @@ namespace :vendor do
         sh 'make uninstall'
       end
     end
+
+    task gstreamer: 'vendor/src/gstreamer/Makefile' do
+      chdir 'vendor/src/gstreamer' do
+        sh 'make uninstall'
+      end
+    end
+
+    task 'gst-plugins-base': 'vendor/src/gst-plugins-base/Makefile' do
+      chdir 'vendor/src/gst-plugins-base' do
+        sh 'make uninstall'
+      end
+    end
   end
 
   namespace :clean do
@@ -165,6 +197,18 @@ namespace :vendor do
         sh 'make clean'
       end
     end
+
+    task gstreamer: 'vendor/src/gstreamer/Makefile' do
+      chdir 'vendor/src/gstreamer' do
+        sh 'make clean'
+      end
+    end
+
+    task 'gst-plugins-base': 'vendor/src/gst-plugins-base/Makefile' do
+      chdir 'vendor/src/gst-plugins-base' do
+        sh 'make clean'
+      end
+    end
   end
 
   namespace :distclean do
@@ -188,6 +232,18 @@ namespace :vendor do
 
     task libtoxcore: 'vendor/src/libtoxcore/Makefile' do
       chdir 'vendor/src/libtoxcore' do
+        sh 'make distclean'
+      end
+    end
+
+    task gstreamer: 'vendor/src/gstreamer/Makefile' do
+      chdir 'vendor/src/gstreamer' do
+        sh 'make distclean'
+      end
+    end
+
+    task 'gst-plugins-base': 'vendor/src/gst-plugins-base/Makefile' do
+      chdir 'vendor/src/gst-plugins-base' do
         sh 'make distclean'
       end
     end
@@ -263,6 +319,63 @@ file 'vendor/src/libtoxcore/Makefile': 'vendor/src/libtoxcore/configure' do |t|
   end
 end
 
+file 'vendor/src/gstreamer/Makefile': 'vendor/src/gstreamer/configure' do |t|
+  chdir File.dirname t.name do
+    sh(
+      { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
+      './configure',
+      '--prefix',
+      VENDOR_PREFIX,
+
+      '--enable-shared',
+      '--disable-static',
+
+      '--disable-gtk-doc',
+      '--disable-nls',
+      '--disable-rpath',
+      '--disable-examples',
+      '--disable-tests',
+      '--disable-benchmarks',
+      '--disable-check',
+      '--disable-poisoning',
+
+      '--enable-option-parsing',
+      '--enable-gst-debug',
+      '--enable-gst-tracer-hooks',
+      '--enable-registry',
+      '--enable-plugin',
+      '--enable-tools',
+      '--enable-introspection=yes',
+      '--enable-extra-checks',
+      '--enable-gobject-cast-checks=yes',
+      '--enable-glib-asserts=yes',
+    )
+  end
+end
+
+file 'vendor/src/gst-plugins-base/Makefile':
+  'vendor/src/gst-plugins-base/configure' do |t|
+  chdir File.dirname t.name do
+    sh(
+      { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
+      './configure',
+      '--prefix',
+      VENDOR_PREFIX,
+
+      '--enable-shared',
+      '--disable-static',
+
+      '--disable-gtk-doc',
+      '--disable-nls',
+      '--disable-rpath',
+      '--disable-examples',
+      '--disable-external',
+      '--disable-experimental',
+      '--disable-static-plugins',
+    )
+  end
+end
+
 file 'vendor/src/libsodium/configure' do |t|
   chdir File.dirname t.name do
     sh './autogen.sh'
@@ -278,5 +391,17 @@ end
 file 'vendor/src/libtoxcore/configure' do |t|
   chdir File.dirname t.name do
     sh './autogen.sh'
+  end
+end
+
+file 'vendor/src/gstreamer/configure' do |t|
+  chdir File.dirname t.name do
+    sh './autogen.sh', '--noconfigure'
+  end
+end
+
+file 'vendor/src/gst-plugins-base/configure' do |t|
+  chdir File.dirname t.name do
+    sh './autogen.sh', '--noconfigure'
   end
 end
