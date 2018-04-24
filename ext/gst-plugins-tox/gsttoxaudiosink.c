@@ -92,23 +92,19 @@ void gst_tox_audio_sink_class_init(GstToxAudioSinkClass *const klass)
     "toxaudiosink element"
   );
 
+  // Class inheritance hierarchy
+
   GObjectClass      *const gobject_class        = (GObjectClass*)klass;
   GstElementClass   *const gst_element_class    = (GstElementClass*)klass;
   GstBaseSinkClass  *const gst_base_sink_class  = (GstBaseSinkClass*)klass;
   GstAudioSinkClass *const gst_audio_sink_class = (GstAudioSinkClass*)klass;
 
+  // GObjectClass
+
   gobject_class->set_property = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_set_property);
   gobject_class->get_property = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_get_property);
 
-  gst_base_sink_class->get_caps = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_get_caps);
-
-  gst_audio_sink_class->open      = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_open);
-  gst_audio_sink_class->prepare   = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_prepare);
-  gst_audio_sink_class->unprepare = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_unprepare);
-  gst_audio_sink_class->close     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_close);
-  gst_audio_sink_class->write     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_write);
-  gst_audio_sink_class->reset     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_reset);
-  gst_audio_sink_class->delay     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_delay);
+  // GstElementClass
 
   gst_element_class_set_details_simple(
     gst_element_class,
@@ -122,6 +118,20 @@ void gst_tox_audio_sink_class_init(GstToxAudioSinkClass *const klass)
     gst_element_class,
     gst_static_pad_template_get(&sink_template)
   );
+
+  // GstBaseSinkClass
+
+  gst_base_sink_class->get_caps = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_get_caps);
+
+  // GstAudioSinkClass
+
+  gst_audio_sink_class->open      = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_open);
+  gst_audio_sink_class->prepare   = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_prepare);
+  gst_audio_sink_class->unprepare = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_unprepare);
+  gst_audio_sink_class->close     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_close);
+  gst_audio_sink_class->write     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_write);
+  gst_audio_sink_class->reset     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_reset);
+  gst_audio_sink_class->delay     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_delay);
 }
 
 void gst_tox_audio_sink_init(GstToxAudioSink *const self)
