@@ -20,4 +20,5 @@ before_script:
   - rake vendor:install:gstreamer
   - rake vendor:install:gst-plugins-base
 
-  - rake compile
+  - rake compile:tox
+  - rake compile:gst-plugins-tox
