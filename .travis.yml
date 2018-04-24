@@ -13,5 +13,11 @@ before_install:
 install: bundle install --jobs 3 --retry 3 --without examples
 
 before_script:
-  - rake vendor:install
+  - rake vendor:install:libsodium
+  - rake vendor:install:opus
+  - rake vendor:install:libvpx
+  - rake vendor:install:libtoxcore
+  - rake vendor:install:gstreamer
+  - rake vendor:install:gst-plugins-base
+
   - rake compile
