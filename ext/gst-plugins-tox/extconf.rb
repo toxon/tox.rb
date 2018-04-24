@@ -57,6 +57,7 @@ have_library! 'gstaudio-1.0'
 
 have_header! 'tox/tox.h'
 have_header! 'gst/gst.h'
+have_header! 'gst/base/gstbasesink.h'
 have_header! 'gst/audio/gstaudiosink.h'
 
 #########
@@ -94,7 +95,14 @@ have_struct_member! 'gst/gst.h', 'GObjectClass', 'set_property'
 
 have_type! 'gst/gst.h', 'GstElementClass'
 have_type! 'gst/gst.h', 'GstStaticPadTemplate'
+have_type! 'gst/gst.h', 'GstPad'
+have_type! 'gst/gst.h', 'GstCaps'
 # have_type! 'gst/gst.h', 'GstPlugin'
+
+have_type! 'gst/base/gstbasesink.h', 'GstBaseSink'
+have_type! 'gst/base/gstbasesink.h', 'GstBaseSinkClass'
+
+have_struct_member! 'gst/base/gstbasesink.h', 'GstBaseSinkClass', 'get_caps'
 
 have_macro! 'gst/gst.h', 'GST_VERSION_MAJOR'
 have_macro! 'gst/gst.h', 'GST_VERSION_MINOR'
@@ -105,6 +113,8 @@ have_macro! 'gst/gst.h', 'GST_STATIC_CAPS'
 have_macro! 'gst/gst.h', 'GST_DEBUG_FUNCPTR'
 # have_macro! 'gst/gst.g', 'GST_STATIC_PAD_TEMPLATE'
 
+have_macro! 'gst/base/gstbasesink.h', 'GST_BASE_SINK_PAD'
+
 have_const! 'gst/gst.h', 'GST_PAD_SINK'
 have_const! 'gst/gst.h', 'GST_PAD_ALWAYS'
 have_const! 'gst/gst.h', 'GST_RANK_NONE'
@@ -113,6 +123,7 @@ have_func! 'gst/gst.h', 'gst_element_class_set_details_simple'
 have_func! 'gst/gst.h', 'gst_element_register'
 have_func! 'gst/gst.h', 'gst_element_class_add_pad_template'
 have_func! 'gst/gst.h', 'gst_static_pad_template_get'
+have_func! 'gst/gst.h', 'gst_pad_get_pad_template_caps'
 
 ###################
 # GStreamer Audio #

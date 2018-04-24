@@ -35,6 +35,11 @@ static void gst_tox_audio_sink_get_property(
   GParamSpec *pspec
 );
 
+static GstCaps *gst_tox_audio_sink_get_caps(
+  GstBaseSink *gst_base_sink,
+  GstCaps *filter
+);
+
 static gboolean gst_tox_audio_sink_open(GstAudioSink *gst_audio_sink);
 
 static gboolean gst_tox_audio_sink_prepare(
@@ -89,10 +94,13 @@ void gst_tox_audio_sink_class_init(GstToxAudioSinkClass *const klass)
 
   GObjectClass      *const gobject_class        = (GObjectClass*)klass;
   GstElementClass   *const gst_element_class    = (GstElementClass*)klass;
+  GstBaseSinkClass  *const gst_base_sink_class  = (GstBaseSinkClass*)klass;
   GstAudioSinkClass *const gst_audio_sink_class = (GstAudioSinkClass*)klass;
 
   gobject_class->set_property = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_set_property);
   gobject_class->get_property = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_get_property);
+
+  gst_base_sink_class->get_caps = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_get_caps);
 
   gst_audio_sink_class->open      = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_open);
   gst_audio_sink_class->prepare   = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_prepare);
@@ -144,6 +152,15 @@ void gst_tox_audio_sink_get_property(
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
   }
+}
+
+GstCaps *gst_tox_audio_sink_get_caps(
+  GstBaseSink *gst_base_sink,
+  GstCaps *filter
+)
+{
+  GstPad *pad = GST_BASE_SINK_PAD(gst_base_sink);
+  return gst_pad_get_pad_template_caps(pad);
 }
 
 gboolean gst_tox_audio_sink_open(GstAudioSink *gst_audio_sink)
