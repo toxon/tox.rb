@@ -49,7 +49,7 @@ cflags '-Wextra'
 cflags '-Wno-declaration-after-statement'
 
 pkg_config! 'gstreamer-1.0'
-pkg_config!' gstreamer-audio-1.0'
+pkg_config! 'gstreamer-audio-1.0'
 
 have_library! 'toxav'
 have_library! 'gstreamer-1.0'
