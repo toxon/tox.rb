@@ -24,17 +24,17 @@ static void gst_tox_audio_sink_init(GstToxAudioSink *self);
 
 static void gst_tox_audio_sink_finalize(GObject *object);
 
-static void gst_tox_audio_sink_set_property(
-  GObject *object,
-  guint prop_id,
-  const GValue *value,
-  GParamSpec *pspec
-);
-
 static void gst_tox_audio_sink_get_property(
   GObject *object,
   guint prop_id,
   GValue *value,
+  GParamSpec *pspec
+);
+
+static void gst_tox_audio_sink_set_property(
+  GObject *object,
+  guint prop_id,
+  const GValue *value,
   GParamSpec *pspec
 );
 
@@ -45,6 +45,8 @@ static GstCaps *gst_tox_audio_sink_get_caps(
 
 static gboolean gst_tox_audio_sink_open(GstAudioSink *gst_audio_sink);
 
+static gboolean gst_tox_audio_sink_close(GstAudioSink *gst_audio_sink);
+
 static gboolean gst_tox_audio_sink_prepare(
   GstAudioSink *gst_audio_sink,
   GstAudioRingBufferSpec *gst_audio_ring_buffer_spec
@@ -52,17 +54,15 @@ static gboolean gst_tox_audio_sink_prepare(
 
 static gboolean gst_tox_audio_sink_unprepare(GstAudioSink *gst_audio_sink);
 
-static gboolean gst_tox_audio_sink_close(GstAudioSink *gst_audio_sink);
+static void gst_tox_audio_sink_reset(GstAudioSink *gst_audio_sink);
+
+static guint gst_tox_audio_sink_delay(GstAudioSink *gst_audio_sink);
 
 static gint gst_tox_audio_sink_write(
   GstAudioSink *gst_audio_sink,
   gpointer data,
   guint length
 );
-
-static void gst_tox_audio_sink_reset(GstAudioSink *gst_audio_sink);
-
-static guint gst_tox_audio_sink_delay(GstAudioSink *gst_audio_sink);
 
 /******************************************************************************
  * Variables
@@ -107,8 +107,8 @@ void gst_tox_audio_sink_class_init(GstToxAudioSinkClass *const klass)
   // GObjectClass
 
   gobject_class->finalize     = gst_tox_audio_sink_finalize;
-  gobject_class->set_property = gst_tox_audio_sink_set_property;
   gobject_class->get_property = gst_tox_audio_sink_get_property;
+  gobject_class->set_property = gst_tox_audio_sink_set_property;
 
   // GstElementClass
 
@@ -132,12 +132,12 @@ void gst_tox_audio_sink_class_init(GstToxAudioSinkClass *const klass)
   // GstAudioSinkClass
 
   gst_audio_sink_class->open      = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_open);
+  gst_audio_sink_class->close     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_close);
   gst_audio_sink_class->prepare   = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_prepare);
   gst_audio_sink_class->unprepare = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_unprepare);
-  gst_audio_sink_class->close     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_close);
-  gst_audio_sink_class->write     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_write);
   gst_audio_sink_class->reset     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_reset);
   gst_audio_sink_class->delay     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_delay);
+  gst_audio_sink_class->write     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_write);
 }
 
 void gst_tox_audio_sink_init(GstToxAudioSink *const self)
@@ -149,10 +149,10 @@ void gst_tox_audio_sink_finalize(GObject *const object)
   G_OBJECT_CLASS(parent_class)->finalize(object);
 }
 
-void gst_tox_audio_sink_set_property(
+void gst_tox_audio_sink_get_property(
   GObject *const object,
   const guint prop_id,
-  const GValue *const value,
+  GValue *const value,
   GParamSpec *const pspec
 )
 {
@@ -162,10 +162,10 @@ void gst_tox_audio_sink_set_property(
   }
 }
 
-void gst_tox_audio_sink_get_property(
+void gst_tox_audio_sink_set_property(
   GObject *const object,
   const guint prop_id,
-  GValue *const value,
+  const GValue *const value,
   GParamSpec *const pspec
 )
 {
@@ -189,6 +189,11 @@ gboolean gst_tox_audio_sink_open(GstAudioSink *gst_audio_sink)
   return TRUE;
 }
 
+gboolean gst_tox_audio_sink_close(GstAudioSink *gst_audio_sink)
+{
+  return TRUE;
+}
+
 gboolean gst_tox_audio_sink_prepare(
   GstAudioSink *gst_audio_sink,
   GstAudioRingBufferSpec *gst_audio_ring_buffer_spec
@@ -202,9 +207,13 @@ gboolean gst_tox_audio_sink_unprepare(GstAudioSink *gst_audio_sink)
   return TRUE;
 }
 
-gboolean gst_tox_audio_sink_close(GstAudioSink *gst_audio_sink)
+void gst_tox_audio_sink_reset(GstAudioSink *gst_audio_sink)
 {
-  return TRUE;
+}
+
+guint gst_tox_audio_sink_delay(GstAudioSink *gst_audio_sink)
+{
+  return 0;
 }
 
 gint gst_tox_audio_sink_write(
@@ -214,13 +223,4 @@ gint gst_tox_audio_sink_write(
 )
 {
   return length;
-}
-
-void gst_tox_audio_sink_reset(GstAudioSink *gst_audio_sink)
-{
-}
-
-guint gst_tox_audio_sink_delay(GstAudioSink *gst_audio_sink)
-{
-  return 0;
 }
