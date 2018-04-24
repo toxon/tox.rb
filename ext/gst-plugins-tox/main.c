@@ -24,7 +24,7 @@ gboolean tox_init(GstPlugin *const plugin)
     plugin,
     "toxaudiosink",
     GST_RANK_NONE,
-    GST_TYPE_TOXAUDIOSINK
+    GST_TYPE_TOX_AUDIO_SINK
   );
 
   return TRUE;

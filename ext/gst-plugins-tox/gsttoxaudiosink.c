@@ -1,47 +1,66 @@
 #include "gsttoxaudiosink.h"
 
-GST_DEBUG_CATEGORY_STATIC(gst_tox_sink_debug);
-#define GST_CAT_DEFAULT gst_tox_sink_debug
+GST_DEBUG_CATEGORY_STATIC(gst_tox_audio_sink_debug);
+#define GST_CAT_DEFAULT gst_tox_audio_sink_debug
+
+G_DEFINE_TYPE(GstToxAudioSink, gst_tox_audio_sink, GST_TYPE_AUDIO_SINK);
+
+/******************************************************************************
+ * Types and constants
+ ******************************************************************************/
 
 enum {
   PROP_0,
-  PROP_SILENT
 };
 
-#define gst_tox_sink_parent_class parent_class
-G_DEFINE_TYPE(GstToxAudioSink, gst_tox_sink, GST_TYPE_ELEMENT);
+/******************************************************************************
+ * Function declarations
+ ******************************************************************************/
 
-static void gst_tox_sink_class_init(GstToxAudioSinkClass *klass);
+static void gst_tox_audio_sink_class_init(GstToxAudioSinkClass *klass);
 
-static void gst_tox_sink_init(GstToxAudioSink *element);
+static void gst_tox_audio_sink_init(GstToxAudioSink *self);
 
-static void gst_tox_sink_set_property(
+static void gst_tox_audio_sink_set_property(
   GObject *object,
   guint prop_id,
   const GValue *value,
   GParamSpec *pspec
 );
 
-static void gst_tox_sink_get_property(
+static void gst_tox_audio_sink_get_property(
   GObject *object,
   guint prop_id,
   GValue *value,
   GParamSpec *pspec
 );
 
-static gboolean gst_tox_sink_sink_event(
-  GstPad *pad,
-  GstObject *parent,
-  GstEvent *event
+static gboolean gst_tox_audio_sink_open(GstAudioSink *gst_audio_sink);
+
+static gboolean gst_tox_audio_sink_prepare(
+  GstAudioSink *gst_audio_sink,
+  GstAudioRingBufferSpec *gst_audio_ring_buffer_spec
 );
 
-static GstFlowReturn gst_tox_sink_chain(
-  GstPad *pad,
-  GstObject *parent,
-  GstBuffer *buffer
+static gboolean gst_tox_audio_sink_unprepare(GstAudioSink *gst_audio_sink);
+
+static gboolean gst_tox_audio_sink_close(GstAudioSink *gst_audio_sink);
+
+static gint gst_tox_audio_sink_write(
+  GstAudioSink *gst_audio_sink,
+  gpointer data,
+  guint length
 );
 
-static GstStaticPadTemplate sink_factory = GST_STATIC_PAD_TEMPLATE(
+static void gst_tox_audio_sink_reset(GstAudioSink *gst_audio_sink);
+
+static guint gst_tox_audio_sink_delay(GstAudioSink *gst_audio_sink);
+
+/******************************************************************************
+ * Variables
+ ******************************************************************************/
+
+static GstStaticPadTemplate sink_template = GST_STATIC_PAD_TEMPLATE(
   "sink",
   GST_PAD_SINK,
   GST_PAD_ALWAYS,
@@ -55,132 +74,112 @@ static GstStaticPadTemplate sink_factory = GST_STATIC_PAD_TEMPLATE(
   )
 );
 
-void gst_tox_sink_class_init(GstToxAudioSinkClass *const klass)
+/******************************************************************************
+ * Function implementations
+ ******************************************************************************/
+
+void gst_tox_audio_sink_class_init(GstToxAudioSinkClass *const klass)
 {
   GST_DEBUG_CATEGORY_INIT(
-    gst_tox_sink_debug,
-    "toxsink",
+    gst_tox_audio_sink_debug,
+    "toxaudiosink",
     0,
-    "toxsink element"
+    "toxaudiosink element"
   );
 
-  GObjectClass    *const gobject_class     = (GObjectClass*)klass;
-  GstElementClass *const gst_element_class = (GstElementClass*)klass;
+  GObjectClass      *const gobject_class        = (GObjectClass*)klass;
+  GstElementClass   *const gst_element_class    = (GstElementClass*)klass;
+  GstAudioSinkClass *const gst_audio_sink_class = (GstAudioSinkClass*)klass;
 
-  gobject_class->set_property = gst_tox_sink_set_property;
-  gobject_class->get_property = gst_tox_sink_get_property;
+  gobject_class->set_property = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_set_property);
+  gobject_class->get_property = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_get_property);
 
-  g_object_class_install_property(
-    gobject_class,
-    PROP_SILENT,
-    g_param_spec_boolean(
-      "silent",
-      "Silent",
-      "Produce verbose output?",
-      FALSE,
-      G_PARAM_READWRITE
-    )
-  );
+  gst_audio_sink_class->open      = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_open);
+  gst_audio_sink_class->prepare   = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_prepare);
+  gst_audio_sink_class->unprepare = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_unprepare);
+  gst_audio_sink_class->close     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_close);
+  gst_audio_sink_class->write     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_write);
+  gst_audio_sink_class->reset     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_reset);
+  gst_audio_sink_class->delay     = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_delay);
 
   gst_element_class_set_details_simple(
     gst_element_class,
     "ToxAudioSink",
-    "Generic",
+    "Sink/Audio",
     "Sends Opus audio to Tox",
     "Braiden Vasco <braiden-vasco@users.noreply.github.com>"
   );
 
-  gst_element_class_add_pad_template(
-    gst_element_class, gst_static_pad_template_get(&sink_factory)
-  );
+  gst_element_class_add_static_pad_template(gst_element_class, &sink_template);
 }
 
-void gst_tox_sink_init(GstToxAudioSink *const element)
+void gst_tox_audio_sink_init(GstToxAudioSink *const self)
 {
-  element->sinkpad = gst_pad_new_from_static_template(&sink_factory, "sink");
-
-  gst_pad_set_event_function(element->sinkpad,
-                             GST_DEBUG_FUNCPTR(gst_tox_sink_sink_event));
-
-  gst_pad_set_chain_function(element->sinkpad,
-                             GST_DEBUG_FUNCPTR(gst_tox_sink_chain));
-
-  GST_PAD_SET_PROXY_CAPS(element->sinkpad);
-
-  gst_element_add_pad(GST_ELEMENT(element), element->sinkpad);
-
-  element->silent = FALSE;
 }
 
-void gst_tox_sink_set_property(
+void gst_tox_audio_sink_set_property(
   GObject *const object,
   const guint prop_id,
   const GValue *const value,
   GParamSpec *const pspec
 )
 {
-  GstToxAudioSink *const element = GST_TOXAUDIOSINK(object);
-
   switch (prop_id) {
-    case PROP_SILENT:
-      element->silent = g_value_get_boolean(value);
-      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
   }
 }
 
-void gst_tox_sink_get_property(
+void gst_tox_audio_sink_get_property(
   GObject *const object,
   const guint prop_id,
   GValue *const value,
   GParamSpec *const pspec
 )
 {
-  GstToxAudioSink *const element = GST_TOXAUDIOSINK(object);
-
   switch (prop_id) {
-    case PROP_SILENT:
-      g_value_set_boolean(value, element->silent);
-      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
   }
 }
 
-gboolean gst_tox_sink_sink_event(
-  GstPad *const pad,
-  GstObject *const parent,
-  GstEvent *const event
-)
+gboolean gst_tox_audio_sink_open(GstAudioSink *gst_audio_sink)
 {
-  GstToxAudioSink *element = GST_TOXAUDIOSINK(parent);
-
-  GST_LOG_OBJECT(
-    element,
-    "Received %s event: %" GST_PTR_FORMAT,
-    GST_EVENT_TYPE_NAME(event),
-    event
-  );
-
-  switch (GST_EVENT_TYPE(event)) {
-    case GST_EVENT_CAPS:
-    {
-      GstCaps *caps;
-      gst_event_parse_caps(event, &caps);
-      // TODO: do something with the caps
-      return gst_pad_event_default(pad, parent, event);
-    }
-    default:
-      return gst_pad_event_default(pad, parent, event);
-  }
+  return TRUE;
 }
 
-GstFlowReturn gst_tox_sink_chain(
-  GstPad *const pad,
-  GstObject *const parent,
-  GstBuffer *const buffer
+gboolean gst_tox_audio_sink_prepare(
+  GstAudioSink *gst_audio_sink,
+  GstAudioRingBufferSpec *gst_audio_ring_buffer_spec
 )
 {
-  return GST_FLOW_OK;
+  return TRUE;
+}
+
+gboolean gst_tox_audio_sink_unprepare(GstAudioSink *gst_audio_sink)
+{
+  return TRUE;
+}
+
+gboolean gst_tox_audio_sink_close(GstAudioSink *gst_audio_sink)
+{
+  return TRUE;
+}
+
+gint gst_tox_audio_sink_write(
+  GstAudioSink *gst_audio_sink,
+  gpointer data,
+  guint length
+)
+{
+  return length;
+}
+
+void gst_tox_audio_sink_reset(GstAudioSink *gst_audio_sink)
+{
+}
+
+guint gst_tox_audio_sink_delay(GstAudioSink *gst_audio_sink)
+{
+  return 0;
 }

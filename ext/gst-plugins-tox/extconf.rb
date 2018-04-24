@@ -49,12 +49,15 @@ cflags '-Wextra'
 cflags '-Wno-declaration-after-statement'
 
 pkg_config! 'gstreamer-1.0'
+pkg_config!' gstreamer-audio-1.0'
 
 have_library! 'toxav'
 have_library! 'gstreamer-1.0'
+have_library! 'gstaudio-1.0'
 
 have_header! 'tox/tox.h'
 have_header! 'gst/gst.h'
+have_header! 'gst/audio/gstaudiosink.h'
 
 #########
 # ToxAV #
@@ -66,6 +69,7 @@ have_func! 'tox/toxav.h', 'toxav_audio_send_frame'
 # GLib #
 ########
 
+have_type! 'gst/gst.h', 'gpointer'
 have_type! 'gst/gst.h', 'gboolean'
 have_type! 'gst/gst.h', 'guint'
 have_type! 'gst/gst.h', 'GValue'
@@ -81,26 +85,15 @@ have_macro! 'gst/gst.h', 'G_TYPE_CHECK_CLASS_TYPE'
 have_macro! 'gst/gst.h', 'G_DEFINE_TYPE'
 have_macro! 'gst/gst.h', 'G_OBJECT_WARN_INVALID_PROPERTY_ID'
 
-have_const! 'gst/gst.h', 'G_PARAM_READWRITE'
-
-have_func! 'gst/gst.h', 'g_object_class_install_property'
-have_func! 'gst/gst.h', 'g_param_spec_boolean'
-# have_func!' gst/gst.h', 'g_value_get_boolean'
-have_func 'gst/gst.h', 'g_value_set_boolean'
+have_struct_member! 'gst/gst.h', 'GObjectClass', 'get_property'
+have_struct_member! 'gst/gst.h', 'GObjectClass', 'set_property'
 
 #############
 # GStreamer #
 #############
 
-have_type! 'gst/gst.h', 'GstObject'
-have_type! 'gst/gst.h', 'GstElement'
 have_type! 'gst/gst.h', 'GstElementClass'
-have_type! 'gst/gst.h', 'GstPad'
 have_type! 'gst/gst.h', 'GstStaticPadTemplate'
-have_type! 'gst/gst.h', 'GstEvent'
-have_type! 'gst/gst.h', 'GstFlowReturn'
-have_type! 'gst/gst.h', 'GstBuffer'
-have_type! 'gst/gst.h', 'GstCaps'
 # have_type! 'gst/gst.h', 'GstPlugin'
 
 have_macro! 'gst/gst.h', 'GST_VERSION_MAJOR'
@@ -108,32 +101,32 @@ have_macro! 'gst/gst.h', 'GST_VERSION_MINOR'
 have_macro! 'gst/gst.h', 'GST_PLUGIN_DEFINE'
 have_macro! 'gst/gst.h', 'GST_DEBUG_CATEGORY_STATIC'
 have_macro! 'gst/gst.h', 'GST_DEBUG_CATEGORY_INIT'
-have_macro! 'gst/gst.h', 'GST_ELEMENT'
 have_macro! 'gst/gst.h', 'GST_STATIC_CAPS'
-have_macro! 'gst/gst.h', 'GST_TYPE_ELEMENT'
 have_macro! 'gst/gst.h', 'GST_DEBUG_FUNCPTR'
-have_macro! 'gst/gst.h', 'GST_PAD_SET_PROXY_CAPS'
-have_macro! 'gst/gst.h', 'GST_LOG_OBJECT'
-have_macro! 'gst/gst.h', 'GST_PTR_FORMAT'
-have_macro! 'gst/gst.h', 'GST_EVENT_TYPE_NAME'
-have_macro! 'gst/gst.h', 'GST_EVENT_TYPE'
 
 have_const! 'gst/gst.h', 'GST_PAD_SINK'
 have_const! 'gst/gst.h', 'GST_PAD_ALWAYS'
-have_const! 'gst/gst.h', 'GST_EVENT_CAPS'
-have_const! 'gst/gst.h', 'GST_FLOW_OK'
 have_const! 'gst/gst.h', 'GST_RANK_NONE'
 
 have_func! 'gst/gst.h', 'gst_element_class_set_details_simple'
-have_func! 'gst/gst.h', 'gst_element_class_add_pad_template'
-have_func! 'gst/gst.h', 'gst_static_pad_template_get'
-have_func! 'gst/gst.h', 'gst_pad_new_from_static_template'
-# have_func! 'gst/gst.h', 'gst_pad_set_event_function'
-# have_func! 'gst/gst.h', 'gst_pad_set_chain_function'
-have_func! 'gst/gst.h', 'gst_element_add_pad'
-have_func! 'gst/gst.h', 'gst_pad_event_default'
-have_func! 'gst/gst.h', 'gst_event_parse_caps'
 have_func! 'gst/gst.h', 'gst_element_register'
+
+###################
+# GStreamer Audio #
+###################
+
+have_macro! 'gst/audio/gstaudiosink.h', 'GST_TYPE_AUDIO_SINK'
+
+have_type! 'gst/audio/gstaudiosink.h', 'GstAudioSink'
+have_type! 'gst/audio/gstaudiosink.h', 'GstAudioSinkClass'
+
+have_struct_member! 'gst/audio/gstaudiosink.h', 'GstAudioSinkClass', 'open'
+have_struct_member! 'gst/audio/gstaudiosink.h', 'GstAudioSinkClass', 'prepare'
+have_struct_member! 'gst/audio/gstaudiosink.h', 'GstAudioSinkClass', 'unprepare'
+have_struct_member! 'gst/audio/gstaudiosink.h', 'GstAudioSinkClass', 'close'
+have_struct_member! 'gst/audio/gstaudiosink.h', 'GstAudioSinkClass', 'write'
+have_struct_member! 'gst/audio/gstaudiosink.h', 'GstAudioSinkClass', 'reset'
+have_struct_member! 'gst/audio/gstaudiosink.h', 'GstAudioSinkClass', 'delay'
 
 ##########
 # Common #
