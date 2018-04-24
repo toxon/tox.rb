@@ -43,6 +43,11 @@ static GstCaps *gst_tox_audio_sink_get_caps(
   GstCaps *filter
 );
 
+static gboolean gst_tox_audio_sink_query(
+  GstBaseSink *gst_base_sink,
+  GstQuery *gst_query
+);
+
 static gboolean gst_tox_audio_sink_open(GstAudioSink *gst_audio_sink);
 
 static gboolean gst_tox_audio_sink_close(GstAudioSink *gst_audio_sink);
@@ -128,6 +133,7 @@ void gst_tox_audio_sink_class_init(GstToxAudioSinkClass *const klass)
   // GstBaseSinkClass
 
   gst_base_sink_class->get_caps = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_get_caps);
+  gst_base_sink_class->query    = GST_DEBUG_FUNCPTR(gst_tox_audio_sink_query);
 
   // GstAudioSinkClass
 
@@ -182,6 +188,18 @@ GstCaps *gst_tox_audio_sink_get_caps(
 {
   GstPad *pad = GST_BASE_SINK_PAD(gst_base_sink);
   return gst_pad_get_pad_template_caps(pad);
+}
+
+gboolean gst_tox_audio_sink_query(
+  GstBaseSink *gst_base_sink,
+  GstQuery *gst_query
+)
+{
+  switch (GST_QUERY_TYPE(gst_query)) {
+    default:
+      return GST_BASE_SINK_CLASS(parent_class)->
+               query(gst_base_sink, gst_query);
+  }
 }
 
 gboolean gst_tox_audio_sink_open(GstAudioSink *gst_audio_sink)

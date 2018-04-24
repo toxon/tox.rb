@@ -97,16 +97,18 @@ have_func! 'gst/gst.h', 'g_type_class_peek_parent'
 # GStreamer #
 #############
 
+# have_type! 'gst/gst.h', 'GstPlugin'
 have_type! 'gst/gst.h', 'GstElementClass'
 have_type! 'gst/gst.h', 'GstStaticPadTemplate'
 have_type! 'gst/gst.h', 'GstPad'
 have_type! 'gst/gst.h', 'GstCaps'
-# have_type! 'gst/gst.h', 'GstPlugin'
+have_type! 'gst/gst.h', 'GstQuery'
 
 have_type! 'gst/base/gstbasesink.h', 'GstBaseSink'
 have_type! 'gst/base/gstbasesink.h', 'GstBaseSinkClass'
 
 have_struct_member! 'gst/base/gstbasesink.h', 'GstBaseSinkClass', 'get_caps'
+have_struct_member! 'gst/base/gstbasesink.h', 'GstBaseSinkClass', 'query'
 
 have_macro! 'gst/gst.h', 'GST_VERSION_MAJOR'
 have_macro! 'gst/gst.h', 'GST_VERSION_MINOR'
@@ -116,7 +118,9 @@ have_macro! 'gst/gst.h', 'GST_DEBUG_CATEGORY_INIT'
 have_macro! 'gst/gst.h', 'GST_STATIC_CAPS'
 have_macro! 'gst/gst.h', 'GST_DEBUG_FUNCPTR'
 have_macro! 'gst/gst.h', 'GST_STATIC_PAD_TEMPLATE'
+have_macro! 'gst/gst.h', 'GST_QUERY_TYPE'
 
+have_macro! 'gst/base/gstbasesink.h', 'GST_BASE_SINK_CLASS'
 have_macro! 'gst/base/gstbasesink.h', 'GST_BASE_SINK_PAD'
 
 have_const! 'gst/gst.h', 'GST_PAD_SINK'
