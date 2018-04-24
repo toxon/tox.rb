@@ -7,10 +7,6 @@ def cflags(str)
   $CFLAGS += " #{str} "
 end
 
-def pkg_config!(*args)
-  exit 1 unless pkg_config(*args)
-end
-
 def have_library!(*args)
   exit 1 unless have_library(*args)
 end
@@ -47,9 +43,6 @@ cflags '-std=c11'
 cflags '-Wall'
 cflags '-Wextra'
 cflags '-Wno-declaration-after-statement'
-
-pkg_config! 'gstreamer-1.0'
-pkg_config! 'gstreamer-audio-1.0'
 
 have_library! 'toxav'
 have_library! 'gstreamer-1.0'
