@@ -3,8 +3,17 @@
 
 require 'mkmf'
 
-def cflags(str)
-  $CFLAGS += " #{str} "
+ENV['PKG_CONFIG_PATH'] ||=
+  File.expand_path('../../vendor/lib/pkgconfig', __dir__).freeze
+
+def cflags(*args)
+  args.each do |str|
+    $CFLAGS += " #{str.shellescape} "
+  end
+end
+
+def pkg_config!(*args)
+  exit 1 unless pkg_config(*args)
 end
 
 def have_library!(*args)
@@ -39,6 +48,9 @@ cflags '-std=c11'
 cflags '-Wall'
 cflags '-Wextra'
 cflags '-Wno-declaration-after-statement'
+
+pkg_config! 'libtoxcore'
+pkg_config! 'libtoxav'
 
 have_library! 'toxcore'
 have_library! 'toxav'

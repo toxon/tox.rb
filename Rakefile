@@ -332,13 +332,13 @@ file 'vendor/src/gstreamer/Makefile': 'vendor/src/gstreamer/configure' do |t|
 
       '--disable-gtk-doc',
       '--disable-nls',
-      '--disable-rpath',
       '--disable-examples',
       '--disable-tests',
       '--disable-benchmarks',
       '--disable-check',
       '--disable-poisoning',
 
+      '--enable-rpath',
       '--enable-option-parsing',
       '--enable-gst-debug',
       '--enable-gst-tracer-hooks',
@@ -367,11 +367,12 @@ file 'vendor/src/gst-plugins-base/Makefile':
 
       '--disable-gtk-doc',
       '--disable-nls',
-      '--disable-rpath',
       '--disable-examples',
       '--disable-external',
       '--disable-experimental',
       '--disable-static-plugins',
+
+      '--enable-rpath',
     )
   end
 end

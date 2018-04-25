@@ -3,8 +3,17 @@
 
 require 'mkmf'
 
-def cflags(str)
-  $CFLAGS += " #{str} "
+ENV['PKG_CONFIG_PATH'] ||=
+  File.expand_path('../../vendor/lib/pkgconfig', __dir__).freeze
+
+def cflags(*args)
+  args.each do |str|
+    $CFLAGS += " #{str.shellescape} "
+  end
+end
+
+def pkg_config!(*args)
+  exit 1 unless pkg_config(*args)
 end
 
 def have_library!(*args)
@@ -43,6 +52,10 @@ cflags '-std=c11'
 cflags '-Wall'
 cflags '-Wextra'
 cflags '-Wno-declaration-after-statement'
+
+pkg_config! 'libtoxav'
+pkg_config! 'gstreamer-1.0'
+pkg_config! 'gstreamer-audio-1.0'
 
 have_library! 'toxav'
 have_library! 'gstreamer-1.0'
