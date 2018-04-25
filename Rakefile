@@ -304,7 +304,11 @@ namespace :vendor do
       end
     end
 
-    task :gstreamer
+    task :gstreamer do
+      chdir 'vendor/src/gstreamer' do
+        sh 'git', 'checkout', '.'
+      end
+    end
 
     task 'gst-plugins-base' do
       chdir 'vendor/src/gst-plugins-base' do
@@ -312,7 +316,11 @@ namespace :vendor do
       end
     end
 
-    task 'gst-plugins-good'
+    task 'gst-plugins-good' do
+      chdir 'vendor/src/gst-plugins-good' do
+        sh 'git', 'checkout', '.'
+      end
+    end
   end
 end
 
