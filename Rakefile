@@ -120,6 +120,17 @@ namespace :vendor do
     distclean:gst-plugins-base
   ]
 
+  desc 'Remove untracked content from Git submodules'
+  task gitfix: %i[
+    gitfix:libsodium
+    gitfix:opus
+    gitfix:libvpx
+    gitfix:libtoxcore
+    gitfix:glib
+    gitfix:gstreamer
+    gitfix:gst-plugins-base
+  ]
+
   namespace :install do
     task libsodium: 'vendor/src/libsodium/Makefile' do
       chdir 'vendor/src/libsodium' do
@@ -294,6 +305,23 @@ namespace :vendor do
         sh 'make distclean'
       end
     end
+  end
+
+  namespace :gitfix do
+    task :libsodium
+    task :opus
+    task :libvpx
+    task :libtoxcore
+
+    task :glib do
+      chdir 'vendor/src/glib' do
+        rm_f 'gio/gvdb/.dirstamp'
+        rm_f 'glib/deprecated/.dirstamp'
+      end
+    end
+
+    task :gstreamer
+    task 'gst-plugins-base'
   end
 end
 
