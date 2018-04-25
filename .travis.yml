@@ -22,3 +22,5 @@ before_script:
 
   - rake compile:tox
   - rake compile:gst-plugins-tox
+
+  - rake ldd

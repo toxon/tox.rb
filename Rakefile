@@ -2,6 +2,8 @@
 
 require_relative 'vendor'
 
+require 'English'
+
 require 'bundler/gem_tasks'
 
 desc 'Run all checks (test, lint...)'
@@ -15,6 +17,25 @@ task lint: :rubocop
 
 desc 'Fix code style (rubocop --auto-correct)'
 task fix: 'rubocop:auto_correct'
+
+desc 'Print shared object dependencies'
+task :ldd do
+  puts(
+    # Where builded shared object can be placed
+    Dir[File.expand_path('{lib,vendor/bin,vendor/lib}/**/*')]                  \
+      # Only select executable files
+      .select(&File.method(:executable?))                                      \
+      # Skip directories and symlinks which are executables too
+      .select(&File.method(:file?))                                            \
+      # Grab ldd output and exit status
+      .map { |f| [f, `ldd #{f}`, $CHILD_STATUS.exitstatus] }                   \
+      # Skip executable scripts
+      .select { |_f, _result, exitstatus| exitstatus&.zero? }                  \
+      # Format output
+      .flat_map { |f, result, _| [f, *result.split("\n") .map(&:strip), nil] } \
+      .join("\n"),
+  )
+end
 
 begin
   require 'rspec/core/rake_task'
