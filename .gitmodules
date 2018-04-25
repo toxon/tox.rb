@@ -26,3 +26,7 @@
 	path = vendor/src/gst-plugins-base
 	url = https://anongit.freedesktop.org/git/gstreamer/gst-plugins-base.git
 	branch = "1.12.5"
+[submodule "vendor/src/gst-plugins-good"]
+	path = vendor/src/gst-plugins-good
+	url = https://anongit.freedesktop.org/git/gstreamer/gst-plugins-good.git
+	branch = "1.12.5"

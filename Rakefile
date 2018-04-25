@@ -133,6 +133,12 @@ namespace :vendor do
         sh 'make install'
       end
     end
+
+    task 'gst-plugins-good': 'vendor/src/gst-plugins-good/Makefile' do
+      chdir 'vendor/src/gst-plugins-good' do
+        sh 'make install'
+      end
+    end
   end
 
   namespace :uninstall do
@@ -174,6 +180,12 @@ namespace :vendor do
 
     task 'gst-plugins-base': 'vendor/src/gst-plugins-base/Makefile' do
       chdir 'vendor/src/gst-plugins-base' do
+        sh 'make uninstall'
+      end
+    end
+
+    task 'gst-plugins-good': 'vendor/src/gst-plugins-good/Makefile' do
+      chdir 'vendor/src/gst-plugins-good' do
         sh 'make uninstall'
       end
     end
@@ -221,6 +233,12 @@ namespace :vendor do
         sh 'make clean'
       end
     end
+
+    task 'gst-plugins-good': 'vendor/src/gst-plugins-good/Makefile' do
+      chdir 'vendor/src/gst-plugins-good' do
+        sh 'make clean'
+      end
+    end
   end
 
   namespace :distclean do
@@ -265,6 +283,12 @@ namespace :vendor do
         sh 'make distclean'
       end
     end
+
+    task 'gst-plugins-good': 'vendor/src/gst-plugins-good/Makefile' do
+      chdir 'vendor/src/gst-plugins-good' do
+        sh 'make distclean'
+      end
+    end
   end
 
   namespace :gitfix do
@@ -287,6 +311,8 @@ namespace :vendor do
         sh 'git', 'checkout', '.'
       end
     end
+
+    task 'gst-plugins-good'
   end
 end
 
@@ -445,6 +471,107 @@ file 'vendor/src/gst-plugins-base/Makefile':
   end
 end
 
+file 'vendor/src/gst-plugins-good/Makefile':
+  'vendor/src/gst-plugins-good/configure' do |t|
+  chdir File.dirname t.name do
+    sh(
+      { 'PKG_CONFIG_PATH' => Vendor::PKG_CONFIG_PATH },
+      './configure',
+      '--prefix',
+      Vendor::PREFIX,
+
+      '--enable-shared',
+      '--disable-static',
+
+      '--disable-gtk-doc',
+      '--disable-nls',
+      '--disable-examples',
+      '--disable-experimental',
+      '--disable-static-plugins',
+
+      '--enable-rpath',
+      '--enable-external',
+
+      # Required plugins
+      '--enable-audioparsers', # mpegaudioparse
+
+      # Unnecessary plugins
+      '--disable-alpha',
+      '--disable-apetag',
+      '--disable-audiofx',
+      '--disable-auparse',
+      '--disable-autodetect',
+      '--disable-avi',
+      '--disable-cutter',
+      '--disable-debugutils',
+      '--disable-deinterlace',
+      '--disable-dtmf',
+      '--disable-effectv',
+      '--disable-equalizer',
+      '--disable-flv',
+      '--disable-flx',
+      '--disable-goom',
+      '--disable-goom2k1',
+      '--disable-icydemux',
+      '--disable-id3demux',
+      '--disable-imagefreeze',
+      '--disable-interleave',
+      '--disable-isomp4',
+      '--disable-law',
+      '--disable-level',
+      '--disable-matroska',
+      '--disable-monoscope',
+      '--disable-multifile',
+      '--disable-multipart',
+      '--disable-replaygain',
+      '--disable-rtp',
+      '--disable-rtpmanager',
+      '--disable-rtsp',
+      '--disable-shapewipe',
+      '--disable-smpte',
+      '--disable-spectrum',
+      '--disable-udp',
+      '--disable-videobox',
+      '--disable-videocrop',
+      '--disable-videofilter',
+      '--disable-videomixer',
+      '--disable-wavenc',
+      '--disable-wavparse',
+      '--disable-y4m',
+      '--disable-directsound',
+      '--disable-waveform',
+      '--disable-oss',
+      '--disable-oss4',
+      '--disable-sunaudio',
+      '--disable-osx_audio',
+      '--disable-osx_video',
+      '--disable-gst_v4l2',
+      '--disable-v4l2-probe',
+      '--disable-x',
+      '--disable-aalib',
+      '--disable-aalibtest',
+      '--disable-cairo',
+      '--disable-flac',
+      '--disable-gdk_pixbuf',
+      '--disable-jack',
+      '--disable-jpeg',
+      '--disable-libcaca',
+      '--disable-libdv',
+      '--disable-libpng',
+      '--disable-pulse',
+      '--disable-dv1394',
+      '--disable-shout2',
+      '--disable-soup',
+      '--disable-speex',
+      '--disable-taglib',
+      '--disable-vpx',
+      '--disable-wavpack',
+      '--disable-zlib',
+      '--disable-bz2',
+    )
+  end
+end
+
 file 'vendor/src/libsodium/configure' do |t|
   chdir File.dirname t.name do
     sh './autogen.sh'
@@ -476,6 +603,12 @@ file 'vendor/src/gstreamer/configure' do |t|
 end
 
 file 'vendor/src/gst-plugins-base/configure' do |t|
+  chdir File.dirname t.name do
+    sh './autogen.sh', '--noconfigure'
+  end
+end
+
+file 'vendor/src/gst-plugins-good/configure' do |t|
   chdir File.dirname t.name do
     sh './autogen.sh', '--noconfigure'
   end
