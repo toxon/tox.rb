@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'vendor'
+
 require 'bundler/gem_tasks'
 
 desc 'Run all checks (test, lint...)'
