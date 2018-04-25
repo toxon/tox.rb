@@ -24,4 +24,6 @@ before_script:
   - rake compile:tox
   - rake compile:gst-plugins-tox
 
-  - rake ldd
+  ## Too verbose (1819 lines).
+  ## Travis CI limits logs to 10000 lines.
+  # - rake ldd
