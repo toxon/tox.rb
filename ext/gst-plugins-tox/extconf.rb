@@ -1,10 +1,9 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'mkmf'
+require_relative '../../vendor'
 
-ENV['PKG_CONFIG_PATH'] ||=
-  File.expand_path('../../vendor/lib/pkgconfig', __dir__).freeze
+require 'mkmf'
 
 def cflags(*args)
   args.each do |str|
