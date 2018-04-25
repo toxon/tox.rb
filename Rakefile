@@ -77,59 +77,19 @@ end
 
 namespace :vendor do
   desc 'Install vendored dependencies into "./vendor/{bin,include,lib}/"'
-  task install: %i[
-    install:libsodium
-    install:opus
-    install:libvpx
-    install:libtoxcore
-    install:glib
-    install:gstreamer
-    install:gst-plugins-base
-  ]
+  task install: Vendor::REPOS.map { |s| "install:#{s}" }
 
   desc 'Uninstall vendored dependencies from "./vendor/{bin,include,lib}/"'
-  task uninstall: %i[
-    uninstall:libsodium
-    uninstall:opus
-    uninstall:libvpx
-    uninstall:libtoxcore
-    uninstall:glib
-    uninstall:gstreamer
-    uninstall:gst-plugins-base
-  ]
+  task uninstall: Vendor::REPOS.map { |s| "uninstall:#{s}" }
 
   desc 'Delete compiled vendored dependencies from "./vendor/"'
-  task clean: %i[
-    clean:libsodium
-    clean:opus
-    clean:libvpx
-    clean:libtoxcore
-    clean:glib
-    clean:gstreamer
-    clean:gst-plugins-base
-  ]
+  task clean: Vendor::REPOS.map { |s| "clean:#{s}" }
 
   desc 'Delete configured vendored dependencies from "./vendor/"'
-  task distclean: %i[
-    distclean:libsodium
-    distclean:opus
-    distclean:libvpx
-    distclean:libtoxcore
-    distclean:glib
-    distclean:gstreamer
-    distclean:gst-plugins-base
-  ]
+  task distclean: Vendor::REPOS.map { |s| "distclean:#{s}" }
 
   desc 'Remove untracked content from Git submodules'
-  task gitfix: %i[
-    gitfix:libsodium
-    gitfix:opus
-    gitfix:libvpx
-    gitfix:libtoxcore
-    gitfix:glib
-    gitfix:gstreamer
-    gitfix:gst-plugins-base
-  ]
+  task gitfix: Vendor::REPOS.map { |s| "gitfix:#{s}" }
 
   namespace :install do
     task libsodium: 'vendor/src/libsodium/Makefile' do
