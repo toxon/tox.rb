@@ -281,7 +281,12 @@ namespace :vendor do
     end
 
     task :gstreamer
-    task 'gst-plugins-base'
+
+    task 'gst-plugins-base' do
+      chdir 'vendor/src/gst-plugins-base' do
+        sh 'git', 'checkout', '.'
+      end
+    end
   end
 end
 
@@ -430,11 +435,12 @@ file 'vendor/src/gst-plugins-base/Makefile':
       '--disable-gtk-doc',
       '--disable-nls',
       '--disable-examples',
-      '--disable-external',
       '--disable-experimental',
       '--disable-static-plugins',
 
       '--enable-rpath',
+      '--enable-external',
+      '--enable-opus',
     )
   end
 end
