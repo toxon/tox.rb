@@ -1,10 +1,23 @@
 # frozen_string_literal: true
 
-require_relative 'vendor'
-
 require 'English'
 
 require 'bundler/gem_tasks'
+
+VENDOR_PREFIX = File.expand_path('vendor', __dir__).freeze
+
+VENDOR_PKG_CONFIG_PATH = File.join(VENDOR_PREFIX, 'lib', 'pkgconfig').freeze
+
+VENDOR_REPOS = %w[
+  libsodium
+  opus
+  libvpx
+  libtoxcore
+  glib
+  gstreamer
+  gst-plugins-base
+  gst-plugins-good
+].freeze
 
 desc 'Run all checks (test, lint...)'
 task default: %i[test lint]
@@ -64,12 +77,12 @@ begin
 
   Rake::ExtensionTask.new 'tox' do |ext|
     ext.lib_dir = File.expand_path('lib/tox', __dir__).freeze
-    ext.config_options << "--with-opt-dir=#{Vendor::PREFIX.shellescape}"
+    ext.config_options << "--with-opt-dir=#{VENDOR_PREFIX.shellescape}"
   end
 
   Rake::ExtensionTask.new 'gst-plugins-tox' do |ext|
     ext.lib_dir = File.expand_path('lib', __dir__).freeze
-    ext.config_options << "--with-opt-dir=#{Vendor::PREFIX.shellescape}"
+    ext.config_options << "--with-opt-dir=#{VENDOR_PREFIX.shellescape}"
   end
 rescue LoadError
   nil
@@ -77,19 +90,19 @@ end
 
 namespace :vendor do
   desc 'Install vendored dependencies into "./vendor/{bin,include,lib}/"'
-  task install: Vendor::REPOS.map { |s| "install:#{s}" }
+  task install: VENDOR_REPOS.map { |s| "install:#{s}" }
 
   desc 'Uninstall vendored dependencies from "./vendor/{bin,include,lib}/"'
-  task uninstall: Vendor::REPOS.map { |s| "uninstall:#{s}" }
+  task uninstall: VENDOR_REPOS.map { |s| "uninstall:#{s}" }
 
   desc 'Delete compiled vendored dependencies from "./vendor/"'
-  task clean: Vendor::REPOS.map { |s| "clean:#{s}" }
+  task clean: VENDOR_REPOS.map { |s| "clean:#{s}" }
 
   desc 'Delete configured vendored dependencies from "./vendor/"'
-  task distclean: Vendor::REPOS.map { |s| "distclean:#{s}" }
+  task distclean: VENDOR_REPOS.map { |s| "distclean:#{s}" }
 
   desc 'Remove untracked content from Git submodules'
-  task gitfix: Vendor::REPOS.map { |s| "gitfix:#{s}" }
+  task gitfix: VENDOR_REPOS.map { |s| "gitfix:#{s}" }
 
   namespace :install do
     task libsodium: 'vendor/src/libsodium/Makefile' do
@@ -327,10 +340,10 @@ end
 file 'vendor/src/libsodium/Makefile': 'vendor/src/libsodium/configure' do |t|
   chdir File.dirname t.name do
     sh(
-      { 'PKG_CONFIG_PATH' => Vendor::PKG_CONFIG_PATH },
+      { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
       './configure',
       '--prefix',
-      Vendor::PREFIX,
+      VENDOR_PREFIX,
 
       '--enable-shared',
       '--disable-static',
@@ -341,10 +354,10 @@ end
 file 'vendor/src/opus/Makefile': 'vendor/src/opus/configure' do |t|
   chdir File.dirname t.name do
     sh(
-      { 'PKG_CONFIG_PATH' => Vendor::PKG_CONFIG_PATH },
+      { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
       './configure',
       '--prefix',
-      Vendor::PREFIX,
+      VENDOR_PREFIX,
 
       '--enable-shared',
       '--disable-static',
@@ -357,9 +370,9 @@ end
 file 'vendor/src/libvpx/Makefile': 'vendor/src/libvpx/configure' do |t|
   chdir File.dirname t.name do
     sh(
-      { 'PKG_CONFIG_PATH' => Vendor::PKG_CONFIG_PATH },
+      { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
       './configure',
-      "--prefix=#{Vendor::PREFIX}",
+      "--prefix=#{VENDOR_PREFIX}",
 
       '--enable-shared',
       '--disable-static',
@@ -375,10 +388,10 @@ end
 file 'vendor/src/libtoxcore/Makefile': 'vendor/src/libtoxcore/configure' do |t|
   chdir File.dirname t.name do
     sh(
-      { 'PKG_CONFIG_PATH' => Vendor::PKG_CONFIG_PATH },
+      { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
       './configure',
       '--prefix',
-      Vendor::PREFIX,
+      VENDOR_PREFIX,
 
       '--enable-shared',
       '--disable-static',
@@ -396,10 +409,10 @@ end
 file 'vendor/src/glib/Makefile': 'vendor/src/glib/configure' do |t|
   chdir File.dirname t.name do
     sh(
-      { 'PKG_CONFIG_PATH' => Vendor::PKG_CONFIG_PATH },
+      { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
       './configure',
       '--prefix',
-      Vendor::PREFIX,
+      VENDOR_PREFIX,
 
       '--enable-shared',
       '--disable-static',
@@ -423,10 +436,10 @@ end
 file 'vendor/src/gstreamer/Makefile': 'vendor/src/gstreamer/configure' do |t|
   chdir File.dirname t.name do
     sh(
-      { 'PKG_CONFIG_PATH' => Vendor::PKG_CONFIG_PATH },
+      { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
       './configure',
       '--prefix',
-      Vendor::PREFIX,
+      VENDOR_PREFIX,
 
       '--enable-shared',
       '--disable-static',
@@ -458,10 +471,10 @@ file 'vendor/src/gst-plugins-base/Makefile':
   'vendor/src/gst-plugins-base/configure' do |t|
   chdir File.dirname t.name do
     sh(
-      { 'PKG_CONFIG_PATH' => Vendor::PKG_CONFIG_PATH },
+      { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
       './configure',
       '--prefix',
-      Vendor::PREFIX,
+      VENDOR_PREFIX,
 
       '--enable-shared',
       '--disable-static',
@@ -483,10 +496,10 @@ file 'vendor/src/gst-plugins-good/Makefile':
   'vendor/src/gst-plugins-good/configure' do |t|
   chdir File.dirname t.name do
     sh(
-      { 'PKG_CONFIG_PATH' => Vendor::PKG_CONFIG_PATH },
+      { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
       './configure',
       '--prefix',
-      Vendor::PREFIX,
+      VENDOR_PREFIX,
 
       '--enable-shared',
       '--disable-static',
