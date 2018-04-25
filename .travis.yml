@@ -17,6 +17,7 @@ before_script:
   - rake vendor:install:opus
   - rake vendor:install:libvpx
   - rake vendor:install:libtoxcore
+  - rake vendor:install:glib
   - rake vendor:install:gstreamer
   - rake vendor:install:gst-plugins-base
 

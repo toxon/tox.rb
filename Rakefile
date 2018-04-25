@@ -82,6 +82,7 @@ namespace :vendor do
     install:opus
     install:libvpx
     install:libtoxcore
+    install:glib
     install:gstreamer
     install:gst-plugins-base
   ]
@@ -92,6 +93,7 @@ namespace :vendor do
     uninstall:opus
     uninstall:libvpx
     uninstall:libtoxcore
+    uninstall:glib
     uninstall:gstreamer
     uninstall:gst-plugins-base
   ]
@@ -102,6 +104,7 @@ namespace :vendor do
     clean:opus
     clean:libvpx
     clean:libtoxcore
+    clean:glib
     clean:gstreamer
     clean:gst-plugins-base
   ]
@@ -112,6 +115,7 @@ namespace :vendor do
     distclean:opus
     distclean:libvpx
     distclean:libtoxcore
+    distclean:glib
     distclean:gstreamer
     distclean:gst-plugins-base
   ]
@@ -137,6 +141,12 @@ namespace :vendor do
 
     task libtoxcore: 'vendor/src/libtoxcore/Makefile' do
       chdir 'vendor/src/libtoxcore' do
+        sh 'make install'
+      end
+    end
+
+    task glib: 'vendor/src/glib/Makefile' do
+      chdir 'vendor/src/glib' do
         sh 'make install'
       end
     end
@@ -179,6 +189,12 @@ namespace :vendor do
       end
     end
 
+    task glib: 'vendor/src/glib/Makefile' do
+      chdir 'vendor/src/glib' do
+        sh 'make uninstall'
+      end
+    end
+
     task gstreamer: 'vendor/src/gstreamer/Makefile' do
       chdir 'vendor/src/gstreamer' do
         sh 'make uninstall'
@@ -217,6 +233,12 @@ namespace :vendor do
       end
     end
 
+    task glib: 'vendor/src/glib/Makefile' do
+      chdir 'vendor/src/glib' do
+        sh 'make clean'
+      end
+    end
+
     task gstreamer: 'vendor/src/gstreamer/Makefile' do
       chdir 'vendor/src/gstreamer' do
         sh 'make clean'
@@ -251,6 +273,12 @@ namespace :vendor do
 
     task libtoxcore: 'vendor/src/libtoxcore/Makefile' do
       chdir 'vendor/src/libtoxcore' do
+        sh 'make distclean'
+      end
+    end
+
+    task glib: 'vendor/src/glib/Makefile' do
+      chdir 'vendor/src/glib' do
         sh 'make distclean'
       end
     end
@@ -338,6 +366,33 @@ file 'vendor/src/libtoxcore/Makefile': 'vendor/src/libtoxcore/configure' do |t|
   end
 end
 
+file 'vendor/src/glib/Makefile': 'vendor/src/glib/configure' do |t|
+  chdir File.dirname t.name do
+    sh(
+      { 'PKG_CONFIG_PATH' => Vendor::PKG_CONFIG_PATH },
+      './configure',
+      '--prefix',
+      Vendor::PREFIX,
+
+      '--enable-shared',
+      '--disable-static',
+
+      '--disable-installed-tests',
+      '--disable-always-build-tests',
+      '--disable-largefile',
+      '--disable-selinux',
+      '--disable-fam',
+      '--disable-xattr',
+      '--disable-libelf',
+      '--disable-libmount',
+      '--disable-man',
+      '--disable-dtrace',
+      '--disable-systemtap',
+      '--disable-coverage',
+    )
+  end
+end
+
 file 'vendor/src/gstreamer/Makefile': 'vendor/src/gstreamer/configure' do |t|
   chdir File.dirname t.name do
     sh(
@@ -411,6 +466,12 @@ end
 file 'vendor/src/libtoxcore/configure' do |t|
   chdir File.dirname t.name do
     sh './autogen.sh'
+  end
+end
+
+file 'vendor/src/glib/configure' do |t|
+  chdir File.dirname t.name do
+    sh({ 'NOCONFIGURE' => 'yes' }, './autogen.sh')
   end
 end
 
