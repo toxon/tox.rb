@@ -487,7 +487,41 @@ file 'vendor/src/gst-plugins-base/Makefile':
 
       '--enable-rpath',
       '--enable-external',
-      '--enable-opus',
+
+      # Required plugins
+      '--enable-opus', # opusdec
+      '--enable-audioresample', # audioresample
+
+      # Unnecessary plugins
+      '--disable-adder',
+      '--disable-app',
+      '--disable-audioconvert',
+      '--disable-audiorate',
+      '--disable-audiotestsrc',
+      '--disable-encoding',
+      '--disable-videoconvert',
+      '--disable-gio',
+      '--disable-playback',
+      '--disable-rawparse',
+      '--disable-subparse',
+      '--disable-tcp',
+      '--disable-typefind',
+      '--disable-videotestsrc',
+      '--disable-videorate',
+      '--disable-videoscale',
+      '--disable-volume',
+      '--disable-zlib',
+      '--disable-x',
+      '--disable-xvideo',
+      '--disable-xshm',
+      '--disable-alsa',
+      '--disable-cdparanoia',
+      '--disable-ivorbis',
+      '--disable-libvisual',
+      '--disable-ogg',
+      '--disable-pango',
+      '--disable-theora',
+      '--disable-vorbis',
     )
   end
 end
