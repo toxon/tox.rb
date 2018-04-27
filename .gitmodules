@@ -14,19 +14,3 @@
 	path = vendor/src/libvpx
 	url = https://chromium.googlesource.com/webm/libvpx.git
 	branch = "v1.6.0"
-[submodule "vendor/src/glib"]
-	path = vendor/src/glib
-	url = https://gitlab.gnome.org/GNOME/glib.git
-	branch = "2.56.1"
-[submodule "vendor/src/gstreamer"]
-	path = vendor/src/gstreamer
-	url = https://anongit.freedesktop.org/git/gstreamer/gstreamer.git
-	branch = "1.12.5"
-[submodule "vendor/src/gst-plugins-base"]
-	path = vendor/src/gst-plugins-base
-	url = https://anongit.freedesktop.org/git/gstreamer/gst-plugins-base.git
-	branch = "1.12.5"
-[submodule "vendor/src/gst-plugins-good"]
-	path = vendor/src/gst-plugins-good
-	url = https://anongit.freedesktop.org/git/gstreamer/gst-plugins-good.git
-	branch = "1.12.5"

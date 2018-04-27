@@ -8,22 +8,10 @@ rvm:
 
 before_install:
   - sudo apt-get update
-  - sudo apt-get install -y autopoint yasm libconfig-dev
+  - sudo apt-get install -y yasm libconfig-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
 
 install: bundle install --jobs 3 --retry 3 --without examples
 
 before_script:
-  - rake vendor:install:libsodium
-  - rake vendor:install:opus
-  - rake vendor:install:libvpx
-  - rake vendor:install:libtoxcore
-  - rake vendor:install:glib
-  - rake vendor:install:gstreamer
-  - rake vendor:install:gst-plugins-base
-
-  - rake compile:tox
-  - rake compile:gst-plugins-tox
-
-  ## Too verbose (1819 lines).
-  ## Travis CI limits logs to 10000 lines.
-  # - rake ldd
+  - rake vendor:install
+  - rake compile
