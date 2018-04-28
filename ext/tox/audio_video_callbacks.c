@@ -33,17 +33,8 @@ void on_call(
     ivar_on_call,
     rb_intern("call"),
     1,
-    friend_call_request,
+    friend_call_request
   );
-}
-
-void on_call_state_change(
-  ToxAV *const tox_av,
-  const uint32_t friend_number_data,
-  const uint32_t friend_call_state_data,
-  const VALUE self
-)
-{
 }
 
 void on_audio_frame(

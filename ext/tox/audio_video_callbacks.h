@@ -6,13 +6,6 @@ void on_call(
   VALUE self
 );
 
-void on_call_state_change(
-  ToxAV *tox_av,
-  uint32_t friend_number_data,
-  uint32_t friend_call_state_data,
-  VALUE self
-);
-
 void on_audio_frame(
   ToxAV *tox_av,
   uint32_t friend_number_data,
