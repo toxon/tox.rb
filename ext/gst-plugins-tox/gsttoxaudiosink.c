@@ -83,7 +83,7 @@ static GstStaticPadTemplate sink_template = GST_STATIC_PAD_TEMPLATE(
   GST_PAD_SINK,
   GST_PAD_ALWAYS,
   GST_STATIC_CAPS(
-    "audio/x-opus, "
+    "audio/x-raw, "
     "rate = (int) 48000, "
     "channels = (int) 1, "
     "channel-mapping-family = (int) 0, "
@@ -126,7 +126,7 @@ void gst_tox_audio_sink_class_init(GstToxAudioSinkClass *const klass)
     gst_element_class,
     "ToxAudioSink",
     "Sink/Audio",
-    "Sends Opus audio to Tox",
+    "Sends audio to Tox",
     "Braiden Vasco <braiden-vasco@users.noreply.github.com>"
   );
 

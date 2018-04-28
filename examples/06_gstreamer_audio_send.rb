@@ -12,7 +12,6 @@ filesrc        = Gst::ElementFactory.make 'filesrc'
 mpegaudioparse = Gst::ElementFactory.make 'mpegaudioparse'
 mpg123audiodec = Gst::ElementFactory.make 'mpg123audiodec'
 audioresample  = Gst::ElementFactory.make 'audioresample'
-opusenc        = Gst::ElementFactory.make 'opusenc'
 toxaudiosink   = Gst::ElementFactory.make 'toxaudiosink'
 
 elements = [
@@ -20,7 +19,6 @@ elements = [
   mpegaudioparse,
   mpg123audiodec,
   audioresample,
-  opusenc,
   toxaudiosink,
 ]
 
