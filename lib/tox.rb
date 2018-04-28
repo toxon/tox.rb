@@ -6,23 +6,30 @@ require 'json'
 require 'resolv'
 
 require 'tox/version'
-require 'tox/options'
+
+# Core classes
 require 'tox/client'
-require 'tox/status'
-require 'tox/node'
+require 'tox/audio_video'
+
+# Proxy classes
 require 'tox/out_message'
 require 'tox/out_friend_message'
 require 'tox/friend'
-require 'tox/audio_video'
 require 'tox/out_friend_file'
 require 'tox/in_friend_file'
-require 'tox/friend_call_state'
 require 'tox/friend_call_request'
 require 'tox/friend_call'
 
+# Configuration classes
+require 'tox/options'
+require 'tox/status'
+require 'tox/node'
 require 'tox/proxies/base'
 require 'tox/proxies/http'
 require 'tox/proxies/socks5'
+
+# Bit masks
+require 'tox/friend_call_state'
 
 # Enumerations
 require 'tox/user_status'
