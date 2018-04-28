@@ -12,7 +12,7 @@ void mTox_mVersion_INIT();
 void mTox_cOptions_INIT();
 void mTox_cClient_INIT();
 void mTox_cFriend_INIT();
-void mTox_cAV_INIT();
+void mTox_cAudioVideo_INIT();
 void mTox_cOutFriendFile_INIT();
 void mTox_cInFriendFile_INIT();
 
@@ -31,7 +31,7 @@ typedef struct {
 
 typedef struct {
   ToxAV *tox_av;
-} mTox_cAV_CDATA;
+} mTox_cAudioVideo_CDATA;
 
 // Instances
 
@@ -54,7 +54,7 @@ extern VALUE mTox_cPublicKey;
 extern VALUE mTox_cNospam;
 extern VALUE mTox_mOutMessage;
 extern VALUE mTox_cOutFriendMessage;
-extern VALUE mTox_cAV;
+extern VALUE mTox_cAudioVideo;
 extern VALUE mTox_mFileKind;
 extern VALUE mTox_cOutFriendFile;
 extern VALUE mTox_cInFriendFile;

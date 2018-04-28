@@ -13,7 +13,7 @@ require 'tox/node'
 require 'tox/out_message'
 require 'tox/out_friend_message'
 require 'tox/friend'
-require 'tox/av'
+require 'tox/audio_video'
 require 'tox/out_friend_file'
 require 'tox/in_friend_file'
 

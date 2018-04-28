@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Tox::AV do
+RSpec.describe Tox::AudioVideo do
   subject { described_class.new client }
 
   let(:client) { Tox::Client.new }
@@ -13,8 +13,8 @@ RSpec.describe Tox::AV do
         expect { subject }.to \
           raise_error(
             TypeError,
-            'Expected method Tox::AV#initialize_with ' \
-              'argument "client" '                     \
+            'Expected method Tox::AudioVideo#initialize_with ' \
+              'argument "client" '                             \
               "to be a #{Tox::Client}",
           )
       end
@@ -27,8 +27,8 @@ RSpec.describe Tox::AV do
         expect { subject }.to \
           raise_error(
             TypeError,
-            'Expected method Tox::AV#initialize_with ' \
-              'argument "client" '                     \
+            'Expected method Tox::AudioVideo#initialize_with ' \
+              'argument "client" '                             \
               "to be a #{Tox::Client}",
           )
       end

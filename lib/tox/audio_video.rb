@@ -4,7 +4,7 @@ module Tox
   ##
   # Tox audio/video instance.
   #
-  class AV
+  class AudioVideo
     def initialize(client)
       initialize_with client
     end

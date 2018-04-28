@@ -25,7 +25,7 @@ VALUE mTox_cNospam;
 VALUE mTox_cPublicKey;
 VALUE mTox_mOutMessage;
 VALUE mTox_cOutFriendMessage;
-VALUE mTox_cAV;
+VALUE mTox_cAudioVideo;
 VALUE mTox_mFileKind;
 VALUE mTox_cOutFriendFile;
 VALUE mTox_cInFriendFile;
@@ -96,7 +96,7 @@ void Init_tox()
   mTox_cPublicKey        = rb_const_get(mTox, rb_intern("PublicKey"));
   mTox_mOutMessage       = rb_const_get(mTox, rb_intern("OutMessage"));
   mTox_cOutFriendMessage = rb_const_get(mTox, rb_intern("OutFriendMessage"));
-  mTox_cAV               = rb_const_get(mTox, rb_intern("AV"));
+  mTox_cAudioVideo       = rb_const_get(mTox, rb_intern("AudioVideo"));
   mTox_mFileKind         = rb_const_get(mTox, rb_intern("FileKind"));
   mTox_cOutFriendFile    = rb_const_get(mTox, rb_intern("OutFriendFile"));
   mTox_cInFriendFile     = rb_const_get(mTox, rb_intern("InFriendFile"));
@@ -140,7 +140,7 @@ void Init_tox()
   mTox_cOptions_INIT();
   mTox_cClient_INIT();
   mTox_cFriend_INIT();
-  mTox_cAV_INIT();
+  mTox_cAudioVideo_INIT();
   mTox_cOutFriendFile_INIT();
   mTox_cInFriendFile_INIT();
 }

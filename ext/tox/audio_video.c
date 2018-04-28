@@ -2,41 +2,41 @@
 
 // Memory management
 
-static VALUE mTox_cAV_alloc(VALUE klass);
-static void  mTox_cAV_free(mTox_cAV_CDATA *free_cdata);
+static VALUE mTox_cAudioVideo_alloc(VALUE klass);
+static void  mTox_cAudioVideo_free(mTox_cAudioVideo_CDATA *free_cdata);
 
 // Private methods
 
-static VALUE mTox_cAV_initialize_with(VALUE self, VALUE client);
+static VALUE mTox_cAudioVideo_initialize_with(VALUE self, VALUE client);
 
 /*************************************************************
  * Initialization
  *************************************************************/
 
-void mTox_cAV_INIT()
+void mTox_cAudioVideo_INIT()
 {
   // Memory management
-  rb_define_alloc_func(mTox_cAV, mTox_cAV_alloc);
+  rb_define_alloc_func(mTox_cAudioVideo, mTox_cAudioVideo_alloc);
 
   // Private methods
 
-  rb_define_private_method(mTox_cAV, "initialize_with", mTox_cAV_initialize_with, 1);
+  rb_define_private_method(mTox_cAudioVideo, "initialize_with", mTox_cAudioVideo_initialize_with, 1);
 }
 
 /*************************************************************
  * Memory management
  *************************************************************/
 
-VALUE mTox_cAV_alloc(const VALUE klass)
+VALUE mTox_cAudioVideo_alloc(const VALUE klass)
 {
-  mTox_cAV_CDATA *alloc_cdata = ALLOC(mTox_cAV_CDATA);
+  mTox_cAudioVideo_CDATA *alloc_cdata = ALLOC(mTox_cAudioVideo_CDATA);
 
   alloc_cdata->tox_av = NULL;
 
-  return Data_Wrap_Struct(klass, NULL, mTox_cAV_free, alloc_cdata);
+  return Data_Wrap_Struct(klass, NULL, mTox_cAudioVideo_free, alloc_cdata);
 }
 
-void mTox_cAV_free(mTox_cAV_CDATA *const free_cdata)
+void mTox_cAudioVideo_free(mTox_cAudioVideo_CDATA *const free_cdata)
 {
   if (free_cdata->tox_av) {
     toxav_kill(free_cdata->tox_av);
@@ -49,15 +49,15 @@ void mTox_cAV_free(mTox_cAV_CDATA *const free_cdata)
  * Private methods
  *************************************************************/
 
-// Tox::AV#initialize_with
-VALUE mTox_cAV_initialize_with(const VALUE self, const VALUE client)
+// Tox::AudioVideo#initialize_with
+VALUE mTox_cAudioVideo_initialize_with(const VALUE self, const VALUE client)
 {
   if (!rb_funcall(client, rb_intern("is_a?"), 1, mTox_cClient)) {
-    RAISE_TYPECHECK("Tox::AV#initialize_with", "client", "Tox::Client");
+    RAISE_TYPECHECK("Tox::AudioVideo#initialize_with", "client", "Tox::Client");
   }
 
-  CDATA(self,   mTox_cAV_CDATA,     self_cdata);
-  CDATA(client, mTox_cClient_CDATA, client_cdata);
+  CDATA(self,   mTox_cAudioVideo_CDATA, self_cdata);
+  CDATA(client, mTox_cClient_CDATA,     client_cdata);
 
   TOXAV_ERR_NEW error;
 
