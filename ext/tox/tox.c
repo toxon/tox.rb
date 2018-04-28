@@ -30,6 +30,9 @@ VALUE mTox_mFileKind;
 VALUE mTox_cOutFriendFile;
 VALUE mTox_cInFriendFile;
 VALUE mTox_mFileControl;
+VALUE mTox_cFriendCallRequest;
+VALUE mTox_cFriendCall;
+VALUE mTox_cAudioFrame;
 
 VALUE mTox_mUserStatus_NONE;
 VALUE mTox_mUserStatus_AWAY;
@@ -83,24 +86,27 @@ void Init_tox()
   mTox_eSendQueueError = rb_const_get(mTox, rb_intern("SendQueueError"));
   mTox_eUnknownError   = rb_const_get(mTox, rb_intern("UnknownError"));
 
-  mTox_mVersion          = rb_const_get(mTox, rb_intern("Version"));
-  mTox_mUserStatus       = rb_const_get(mTox, rb_intern("UserStatus"));
-  mTox_mConnectionStatus = rb_const_get(mTox, rb_intern("ConnectionStatus"));
-  mTox_mProxyType        = rb_const_get(mTox, rb_intern("ProxyType"));
-  mTox_cOptions          = rb_const_get(mTox, rb_intern("Options"));
-  mTox_cClient           = rb_const_get(mTox, rb_intern("Client"));
-  mTox_cNode             = rb_const_get(mTox, rb_intern("Node"));
-  mTox_cFriend           = rb_const_get(mTox, rb_intern("Friend"));
-  mTox_cAddress          = rb_const_get(mTox, rb_intern("Address"));
-  mTox_cNospam           = rb_const_get(mTox, rb_intern("Nospam"));
-  mTox_cPublicKey        = rb_const_get(mTox, rb_intern("PublicKey"));
-  mTox_mOutMessage       = rb_const_get(mTox, rb_intern("OutMessage"));
-  mTox_cOutFriendMessage = rb_const_get(mTox, rb_intern("OutFriendMessage"));
-  mTox_cAudioVideo       = rb_const_get(mTox, rb_intern("AudioVideo"));
-  mTox_mFileKind         = rb_const_get(mTox, rb_intern("FileKind"));
-  mTox_cOutFriendFile    = rb_const_get(mTox, rb_intern("OutFriendFile"));
-  mTox_cInFriendFile     = rb_const_get(mTox, rb_intern("InFriendFile"));
-  mTox_mFileControl      = rb_const_get(mTox, rb_intern("FileControl"));
+  mTox_mVersion           = rb_const_get(mTox, rb_intern("Version"));
+  mTox_mUserStatus        = rb_const_get(mTox, rb_intern("UserStatus"));
+  mTox_mConnectionStatus  = rb_const_get(mTox, rb_intern("ConnectionStatus"));
+  mTox_mProxyType         = rb_const_get(mTox, rb_intern("ProxyType"));
+  mTox_cOptions           = rb_const_get(mTox, rb_intern("Options"));
+  mTox_cClient            = rb_const_get(mTox, rb_intern("Client"));
+  mTox_cNode              = rb_const_get(mTox, rb_intern("Node"));
+  mTox_cFriend            = rb_const_get(mTox, rb_intern("Friend"));
+  mTox_cAddress           = rb_const_get(mTox, rb_intern("Address"));
+  mTox_cNospam            = rb_const_get(mTox, rb_intern("Nospam"));
+  mTox_cPublicKey         = rb_const_get(mTox, rb_intern("PublicKey"));
+  mTox_mOutMessage        = rb_const_get(mTox, rb_intern("OutMessage"));
+  mTox_cOutFriendMessage  = rb_const_get(mTox, rb_intern("OutFriendMessage"));
+  mTox_cAudioVideo        = rb_const_get(mTox, rb_intern("AudioVideo"));
+  mTox_mFileKind          = rb_const_get(mTox, rb_intern("FileKind"));
+  mTox_cOutFriendFile     = rb_const_get(mTox, rb_intern("OutFriendFile"));
+  mTox_cInFriendFile      = rb_const_get(mTox, rb_intern("InFriendFile"));
+  mTox_mFileControl       = rb_const_get(mTox, rb_intern("FileControl"));
+  mTox_cFriendCallRequest = rb_const_get(mTox, rb_intern("FriendCallRequest"));
+  mTox_cFriendCall        = rb_const_get(mTox, rb_intern("FriendCall"));
+  mTox_cAudioFrame        = rb_const_get(mTox, rb_intern("AudioFrame"));
 
   mTox_mUserStatus_NONE = rb_const_get(mTox_mUserStatus, rb_intern("NONE"));
   mTox_mUserStatus_AWAY = rb_const_get(mTox_mUserStatus, rb_intern("AWAY"));
@@ -143,6 +149,9 @@ void Init_tox()
   mTox_cAudioVideo_INIT();
   mTox_cOutFriendFile_INIT();
   mTox_cInFriendFile_INIT();
+  mTox_cFriendCallRequest_INIT();
+  mTox_cFriendCall_INIT();
+  mTox_cAudioFrame_INIT();
 }
 
 /*************************************************************

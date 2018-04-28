@@ -4,6 +4,7 @@
 #include <tox/toxav.h>
 
 #include "callbacks.h"
+#include "audio_video_callbacks.h"
 
 // C extension initialization
 
@@ -15,6 +16,9 @@ void mTox_cFriend_INIT();
 void mTox_cAudioVideo_INIT();
 void mTox_cOutFriendFile_INIT();
 void mTox_cInFriendFile_INIT();
+void mTox_cFriendCallRequest_INIT();
+void mTox_cFriendCall_INIT();
+void mTox_cAudioFrame_INIT();
 
 // C data
 
@@ -32,6 +36,13 @@ typedef struct {
 typedef struct {
   ToxAV *tox_av;
 } mTox_cAudioVideo_CDATA;
+
+typedef struct {
+  const uint16_t *pcm;
+  size_t sample_count;
+  uint8_t channels;
+  uint32_t sampling_rate;
+} mTox_cAudioFrame_CDATA;
 
 // Instances
 
@@ -59,6 +70,9 @@ extern VALUE mTox_mFileKind;
 extern VALUE mTox_cOutFriendFile;
 extern VALUE mTox_cInFriendFile;
 extern VALUE mTox_mFileControl;
+extern VALUE mTox_cFriendCallRequest;
+extern VALUE mTox_cFriendCall;
+extern VALUE mTox_cAudioFrame;
 
 extern VALUE mTox_mUserStatus_NONE;
 extern VALUE mTox_mUserStatus_AWAY;

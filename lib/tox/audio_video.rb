@@ -6,7 +6,23 @@ module Tox
   #
   class AudioVideo
     def initialize(client)
+      @on_call = nil
+      @on_call_state_change = nil
+      @on_audio_frame = nil
+
       initialize_with client
+    end
+
+    def on_call(&block)
+      @on_call = block
+    end
+
+    def on_call_state_change(&block)
+      @on_call_state_change = block
+    end
+
+    def on_audio_frame(&block)
+      @on_audio_frame = block
     end
   end
 end
