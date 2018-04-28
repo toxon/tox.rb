@@ -277,5 +277,7 @@ have_func! 'tox/tox.h', 'tox_callback_self_connection_status'
 
 have_func! 'tox/toxav.h', 'toxav_new'
 have_func! 'tox/toxav.h', 'toxav_kill'
+have_func! 'tox/toxav.h', 'toxav_iteration_interval'
+have_func! 'tox/toxav.h', 'toxav_iterate'
 
 create_makefile 'tox/tox' or exit 1

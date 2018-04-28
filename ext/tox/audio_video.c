@@ -5,6 +5,11 @@
 static VALUE mTox_cAudioVideo_alloc(VALUE klass);
 static void  mTox_cAudioVideo_free(mTox_cAudioVideo_CDATA *free_cdata);
 
+// Public methods
+
+static VALUE mTox_cAudioVideo_iteration_interval(VALUE self);
+static VALUE mTox_cAudioVideo_iterate(VALUE self);
+
 // Private methods
 
 static VALUE mTox_cAudioVideo_initialize_with(VALUE self, VALUE client);
@@ -17,6 +22,11 @@ void mTox_cAudioVideo_INIT()
 {
   // Memory management
   rb_define_alloc_func(mTox_cAudioVideo, mTox_cAudioVideo_alloc);
+
+  // Public methods
+
+  rb_define_method(mTox_cAudioVideo, "iteration_interval", mTox_cAudioVideo_iteration_interval, 0);
+  rb_define_method(mTox_cAudioVideo, "iterate",            mTox_cAudioVideo_iterate,            0);
 
   // Private methods
 
@@ -43,6 +53,36 @@ void mTox_cAudioVideo_free(mTox_cAudioVideo_CDATA *const free_cdata)
   }
 
   free(free_cdata);
+}
+
+/*************************************************************
+ * Public methods
+ *************************************************************/
+
+// Tox::AudioVideo#iteration_interval
+VALUE mTox_cAudioVideo_iteration_interval(const VALUE self)
+{
+  CDATA(self, mTox_cAudioVideo_CDATA, self_cdata);
+
+  uint32_t iteration_interval_msec_data =
+    toxav_iteration_interval(self_cdata->tox_av);
+
+  const double iteration_interval_sec_data =
+    ((double)iteration_interval_msec_data) * 0.001;
+
+  const VALUE iteration_interval_sec = DBL2NUM(iteration_interval_sec_data);
+
+  return iteration_interval_sec;
+}
+
+// Tox::AudioVideo#iterate
+VALUE mTox_cAudioVideo_iterate(const VALUE self)
+{
+  CDATA(self, mTox_cAudioVideo_CDATA, self_cdata);
+
+  toxav_iterate(self_cdata->tox_av);
+
+  return Qnil;
 }
 
 /*************************************************************

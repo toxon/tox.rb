@@ -48,4 +48,20 @@ RSpec.describe Tox::AudioVideo do
       end
     end
   end
+
+  describe '#iteration_interval' do
+    specify do
+      expect(subject.iteration_interval).to be_instance_of Float
+    end
+
+    specify do
+      expect(subject.iteration_interval).to be >= 0
+    end
+  end
+
+  describe '#iterate' do
+    specify do
+      expect(subject.iterate).to eq nil
+    end
+  end
 end
