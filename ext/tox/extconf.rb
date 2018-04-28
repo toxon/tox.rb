@@ -104,10 +104,6 @@ have_type! 'tox/tox.h', 'tox_file_recv_chunk_cb'
 
 have_type! 'tox/toxav.h', 'TOXAV_ERR_NEW'
 
-have_struct_member! 'tox/tox.h', 'struct Tox_Options', 'savedata_type'
-have_struct_member! 'tox/tox.h', 'struct Tox_Options', 'savedata_length'
-have_struct_member! 'tox/tox.h', 'struct Tox_Options', 'savedata_data'
-
 have_const! 'tox/tox.h', 'TOX_VERSION_MAJOR'
 have_const! 'tox/tox.h', 'TOX_VERSION_MINOR'
 have_const! 'tox/tox.h', 'TOX_VERSION_PATCH'
