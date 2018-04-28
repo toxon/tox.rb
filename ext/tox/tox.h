@@ -3,7 +3,7 @@
 #include <tox/tox.h>
 #include <tox/toxav.h>
 
-#include "callbacks.h"
+#include "client_callbacks.h"
 #include "audio_video_callbacks.h"
 
 // C extension initialization
