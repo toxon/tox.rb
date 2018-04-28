@@ -30,16 +30,15 @@ tox_client.on_friend_request do |public_key, text|
   tox_client.friend_add_norequest public_key
 end
 
-tox_client.audio_video.on_call \
-do |friend_call_request, audio_enabled, video_enabled|
+tox_client.audio_video.on_call do |friend_call_request|
   puts 'Friend call. Answering...'
   puts "Friend number: #{friend_call_request.friend_number}"
-  puts "Audio enabled: #{audio_enabled}"
-  puts "Video enabled: #{video_enabled}"
+  puts "Audio enabled: #{friend_call_request.audio_enabled?}"
+  puts "Video enabled: #{friend_call_request.video_enabled?}"
   puts
 
   friend_call_request.answer(
-    audio_enabled ? AUDIO_BIT_RATE : nil,
+    friend_call_request.audio_enabled? ? AUDIO_BIT_RATE : nil,
     nil,
   )
 end

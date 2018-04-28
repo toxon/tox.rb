@@ -1,11 +1,16 @@
 # frozen_string_literal: true
 
 RSpec.describe Tox::FriendCallRequest do
-  subject { described_class.new audio_video, friend_number }
+  subject do
+    described_class.new audio_video, friend_number, audio_enabled, video_enabled
+  end
 
   let(:audio_video) { Tox::AudioVideo.new client }
 
   let(:friend_number) { rand 0..10 }
+
+  let(:audio_enabled) { [false, true].sample }
+  let(:video_enabled) { [false, true].sample }
 
   let(:client) { Tox::Client.new }
 
@@ -64,13 +69,36 @@ RSpec.describe Tox::FriendCallRequest do
     end
   end
 
+  describe '#audio_enabled?' do
+    specify do
+      expect(subject.audio_enabled?).to eq audio_enabled
+    end
+  end
+
+  describe '#video_enabled?' do
+    specify do
+      expect(subject.video_enabled?).to eq video_enabled
+    end
+  end
+
   describe '#==' do
-    let(:same_friend) { described_class.new audio_video, friend_number }
-    let(:with_other_av) { described_class.new other_audio_video, friend_number }
-    let(:with_other_num) { described_class.new audio_video, other_friend_num }
+    let :same_friend do
+      described_class.new audio_video, friend_number,
+                          audio_enabled, video_enabled
+    end
+
+    let :with_other_audio_video do
+      described_class.new other_audio_video, friend_number,
+                          audio_enabled, video_enabled
+    end
+
+    let :with_other_friend_number do
+      described_class.new audio_video, other_friend_number,
+                          audio_enabled, video_enabled
+    end
 
     let(:other_audio_video) { Tox::AudioVideo.new Tox::Client.new }
-    let(:other_friend_num) { rand 200..300 }
+    let(:other_friend_number) { rand 200..300 }
 
     it 'returns true when compared to itself' do
       expect(subject).to eq subject
@@ -81,16 +109,20 @@ RSpec.describe Tox::FriendCallRequest do
     end
 
     it 'returns false when audio/video differs' do
-      expect(subject).not_to eq with_other_av
+      expect(subject).not_to eq with_other_audio_video
     end
 
     it 'returns false when friend number differs' do
-      expect(subject).not_to eq with_other_num
+      expect(subject).not_to eq with_other_friend_number
     end
 
     it 'returns false when compared with subclass instance' do
-      expect(subject).not_to \
-        eq Class.new(described_class).new audio_video, friend_number
+      expect(subject).not_to eq Class.new(described_class).new(
+        audio_video,
+        friend_number,
+        audio_enabled,
+        video_enabled,
+      )
     end
   end
 end

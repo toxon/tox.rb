@@ -16,24 +16,24 @@ void on_call(
 
   const VALUE friend_number = LONG2FIX(friend_number_data);
 
+  const VALUE audio_enabled = audio_enabled_data ? Qtrue : Qfalse;
+  const VALUE video_enabled = video_enabled_data ? Qtrue : Qfalse;
+
   const VALUE friend_call_request = rb_funcall(
     mTox_cFriendCallRequest,
     rb_intern("new"),
-    2,
+    4,
     self,
-    friend_number
+    friend_number,
+    audio_enabled,
+    video_enabled
   );
-
-  const VALUE audio_enabled = audio_enabled_data ? Qtrue : Qfalse;
-  const VALUE video_enabled = video_enabled_data ? Qtrue : Qfalse;
 
   rb_funcall(
     ivar_on_call,
     rb_intern("call"),
-    3,
+    1,
     friend_call_request,
-    audio_enabled,
-    video_enabled
   );
 }
 

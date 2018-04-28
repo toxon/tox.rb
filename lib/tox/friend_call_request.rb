@@ -7,9 +7,20 @@ module Tox
   class FriendCallRequest
     attr_reader :audio_video, :friend_number
 
-    def initialize(audio_video, friend_number)
+    def initialize(audio_video, friend_number, audio_enabled, video_enabled)
       self.audio_video   = audio_video
       self.friend_number = friend_number
+
+      @audio_enabled = !!audio_enabled
+      @video_enabled = !!video_enabled
+    end
+
+    def audio_enabled?
+      @audio_enabled
+    end
+
+    def video_enabled?
+      @video_enabled
     end
 
     def ==(other)
