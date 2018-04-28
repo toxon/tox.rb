@@ -84,6 +84,7 @@ static GstStaticPadTemplate sink_template = GST_STATIC_PAD_TEMPLATE(
   GST_PAD_ALWAYS,
   GST_STATIC_CAPS(
     "audio/x-raw, "
+    "format = (string) U16LE, "
     "rate = (int) 48000, "
     "channels = (int) 1, "
     "channel-mapping-family = (int) 0, "
