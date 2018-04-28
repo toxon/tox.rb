@@ -7,10 +7,6 @@ gemspec
 
 gem 'coveralls', group: :test, require: false
 
-group :development, :test do
-  gem 'gstreamer', '~> 3.2'
-end
-
 group :examples do
   gem 'gtk3', '~> 3.2'
 end
