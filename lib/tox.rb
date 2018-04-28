@@ -19,7 +19,6 @@ require 'tox/in_friend_file'
 require 'tox/friend_call_state'
 require 'tox/friend_call_request'
 require 'tox/friend_call'
-require 'tox/audio_frame'
 
 require 'tox/proxies/base'
 require 'tox/proxies/http'
@@ -32,12 +31,16 @@ require 'tox/connection_status'
 require 'tox/file_kind'
 require 'tox/file_control'
 
-# Primitives
+# Binary string primitives
 require 'tox/binary'
 require 'tox/public_key'
 require 'tox/nospam'
 require 'tox/address_checksum'
 require 'tox/address'
+
+# Media data primitives
+require 'tox/audio_frame'
+require 'tox/video_frame'
 
 ##
 # Ruby interface for libtoxcore. It can be used to create Tox chat client or

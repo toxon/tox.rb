@@ -9,6 +9,7 @@ NAME = 'AudioVideoEchoBot'
 STATUS_MESSAGE = 'Call me'
 
 AUDIO_BIT_RATE = 48
+VIDEO_BIT_RATE = 5000
 
 tox_client = Tox::Client.new
 
@@ -37,19 +38,27 @@ tox_client.audio_video.on_call do |friend_call_request|
   puts "Video enabled: #{friend_call_request.video_enabled?}"
   puts
 
-  unless friend_call_request.audio_enabled?
-    puts 'Audio disabled. Rejecting...'
+  unless friend_call_request.audio_enabled? ||
+         friend_call_request.video_enabled?
+    puts 'Both audio and video disabled. Rejecting...'
     puts
 
     friend_call_request.reject
     next
   end
 
-  friend_call_request.answer AUDIO_BIT_RATE, nil
+  friend_call_request.answer(
+    friend_call_request.audio_enabled? ? AUDIO_BIT_RATE : nil,
+    friend_call_request.video_enabled? ? VIDEO_BIT_RATE : nil,
+  )
 end
 
 tox_client.audio_video.on_audio_frame do |friend_call, audio_frame|
   friend_call.send_audio_frame audio_frame
+end
+
+tox_client.audio_video.on_video_frame do |friend_call, video_frame|
+  friend_call.send_video_frame video_frame
 end
 
 puts 'Running. Send me friend request, I\'ll accept it immediately. ' \

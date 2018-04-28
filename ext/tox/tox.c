@@ -33,6 +33,7 @@ VALUE mTox_mFileControl;
 VALUE mTox_cFriendCallRequest;
 VALUE mTox_cFriendCall;
 VALUE mTox_cAudioFrame;
+VALUE mTox_cVideoFrame;
 
 VALUE mTox_mUserStatus_NONE;
 VALUE mTox_mUserStatus_AWAY;
@@ -107,6 +108,7 @@ void Init_tox()
   mTox_cFriendCallRequest = rb_const_get(mTox, rb_intern("FriendCallRequest"));
   mTox_cFriendCall        = rb_const_get(mTox, rb_intern("FriendCall"));
   mTox_cAudioFrame        = rb_const_get(mTox, rb_intern("AudioFrame"));
+  mTox_cVideoFrame        = rb_const_get(mTox, rb_intern("VideoFrame"));
 
   mTox_mUserStatus_NONE = rb_const_get(mTox_mUserStatus, rb_intern("NONE"));
   mTox_mUserStatus_AWAY = rb_const_get(mTox_mUserStatus, rb_intern("AWAY"));
@@ -152,6 +154,7 @@ void Init_tox()
   mTox_cFriendCallRequest_INIT();
   mTox_cFriendCall_INIT();
   mTox_cAudioFrame_INIT();
+  mTox_cVideoFrame_INIT();
 }
 
 /*************************************************************

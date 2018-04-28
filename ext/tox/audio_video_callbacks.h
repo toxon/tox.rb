@@ -15,3 +15,17 @@ void on_audio_frame(
   uint32_t sampling_rate_data,
   VALUE self
 );
+
+void on_video_frame(
+  ToxAV *tox_av,
+  uint32_t friend_number_data,
+  uint16_t width_data,
+  uint16_t height_data,
+  const uint8_t *y,
+  const uint8_t *u,
+  const uint8_t *v,
+  int32_t ystride,
+  int32_t ustride,
+  int32_t vstride,
+  VALUE self
+);

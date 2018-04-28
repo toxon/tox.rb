@@ -19,6 +19,7 @@ void mTox_cInFriendFile_INIT();
 void mTox_cFriendCallRequest_INIT();
 void mTox_cFriendCall_INIT();
 void mTox_cAudioFrame_INIT();
+void mTox_cVideoFrame_INIT();
 
 // C data
 
@@ -43,6 +44,14 @@ typedef struct {
   uint8_t channels;
   uint32_t sampling_rate;
 } mTox_cAudioFrame_CDATA;
+
+typedef struct {
+  uint16_t width;
+  uint16_t height;
+  const uint8_t *y;
+  const uint8_t *u;
+  const uint8_t *v;
+} mTox_cVideoFrame_CDATA;
 
 // Instances
 
@@ -73,6 +82,7 @@ extern VALUE mTox_mFileControl;
 extern VALUE mTox_cFriendCallRequest;
 extern VALUE mTox_cFriendCall;
 extern VALUE mTox_cAudioFrame;
+extern VALUE mTox_cVideoFrame;
 
 extern VALUE mTox_mUserStatus_NONE;
 extern VALUE mTox_mUserStatus_AWAY;

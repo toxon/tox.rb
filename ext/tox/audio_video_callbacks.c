@@ -80,3 +80,53 @@ void on_audio_frame(
     audio_frame
   );
 }
+
+void on_video_frame(
+  ToxAV *const tox_av,
+  const uint32_t friend_number_data,
+  const uint16_t width_data,
+  const uint16_t height_data,
+  const uint8_t *const y_data,
+  const uint8_t *const u_data,
+  const uint8_t *const v_data,
+  const int32_t ystride_data,
+  const int32_t ustride_data,
+  const int32_t vstride_data,
+  const VALUE self
+)
+{
+  const VALUE ivar_on_video_frame = rb_iv_get(self, "@on_video_frame");
+
+  if (Qnil == ivar_on_video_frame) {
+    return;
+  }
+
+  const VALUE friend_number = LONG2FIX(friend_number_data);
+
+  const VALUE friend_call = rb_funcall(
+    mTox_cFriendCall,
+    rb_intern("new"),
+    2,
+    self,
+    friend_number
+  );
+
+  const VALUE video_frame = rb_funcall(mTox_cVideoFrame, rb_intern("new"), 0);
+
+  CDATA(video_frame, mTox_cVideoFrame_CDATA, video_frame_cdata);
+
+  video_frame_cdata->width  = width_data;
+  video_frame_cdata->height = height_data;
+
+  video_frame_cdata->y = y_data;
+  video_frame_cdata->u = u_data;
+  video_frame_cdata->v = v_data;
+
+  rb_funcall(
+    ivar_on_video_frame,
+    rb_intern("call"),
+    2,
+    friend_call,
+    video_frame
+  );
+}

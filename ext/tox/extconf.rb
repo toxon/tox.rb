@@ -309,8 +309,10 @@ have_func! 'tox/toxav.h', 'toxav_iteration_interval'
 have_func! 'tox/toxav.h', 'toxav_iterate'
 have_func! 'tox/toxav.h', 'toxav_answer'
 have_func! 'tox/toxav.h', 'toxav_audio_send_frame'
+have_func! 'tox/toxav.h', 'toxav_video_send_frame'
 have_func! 'tox/toxav.h', 'toxav_callback_call'
 have_func! 'tox/toxav.h', 'toxav_callback_audio_receive_frame'
+have_func! 'tox/toxav.h', 'toxav_callback_video_receive_frame'
 have_func! 'tox/toxav.h', 'toxav_call_control'
 
 create_makefile 'tox/tox' or exit 1
