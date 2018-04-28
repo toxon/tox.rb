@@ -3,6 +3,7 @@
 
 #include <gst/gst.h>
 #include <gst/audio/gstaudiosink.h>
+#include <tox/toxav.h>
 
 #define GST_TYPE_TOX_AUDIO_SINK \
   (gst_tox_audio_sink_get_type())
@@ -24,6 +25,9 @@ typedef struct _GstToxAudioSinkClass GstToxAudioSinkClass;
 
 struct _GstToxAudioSink {
   GstAudioSink parent;
+
+  ToxAV *tox_av;
+  uint32_t friend_number;
 };
 
 struct _GstToxAudioSinkClass {

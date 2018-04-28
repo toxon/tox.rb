@@ -49,6 +49,16 @@ RSpec.describe Tox::AudioVideo do
     end
   end
 
+  describe '#pointer' do
+    specify do
+      expect(subject.pointer).to be_kind_of Integer
+    end
+
+    specify do
+      expect(subject.pointer).to be > 0
+    end
+  end
+
   describe '#iteration_interval' do
     specify do
       expect(subject.iteration_interval).to be_instance_of Float

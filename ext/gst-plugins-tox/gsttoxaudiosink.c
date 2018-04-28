@@ -12,6 +12,8 @@ G_DEFINE_TYPE(GstToxAudioSink, gst_tox_audio_sink, GST_TYPE_AUDIO_SINK);
 
 enum {
   PROP_0,
+  PROP_TOX_AV,
+  PROP_FRIEND_NUMBER
 };
 
 /******************************************************************************
@@ -121,6 +123,34 @@ void gst_tox_audio_sink_class_init(GstToxAudioSinkClass *const klass)
   gobject_class->get_property = gst_tox_audio_sink_get_property;
   gobject_class->set_property = gst_tox_audio_sink_set_property;
 
+  g_object_class_install_property(
+    gobject_class,
+    PROP_TOX_AV,
+    g_param_spec_uint64(
+      "tox-av",
+      "ToxAV",
+      "ToxAV instance",
+      0,
+      UINT64_MAX,
+      0,
+      G_PARAM_READWRITE
+    )
+  );
+
+  g_object_class_install_property(
+    gobject_class,
+    PROP_FRIEND_NUMBER,
+    g_param_spec_uint(
+      "friend-number",
+      "Friend number",
+      "Friend number",
+      0,
+      UINT32_MAX,
+      0,
+      G_PARAM_READWRITE
+    )
+  );
+
   // GstElementClass
 
   gst_element_class_set_details_simple(
@@ -154,6 +184,8 @@ void gst_tox_audio_sink_class_init(GstToxAudioSinkClass *const klass)
 
 void gst_tox_audio_sink_init(GstToxAudioSink *const self)
 {
+  self->tox_av = NULL;
+  self->friend_number = 0;
 }
 
 void gst_tox_audio_sink_finalize(GObject *const object)
@@ -169,6 +201,12 @@ void gst_tox_audio_sink_get_property(
 )
 {
   switch (prop_id) {
+    case PROP_TOX_AV:
+      g_value_set_uint64(value, (guint64)GST_TOX_AUDIO_SINK(object)->tox_av);
+      break;
+    case PROP_FRIEND_NUMBER:
+      g_value_set_uint(value, GST_TOX_AUDIO_SINK(object)->friend_number);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
   }
@@ -182,6 +220,12 @@ void gst_tox_audio_sink_set_property(
 )
 {
   switch (prop_id) {
+    case PROP_TOX_AV:
+      GST_TOX_AUDIO_SINK(object)->tox_av = (gpointer)g_value_get_uint64(value);
+      break;
+    case PROP_FRIEND_NUMBER:
+      GST_TOX_AUDIO_SINK(object)->friend_number = g_value_get_uint(value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
   }
@@ -251,10 +295,31 @@ guint gst_tox_audio_sink_delay(GstAudioSink *gst_audio_sink)
 }
 
 gint gst_tox_audio_sink_write(
-  GstAudioSink *gst_audio_sink,
-  gpointer data,
-  guint length
+  GstAudioSink *const gst_audio_sink,
+  const gpointer data,
+  const guint length
 )
 {
+  const GstToxAudioSink *const gst_tox_audio_sink =
+    GST_TOX_AUDIO_SINK(gst_audio_sink);
+
+  if (!gst_tox_audio_sink->tox_av) {
+    return length;
+  }
+
+  const size_t sample_count = length / sizeof(int16_t);
+
+  TOXAV_ERR_SEND_FRAME toxav_audio_send_frame_error;
+
+  toxav_audio_send_frame(
+    gst_tox_audio_sink->tox_av,
+    gst_tox_audio_sink->friend_number,
+    data,
+    sample_count,
+    1, // channels
+    48000, // sampling_rate
+    &toxav_audio_send_frame_error
+  );
+
   return length;
 }

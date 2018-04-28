@@ -73,6 +73,8 @@ have_header! 'gst/audio/gstaudiosink.h'
 # ToxAV #
 #########
 
+have_type! 'tox/toxav.h', 'TOXAV_ERR_SEND_FRAME'
+
 have_func! 'tox/toxav.h', 'toxav_audio_send_frame'
 
 ########
@@ -82,6 +84,7 @@ have_func! 'tox/toxav.h', 'toxav_audio_send_frame'
 have_type! 'gst/gst.h', 'gpointer'
 have_type! 'gst/gst.h', 'gboolean'
 have_type! 'gst/gst.h', 'guint'
+have_type! 'gst/gst.h', 'guint64'
 have_type! 'gst/gst.h', 'GValue'
 have_type! 'gst/gst.h', 'GObject'
 have_type! 'gst/gst.h', 'GType'
@@ -96,11 +99,20 @@ have_macro! 'gst/gst.h', 'G_DEFINE_TYPE'
 have_macro! 'gst/gst.h', 'G_OBJECT_WARN_INVALID_PROPERTY_ID'
 have_macro! 'gst/gst.h', 'G_OBJECT_CLASS'
 
+have_const! 'gst/gst.h', 'G_PARAM_READWRITE'
+
 have_struct_member! 'gst/gst.h', 'GObjectClass', 'finalize'
 have_struct_member! 'gst/gst.h', 'GObjectClass', 'get_property'
 have_struct_member! 'gst/gst.h', 'GObjectClass', 'set_property'
 
 have_func! 'gst/gst.h', 'g_type_class_peek_parent'
+# have_func!' gst/gst.h', 'g_object_class_install_property'
+have_func! 'gst/gst.h', 'g_param_spec_uint'
+have_func! 'gst/gst.h', 'g_param_spec_uint64'
+have_func! 'gst/gst.h', 'g_value_get_uint'
+have_func! 'gst/gst.h', 'g_value_set_uint'
+have_func! 'gst/gst.h', 'g_value_get_uint64'
+have_func! 'gst/gst.h', 'g_value_set_uint64'
 
 #############
 # GStreamer #

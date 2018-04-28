@@ -7,6 +7,8 @@ static void  mTox_cAudioVideo_free(mTox_cAudioVideo_CDATA *free_cdata);
 
 // Public methods
 
+static VALUE mTox_cAudioVideo_pointer(VALUE self);
+
 static VALUE mTox_cAudioVideo_iteration_interval(VALUE self);
 static VALUE mTox_cAudioVideo_iterate(VALUE self);
 
@@ -24,6 +26,8 @@ void mTox_cAudioVideo_INIT()
   rb_define_alloc_func(mTox_cAudioVideo, mTox_cAudioVideo_alloc);
 
   // Public methods
+
+  rb_define_method(mTox_cAudioVideo, "pointer", mTox_cAudioVideo_pointer, 0);
 
   rb_define_method(mTox_cAudioVideo, "iteration_interval", mTox_cAudioVideo_iteration_interval, 0);
   rb_define_method(mTox_cAudioVideo, "iterate",            mTox_cAudioVideo_iterate,            0);
@@ -58,6 +62,14 @@ void mTox_cAudioVideo_free(mTox_cAudioVideo_CDATA *const free_cdata)
 /*************************************************************
  * Public methods
  *************************************************************/
+
+// Tox::AudioVideo#pointer
+VALUE mTox_cAudioVideo_pointer(const VALUE self)
+{
+  CDATA(self, mTox_cAudioVideo_CDATA, self_cdata);
+
+  return ULL2NUM(self_cdata->tox_av);
+}
 
 // Tox::AudioVideo#iteration_interval
 VALUE mTox_cAudioVideo_iteration_interval(const VALUE self)
