@@ -49,6 +49,12 @@ RSpec.describe Tox::Client do
     end
   end
 
+  describe '#audio_video' do
+    specify do
+      expect(subject.audio_video).to be_instance_of Tox::AudioVideo
+    end
+  end
+
   describe '#iteration_interval' do
     specify do
       expect(subject.iteration_interval).to be_instance_of Float

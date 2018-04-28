@@ -23,6 +23,10 @@ module Tox
       initialize_with options
     end
 
+    def audio_video
+      @audio_video ||= Tox::AudioVideo.new self
+    end
+
     def bootstrap_official
       Status.new.udp_nodes.each do |node|
         bootstrap node.resolv_ipv4, node.port, node.public_key
