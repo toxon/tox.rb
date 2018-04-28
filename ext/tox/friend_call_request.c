@@ -3,6 +3,7 @@
 // Public methods
 
 static VALUE mTox_cFriendCallRequest_answer(VALUE self, VALUE audio_bit_rate, VALUE video_bit_rate);
+static VALUE mTox_cFriendCallRequest_reject(VALUE self);
 
 /*************************************************************
  * Initialization
@@ -13,6 +14,7 @@ void mTox_cFriendCallRequest_INIT()
   // Public methods
 
   rb_define_method(mTox_cFriendCallRequest, "answer", mTox_cFriendCallRequest_answer, 2);
+  rb_define_method(mTox_cFriendCallRequest, "reject", mTox_cFriendCallRequest_reject, 0);
 }
 
 /*************************************************************
@@ -88,6 +90,63 @@ VALUE mTox_cFriendCallRequest_answer(
 
   if (!toxav_answer_result) {
     RAISE_FUNC_RESULT("toxav_answer");
+  }
+
+  return Qnil;
+}
+
+// Tox::FriendCallRequest#reject
+VALUE mTox_cFriendCallRequest_reject(const VALUE self)
+{
+  const VALUE audio_video   = rb_iv_get(self, "@audio_video");
+  const VALUE friend_number = rb_iv_get(self, "@friend_number");
+
+  CDATA(audio_video, mTox_cAudioVideo_CDATA, audio_video_cdata);
+
+  const uint32_t friend_number_data = NUM2ULONG(friend_number);
+
+  TOXAV_ERR_CALL_CONTROL toxav_call_control_error;
+
+  const bool toxav_call_control_result = toxav_call_control(
+    audio_video_cdata->tox_av,
+    friend_number_data,
+    TOXAV_CALL_CONTROL_CANCEL,
+    &toxav_call_control_error
+  );
+
+  switch (toxav_call_control_error) {
+    case TOXAV_ERR_CALL_CONTROL_OK:
+      break;
+    case TOXAV_ERR_CALL_CONTROL_SYNC:
+      RAISE_FUNC_ERROR(
+        "toxav_call_control",
+        rb_eRuntimeError,
+        "TOXAV_ERR_CALL_CONTROL_SYNC"
+      );
+    case TOXAV_ERR_CALL_CONTROL_FRIEND_NOT_FOUND:
+      RAISE_FUNC_ERROR(
+        "toxav_call_control",
+        rb_eRuntimeError,
+        "TOXAV_ERR_CALL_CONTROL_FRIEND_NOT_FOUND"
+      );
+    case TOXAV_ERR_CALL_CONTROL_FRIEND_NOT_IN_CALL:
+      RAISE_FUNC_ERROR(
+        "toxav_call_control",
+        rb_eRuntimeError,
+        "TOXAV_ERR_CALL_CONTROL_FRIEND_NOT_IN_CALL"
+      );
+    case TOXAV_ERR_CALL_CONTROL_INVALID_TRANSITION:
+      RAISE_FUNC_ERROR(
+        "toxav_call_control",
+        rb_eRuntimeError,
+        "TOXAV_ERR_CALL_CONTROL_INVALID_TRANSITION"
+      );
+    default:
+      RAISE_FUNC_ERROR_DEFAULT("toxav_call_control");
+  }
+
+  if (!toxav_call_control_result) {
+    RAISE_FUNC_RESULT("toxav_call_control");
   }
 
   return Qnil;

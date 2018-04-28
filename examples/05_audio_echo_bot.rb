@@ -31,16 +31,21 @@ tox_client.on_friend_request do |public_key, text|
 end
 
 tox_client.audio_video.on_call do |friend_call_request|
-  puts 'Friend call. Answering...'
+  puts 'Friend call.'
   puts "Friend number: #{friend_call_request.friend_number}"
   puts "Audio enabled: #{friend_call_request.audio_enabled?}"
   puts "Video enabled: #{friend_call_request.video_enabled?}"
   puts
 
-  friend_call_request.answer(
-    friend_call_request.audio_enabled? ? AUDIO_BIT_RATE : nil,
-    nil,
-  )
+  unless friend_call_request.audio_enabled?
+    puts 'Audio disabled. Rejecting...'
+    puts
+
+    friend_call_request.reject
+    next
+  end
+
+  friend_call_request.answer AUDIO_BIT_RATE, nil
 end
 
 tox_client.audio_video.on_audio_frame do |friend_call, audio_frame|
