@@ -44,9 +44,21 @@ RSpec.describe Tox::Node do
     end
   end
 
+  describe '#ipv6' do
+    it 'returns given value' do
+      expect(subject.ipv6).to eq ipv6
+    end
+  end
+
   describe '#port' do
     it 'returns given value' do
       expect(subject.port).to eq port
+    end
+  end
+
+  describe '#tcp_ports' do
+    it 'returns given value' do
+      expect(subject.tcp_ports).to eq tcp_ports
     end
   end
 
@@ -56,9 +68,33 @@ RSpec.describe Tox::Node do
     end
   end
 
+  describe '#maintainer' do
+    it 'returns given value' do
+      expect(subject.maintainer).to eq maintainer
+    end
+  end
+
+  describe '#location' do
+    it 'returns given value' do
+      expect(subject.location).to eq location
+    end
+  end
+
   describe '#status_udp' do
     it 'returns given value' do
       expect(subject.status_udp).to eq status_udp
+    end
+  end
+
+  describe '#version' do
+    it 'returns given value' do
+      expect(subject.version).to eq version
+    end
+  end
+
+  describe '#motd' do
+    it 'returns given value' do
+      expect(subject.motd).to eq motd
     end
   end
 
