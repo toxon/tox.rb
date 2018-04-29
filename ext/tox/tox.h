@@ -67,7 +67,6 @@ extern VALUE mTox_mConnectionStatus;
 extern VALUE mTox_mProxyType;
 extern VALUE mTox_cOptions;
 extern VALUE mTox_cClient;
-extern VALUE mTox_cNode;
 extern VALUE mTox_cFriend;
 extern VALUE mTox_cAddress;
 extern VALUE mTox_cPublicKey;

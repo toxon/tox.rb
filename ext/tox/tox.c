@@ -18,7 +18,6 @@ VALUE mTox_mConnectionStatus;
 VALUE mTox_mProxyType;
 VALUE mTox_cOptions;
 VALUE mTox_cClient;
-VALUE mTox_cNode;
 VALUE mTox_cFriend;
 VALUE mTox_cAddress;
 VALUE mTox_cNospam;
@@ -93,7 +92,6 @@ void Init_tox()
   mTox_mProxyType         = rb_const_get(mTox, rb_intern("ProxyType"));
   mTox_cOptions           = rb_const_get(mTox, rb_intern("Options"));
   mTox_cClient            = rb_const_get(mTox, rb_intern("Client"));
-  mTox_cNode              = rb_const_get(mTox, rb_intern("Node"));
   mTox_cFriend            = rb_const_get(mTox, rb_intern("Friend"));
   mTox_cAddress           = rb_const_get(mTox, rb_intern("Address"));
   mTox_cNospam            = rb_const_get(mTox, rb_intern("Nospam"));
