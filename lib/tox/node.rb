@@ -6,6 +6,7 @@ module Tox
   #
   class Node
     using CoreExt
+
     include Helpers
 
     def initialize(data)

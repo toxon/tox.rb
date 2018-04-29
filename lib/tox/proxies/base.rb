@@ -8,6 +8,7 @@ module Tox
     #
     class Base
       using CoreExt
+
       include Helpers
 
       HOST_MAX_BYTESIZE = 255

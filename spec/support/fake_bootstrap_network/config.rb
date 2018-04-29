@@ -6,6 +6,7 @@ module Support
   module FakeBootstrapNetwork
     class Config
       using Tox::CoreExt
+
       include Tox::Helpers
 
       TEMPLATE_FILE_PATH = File.expand_path('config.erb', __dir__).freeze

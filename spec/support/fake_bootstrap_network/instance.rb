@@ -7,6 +7,7 @@ module Support
   module FakeBootstrapNetwork
     class Instance
       using Tox::CoreExt
+
       include Tox::Helpers
 
       PUBLIC_KEY_RE = /^Public Key: ([0-9A-Z]{#{2 * Tox::PublicKey.bytesize}})$/

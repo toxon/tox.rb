@@ -6,6 +6,7 @@ module Tox
   #
   class Options
     using CoreExt
+
     include Helpers
 
     attr_reader :proxy
