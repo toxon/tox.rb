@@ -10,6 +10,12 @@ module Tox
         return if value.is_a? self
         raise TypeError, "Expected #{self}, got #{value.class}"
       end
+
+      def abstract_method(method_name)
+        define_method method_name do |*|
+          raise NotImplementedError, "#{self.class}##{method_name}"
+        end
+      end
     end
   end
 end

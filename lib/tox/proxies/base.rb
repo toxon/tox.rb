@@ -14,13 +14,11 @@ module Tox
 
       attr_reader :host, :port
 
+      abstract_method :type
+
       def initialize(host, port)
         self.host = host
         self.port = port
-      end
-
-      def type
-        raise NotImplementedError, "#{self.class}#type"
       end
 
       def ==(other)

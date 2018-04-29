@@ -5,13 +5,10 @@ module Tox
   # Abstract module for outgoing message representation in Tox client.
   #
   module OutMessage
-    def initialize(*)
-      raise NotImplementedError, "#{self.class}#initialize"
-    end
+    using CoreExt
 
-    def client
-      raise NotImplementedError, "#{self.class}#client"
-    end
+    abstract_method :initialize
+    abstract_method :client
 
     def ==(other)
       self.class == other.class &&
