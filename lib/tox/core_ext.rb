@@ -16,6 +16,16 @@ module Tox
           raise NotImplementedError, "#{self.class}##{method_name}"
         end
       end
+
+      def abstract_class_method(method_name)
+        eigenclass = class << self
+          self
+        end
+
+        eigenclass.define_method method_name do |*|
+          raise NotImplementedError, "#{self}.#{method_name}"
+        end
+      end
     end
   end
 end

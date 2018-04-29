@@ -7,9 +7,7 @@ module Tox
   class Binary
     using CoreExt
 
-    def self.bytesize
-      raise NotImplementedError, "#{self}.bytesize"
-    end
+    abstract_class_method :bytesize
 
     def self.hex_re
       /\A[\da-fA-F]{#{2 * bytesize}}\z/
