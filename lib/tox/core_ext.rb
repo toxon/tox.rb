@@ -28,7 +28,7 @@ module Tox
           self
         end
 
-        eigenclass.define_method method_name do |*|
+        eigenclass.send :define_method, method_name do |*|
           raise NotImplementedError, "#{self}.#{method_name}"
         end
       end
