@@ -88,7 +88,7 @@ module Support
       end
 
       def port=(value)
-        @port = valid_port! value
+        @port = valid_bind_port! value, allow_zero: false
       end
 
       def enable_ipv6=(value)
@@ -108,7 +108,9 @@ module Support
       end
 
       def tcp_relay_ports=(value)
-        @tcp_relay_ports = Array.new(value).map(&method(:valid_port!))
+        @tcp_relay_ports = Array.new(value).map do |item|
+          valid_bind_port! item, allow_zero: false
+        end
       end
 
       def enable_motd=(value)
@@ -153,7 +155,7 @@ module Support
         end
 
         def port=(value)
-          @port = valid_port! value
+          @port = valid_bind_port! value, allow_zero: false
         end
 
         def public_key=(value)

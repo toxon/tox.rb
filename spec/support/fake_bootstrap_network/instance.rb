@@ -85,7 +85,7 @@ module Support
     private
 
       def port=(value)
-        @port = valid_port! value
+        @port = valid_bind_port! value, allow_zero: false
       end
 
       def public_key=(value)

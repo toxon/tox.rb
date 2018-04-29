@@ -6,8 +6,7 @@ module Tox
   #
   class Options
     using CoreExt
-
-    BIND_PORT_RANGE = 0..65_535
+    include Helpers
 
     attr_reader :proxy
 
@@ -23,27 +22,15 @@ module Tox
     end
 
     def start_port=(value)
-      Integer.ancestor_of! value
-      unless BIND_PORT_RANGE.include? value
-        raise "Expected value to be from range #{BIND_PORT_RANGE}"
-      end
-      self.start_port_internal = value
+      self.start_port_internal = valid_bind_port! value, allow_zero: true
     end
 
     def end_port=(value)
-      Integer.ancestor_of! value
-      unless BIND_PORT_RANGE.include? value
-        raise "Expected value to be from range #{BIND_PORT_RANGE}"
-      end
-      self.end_port_internal = value
+      self.end_port_internal = valid_bind_port! value, allow_zero: true
     end
 
     def tcp_port=(value)
-      Integer.ancestor_of! value
-      unless BIND_PORT_RANGE.include? value
-        raise "Expected value to be from range #{BIND_PORT_RANGE}"
-      end
-      self.tcp_port_internal = value
+      self.tcp_port_internal = valid_bind_port! value, allow_zero: true
     end
 
   private
