@@ -5,6 +5,8 @@ module Tox
   # Friend call state bit mask.
   #
   class FriendCallState
+    using CoreExt
+
     ERROR           = 1
     FINISHED        = 2
     SENDING_AUDIO   = 4
@@ -45,9 +47,7 @@ module Tox
   private
 
     def bit_mask=(value)
-      unless value.is_a? Integer
-        raise TypeError, "Expected #{Integer}, got #{value.class}"
-      end
+      Integer.ancestor_of! value
       unless value >= 0
         raise 'Expected value to be greater than or equal to zero'
       end

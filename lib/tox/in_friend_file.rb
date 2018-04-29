@@ -5,6 +5,8 @@ module Tox
   # Incoming friend file representation in Tox client.
   #
   class InFriendFile
+    using CoreExt
+
     attr_reader :friend, :number
 
     def initialize(friend, number)
@@ -25,16 +27,12 @@ module Tox
   private
 
     def friend=(value)
-      unless value.is_a? Friend
-        raise TypeError, "Expected #{Friend}, got #{value.class}"
-      end
+      Friend.ancestor_of! value
       @friend = value
     end
 
     def number=(value)
-      unless value.is_a? Integer
-        raise TypeError, "Expected #{Integer}, got #{value.class}"
-      end
+      Integer.ancestor_of! value
       unless value >= 0
         raise 'Expected file number to be greater than or equal to zero'
       end

@@ -6,6 +6,7 @@ require 'json'
 require 'resolv'
 
 require 'tox/version'
+require 'tox/core_ext'
 
 # Core classes
 require 'tox/client'

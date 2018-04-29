@@ -5,6 +5,8 @@ module Tox
   # Friend call.
   #
   class FriendCall
+    using CoreExt
+
     attr_reader :audio_video, :friend_number
 
     def initialize(audio_video, friend_number)
@@ -21,16 +23,12 @@ module Tox
   private
 
     def audio_video=(value)
-      unless value.is_a? AudioVideo
-        raise TypeError, "Expected #{AudioVideo}, got #{value.class}"
-      end
+      AudioVideo.ancestor_of! value
       @audio_video = value
     end
 
     def friend_number=(value)
-      unless value.is_a? Integer
-        raise TypeError, "Expected #{Integer}, got #{value.class}"
-      end
+      Integer.ancestor_of! value
       unless value >= 0
         raise 'Expected value to be greater than or equal to zero'
       end

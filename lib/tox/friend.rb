@@ -5,6 +5,8 @@ module Tox
   # Friend representation in Tox client.
   #
   class Friend
+    using CoreExt
+
     attr_reader :client, :number
 
     def initialize(client, number)
@@ -28,16 +30,12 @@ module Tox
   private
 
     def client=(value)
-      unless value.is_a? Client
-        raise TypeError, "Expected #{Client}, got #{value.class}"
-      end
+      Client.ancestor_of! value
       @client = value
     end
 
     def number=(value)
-      unless value.is_a? Integer
-        raise TypeError, "Expected #{Integer}, got #{value.class}"
-      end
+      Integer.ancestor_of! value
       unless value >= 0
         raise 'Expected friend number to be greater than or equal to zero'
       end

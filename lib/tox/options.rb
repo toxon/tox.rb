@@ -5,6 +5,8 @@ module Tox
   # Startup options for Tox client.
   #
   class Options
+    using CoreExt
+
     BIND_PORT_RANGE = 0..65_535
 
     attr_reader :proxy
@@ -15,17 +17,13 @@ module Tox
         set_proxy_params ProxyType::NONE, nil, 0
         return
       end
-      unless value.is_a? Proxies::Base
-        raise TypeError, "Expected #{Proxies::Base}, got #{value.class}"
-      end
+      Proxies::Base.ancestor_of! value
       @proxy = value
       set_proxy_params value.type, value.host, value.port
     end
 
     def start_port=(value)
-      unless value.is_a? Integer
-        raise TypeError, "Expected #{Integer}, got #{value.class}"
-      end
+      Integer.ancestor_of! value
       unless BIND_PORT_RANGE.include? value
         raise "Expected value to be from range #{BIND_PORT_RANGE}"
       end
@@ -33,9 +31,7 @@ module Tox
     end
 
     def end_port=(value)
-      unless value.is_a? Integer
-        raise TypeError, "Expected #{Integer}, got #{value.class}"
-      end
+      Integer.ancestor_of! value
       unless BIND_PORT_RANGE.include? value
         raise "Expected value to be from range #{BIND_PORT_RANGE}"
       end
@@ -43,9 +39,7 @@ module Tox
     end
 
     def tcp_port=(value)
-      unless value.is_a? Integer
-        raise TypeError, "Expected #{Integer}, got #{value.class}"
-      end
+      Integer.ancestor_of! value
       unless BIND_PORT_RANGE.include? value
         raise "Expected value to be from range #{BIND_PORT_RANGE}"
       end

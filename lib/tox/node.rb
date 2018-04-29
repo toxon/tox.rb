@@ -5,6 +5,8 @@ module Tox
   # Tox node credentials.
   #
   class Node
+    using CoreExt
+
     # Range of valid port numbers.
     PORT_RANGE = 1..65_535
 
@@ -15,9 +17,7 @@ module Tox
     def ipv4
       @ipv4 ||= begin
         value = @data[:ipv4]
-        unless value.is_a? String
-          raise TypeError, "Expected #{String}, got #{value.class}"
-        end
+        String.ancestor_of! value
         value.frozen? ? value : value.dup.freeze
       end
     end
@@ -25,9 +25,7 @@ module Tox
     def ipv6
       @ipv6 ||= begin
         value = @data[:ipv6]
-        unless value.is_a? String
-          raise TypeError, "Expected #{String}, got #{value.class}"
-        end
+        String.ancestor_of! value
         value.frozen? ? value : value.dup.freeze
       end
     end
@@ -35,9 +33,7 @@ module Tox
     def port
       @port ||= begin
         value = @data[:port]
-        unless value.is_a? Integer
-          raise TypeError, "Expected #{Integer}, got #{value.class}"
-        end
+        Integer.ancestor_of! value
         unless PORT_RANGE.include? value
           raise "Expected value to be from range #{PORT_RANGE}"
         end
@@ -48,13 +44,9 @@ module Tox
     def tcp_ports
       @tcp_ports ||= begin
         value = @data[:tcp_ports]
-        unless value.is_a? Array
-          raise TypeError, "Expected #{Array}, got #{value.class}"
-        end
+        Array.ancestor_of! value
         value.map do |item|
-          unless item.is_a? Integer
-            raise TypeError, "Expected #{Integer}, got #{item.class}"
-          end
+          Integer.ancestor_of! item
           unless PORT_RANGE.include? item
             raise "Expected value to be from range #{PORT_RANGE}"
           end
@@ -73,9 +65,7 @@ module Tox
     def maintainer
       @maintainer ||= begin
         value = @data[:maintainer]
-        unless value.is_a? String
-          raise TypeError, "Expected #{String}, got #{value.class}"
-        end
+        String.ancestor_of! value
         value.frozen? ? value : value.dup.freeze
       end
     end
@@ -83,9 +73,7 @@ module Tox
     def location
       @location ||= begin
         value = @data[:location]
-        unless value.is_a? String
-          raise TypeError, "Expected #{String}, got #{value.class}"
-        end
+        String.ancestor_of! value
         value.frozen? ? value : value.dup.freeze
       end
     end
@@ -101,9 +89,7 @@ module Tox
     def version
       @version ||= begin
         value = @data[:version]
-        unless value.is_a? String
-          raise TypeError, "Expected #{String}, got #{value.class}"
-        end
+        String.ancestor_of! value
         value.frozen? ? value : value.dup.freeze
       end
     end
@@ -111,9 +97,7 @@ module Tox
     def motd
       @motd ||= begin
         value = @data[:motd]
-        unless value.is_a? String
-          raise TypeError, "Expected #{String}, got #{value.class}"
-        end
+        String.ancestor_of! value
         value.frozen? ? value : value.dup.freeze
       end
     end

@@ -6,6 +6,8 @@ require 'support/fake_bootstrap_network/config'
 module Support
   module FakeBootstrapNetwork
     class Instance
+      using Tox::CoreExt
+
       PORT_RANGE = 1..65_535
       PUBLIC_KEY_RE = /^Public Key: ([0-9A-Z]{#{2 * Tox::PublicKey.bytesize}})$/
 
@@ -83,9 +85,7 @@ module Support
     private
 
       def port=(value)
-        unless value.is_a? Integer
-          raise TypeError, "Expected #{Integer}, got #{value.class}"
-        end
+        Integer.ancestor_of! value
         unless PORT_RANGE.include? value
           raise "Expected value to be from range #{PORT_RANGE}"
         end

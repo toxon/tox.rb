@@ -5,6 +5,8 @@ module Tox
   # Binary primitive representation.
   #
   class Binary
+    using CoreExt
+
     def self.bytesize
       raise NotImplementedError, "#{self}.bytesize"
     end
@@ -16,9 +18,7 @@ module Tox
     attr_reader :value
 
     def initialize(value)
-      unless value.is_a? String
-        raise TypeError, "Expected #{String}, got #{value.class}"
-      end
+      String.ancestor_of! value
 
       if value.bytesize == self.class.bytesize
         self.value = value

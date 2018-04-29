@@ -5,6 +5,8 @@ require 'erb'
 module Support
   module FakeBootstrapNetwork
     class Config # rubocop:disable Metrics/ClassLength
+      using Tox::CoreExt
+
       TEMPLATE_FILE_PATH = File.expand_path('config.erb', __dir__).freeze
 
       PORT_RANGE = 1..65_535
@@ -77,23 +79,17 @@ module Support
     private
 
       def keys_file_path=(value)
-        unless value.is_a? String
-          raise TypeError, "Expected #{String}, got #{value.class}"
-        end
+        String.ancestor_of! value
         @keys_file_path = value.frozen? ? value : value.dup.freeze
       end
 
       def pid_file_path=(value)
-        unless value.is_a? String
-          raise TypeError, "Expected #{String}, got #{value.class}"
-        end
+        String.ancestor_of! value
         @pid_file_path = value.frozen? ? value : value.dup.freeze
       end
 
       def port=(value)
-        unless value.is_a? Integer
-          raise TypeError, "Expected #{Integer}, got #{value.class}"
-        end
+        Integer.ancestor_of! value
         unless PORT_RANGE.include? value
           raise "Expected value to be from range #{PORT_RANGE}"
         end
@@ -118,9 +114,7 @@ module Support
 
       def tcp_relay_ports=(value)
         @tcp_relay_ports = Array.new(value).map do |item|
-          unless item.is_a? Integer
-            raise TypeError, "Expected #{Integer}, got #{item.class}"
-          end
+          Integer.ancestor_of! item
           unless PORT_RANGE.include? item
             raise "Expected value to be from range #{PORT_RANGE}"
           end
@@ -133,9 +127,7 @@ module Support
       end
 
       def motd=(value)
-        unless value.is_a? String
-          raise TypeError, "Expected #{String}, got #{value.class}"
-        end
+        String.ancestor_of! value
         @motd = value.frozen? ? value : value.dup.freeze
       end
 
@@ -165,16 +157,12 @@ module Support
       private
 
         def address=(value)
-          unless value.is_a? String
-            raise TypeError, "Expected #{String}, got #{value.class}"
-          end
+          String.ancestor_of! value
           @address = value.frozen? ? value : value.dup.freeze
         end
 
         def port=(value)
-          unless value.is_a? Integer
-            raise TypeError, "Expected #{Integer}, got #{value.class}"
-          end
+          Integer.ancestor_of! value
           unless PORT_RANGE.include? value
             raise "Expected value to be from range #{PORT_RANGE}"
           end
@@ -182,9 +170,7 @@ module Support
         end
 
         def public_key=(value)
-          unless value.is_a? String
-            raise TypeError, "Expected #{String}, got #{value.class}"
-          end
+          String.ancestor_of! value
           @public_key = value.frozen? ? value : value.dup.freeze
         end
       end

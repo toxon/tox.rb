@@ -5,6 +5,8 @@ module Tox
   # Outgoing friend message representation in Tox client.
   #
   class OutFriendMessage
+    using CoreExt
+
     include OutMessage
 
     attr_reader :friend, :id
@@ -21,16 +23,12 @@ module Tox
   private
 
     def friend=(value)
-      unless value.is_a? Friend
-        raise TypeError, "Expected #{Friend}, got #{value.class}"
-      end
+      Friend.ancestor_of! value
       @friend = value
     end
 
     def id=(value)
-      unless value.is_a? Integer
-        raise TypeError, "Expected #{Integer}, got #{value.class}"
-      end
+      Integer.ancestor_of! value
       unless value >= 0
         raise 'Expected message ID to be greater than or equal to zero'
       end

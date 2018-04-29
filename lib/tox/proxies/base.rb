@@ -7,6 +7,8 @@ module Tox
     # Base class for proxy used to connect to TCP relays.
     #
     class Base
+      using CoreExt
+
       HOST_MAX_BYTESIZE = 255
       PORT_RANGE = 1..65_535
 
@@ -30,9 +32,7 @@ module Tox
     private
 
       def host=(value)
-        unless value.is_a? String
-          raise TypeError, "Expected #{String}, got #{value.class}"
-        end
+        String.ancestor_of! value
         unless value.bytesize <= HOST_MAX_BYTESIZE
           raise 'Proxy host string can not ' \
                 "be longer than #{HOST_MAX_BYTESIZE} bytes"
@@ -41,9 +41,7 @@ module Tox
       end
 
       def port=(value)
-        unless value.is_a? Integer
-          raise TypeError, "Expected #{Integer}, got #{value.class}"
-        end
+        Integer.ancestor_of! value
         unless PORT_RANGE.include? value
           raise "Expected value to be from range #{PORT_RANGE}"
         end
