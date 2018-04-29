@@ -43,7 +43,7 @@ module Tox
   private
 
     def value=(value)
-      @value = value.frozen? ? value : value.dup.freeze
+      @value = value.dup_and_freeze
     end
 
     def hex_value=(value)

@@ -35,7 +35,7 @@ module Tox
           raise 'Proxy host string can not ' \
                 "be longer than #{HOST_MAX_BYTESIZE} bytes"
         end
-        @host = value.frozen? ? value : value.dup.freeze
+        @host = value.dup_and_freeze
       end
 
       def port=(value)

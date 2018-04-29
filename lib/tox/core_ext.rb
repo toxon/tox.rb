@@ -5,6 +5,12 @@ module Tox
   # Ruby core classes extensions.
   #
   module CoreExt
+    refine Object do
+      def dup_and_freeze
+        frozen? ? self : dup.freeze
+      end
+    end
+
     refine Module do
       def ancestor_of!(value)
         return if value.is_a? self

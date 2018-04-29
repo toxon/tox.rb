@@ -79,12 +79,12 @@ module Support
 
       def keys_file_path=(value)
         String.ancestor_of! value
-        @keys_file_path = value.frozen? ? value : value.dup.freeze
+        @keys_file_path = value.dup_and_freeze
       end
 
       def pid_file_path=(value)
         String.ancestor_of! value
-        @pid_file_path = value.frozen? ? value : value.dup.freeze
+        @pid_file_path = value.dup_and_freeze
       end
 
       def port=(value)
@@ -119,7 +119,7 @@ module Support
 
       def motd=(value)
         String.ancestor_of! value
-        @motd = value.frozen? ? value : value.dup.freeze
+        @motd = value.dup_and_freeze
       end
 
       def bootstrap_nodes=(value)
@@ -151,7 +151,7 @@ module Support
 
         def address=(value)
           String.ancestor_of! value
-          @address = value.frozen? ? value : value.dup.freeze
+          @address = value.frozen? ? value : value.dup_and_freeze
         end
 
         def port=(value)
@@ -160,7 +160,7 @@ module Support
 
         def public_key=(value)
           String.ancestor_of! value
-          @public_key = value.frozen? ? value : value.dup.freeze
+          @public_key = value.frozen? ? value : value.dup_and_freeze
         end
       end
     end

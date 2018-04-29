@@ -16,7 +16,7 @@ module Tox
       @ipv4 ||= begin
         value = @data[:ipv4]
         String.ancestor_of! value
-        value.frozen? ? value : value.dup.freeze
+        value.dup_and_freeze
       end
     end
 
@@ -24,7 +24,7 @@ module Tox
       @ipv6 ||= begin
         value = @data[:ipv6]
         String.ancestor_of! value
-        value.frozen? ? value : value.dup.freeze
+        value.dup_and_freeze
       end
     end
 
@@ -53,7 +53,7 @@ module Tox
       @maintainer ||= begin
         value = @data[:maintainer]
         String.ancestor_of! value
-        value.frozen? ? value : value.dup.freeze
+        value.dup_and_freeze
       end
     end
 
@@ -61,7 +61,7 @@ module Tox
       @location ||= begin
         value = @data[:location]
         String.ancestor_of! value
-        value.frozen? ? value : value.dup.freeze
+        value.dup_and_freeze
       end
     end
 
@@ -77,7 +77,7 @@ module Tox
       @version ||= begin
         value = @data[:version]
         String.ancestor_of! value
-        value.frozen? ? value : value.dup.freeze
+        value.dup_and_freeze
       end
     end
 
@@ -85,7 +85,7 @@ module Tox
       @motd ||= begin
         value = @data[:motd]
         String.ancestor_of! value
-        value.frozen? ? value : value.dup.freeze
+        value.dup_and_freeze
       end
     end
 

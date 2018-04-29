@@ -5,6 +5,8 @@ require 'open3'
 module Support
   module FakeBootstrapNetwork
     class Process
+      using Tox::CoreExt
+
       ROOT_DIR = File.expand_path('../../..', __dir__).freeze
 
       WRAPPER_FILE_PATH = File.expand_path('bin/childprocess', ROOT_DIR).freeze
@@ -33,7 +35,7 @@ module Support
     private
 
       def config_file_path=(value)
-        @config_file_path = value.frozen? ? value : value.dup.freeze
+        @config_file_path = value.dup_and_freeze
       end
 
       def start_process

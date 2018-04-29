@@ -5,6 +5,8 @@ module Tox
   # Tox network status received from server running https://github.com/Tox/ToxStatus
   #
   class Status
+    using CoreExt
+
     # JSON API endpoint of the official network status server.
     OFFICIAL_URL = 'https://nodes.tox.chat/json'
 
@@ -43,7 +45,7 @@ module Tox
   private
 
     def url=(value)
-      @url = value.frozen? ? value : value.dup.freeze
+      @url = value.dup_and_freeze
     end
 
     def data
