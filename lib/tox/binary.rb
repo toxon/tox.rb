@@ -17,7 +17,7 @@ module Tox
 
     def initialize(value)
       unless value.is_a? String
-        raise TypeError, "expected value to be a #{String}"
+        raise TypeError, "Expected #{String}, got #{value.class}"
       end
 
       if value.bytesize == self.class.bytesize
