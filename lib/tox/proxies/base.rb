@@ -8,9 +8,9 @@ module Tox
     #
     class Base
       using CoreExt
+      include Helpers
 
       HOST_MAX_BYTESIZE = 255
-      PORT_RANGE = 1..65_535
 
       attr_reader :host, :port
 
@@ -41,11 +41,7 @@ module Tox
       end
 
       def port=(value)
-        Integer.ancestor_of! value
-        unless PORT_RANGE.include? value
-          raise "Expected value to be from range #{PORT_RANGE}"
-        end
-        @port = value
+        @port = valid_port! value
       end
     end
   end

@@ -7,6 +7,7 @@ require 'resolv'
 
 require 'tox/version'
 require 'tox/core_ext'
+require 'tox/helpers'
 
 # Core classes
 require 'tox/client'

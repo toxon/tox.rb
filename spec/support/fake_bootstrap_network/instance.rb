@@ -7,8 +7,8 @@ module Support
   module FakeBootstrapNetwork
     class Instance
       using Tox::CoreExt
+      include Tox::Helpers
 
-      PORT_RANGE = 1..65_535
       PUBLIC_KEY_RE = /^Public Key: ([0-9A-Z]{#{2 * Tox::PublicKey.bytesize}})$/
 
       TIMEOUT = 2
@@ -85,11 +85,7 @@ module Support
     private
 
       def port=(value)
-        Integer.ancestor_of! value
-        unless PORT_RANGE.include? value
-          raise "Expected value to be from range #{PORT_RANGE}"
-        end
-        @port = value
+        @port = valid_port! value
       end
 
       def public_key=(value)

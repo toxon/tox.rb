@@ -6,9 +6,7 @@ module Tox
   #
   class Node
     using CoreExt
-
-    # Range of valid port numbers.
-    PORT_RANGE = 1..65_535
+    include Helpers
 
     def initialize(data)
       @data = data.map { |k, v| [k.to_sym, v] }.to_h.freeze
@@ -31,27 +29,16 @@ module Tox
     end
 
     def port
-      @port ||= begin
-        value = @data[:port]
-        Integer.ancestor_of! value
-        unless PORT_RANGE.include? value
-          raise "Expected value to be from range #{PORT_RANGE}"
-        end
-        value
-      end
+      @port ||= valid_port! @data[:port]
     end
 
     def tcp_ports
       @tcp_ports ||= begin
         value = @data[:tcp_ports]
+
         Array.ancestor_of! value
-        value.map do |item|
-          Integer.ancestor_of! item
-          unless PORT_RANGE.include? item
-            raise "Expected value to be from range #{PORT_RANGE}"
-          end
-          item
-        end.freeze
+
+        value.map(&method(:valid_port!)).freeze
       end
     end
 

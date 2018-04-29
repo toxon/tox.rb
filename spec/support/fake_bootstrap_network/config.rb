@@ -4,12 +4,11 @@ require 'erb'
 
 module Support
   module FakeBootstrapNetwork
-    class Config # rubocop:disable Metrics/ClassLength
+    class Config
       using Tox::CoreExt
+      include Tox::Helpers
 
       TEMPLATE_FILE_PATH = File.expand_path('config.erb', __dir__).freeze
-
-      PORT_RANGE = 1..65_535
 
       REQUIRED_KEYS = %i[
         keys_file_path
@@ -89,11 +88,7 @@ module Support
       end
 
       def port=(value)
-        Integer.ancestor_of! value
-        unless PORT_RANGE.include? value
-          raise "Expected value to be from range #{PORT_RANGE}"
-        end
-        @port = value
+        @port = valid_port! value
       end
 
       def enable_ipv6=(value)
@@ -113,13 +108,7 @@ module Support
       end
 
       def tcp_relay_ports=(value)
-        @tcp_relay_ports = Array.new(value).map do |item|
-          Integer.ancestor_of! item
-          unless PORT_RANGE.include? item
-            raise "Expected value to be from range #{PORT_RANGE}"
-          end
-          item
-        end.freeze
+        @tcp_relay_ports = Array.new(value).map(&method(:valid_port!))
       end
 
       def enable_motd=(value)
@@ -138,6 +127,8 @@ module Support
       end
 
       class Node
+        include Tox::Helpers
+
         attr_reader :port
 
         def initialize(address:, port:, public_key:)
@@ -162,11 +153,7 @@ module Support
         end
 
         def port=(value)
-          Integer.ancestor_of! value
-          unless PORT_RANGE.include? value
-            raise "Expected value to be from range #{PORT_RANGE}"
-          end
-          @port = value
+          @port = valid_port! value
         end
 
         def public_key=(value)
