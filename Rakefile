@@ -13,6 +13,8 @@ VENDOR_REPOS = %w[
   libtoxcore
 ].freeze
 
+CLOBBER << 'coverage' << 'doc' << '.yardoc'
+
 desc 'Run all checks (test, lint...)'
 task default: %i[test lint]
 
