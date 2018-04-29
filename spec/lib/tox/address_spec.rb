@@ -32,7 +32,7 @@ RSpec.describe Tox::Address do
   describe '#inspect' do
     it 'returns inspected value' do
       expect(subject.inspect).to \
-        eq "#<#{described_class}: \"#{subject}\">"
+        eq "#<#{described_class}:\"#{subject}\">"
     end
   end
 

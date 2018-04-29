@@ -33,5 +33,23 @@ module Tox
         end
       end
     end
+
+    refine Class do
+      def inspect_string(&block)
+        define_method :inspect do
+          "#<#{self.class}:#{instance_eval(&block)}>"
+        end
+      end
+
+      def inspect_keys(*method_names)
+        define_method :inspect do
+          s = method_names.map do |method_name|
+            "#{method_name}: #{send(method_name).inspect}"
+          end.join(', ')
+
+          "#<#{self.class} #{s}>"
+        end
+      end
+    end
   end
 end

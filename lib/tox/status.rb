@@ -12,14 +12,10 @@ module Tox
 
     attr_reader :url
 
+    inspect_keys :last_refresh, :last_scan
+
     def initialize(url = OFFICIAL_URL)
       self.url = url
-    end
-
-    def inspect
-      @inspect ||= "#<#{self.class} "                \
-                   "last_refresh: #{last_refresh}, " \
-                   "last_scan: #{last_scan}>"
     end
 
     def last_refresh

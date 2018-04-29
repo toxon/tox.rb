@@ -15,6 +15,8 @@ module Tox
 
     attr_reader :value
 
+    inspect_string { to_s.inspect }
+
     def initialize(value)
       String.ancestor_of! value
 
@@ -29,10 +31,6 @@ module Tox
 
     def to_s
       @to_s ||= value.unpack('H*').first.upcase.freeze
-    end
-
-    def inspect
-      "#<#{self.class}: \"#{self}\">"
     end
 
     def ==(other)
