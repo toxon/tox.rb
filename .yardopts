@@ -1,6 +1,1 @@
---markup markdown
---protected
---private
--
-README.md
-LICENSE
+config/yardopts
