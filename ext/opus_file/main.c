@@ -13,6 +13,7 @@ static VALUE rb_cOpusFile_alloc(VALUE klass);
 static void  rb_cOpusFile_free(struct rb_cOpusFile_CDATA *opus_file_cdata);
 
 static VALUE rb_cOpusFile_initialize(VALUE opus_file, VALUE filename);
+
 static VALUE rb_cOpusFile_seekable_QUESTION(VALUE opus_file);
 static VALUE rb_cOpusFile_link_count(VALUE opus_file);
 static VALUE rb_cOpusFile_current_link(VALUE opus_file);
@@ -24,8 +25,10 @@ static VALUE rb_cOpusFile_bitrate(VALUE opus_file, VALUE link);
 static VALUE rb_cOpusFile_bitrate_instant(VALUE opus_file);
 static VALUE rb_cOpusFile_raw_tell(VALUE opus_file);
 static VALUE rb_cOpusFile_pcm_tell(VALUE opus_file);
+
 static VALUE rb_cOpusFile_vendor(VALUE opus_file, VALUE link);
 static VALUE rb_cOpusFile_comments(VALUE opus_file, VALUE link);
+
 static VALUE rb_cOpusFile_read(VALUE opus_file, VALUE length);
 
 void Init_opus_file()
@@ -34,7 +37,8 @@ void Init_opus_file()
 
   rb_define_alloc_func(rb_cOpusFile, rb_cOpusFile_alloc);
 
-  rb_define_method(rb_cOpusFile, "initialize",   rb_cOpusFile_initialize,   1);
+  rb_define_method(rb_cOpusFile, "initialize", rb_cOpusFile_initialize, 1);
+
   rb_define_method(rb_cOpusFile, "seekable?",
                    rb_cOpusFile_seekable_QUESTION, 0);
   rb_define_method(rb_cOpusFile, "link_count",   rb_cOpusFile_link_count,   0);
@@ -49,9 +53,11 @@ void Init_opus_file()
                    rb_cOpusFile_bitrate_instant, 0);
   rb_define_method(rb_cOpusFile, "raw_tell",     rb_cOpusFile_raw_tell,     0);
   rb_define_method(rb_cOpusFile, "pcm_tell",     rb_cOpusFile_pcm_tell,     0);
-  rb_define_method(rb_cOpusFile, "vendor",       rb_cOpusFile_vendor,       1);
-  rb_define_method(rb_cOpusFile, "comments",     rb_cOpusFile_comments,     1);
-  rb_define_method(rb_cOpusFile, "read",         rb_cOpusFile_read,         1);
+
+  rb_define_method(rb_cOpusFile, "vendor",   rb_cOpusFile_vendor,   1);
+  rb_define_method(rb_cOpusFile, "comments", rb_cOpusFile_comments, 1);
+
+  rb_define_method(rb_cOpusFile, "read", rb_cOpusFile_read, 1);
 
   rb_eval_string(
     "class ::OpusFile\n"
