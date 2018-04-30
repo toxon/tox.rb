@@ -35,6 +35,10 @@ VALUE mTox_cFriendCall_send_audio_frame(
     );
   }
 
+  if (!rb_funcall(audio_frame, rb_intern("valid?"), 0)) {
+    rb_raise(rb_eRuntimeError, "audio frame is invalid");
+  }
+
   const VALUE audio_video   = rb_iv_get(self, "@audio_video");
   const VALUE friend_number = rb_iv_get(self, "@friend_number");
 
