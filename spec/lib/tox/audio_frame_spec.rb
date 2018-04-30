@@ -4,11 +4,13 @@ RSpec.describe Tox::AudioFrame do
   subject { described_class.new }
 
   before do
+    subject.pcm           = pcm           if pcm
     subject.sample_count  = sample_count  if sample_count
     subject.channels      = channels      if channels
     subject.sampling_rate = sampling_rate if sampling_rate
   end
 
+  let(:pcm)           { nil }
   let(:sample_count)  { nil }
   let(:channels)      { nil }
   let(:sampling_rate) { nil }
@@ -16,6 +18,24 @@ RSpec.describe Tox::AudioFrame do
   describe '#initialize' do
     specify do
       expect { subject }.not_to raise_error
+    end
+  end
+
+  describe '#pcm' do
+    specify do
+      expect(subject.pcm).to be_instance_of String
+    end
+
+    specify do
+      expect(subject.pcm).to eq ''
+    end
+
+    context 'when it was set' do
+      let(:pcm) { SecureRandom.random_bytes rand 0..10 }
+
+      specify do
+        expect(subject.pcm).to eq pcm
+      end
     end
   end
 

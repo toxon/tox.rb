@@ -1,5 +1,9 @@
 #include "tox.h"
 
+/******************************************************************************
+ * Callbacks
+ ******************************************************************************/
+
 void on_call(
   ToxAV *const tox_av,
   const uint32_t friend_number_data,
@@ -67,7 +71,13 @@ void on_audio_frame(
 
   CDATA(audio_frame, mTox_cAudioFrame_CDATA, audio_frame_cdata);
 
-  audio_frame_cdata->pcm           = pcm_data;
+  const VALUE pcm = rb_str_new(
+    pcm_data,
+    sample_count_data * channels_data * (sizeof(uint16_t) / sizeof(char))
+  );
+
+  rb_iv_set(audio_frame, "@pcm", pcm);
+
   audio_frame_cdata->sample_count  = sample_count_data;
   audio_frame_cdata->channels      = channels_data;
   audio_frame_cdata->sampling_rate = sampling_rate_data;

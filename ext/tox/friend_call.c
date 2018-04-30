@@ -40,6 +40,10 @@ VALUE mTox_cFriendCall_send_audio_frame(
 
   const uint32_t friend_number_data = NUM2ULONG(friend_number);
 
+  const VALUE pcm = rb_iv_get(audio_frame, "@pcm");
+
+  const char *const pcm_data = RSTRING_PTR(pcm);
+
   CDATA(audio_video, mTox_cAudioVideo_CDATA, audio_video_cdata);
   CDATA(audio_frame, mTox_cAudioFrame_CDATA, audio_frame_cdata);
 
@@ -48,7 +52,7 @@ VALUE mTox_cFriendCall_send_audio_frame(
   const bool toxav_audio_send_frame_result = toxav_audio_send_frame(
     audio_video_cdata->tox_av,
     friend_number_data,
-    audio_frame_cdata->pcm,
+    pcm_data,
     audio_frame_cdata->sample_count,
     audio_frame_cdata->channels,
     audio_frame_cdata->sampling_rate,

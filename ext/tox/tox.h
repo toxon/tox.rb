@@ -39,7 +39,6 @@ typedef struct {
 } mTox_cAudioVideo_CDATA;
 
 typedef struct {
-  const uint16_t *pcm;
   size_t sample_count;
   uint8_t channels;
   uint32_t sampling_rate;
