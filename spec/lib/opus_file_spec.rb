@@ -7,6 +7,23 @@ RSpec.describe OpusFile do
     File.expand_path('../../multimedia/test.opus', __dir__).freeze
   end
 
+  let(:vendor) { 'libopus 1.0.1-rc3' }
+
+  let :parse_comments do
+    {
+      'ENCODER'      => 'opusenc from opus-tools 0.1.5',
+      'artist'       => 'Ehren Starks',
+      'title'        => 'Paper Lights',
+      'album'        => 'Lines Build Walls',
+      'date'         => '2005-09-05',
+      'copyright'    => 'Copyright 2005 Ehren Starks',
+      'license'      => 'http://creativecommons.org/licenses/by-nc-sa/1.0/',
+      'organization' => 'magnatune.com',
+    }
+  end
+
+  let(:comments) { parse_comments.map { |s| s.join '=' } }
+
   describe '#initialize' do
     context 'when filename is not a string' do
       let(:filename) { 123 }
@@ -126,11 +143,31 @@ RSpec.describe OpusFile do
 
   describe '#vendor' do
     specify do
-      expect(subject.vendor(-1)).to eq 'libopus 1.0.1-rc3'
+      expect(subject.vendor(-1)).to eq vendor
     end
 
     specify do
-      expect(subject.vendor(0)).to eq 'libopus 1.0.1-rc3'
+      expect(subject.vendor(0)).to eq vendor
+    end
+  end
+
+  describe '#comments' do
+    specify do
+      expect(subject.comments(-1)).to eq comments
+    end
+
+    specify do
+      expect(subject.comments(0)).to eq comments
+    end
+  end
+
+  describe '#parse_comments' do
+    specify do
+      expect(subject.parse_comments(-1)).to eq parse_comments
+    end
+
+    specify do
+      expect(subject.parse_comments(0)).to eq parse_comments
     end
   end
 

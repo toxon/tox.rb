@@ -25,6 +25,7 @@ static VALUE rb_cOpusFile_bitrate_instant(VALUE opus_file);
 static VALUE rb_cOpusFile_raw_tell(VALUE opus_file);
 static VALUE rb_cOpusFile_pcm_tell(VALUE opus_file);
 static VALUE rb_cOpusFile_vendor(VALUE opus_file, VALUE link);
+static VALUE rb_cOpusFile_comments(VALUE opus_file, VALUE link);
 static VALUE rb_cOpusFile_read(VALUE opus_file, VALUE length);
 
 void Init_opus_file()
@@ -49,7 +50,16 @@ void Init_opus_file()
   rb_define_method(rb_cOpusFile, "raw_tell",     rb_cOpusFile_raw_tell,     0);
   rb_define_method(rb_cOpusFile, "pcm_tell",     rb_cOpusFile_pcm_tell,     0);
   rb_define_method(rb_cOpusFile, "vendor",       rb_cOpusFile_vendor,       1);
+  rb_define_method(rb_cOpusFile, "comments",     rb_cOpusFile_comments,     1);
   rb_define_method(rb_cOpusFile, "read",         rb_cOpusFile_read,         1);
+
+  rb_eval_string(
+    "class ::OpusFile\n"
+    "  def parse_comments(link)\n"
+    "    comments(link).map { |s| s.split('=', 2) }.to_h\n"
+    "  end\n"
+    "end\n"
+  );
 }
 
 VALUE rb_cOpusFile_alloc(const VALUE klass)
@@ -210,6 +220,33 @@ VALUE rb_cOpusFile_vendor(const VALUE opus_file, const VALUE link)
   }
 
   return rb_str_new_cstr(opus_tags_data->vendor);
+}
+
+VALUE rb_cOpusFile_comments(const VALUE opus_file, const VALUE link)
+{
+  struct rb_cOpusFile_CDATA *opus_file_cdata = NULL;
+
+  Data_Get_Struct(opus_file, struct rb_cOpusFile_CDATA, opus_file_cdata);
+
+  const OpusTags *const opus_tags_data =
+    op_tags(opus_file_cdata->ogg_opus_file, NUM2INT(link));
+
+  if (!opus_tags_data || opus_tags_data->comments < 0) {
+    return Qnil;
+  }
+
+  const int count_data = opus_tags_data->comments;
+
+  VALUE items[count_data];
+
+  for (int i = 0; i < count_data; ++i) {
+    items[i] = rb_str_new(
+      opus_tags_data->user_comments[i],
+      opus_tags_data->comment_lengths[i]
+    );
+  }
+
+  return rb_ary_new_from_values(count_data, items);
 }
 
 VALUE rb_cOpusFile_read(const VALUE opus_file, const VALUE length)
