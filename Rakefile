@@ -11,6 +11,7 @@ VENDOR_REPOS = %w[
   opus
   libvpx
   libtoxcore
+  opusfile
 ].freeze
 
 CLOBBER << 'coverage' << 'doc' << '.yardoc'
@@ -59,6 +60,7 @@ begin
 
   Rake::ExtensionTask.new 'opus_file' do |ext|
     ext.lib_dir = File.expand_path('lib', __dir__).freeze
+    ext.config_options << "--with-opt-dir=#{VENDOR_PREFIX.shellescape}"
   end
 rescue LoadError
   nil
@@ -101,6 +103,12 @@ namespace :vendor do
         sh 'make install'
       end
     end
+
+    task opusfile: 'vendor/src/opusfile/Makefile' do
+      chdir 'vendor/src/opusfile' do
+        sh 'make install'
+      end
+    end
   end
 
   namespace :uninstall do
@@ -124,6 +132,12 @@ namespace :vendor do
 
     task libtoxcore: 'vendor/src/libtoxcore/Makefile' do
       chdir 'vendor/src/libtoxcore' do
+        sh 'make uninstall'
+      end
+    end
+
+    task opusfile: 'vendor/src/opusfile/Makefile' do
+      chdir 'vendor/src/opusfile' do
         sh 'make uninstall'
       end
     end
@@ -153,6 +167,12 @@ namespace :vendor do
         sh 'make clean'
       end
     end
+
+    task opusfile: 'vendor/src/opusfile/Makefile' do
+      chdir 'vendor/src/opusfile' do
+        sh 'make clean'
+      end
+    end
   end
 
   namespace :distclean do
@@ -176,6 +196,12 @@ namespace :vendor do
 
     task libtoxcore: 'vendor/src/libtoxcore/Makefile' do
       chdir 'vendor/src/libtoxcore' do
+        sh 'make distclean'
+      end
+    end
+
+    task opusfile: 'vendor/src/opusfile/Makefile' do
+      chdir 'vendor/src/opusfile' do
         sh 'make distclean'
       end
     end
@@ -251,6 +277,25 @@ file 'vendor/src/libtoxcore/Makefile': 'vendor/src/libtoxcore/configure' do |t|
   end
 end
 
+file 'vendor/src/opusfile/Makefile': 'vendor/src/opusfile/configure' do |t|
+  chdir File.dirname t.name do
+    sh(
+      { 'PKG_CONFIG_PATH' => VENDOR_PKG_CONFIG_PATH },
+      './configure',
+      '--prefix',
+      VENDOR_PREFIX,
+
+      '--enable-shared',
+      '--disable-static',
+
+      '--disable-examples',
+      '--disable-doc',
+
+      '--enable-assertions',
+    )
+  end
+end
+
 file 'vendor/src/libsodium/configure' do |t|
   chdir File.dirname t.name do
     sh './autogen.sh'
@@ -264,6 +309,12 @@ file 'vendor/src/opus/configure' do |t|
 end
 
 file 'vendor/src/libtoxcore/configure' do |t|
+  chdir File.dirname t.name do
+    sh './autogen.sh'
+  end
+end
+
+file 'vendor/src/opusfile/configure' do |t|
   chdir File.dirname t.name do
     sh './autogen.sh'
   end

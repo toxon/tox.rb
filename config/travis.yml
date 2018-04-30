@@ -8,7 +8,7 @@ rvm:
 
 before_install:
   - sudo apt-get update
-  - sudo apt-get install -y yasm libconfig-dev
+  - sudo apt-get install -y yasm libconfig-dev libogg-dev
 
 install: bundle install --jobs 3 --retry 3 --without examples
 
@@ -17,6 +17,7 @@ before_script:
   - rake vendor:install:opus
   - rake vendor:install:libvpx
   - rake vendor:install:libtoxcore
+  - rake vendor:install:opusfile
 
   - rake compile:tox
   - rake compile:opus_file
