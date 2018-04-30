@@ -24,6 +24,7 @@ static VALUE rb_cOpusFile_bitrate(VALUE opus_file, VALUE link);
 static VALUE rb_cOpusFile_bitrate_instant(VALUE opus_file);
 static VALUE rb_cOpusFile_raw_tell(VALUE opus_file);
 static VALUE rb_cOpusFile_pcm_tell(VALUE opus_file);
+static VALUE rb_cOpusFile_vendor(VALUE opus_file, VALUE link);
 static VALUE rb_cOpusFile_read(VALUE opus_file, VALUE length);
 
 void Init_opus_file()
@@ -32,22 +33,23 @@ void Init_opus_file()
 
   rb_define_alloc_func(rb_cOpusFile, rb_cOpusFile_alloc);
 
-  rb_define_method(rb_cOpusFile, "initialize",   rb_cOpusFile_initialize,    1);
+  rb_define_method(rb_cOpusFile, "initialize",   rb_cOpusFile_initialize,   1);
   rb_define_method(rb_cOpusFile, "seekable?",
                    rb_cOpusFile_seekable_QUESTION, 0);
-  rb_define_method(rb_cOpusFile, "link_count",   rb_cOpusFile_link_count,    0);
-  rb_define_method(rb_cOpusFile, "current_link", rb_cOpusFile_current_link,  0);
-  rb_define_method(rb_cOpusFile, "serialno",     rb_cOpusFile_serialno,      1);
+  rb_define_method(rb_cOpusFile, "link_count",   rb_cOpusFile_link_count,   0);
+  rb_define_method(rb_cOpusFile, "current_link", rb_cOpusFile_current_link, 0);
+  rb_define_method(rb_cOpusFile, "serialno",     rb_cOpusFile_serialno,     1);
   rb_define_method(rb_cOpusFile, "channel_count",
                    rb_cOpusFile_channel_count, 1);
-  rb_define_method(rb_cOpusFile, "raw_total",    rb_cOpusFile_raw_total,     1);
-  rb_define_method(rb_cOpusFile, "pcm_total",    rb_cOpusFile_pcm_total,     1);
-  rb_define_method(rb_cOpusFile, "bitrate",      rb_cOpusFile_bitrate,       1);
+  rb_define_method(rb_cOpusFile, "raw_total",    rb_cOpusFile_raw_total,    1);
+  rb_define_method(rb_cOpusFile, "pcm_total",    rb_cOpusFile_pcm_total,    1);
+  rb_define_method(rb_cOpusFile, "bitrate",      rb_cOpusFile_bitrate,      1);
   rb_define_method(rb_cOpusFile, "bitrate_instant",
                    rb_cOpusFile_bitrate_instant, 0);
-  rb_define_method(rb_cOpusFile, "raw_tell",     rb_cOpusFile_raw_tell,      0);
-  rb_define_method(rb_cOpusFile, "pcm_tell",     rb_cOpusFile_pcm_tell,      0);
-  rb_define_method(rb_cOpusFile, "read",         rb_cOpusFile_read,          1);
+  rb_define_method(rb_cOpusFile, "raw_tell",     rb_cOpusFile_raw_tell,     0);
+  rb_define_method(rb_cOpusFile, "pcm_tell",     rb_cOpusFile_pcm_tell,     0);
+  rb_define_method(rb_cOpusFile, "vendor",       rb_cOpusFile_vendor,       1);
+  rb_define_method(rb_cOpusFile, "read",         rb_cOpusFile_read,         1);
 }
 
 VALUE rb_cOpusFile_alloc(const VALUE klass)
@@ -192,6 +194,22 @@ VALUE rb_cOpusFile_pcm_tell(const VALUE opus_file)
   Data_Get_Struct(opus_file, struct rb_cOpusFile_CDATA, opus_file_cdata);
 
   return LL2NUM(op_pcm_tell(opus_file_cdata->ogg_opus_file));
+}
+
+VALUE rb_cOpusFile_vendor(const VALUE opus_file, const VALUE link)
+{
+  struct rb_cOpusFile_CDATA *opus_file_cdata = NULL;
+
+  Data_Get_Struct(opus_file, struct rb_cOpusFile_CDATA, opus_file_cdata);
+
+  const OpusTags *const opus_tags_data =
+    op_tags(opus_file_cdata->ogg_opus_file, NUM2INT(link));
+
+  if (!opus_tags_data) {
+    return Qnil;
+  }
+
+  return rb_str_new_cstr(opus_tags_data->vendor);
 }
 
 VALUE rb_cOpusFile_read(const VALUE opus_file, const VALUE length)

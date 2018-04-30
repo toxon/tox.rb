@@ -124,6 +124,16 @@ RSpec.describe OpusFile do
     end
   end
 
+  describe '#vendor' do
+    specify do
+      expect(subject.vendor(-1)).to eq 'libopus 1.0.1-rc3'
+    end
+
+    specify do
+      expect(subject.vendor(0)).to eq 'libopus 1.0.1-rc3'
+    end
+  end
+
   describe '#read' do
     let :data do
       (
