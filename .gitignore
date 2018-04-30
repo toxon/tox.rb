@@ -43,6 +43,7 @@
 
 # Rake-compiled extension files:
 /lib/tox/tox.so
+/lib/opus_file.so
 
 # Vendored dependencies:
 /vendor/*

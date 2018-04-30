@@ -56,6 +56,10 @@ begin
     ext.lib_dir = File.expand_path('lib/tox', __dir__).freeze
     ext.config_options << "--with-opt-dir=#{VENDOR_PREFIX.shellescape}"
   end
+
+  Rake::ExtensionTask.new 'opus_file' do |ext|
+    ext.lib_dir = File.expand_path('lib', __dir__).freeze
+  end
 rescue LoadError
   nil
 end

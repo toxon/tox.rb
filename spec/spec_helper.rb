@@ -26,6 +26,7 @@ require 'openssl'
 require 'faker'
 
 require 'tox'
+require 'opus_file'
 
 require 'support/random_port'
 
