@@ -81,6 +81,14 @@ RSpec.describe OpusFile do
     end
   end
 
+  describe '#bitrate_instant' do
+    specify do
+      expect(subject.bitrate_instant).to eq(-1)
+      subject.read 10
+      expect(subject.bitrate_instant).to eq 1907
+    end
+  end
+
   describe '#raw_tell' do
     specify do
       expect(subject.raw_tell).to be_kind_of Integer
