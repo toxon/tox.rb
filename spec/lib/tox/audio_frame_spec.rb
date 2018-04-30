@@ -125,12 +125,13 @@ RSpec.describe Tox::AudioFrame do
     context 'when values was set' do
       let(:pcm) { SecureRandom.random_bytes pcm_size }
 
-      let(:pcm_size) { sample_count * channels * 2 }
-
-      let(:sample_count) { rand 0..10 }
-      let(:channels)     { rand 0..10 }
+      let(:pcm_size)     { sample_count * channels * 2 }
+      let(:sample_count) { (sampling_rate * audio_length / 1000).to_i }
 
       let(:sampling_rate) { [8_000, 12_000, 16_000, 24_000, 48_000].sample }
+      let(:audio_length)  { [2.5, 5, 10, 20, 40, 60].sample }
+
+      let(:channels) { rand 0..10 }
 
       specify do
         expect(subject.valid?).to eq true
@@ -152,9 +153,19 @@ RSpec.describe Tox::AudioFrame do
         end
       end
 
-      context 'and pcm length is invalid' do
+      context 'and pcm size is invalid' do
         let :pcm_size do
           [0, sample_count * channels * 2 + [1, -1, 2, -2].sample].max
+        end
+
+        specify do
+          expect(subject.valid?).to eq false
+        end
+      end
+
+      context 'and sample count is invalid' do
+        let :sample_count do
+          (sampling_rate * audio_length / 1000).to_i + [1, -1, 2, -2].sample
         end
 
         specify do
