@@ -54,7 +54,18 @@ tox_client.audio_video.on_call do |friend_call_request|
 end
 
 tox_client.audio_video.on_audio_frame do |friend_call, audio_frame|
-  friend_call.send_audio_frame audio_frame
+  # Here we create new instance of {Tox::AudioFrame} from given one
+  # to demonstrate it's public interface. This is not required,
+  # we can resend the given one.
+
+  new_audio_frame = Tox::AudioFrame.new
+
+  new_audio_frame.pcm           = audio_frame.pcm
+  new_audio_frame.sample_count  = audio_frame.sample_count
+  new_audio_frame.channels      = audio_frame.channels
+  new_audio_frame.sampling_rate = audio_frame.sampling_rate
+
+  friend_call.send_audio_frame new_audio_frame
 end
 
 tox_client.audio_video.on_video_frame do |friend_call, video_frame|
