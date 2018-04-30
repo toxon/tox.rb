@@ -3,12 +3,6 @@
 
 require 'mkmf'
 
-ENV['PKG_CONFIG_PATH'] =
-  File.expand_path(
-    File.join('..', '..', 'vendor', 'lib', 'pkgconfig'),
-    __dir__,
-  ).freeze
-
 def cflags(*args)
   args.each do |str|
     $CFLAGS += " #{str.shellescape} "
