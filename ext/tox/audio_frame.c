@@ -58,6 +58,7 @@ void mTox_cAudioFrame_free(mTox_cAudioFrame_CDATA *const free_cdata)
  * Public methods
  *************************************************************/
 
+// Tox::AudioFrame#sample_count
 VALUE mTox_cAudioFrame_sample_count(const VALUE self)
 {
   CDATA(self, mTox_cAudioFrame_CDATA, self_cdata);
@@ -65,6 +66,7 @@ VALUE mTox_cAudioFrame_sample_count(const VALUE self)
   return LONG2NUM(self_cdata->sample_count);
 }
 
+// Tox::AudioFrame#sample_count=
 VALUE mTox_cAudioFrame_sample_count_ASSIGN(const VALUE self, const VALUE sample_count)
 {
   CDATA(self, mTox_cAudioFrame_CDATA, self_cdata);
@@ -74,6 +76,7 @@ VALUE mTox_cAudioFrame_sample_count_ASSIGN(const VALUE self, const VALUE sample_
   return Qnil;
 }
 
+// Tox::AudioFrame#channels
 VALUE mTox_cAudioFrame_channels(const VALUE self)
 {
   CDATA(self, mTox_cAudioFrame_CDATA, self_cdata);
@@ -81,6 +84,7 @@ VALUE mTox_cAudioFrame_channels(const VALUE self)
   return UINT2NUM(self_cdata->channels);
 }
 
+// Tox::AudioFrame#channels=
 VALUE mTox_cAudioFrame_channels_ASSIGN(const VALUE self, const VALUE channels)
 {
   CDATA(self, mTox_cAudioFrame_CDATA, self_cdata);
@@ -90,6 +94,7 @@ VALUE mTox_cAudioFrame_channels_ASSIGN(const VALUE self, const VALUE channels)
   return Qnil;
 }
 
+// Tox::AudioFrame#sampling_rate
 VALUE mTox_cAudioFrame_sampling_rate(const VALUE self)
 {
   CDATA(self, mTox_cAudioFrame_CDATA, self_cdata);
@@ -97,6 +102,7 @@ VALUE mTox_cAudioFrame_sampling_rate(const VALUE self)
   return ULONG2NUM(self_cdata->sampling_rate);
 }
 
+// Tox::AudioFrame#sampling_rate=
 VALUE mTox_cAudioFrame_sampling_rate_ASSIGN(const VALUE self, const VALUE sampling_rate)
 {
   CDATA(self, mTox_cAudioFrame_CDATA, self_cdata);
