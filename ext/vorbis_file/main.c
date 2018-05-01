@@ -19,6 +19,8 @@ static VALUE rb_cVorbisFile_initialize(VALUE vorbis_file, VALUE filename);
 static VALUE rb_cVorbisFile_vendor(VALUE vorbis_file, VALUE link);
 static VALUE rb_cVorbisFile_comments(VALUE vorbis_file, VALUE link);
 
+static VALUE rb_cVorbisFile_read(VALUE vorbis_file, VALUE length);
+
 void Init_vorbis_file()
 {
   rb_cVorbisFile = rb_define_class("VorbisFile", rb_cObject);
@@ -29,6 +31,8 @@ void Init_vorbis_file()
 
   rb_define_method(rb_cVorbisFile, "vendor",   rb_cVorbisFile_vendor,   1);
   rb_define_method(rb_cVorbisFile, "comments", rb_cVorbisFile_comments, 1);
+
+  rb_define_method(rb_cVorbisFile, "read", rb_cVorbisFile_read, 1);
 
   rb_eval_string(
     "class ::VorbisFile\n"
@@ -123,4 +127,35 @@ VALUE rb_cVorbisFile_comments(const VALUE vorbis_file, const VALUE link)
   }
 
   return rb_ary_new_from_values(count_data, items);
+}
+
+VALUE rb_cVorbisFile_read(const VALUE vorbis_file, const VALUE length)
+{
+  struct rb_cVorbisFile_CDATA *vorbis_file_cdata = NULL;
+
+  Data_Get_Struct(vorbis_file, struct rb_cVorbisFile_CDATA, vorbis_file_cdata);
+
+  const int length_data = NUM2INT(length);
+
+  if (length_data < 0) {
+    rb_raise(rb_eArgError, "negative length requested");
+  }
+
+  char buffer_data[length_data];
+
+  const long result_data = ov_read(
+    &vorbis_file_cdata->ogg_vorbis_file,
+    buffer_data,
+    length_data,
+    0, // little endian
+    2, // 2-byte (16-bit) word
+    1, // signed
+    NULL
+  );
+
+  if (result_data < 0) {
+    rb_raise(rb_eRuntimeError, "can not read");
+  }
+
+  return rb_str_new(buffer_data, result_data);
 }

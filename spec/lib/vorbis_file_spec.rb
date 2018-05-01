@@ -74,4 +74,35 @@ RSpec.describe VorbisFile do
       expect(subject.parse_comments(0)).to eq parse_comments
     end
   end
+
+  describe '#read' do
+    let :data do
+      (
+        +"\xF0\xFF\x1E\x00\xEE\xFF\x10\x00" \
+          "\b\x00\x1D\x00\x04\x00\x1A\x00" \
+          "\xF1\xFF\x15\x00\xEC\xFF'\x00" \
+          "\xF6\xFF#\x00\x05\x00\x12\x00"
+      ).force_encoding('BINARY')
+    end
+
+    specify do
+      expect { subject.read(-1) }.to raise_error ArgumentError
+    end
+
+    specify do
+      expect(subject.read(32)).to eq data[0...32]
+    end
+
+    specify do
+      expect(subject.read(16)).to eq data[0...16]
+      expect(subject.read(16)).to eq data[16...32]
+    end
+
+    specify do
+      expect(subject.read(16)).to eq data[0...16]
+      expect(subject.read(6)).to  eq data[16...20]
+      expect(subject.read(10)).to eq data[20...28]
+      expect(subject.read(4)).to  eq data[28...32]
+    end
+  end
 end
