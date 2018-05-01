@@ -144,14 +144,14 @@ RSpec.describe Tox::VideoFrame do
       let(:width)  { rand 640..1024 }
       let(:height) { rand 480..768  }
 
-      let(:y_plane) { SecureRandom.random_bytes width * height * 2 }
+      let(:y_plane) { SecureRandom.random_bytes width * height }
 
       let :u_plane do
-        SecureRandom.random_bytes((width / 2) * (height / 2) * 2)
+        SecureRandom.random_bytes((width / 2) * (height / 2))
       end
 
       let :v_plane do
-        SecureRandom.random_bytes((width / 2) * (height / 2) * 2)
+        SecureRandom.random_bytes((width / 2) * (height / 2))
       end
 
       specify do
@@ -160,7 +160,7 @@ RSpec.describe Tox::VideoFrame do
 
       context 'when Y plane size is invalid' do
         let :y_plane do
-          SecureRandom.random_bytes width * height * 2 + [1, -1, 2, -2].sample
+          SecureRandom.random_bytes width * height + [1, -1, 2, -2].sample
         end
 
         specify do
@@ -171,7 +171,7 @@ RSpec.describe Tox::VideoFrame do
       context 'when U plane size is invalid' do
         let :u_plane do
           SecureRandom.random_bytes(
-            (width / 2) * (height / 2) * 2 + [1, -1, 2, -2].sample,
+            (width / 2) * (height / 2) + [1, -1, 2, -2].sample,
           )
         end
 
@@ -183,7 +183,7 @@ RSpec.describe Tox::VideoFrame do
       context 'when V plane size is invalid' do
         let :v_plane do
           SecureRandom.random_bytes(
-            (width / 2) * (height / 2) * 2 + [1, -1, 2, -2].sample,
+            (width / 2) * (height / 2) + [1, -1, 2, -2].sample,
           )
         end
 

@@ -37,15 +37,15 @@ module Tox
   private
 
     def y_plane_size_valid?
-      y_plane.bytesize == width * height * 2
+      y_plane.bytesize == width * height
     end
 
     def u_plane_size_valid?
-      u_plane.bytesize == (width / 2) * (height / 2) * 2
+      u_plane.bytesize == (width / 2) * (height / 2)
     end
 
     def v_plane_size_valid?
-      v_plane.bytesize == (width / 2) * (height / 2) * 2
+      v_plane.bytesize == (width / 2) * (height / 2)
     end
   end
 end
