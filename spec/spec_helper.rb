@@ -27,6 +27,7 @@ require 'faker'
 
 require 'tox'
 require 'opus_file'
+require 'vorbis_file'
 
 require 'support/random_port'
 

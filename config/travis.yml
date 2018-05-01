@@ -8,7 +8,7 @@ rvm:
 
 before_install:
   - sudo apt-get update
-  - sudo apt-get install -y yasm libconfig-dev libopus-dev libopusfile-dev
+  - sudo apt-get install -y yasm libconfig-dev libopus-dev libopusfile-dev libvorbis-dev
 
 install: bundle install --jobs 3 --retry 3 --without examples
 
@@ -19,3 +19,4 @@ before_script:
 
   - rake compile:tox
   - rake compile:opus_file
+  - rake compile:vorbis_file

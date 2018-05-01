@@ -59,6 +59,10 @@ begin
   Rake::ExtensionTask.new 'opus_file' do |ext|
     ext.lib_dir = File.expand_path('lib', __dir__).freeze
   end
+
+  Rake::ExtensionTask.new 'vorbis_file' do |ext|
+    ext.lib_dir = File.expand_path('lib', __dir__).freeze
+  end
 rescue LoadError
   nil
 end

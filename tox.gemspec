@@ -39,6 +39,7 @@ Gem::Specification.new do |spec|
 
   spec.extensions << 'ext/tox/extconf.rb'
   spec.extensions << 'ext/opus_file/extconf.rb'
+  spec.extensions << 'ext/vorbis_file/extconf.rb'
 
   spec.add_development_dependency 'bundler',       '~> 1.13'
   spec.add_development_dependency 'celluloid',     '~> 0.17'
