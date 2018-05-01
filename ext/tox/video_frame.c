@@ -45,6 +45,18 @@ VALUE mTox_cVideoFrame_alloc(const VALUE klass)
 
 void mTox_cVideoFrame_free(mTox_cVideoFrame_CDATA *const free_cdata)
 {
+  if (free_cdata->y) {
+    free(free_cdata->y);
+  }
+
+  if (free_cdata->u) {
+    free(free_cdata->u);
+  }
+
+  if (free_cdata->v) {
+    free(free_cdata->v);
+  }
+
   free(free_cdata);
 }
 

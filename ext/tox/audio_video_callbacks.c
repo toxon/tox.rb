@@ -141,9 +141,9 @@ void on_video_frame(
   const uint8_t *const y_data,
   const uint8_t *const u_data,
   const uint8_t *const v_data,
-  const int32_t ystride_data,
-  const int32_t ustride_data,
-  const int32_t vstride_data,
+  int32_t ystride_data,
+  int32_t ustride_data,
+  int32_t vstride_data,
   const VALUE self
 )
 {
@@ -170,9 +170,27 @@ void on_video_frame(
   video_frame_cdata->width  = width_data;
   video_frame_cdata->height = height_data;
 
-  video_frame_cdata->y = y_data;
-  video_frame_cdata->u = u_data;
-  video_frame_cdata->v = v_data;
+  ystride_data = abs(ystride_data);
+  ustride_data = abs(ustride_data);
+  vstride_data = abs(vstride_data);
+
+  if (ystride_data < width_data || ustride_data < width_data / 2 || vstride_data < width_data / 2) {
+    // WTF?
+    return;
+  }
+
+  video_frame_cdata->y = malloc(width_data * height_data);
+  video_frame_cdata->u = malloc(width_data * height_data / 2);
+  video_frame_cdata->v = malloc(width_data * height_data / 2);
+
+  for (size_t h = 0; h < height_data; ++h) {
+    memcpy(&video_frame_cdata->y[h * width_data], &y_data[h * ystride_data], width_data);
+  }
+
+  for (size_t h = 0; h < height_data / 2; ++h) {
+    memcpy(&video_frame_cdata->u[h * width_data / 2], &u_data[h * ustride_data], width_data / 2);
+    memcpy(&video_frame_cdata->v[h * width_data / 2], &v_data[h * vstride_data], width_data / 2);
+  }
 
   rb_funcall(
     ivar_on_video_frame,
