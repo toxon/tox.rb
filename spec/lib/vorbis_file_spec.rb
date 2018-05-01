@@ -45,6 +45,20 @@ RSpec.describe VorbisFile do
     end
   end
 
+  describe '#pcm_total' do
+    specify do
+      expect(subject.pcm_total(-1)).to eq 1_533_382
+    end
+
+    specify do
+      expect(subject.pcm_total(0)).to eq 1_533_382
+    end
+
+    specify do
+      expect(subject.pcm_total(1)).to eq(-131)
+    end
+  end
+
   describe '#vendor' do
     specify do
       expect(subject.vendor(-1)).to eq vendor
