@@ -134,4 +134,63 @@ RSpec.describe Tox::VideoFrame do
       end
     end
   end
+
+  describe '#valid?' do
+    specify do
+      expect(subject.valid?).to eq true
+    end
+
+    context 'when values was set' do
+      let(:width)  { rand 640..1024 }
+      let(:height) { rand 480..768  }
+
+      let(:y_plane) { SecureRandom.random_bytes width * height * 2 }
+
+      let :u_plane do
+        SecureRandom.random_bytes((width / 2) * (height / 2) * 2)
+      end
+
+      let :v_plane do
+        SecureRandom.random_bytes((width / 2) * (height / 2) * 2)
+      end
+
+      specify do
+        expect(subject.valid?).to eq true
+      end
+
+      context 'when Y plane size is invalid' do
+        let :y_plane do
+          SecureRandom.random_bytes width * height * 2 + [1, -1, 2, -2].sample
+        end
+
+        specify do
+          expect(subject.valid?).to eq false
+        end
+      end
+
+      context 'when U plane size is invalid' do
+        let :u_plane do
+          SecureRandom.random_bytes(
+            (width / 2) * (height / 2) * 2 + [1, -1, 2, -2].sample,
+          )
+        end
+
+        specify do
+          expect(subject.valid?).to eq false
+        end
+      end
+
+      context 'when V plane size is invalid' do
+        let :v_plane do
+          SecureRandom.random_bytes(
+            (width / 2) * (height / 2) * 2 + [1, -1, 2, -2].sample,
+          )
+        end
+
+        specify do
+          expect(subject.valid?).to eq false
+        end
+      end
+    end
+  end
 end

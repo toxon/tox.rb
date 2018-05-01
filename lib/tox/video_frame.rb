@@ -29,5 +29,23 @@ module Tox
       String.ancestor_of! value
       @v_plane = value
     end
+
+    def valid?
+      y_plane_size_valid? && u_plane_size_valid? && v_plane_size_valid?
+    end
+
+  private
+
+    def y_plane_size_valid?
+      y_plane.bytesize == width * height * 2
+    end
+
+    def u_plane_size_valid?
+      u_plane.bytesize == (width / 2) * (height / 2) * 2
+    end
+
+    def v_plane_size_valid?
+      v_plane.bytesize == (width / 2) * (height / 2) * 2
+    end
   end
 end
