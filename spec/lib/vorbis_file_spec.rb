@@ -59,6 +59,34 @@ RSpec.describe VorbisFile do
     end
   end
 
+  describe '#pcm_tell' do
+    specify do
+      expect(subject.pcm_tell).to eq 0
+    end
+
+    specify do
+      samples = rand 1..10
+      bytes = samples * 4
+
+      expect { subject.read bytes }.to \
+        change(subject, :pcm_tell).by(samples)
+    end
+
+    specify do
+      expect(subject.pcm_tell).to eq 0
+      subject.read 8
+      expect(subject.pcm_tell).to eq 2
+      subject.read 4
+      expect(subject.pcm_tell).to eq 3
+      subject.read 4
+      expect(subject.pcm_tell).to eq 4
+      subject.read 8
+      expect(subject.pcm_tell).to eq 6
+      subject.read 4
+      expect(subject.pcm_tell).to eq 7
+    end
+  end
+
   describe '#vendor' do
     specify do
       expect(subject.vendor(-1)).to eq vendor

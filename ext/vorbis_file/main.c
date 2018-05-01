@@ -17,6 +17,7 @@ static void  rb_cVorbisFile_free(struct rb_cVorbisFile_CDATA *vorbis_file_cdata)
 static VALUE rb_cVorbisFile_initialize(VALUE vorbis_file, VALUE filename);
 
 static VALUE rb_cVorbisFile_pcm_total(VALUE vorbis_file, VALUE link);
+static VALUE rb_cVorbisFile_pcm_tell(VALUE vorbis_file);
 
 static VALUE rb_cVorbisFile_vendor(VALUE vorbis_file, VALUE link);
 static VALUE rb_cVorbisFile_comments(VALUE vorbis_file, VALUE link);
@@ -32,6 +33,7 @@ void Init_vorbis_file()
   rb_define_method(rb_cVorbisFile, "initialize", rb_cVorbisFile_initialize, 1);
 
   rb_define_method(rb_cVorbisFile, "pcm_total", rb_cVorbisFile_pcm_total, 1);
+  rb_define_method(rb_cVorbisFile, "pcm_tell",  rb_cVorbisFile_pcm_tell,  0);
 
   rb_define_method(rb_cVorbisFile, "vendor",   rb_cVorbisFile_vendor,   1);
   rb_define_method(rb_cVorbisFile, "comments", rb_cVorbisFile_comments, 1);
@@ -97,6 +99,15 @@ VALUE rb_cVorbisFile_pcm_total(const VALUE vorbis_file, const VALUE link)
   Data_Get_Struct(vorbis_file, struct rb_cVorbisFile_CDATA, vorbis_file_cdata);
 
   return LL2NUM(ov_pcm_total(&vorbis_file_cdata->ogg_vorbis_file, NUM2INT(link)));
+}
+
+VALUE rb_cVorbisFile_pcm_tell(const VALUE vorbis_file)
+{
+  struct rb_cVorbisFile_CDATA *vorbis_file_cdata = NULL;
+
+  Data_Get_Struct(vorbis_file, struct rb_cVorbisFile_CDATA, vorbis_file_cdata);
+
+  return LL2NUM(ov_pcm_tell(&vorbis_file_cdata->ogg_vorbis_file));
 }
 
 VALUE rb_cVorbisFile_vendor(const VALUE vorbis_file, const VALUE link)
