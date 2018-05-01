@@ -147,4 +147,13 @@ RSpec.describe VorbisFile do
       expect(subject.read(4)).to  eq data[28...32]
     end
   end
+
+  describe '#pcm_seek' do
+    specify do
+      subject.pcm_seek 100
+      expect(subject.pcm_tell).to eq 403
+      subject.pcm_seek 0
+      expect(subject.pcm_tell).to eq 3
+    end
+  end
 end

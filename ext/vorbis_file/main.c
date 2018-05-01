@@ -24,6 +24,8 @@ static VALUE rb_cVorbisFile_comments(VALUE vorbis_file, VALUE link);
 
 static VALUE rb_cVorbisFile_read(VALUE vorbis_file, VALUE length);
 
+static VALUE rb_cVorbisFile_pcm_seek(VALUE vorbis_file, VALUE pcm_offset);
+
 void Init_vorbis_file()
 {
   rb_cVorbisFile = rb_define_class("VorbisFile", rb_cObject);
@@ -39,6 +41,8 @@ void Init_vorbis_file()
   rb_define_method(rb_cVorbisFile, "comments", rb_cVorbisFile_comments, 1);
 
   rb_define_method(rb_cVorbisFile, "read", rb_cVorbisFile_read, 1);
+
+  rb_define_method(rb_cVorbisFile, "pcm_seek", rb_cVorbisFile_pcm_seek, 1);
 
   rb_eval_string(
     "class ::VorbisFile\n"
@@ -182,4 +186,13 @@ VALUE rb_cVorbisFile_read(const VALUE vorbis_file, const VALUE length)
   }
 
   return rb_str_new(buffer_data, result_data);
+}
+
+VALUE rb_cVorbisFile_pcm_seek(const VALUE vorbis_file, const VALUE pcm_offset)
+{
+  struct rb_cVorbisFile_CDATA *vorbis_file_cdata = NULL;
+
+  Data_Get_Struct(vorbis_file, struct rb_cVorbisFile_CDATA, vorbis_file_cdata);
+
+  return INT2NUM(ov_pcm_seek(&vorbis_file_cdata->ogg_vorbis_file, LL2NUM(pcm_offset)));
 }
