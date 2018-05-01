@@ -31,6 +31,9 @@ static VALUE rb_cOpusFile_comments(VALUE opus_file, VALUE link);
 
 static VALUE rb_cOpusFile_read(VALUE opus_file, VALUE length);
 
+static VALUE rb_cOpusFile_raw_seek(VALUE opus_file, VALUE byte_offset);
+static VALUE rb_cOpusFile_pcm_seek(VALUE opus_file, VALUE pcm_offset);
+
 void Init_opus_file()
 {
   rb_cOpusFile = rb_define_class("OpusFile", rb_cObject);
@@ -58,6 +61,9 @@ void Init_opus_file()
   rb_define_method(rb_cOpusFile, "comments", rb_cOpusFile_comments, 1);
 
   rb_define_method(rb_cOpusFile, "read", rb_cOpusFile_read, 1);
+
+  rb_define_method(rb_cOpusFile, "raw_seek", rb_cOpusFile_raw_seek, 1);
+  rb_define_method(rb_cOpusFile, "pcm_seek", rb_cOpusFile_pcm_seek, 1);
 
   rb_eval_string(
     "class ::OpusFile\n"
@@ -287,4 +293,22 @@ VALUE rb_cOpusFile_read(const VALUE opus_file, const VALUE length)
     (char*)buffer_data,
     sizeof(opus_int16[result_data * channel_count_data])
   );
+}
+
+VALUE rb_cOpusFile_raw_seek(const VALUE opus_file, const VALUE byte_offset)
+{
+  struct rb_cOpusFile_CDATA *opus_file_cdata = NULL;
+
+  Data_Get_Struct(opus_file, struct rb_cOpusFile_CDATA, opus_file_cdata);
+
+  return INT2NUM(op_raw_seek(opus_file_cdata->ogg_opus_file, LL2NUM(byte_offset)));
+}
+
+VALUE rb_cOpusFile_pcm_seek(const VALUE opus_file, const VALUE pcm_offset)
+{
+  struct rb_cOpusFile_CDATA *opus_file_cdata = NULL;
+
+  Data_Get_Struct(opus_file, struct rb_cOpusFile_CDATA, opus_file_cdata);
+
+  return INT2NUM(op_pcm_seek(opus_file_cdata->ogg_opus_file, LL2NUM(pcm_offset)));
 }

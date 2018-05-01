@@ -48,6 +48,13 @@ end
 tox_client.audio_video.on_audio_frame do |friend_call, _audio_frame|
   new_audio_frame = Tox::AudioFrame.new
 
+  unless opus_file.pcm_total(-1) > opus_file.pcm_tell
+    puts 'EOF, seeking to start'
+    puts
+
+    opus_file.pcm_seek 0
+  end
+
   new_audio_frame.pcm           = opus_file.read 1920
   new_audio_frame.sample_count  = 960
   new_audio_frame.channels      = 2
