@@ -5,19 +5,25 @@ module Tox
   # Audio frame.
   #
   class AudioFrame
+    using CoreExt
+
     VALID_SAMPLING_RATES = [8_000, 12_000, 16_000, 24_000, 48_000].freeze
     VALID_AUDIO_LENGTHS  = [2.5, 5, 10, 20, 40, 60].freeze
 
-    attr_accessor :pcm
+    attr_reader :pcm
 
     def initialize
       @pcm = ''
     end
 
+    def pcm=(value)
+      String.ancestor_of! value
+      @pcm = value
+    end
+
     def valid?
       VALID_SAMPLING_RATES.include?(sampling_rate) &&
         sample_count_valid? &&
-        pcm.is_a?(String) &&
         pcm_size_valid?
     end
 

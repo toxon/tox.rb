@@ -39,6 +39,14 @@ RSpec.describe Tox::AudioFrame do
     end
   end
 
+  describe '#pcm=' do
+    context 'when given value is not a String' do
+      specify do
+        expect { subject.pcm = :foobar }.to raise_error TypeError
+      end
+    end
+  end
+
   describe '#sample_count' do
     specify do
       expect(subject.sample_count).to be_kind_of Integer
@@ -61,6 +69,14 @@ RSpec.describe Tox::AudioFrame do
 
       specify do
         expect(subject.sample_count).to eq sample_count
+      end
+    end
+  end
+
+  describe '#sample_count=' do
+    context 'when given value is not a Numeric' do
+      specify do
+        expect { subject.sample_count = '12345' }.to raise_error TypeError
       end
     end
   end
@@ -91,6 +107,14 @@ RSpec.describe Tox::AudioFrame do
     end
   end
 
+  describe '#channels=' do
+    context 'when given value is not a Numeric' do
+      specify do
+        expect { subject.channels = '12345' }.to raise_error TypeError
+      end
+    end
+  end
+
   describe '#sampling_rate' do
     specify do
       expect(subject.sampling_rate).to be_kind_of Integer
@@ -117,6 +141,14 @@ RSpec.describe Tox::AudioFrame do
     end
   end
 
+  describe '#sampling_rate=' do
+    context 'when given value is not a Numeric' do
+      specify do
+        expect { subject.sampling_rate = '12345' }.to raise_error TypeError
+      end
+    end
+  end
+
   describe '#valid?' do
     specify do
       expect(subject.valid?).to eq false
@@ -139,14 +171,6 @@ RSpec.describe Tox::AudioFrame do
 
       context 'and sampling rate is invalid' do
         let(:sampling_rate) { [0, 1, 24, 48, 47_999, 48_001].sample }
-
-        specify do
-          expect(subject.valid?).to eq false
-        end
-      end
-
-      context 'and pcm is not a string' do
-        let(:pcm) { SecureRandom.random_bytes(pcm_size).to_sym }
 
         specify do
           expect(subject.valid?).to eq false
