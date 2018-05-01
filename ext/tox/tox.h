@@ -47,9 +47,6 @@ typedef struct {
 typedef struct {
   uint16_t width;
   uint16_t height;
-  const uint8_t *y;
-  const uint8_t *u;
-  const uint8_t *v;
 } mTox_cVideoFrame_CDATA;
 
 // Instances

@@ -179,18 +179,30 @@ void on_video_frame(
     return;
   }
 
-  video_frame_cdata->y = malloc(width_data * height_data);
-  video_frame_cdata->u = malloc(width_data * height_data / 2);
-  video_frame_cdata->v = malloc(width_data * height_data / 2);
+  const VALUE y_plane = rb_str_new("", 0);
+  const VALUE u_plane = rb_str_new("", 0);
+  const VALUE v_plane = rb_str_new("", 0);
+
+  rb_str_resize(y_plane, width_data * height_data);
+  rb_str_resize(u_plane, width_data * height_data / 4);
+  rb_str_resize(v_plane, width_data * height_data / 4);
+
+  char *const y_plane_data = RSTRING_PTR(y_plane);
+  char *const u_plane_data = RSTRING_PTR(u_plane);
+  char *const v_plane_data = RSTRING_PTR(v_plane);
 
   for (size_t h = 0; h < height_data; ++h) {
-    memcpy(&video_frame_cdata->y[h * width_data], &y_data[h * ystride_data], width_data);
+    memcpy(&y_plane_data[h * width_data], &y_data[h * ystride_data], width_data);
   }
 
   for (size_t h = 0; h < height_data / 2; ++h) {
-    memcpy(&video_frame_cdata->u[h * width_data / 2], &u_data[h * ustride_data], width_data / 2);
-    memcpy(&video_frame_cdata->v[h * width_data / 2], &v_data[h * vstride_data], width_data / 2);
+    memcpy(&u_plane_data[h * width_data / 2], &u_data[h * ustride_data], width_data / 2);
+    memcpy(&v_plane_data[h * width_data / 2], &v_data[h * vstride_data], width_data / 2);
   }
+
+  rb_iv_set(video_frame, "@y_plane", y_plane);
+  rb_iv_set(video_frame, "@u_plane", u_plane);
+  rb_iv_set(video_frame, "@v_plane", v_plane);
 
   rb_funcall(
     ivar_on_video_frame,

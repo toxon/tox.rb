@@ -133,10 +133,22 @@ VALUE mTox_cFriendCall_send_video_frame(
     );
   }
 
+  if (!rb_funcall(video_frame, rb_intern("valid?"), 0)) {
+    rb_raise(rb_eRuntimeError, "video frame is invalid");
+  }
+
   const VALUE audio_video   = rb_iv_get(self, "@audio_video");
   const VALUE friend_number = rb_iv_get(self, "@friend_number");
 
   const uint32_t friend_number_data = NUM2ULONG(friend_number);
+
+  const VALUE y_plane = rb_iv_get(video_frame, "@y_plane");
+  const VALUE u_plane = rb_iv_get(video_frame, "@u_plane");
+  const VALUE v_plane = rb_iv_get(video_frame, "@v_plane");
+
+  const char *const y_plane_data = RSTRING_PTR(y_plane);
+  const char *const u_plane_data = RSTRING_PTR(u_plane);
+  const char *const v_plane_data = RSTRING_PTR(v_plane);
 
   CDATA(audio_video, mTox_cAudioVideo_CDATA, audio_video_cdata);
   CDATA(video_frame, mTox_cVideoFrame_CDATA, video_frame_cdata);
@@ -148,9 +160,9 @@ VALUE mTox_cFriendCall_send_video_frame(
     friend_number_data,
     video_frame_cdata->width,
     video_frame_cdata->height,
-    video_frame_cdata->y,
-    video_frame_cdata->u,
-    video_frame_cdata->v,
+    y_plane_data,
+    u_plane_data,
+    v_plane_data,
     &toxav_video_send_frame_error
   );
 

@@ -69,7 +69,20 @@ tox_client.audio_video.on_audio_frame do |friend_call, audio_frame|
 end
 
 tox_client.audio_video.on_video_frame do |friend_call, video_frame|
-  friend_call.send_video_frame video_frame
+  # Here we create new instance of {Tox::VideoFrame} from given one
+  # to demonstrate it's public interface. This is not required,
+  # we can resend the given one.
+
+  new_video_frame = Tox::VideoFrame.new
+
+  new_video_frame.width  = video_frame.width
+  new_video_frame.height = video_frame.height
+
+  new_video_frame.y_plane = video_frame.y_plane
+  new_video_frame.u_plane = video_frame.u_plane
+  new_video_frame.v_plane = video_frame.v_plane
+
+  friend_call.send_video_frame new_video_frame
 end
 
 puts 'Running. Send me friend request, I\'ll accept it immediately. ' \
