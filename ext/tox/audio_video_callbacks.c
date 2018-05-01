@@ -41,6 +41,48 @@ void on_call(
   );
 }
 
+void on_call_state_change(
+  ToxAV *const tox_av,
+  const uint32_t friend_number_data,
+  const uint32_t state_data,
+  const VALUE self
+)
+{
+  const VALUE ivar_on_call_state_change =
+    rb_iv_get(self, "@on_call_state_change");
+
+  if (Qnil == ivar_on_call_state_change) {
+    return;
+  }
+
+  const VALUE friend_number = LONG2FIX(friend_number_data);
+
+  const VALUE friend_call = rb_funcall(
+    mTox_cFriendCall,
+    rb_intern("new"),
+    2,
+    self,
+    friend_number
+  );
+
+  const VALUE state_value = UINT2NUM(state_data);
+
+  const VALUE state = rb_funcall(
+    mTox_cFriendCallState,
+    rb_intern("new"),
+    1,
+    state_value
+  );
+
+  rb_funcall(
+    ivar_on_call_state_change,
+    rb_intern("call"),
+    2,
+    friend_call,
+    state
+  );
+}
+
 void on_audio_frame(
   ToxAV *const tox_av,
   const uint32_t friend_number_data,

@@ -145,9 +145,10 @@ VALUE mTox_cAudioVideo_initialize_with(const VALUE self, const VALUE client)
   }
 
   // Callbacks
-  toxav_callback_call               (self_cdata->tox_av, on_call,        self);
-  toxav_callback_audio_receive_frame(self_cdata->tox_av, on_audio_frame, self);
-  toxav_callback_video_receive_frame(self_cdata->tox_av, on_video_frame, self);
+  toxav_callback_call               (self_cdata->tox_av, on_call,              self);
+  toxav_callback_call_state         (self_cdata->tox_av, on_call_state_change, self);
+  toxav_callback_audio_receive_frame(self_cdata->tox_av, on_audio_frame,       self);
+  toxav_callback_video_receive_frame(self_cdata->tox_av, on_video_frame,       self);
 
   return self;
 }

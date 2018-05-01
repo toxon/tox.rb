@@ -55,32 +55,48 @@ typedef struct {
 // Instances
 
 extern VALUE mTox;
+extern VALUE mTox_mVersion;
 
 extern VALUE mTox_eNullError;
 extern VALUE mTox_eSendQueueError;
 extern VALUE mTox_eUnknownError;
 
-extern VALUE mTox_mVersion;
-extern VALUE mTox_mUserStatus;
-extern VALUE mTox_mConnectionStatus;
-extern VALUE mTox_mProxyType;
-extern VALUE mTox_cOptions;
+// Core classes
 extern VALUE mTox_cClient;
-extern VALUE mTox_cFriend;
-extern VALUE mTox_cAddress;
-extern VALUE mTox_cPublicKey;
-extern VALUE mTox_cNospam;
+extern VALUE mTox_cAudioVideo;
+
+// Proxy classes
 extern VALUE mTox_mOutMessage;
 extern VALUE mTox_cOutFriendMessage;
-extern VALUE mTox_cAudioVideo;
-extern VALUE mTox_mFileKind;
+extern VALUE mTox_cFriend;
 extern VALUE mTox_cOutFriendFile;
 extern VALUE mTox_cInFriendFile;
-extern VALUE mTox_mFileControl;
 extern VALUE mTox_cFriendCallRequest;
 extern VALUE mTox_cFriendCall;
+
+// Configuration classes
+extern VALUE mTox_cOptions;
+
+// Bit masks
+extern VALUE mTox_cFriendCallState;
+
+// Enumerations
+extern VALUE mTox_mUserStatus;
+extern VALUE mTox_mProxyType;
+extern VALUE mTox_mConnectionStatus;
+extern VALUE mTox_mFileKind;
+extern VALUE mTox_mFileControl;
+
+// Binary string primitives
+extern VALUE mTox_cPublicKey;
+extern VALUE mTox_cNospam;
+extern VALUE mTox_cAddress;
+
+// Media data primitives
 extern VALUE mTox_cAudioFrame;
 extern VALUE mTox_cVideoFrame;
+
+// Enumeration constants
 
 extern VALUE mTox_mUserStatus_NONE;
 extern VALUE mTox_mUserStatus_AWAY;
@@ -100,6 +116,8 @@ extern VALUE mTox_mFileKind_AVATAR;
 extern VALUE mTox_mFileControl_RESUME;
 extern VALUE mTox_mFileControl_PAUSE;
 extern VALUE mTox_mFileControl_CANCEL;
+
+// Exception classes
 
 extern VALUE mTox_cClient_eBadSavedataError;
 
