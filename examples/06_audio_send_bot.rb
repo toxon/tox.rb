@@ -13,7 +13,7 @@ TEST_FILE = File.expand_path('../multimedia/test.opus', __dir__).freeze
 
 AUDIO_BIT_RATE = 48
 
-opus_file = OpusFile.new TEST_FILE
+opus_files = {}
 
 tox_client = Tox::Client.new
 
@@ -43,10 +43,21 @@ tox_client.audio_video.on_call do |friend_call_request|
   puts
 
   friend_call_request.answer AUDIO_BIT_RATE, nil
+
+  opus_files[friend_call_request.friend_number] = OpusFile.new TEST_FILE
+end
+
+tox_client.audio_video.on_call_state_change do |friend_call, friend_call_state|
+  next unless friend_call_state.error? || friend_call_state.finished?
+  opus_files[friend_call.friend_number] = nil
 end
 
 tox_client.audio_video.on_audio_frame do |friend_call, _audio_frame|
   new_audio_frame = Tox::AudioFrame.new
+
+  opus_file = opus_files[friend_call.friend_number]
+
+  next if opus_file.nil?
 
   unless opus_file.pcm_total(-1) > opus_file.pcm_tell
     puts 'EOF, seeking to start'
