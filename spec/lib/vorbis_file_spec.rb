@@ -9,6 +9,16 @@ RSpec.describe VorbisFile do
 
   let(:vendor) { 'Xiph.Org libVorbis I 20120203 (Omnipresent)' }
 
+  let :parse_comments do
+    {
+      'ALBUM'  => 'Example Files',
+      'TITLE'  => 'OGG Test File',
+      'ARTIST' => 'Online-Convert.com',
+    }
+  end
+
+  let(:comments) { parse_comments.map { |s| s.join '=' } }
+
   describe '#initialize' do
     context 'when filename is not a string' do
       let(:filename) { 123 }
@@ -42,6 +52,26 @@ RSpec.describe VorbisFile do
 
     specify do
       expect(subject.vendor(0)).to eq vendor
+    end
+  end
+
+  describe '#comments' do
+    specify do
+      expect(subject.comments(-1)).to eq comments
+    end
+
+    specify do
+      expect(subject.comments(0)).to eq comments
+    end
+  end
+
+  describe '#parse_comments' do
+    specify do
+      expect(subject.parse_comments(-1)).to eq parse_comments
+    end
+
+    specify do
+      expect(subject.parse_comments(0)).to eq parse_comments
     end
   end
 end
