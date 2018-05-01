@@ -16,6 +16,8 @@ static void  rb_cVorbisFile_free(struct rb_cVorbisFile_CDATA *vorbis_file_cdata)
 
 static VALUE rb_cVorbisFile_initialize(VALUE vorbis_file, VALUE filename);
 
+static VALUE rb_cVorbisFile_vendor(VALUE vorbis_file, VALUE link);
+
 void Init_vorbis_file()
 {
   rb_cVorbisFile = rb_define_class("VorbisFile", rb_cObject);
@@ -23,6 +25,8 @@ void Init_vorbis_file()
   rb_define_alloc_func(rb_cVorbisFile, rb_cVorbisFile_alloc);
 
   rb_define_method(rb_cVorbisFile, "initialize", rb_cVorbisFile_initialize, 1);
+
+  rb_define_method(rb_cVorbisFile, "vendor", rb_cVorbisFile_vendor, 1);
 }
 
 VALUE rb_cVorbisFile_alloc(const VALUE klass)
@@ -66,4 +70,20 @@ VALUE rb_cVorbisFile_initialize(
   vorbis_file_cdata->opened = true;
 
   return vorbis_file;
+}
+
+VALUE rb_cVorbisFile_vendor(const VALUE vorbis_file, const VALUE link)
+{
+  struct rb_cVorbisFile_CDATA *vorbis_file_cdata = NULL;
+
+  Data_Get_Struct(vorbis_file, struct rb_cVorbisFile_CDATA, vorbis_file_cdata);
+
+  const struct vorbis_comment *const vorbis_comment_data =
+    ov_comment(&vorbis_file_cdata->ogg_vorbis_file, NUM2INT(link));
+
+  if (!vorbis_comment_data) {
+    return Qnil;
+  }
+
+  return rb_str_new_cstr(vorbis_comment_data->vendor);
 }

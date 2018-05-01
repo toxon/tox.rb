@@ -7,6 +7,8 @@ RSpec.describe VorbisFile do
     File.expand_path('../../multimedia/test_vorbis.ogg', __dir__).freeze
   end
 
+  let(:vendor) { 'Xiph.Org libVorbis I 20120203 (Omnipresent)' }
+
   describe '#initialize' do
     context 'when filename is not a string' do
       let(:filename) { 123 }
@@ -30,6 +32,16 @@ RSpec.describe VorbisFile do
       specify do
         expect { subject }.to raise_error RuntimeError
       end
+    end
+  end
+
+  describe '#vendor' do
+    specify do
+      expect(subject.vendor(-1)).to eq vendor
+    end
+
+    specify do
+      expect(subject.vendor(0)).to eq vendor
     end
   end
 end
