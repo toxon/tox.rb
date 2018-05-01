@@ -9,7 +9,7 @@ require 'opus_file'
 NAME = 'AudioSendBot'
 STATUS_MESSAGE = 'Call me'
 
-TEST_FILE = File.expand_path('../multimedia/test.opus', __dir__).freeze
+TEST_FILE = File.expand_path('../multimedia/opus.ogg', __dir__).freeze
 
 AUDIO_BIT_RATE = 48
 

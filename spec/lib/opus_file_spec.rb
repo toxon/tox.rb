@@ -4,7 +4,7 @@ RSpec.describe OpusFile do
   subject { described_class.new filename }
 
   let :filename do
-    File.expand_path('../../multimedia/test.opus', __dir__).freeze
+    File.expand_path('../../multimedia/opus.ogg', __dir__).freeze
   end
 
   let(:vendor) { 'libopus 1.0.1-rc3' }

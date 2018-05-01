@@ -4,7 +4,7 @@ RSpec.describe VorbisFile do
   subject { described_class.new filename }
 
   let :filename do
-    File.expand_path('../../multimedia/test_vorbis.ogg', __dir__).freeze
+    File.expand_path('../../multimedia/vorbis.ogg', __dir__).freeze
   end
 
   let(:vendor) { 'Xiph.Org libVorbis I 20120203 (Omnipresent)' }
