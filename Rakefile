@@ -186,7 +186,6 @@ file 'vendor/src/libvpx/Makefile': 'vendor/src/libvpx/configure' do |t|
       '--disable-static',
 
       '--disable-examples',
-      '--disable-tools',
       '--disable-docs',
       '--disable-unit-tests',
     )
